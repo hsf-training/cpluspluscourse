@@ -1,0 +1,204 @@
+\documentclass[compress]{beamer}
+\usetheme{Warsaw}
+\useoutertheme{split}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Improvement on the default split theme : added line numbers %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\defbeamertemplate*{footline}{mysplit theme}
+{%
+  \leavevmode%
+  \hbox{\begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fill,rightskip=.3cm]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}}%
+    \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.2cm plus1fill,rightskip=.3cm]{date in head/foot}
+      \usebeamerfont{date in head/foot} \insertframenumber{} / \inserttotalframenumber 
+    \end{beamercolorbox}
+  \vskip0pt%
+}
+
+%%%%%%%%%%%%
+% packages %
+%%%%%%%%%%%%
+
+\usepackage{minted}
+\newminted{cpp}{gobble=4,linenos}
+
+\usepackage{pgf}
+\usepackage{pgffor}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,snakes,shapes}
+
+\usepackage[framemethod=TikZ]{mdframed}
+\mdfdefinestyle{simplebox}{roundcorner=4pt,linewidth=0,backgroundcolor=blue!50!black,fontcolor=white}
+
+\usepackage{multicol}
+
+%%%%%%%%%%%%%%%%%%%
+% useful commands %
+%%%%%%%%%%%%%%%%%%%
+\newcommand{\cpp}{C$^{++}$} 
+
+\newcounter{memorystackindex}
+
+\pgfkeys{
+  memorystack/.is family,
+  memorystack,
+  size x/.initial=4cm,
+  size y/.initial=.5cm,
+  word size/.initial=4,
+  nb blocks/.initial=8,
+  base address/.initial=12348,
+  color/.initial=black
+}
+
+\makeatletter
+
+\newcommand\memorystackset[1]{\pgfkeys{memorystack,#1}}
+\newcommand\memorystack[1][]{
+  \memorystackset{#1,
+    size x/.get=\stacksizex,
+    size y/.get=\stacksizey,
+    word size/.get=\stackwordsize,
+    nb blocks/.get=\stacknbblocks,
+    base address/.get=\stackbaseaddr,
+    color/.get=\stackcolor
+  }
+  \setcounter{memorystackindex}{1}
+  \draw[thick,\stackcolor] (0,0) rectangle (\stacksizex,\stacknbblocks*\stacksizey);
+  \pgfmathsetmacro{\nbbars}{\stacknbblocks-1}
+  \foreach \n in {1,...,\nbbars} {
+    \draw[\stackcolor!70] (0,\n*\stacksizey) -- +(\stacksizex,0);
+  }
+  \foreach \n in {1,...,\stacknbblocks} {
+    \foreach \p in {1,...,\stackwordsize} {
+      \draw node (stack\n-\p)
+            at (\stacksizex/\stackwordsize*\p+\stacksizex/\stackwordsize/2,\n*\stacksizey-\stacksizey/2)
+            [rectangle,minimum width=\stacksizex,minimum height=\stacksizey] {};
+    }
+    \pgfmathparse{\n*\stackwordsize+\stackbaseaddr}
+    \pgfmathdectoBase\hexversion{\pgfmathresult}{16}
+    \draw node at (\stacksizex,\n*\stacksizey-\stacksizey/2) [right=2pt]
+          {0x\hexversion};
+  }
+  \pgfmathsetmacro{\nbseps}{\stackwordsize-1}
+  \foreach \n in {1,...,\nbseps} {
+    \draw[\stackcolor!10] (\stacksizex/\stackwordsize*\n,0) -- +(0,\stacknbblocks*\stacksizey);
+  }
+}
+
+\newcommand\memorypushvalue[3]{
+  \draw node [left of=stack#1-#2] {#3};
+}
+
+\newcounter{localcount}
+\newcommand\memorypush[1]{
+  \memorystackset{
+    word size/.get=\stackwordsize,
+    nb blocks/.get=\stacknbblocks
+  }
+  \count@=0
+  \setcounter{localcount}{1}
+  \@for\v:=#1\do{
+    \ifnum\count@<\stackwordsize
+      \advance\count@ 1
+      \memorypushvalue{\arabic{memorystackindex}}{\arabic{localcount}}{\v}
+    \fi
+    \addtocounter{localcount}{1}
+  }  
+  \addtocounter{memorystackindex}{1}
+}
+
+\newcommand\memorypushpointer[1]{
+  \memorystackset{
+    word size/.get=\stackwordsize,
+    base address/.get=\stackbaseaddr
+  }
+  \pgfmathparse{\arabic{memorystackindex}*\stackwordsize+\stackbaseaddr}
+  \pgfmathdectoBase\hexaddress{\pgfmathresult}{16}
+  \memorypushvalue{\arabic{memorystackindex}}{1}{0x\hexaddress}
+  \draw[\stackcolor!80,->] (stack\arabic{memorystackindex}-1.west) .. controls +(left:1) and +(left:1) .. (stack#1-1.west);
+}
+
+\newcommand\memorystruct[3]{
+  \memorystackset{
+    size y/.get=\stacksizey
+  }
+  \draw[snake=brace,thick] (-2pt,#1*\stacksizey-\stacksizey) -- (-2pt,#2*\stacksizey)
+    node [midway, above, sloped] {#3};
+}
+
+\makeatother
+
+%%%%%%%%%%%%%%%%%%
+% Document setup %
+%%%%%%%%%%%%%%%%%%
+
+\title{\cpp course}
+\author[S. Ponce]{S\'ebastien Ponce  \texttt{sebastien.ponce@cern.ch}}
+\institute{CERN}
+\date{ESIPAP Feb 24th 2014}
+\pgfdeclareimage[height=0.5cm]{cernlogo}{CERN-logo.jpg}
+\logo{\pgfuseimage{cernlogo}}
+
+\AtBeginSection[] {
+  \begin{frame}<beamer>
+    \frametitle{TOC Section}
+    \setcounter{tocdepth}{2}
+    \tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/show/hide]
+  \end{frame}
+}
+
+\AtBeginSubsection[] {
+  \begin{frame}<beamer>
+    \begin{multicols}{2}
+      \frametitle{TOC SubSection}
+      \setcounter{tocdepth}{3}
+      \tableofcontents[sectionstyle=show/hide,subsectionstyle=show/shaded/hide]
+    \end{multicols}
+  \end{frame}
+}
+
+%%%%%%%%%%%%%%
+% The slides %
+%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+  \frametitle{Foreword}
+  \begin{block}{What this course is not}
+    \begin{itemize}
+    \item It is not for complete beginners
+    \item It is not for experts
+    \item This is not complete at all
+    \end{itemize}
+  \end{block}
+  \begin{block}{What it should be}
+    \begin{itemize}
+    \item Adaptative
+    \item Interactive
+    \item Useful
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Outline}
+  \tableofcontents[sectionstyle=show,subsectionstyle=hide]
+\end{frame}
+
+\include{concepts}
+
+%\include{advanced}
+
+%\include{c++11}
+
+\end{document}
