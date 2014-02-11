@@ -51,7 +51,7 @@
   size y/.initial=.5cm,
   word size/.initial=4,
   nb blocks/.initial=8,
-  base address/.initial=12348,
+  base address/.initial=12351,
   color/.initial=black
 }
 
@@ -67,16 +67,22 @@
     base address/.get=\stackbaseaddr,
     color/.get=\stackcolor
   }
+  \draw[thick,\stackcolor,text=white] node (title)
+        at (\stacksizex/2, \stacknbblocks*\stacksizey+.5cm)
+        [rectangle,rounded corners,fill=blue!50!black] {Memory layout};
   \setcounter{memorystackindex}{1}
   \draw[thick,\stackcolor] (0,0) rectangle (\stacksizex,\stacknbblocks*\stacksizey);
   \pgfmathsetmacro{\nbbars}{\stacknbblocks-1}
-  \foreach \n in {1,...,\nbbars} {
-    \draw[\stackcolor!70] (0,\n*\stacksizey) -- +(\stacksizex,0);
-  }
+  \pgfmathtruncatemacro\nbbarstrunc{\nbbars}
+  \ifnum\nbbarstrunc>0
+    \foreach \n in {1,...,\nbbars} {
+      \draw[\stackcolor!70] (0,\n*\stacksizey) -- +(\stacksizex,0);
+    }
+  \fi
   \foreach \n in {1,...,\stacknbblocks} {
     \foreach \p in {1,...,\stackwordsize} {
       \draw node (stack\n-\p)
-            at (\stacksizex/\stackwordsize*\p+\stacksizex/\stackwordsize/2,\n*\stacksizey-\stacksizey/2)
+            at (\stacksizex/\stackwordsize*\p-\stacksizex/\stackwordsize/2,\n*\stacksizey-\stacksizey/2)
             [rectangle,minimum width=\stacksizex,minimum height=\stacksizey] {};
     }
     \pgfmathparse{\n*\stackwordsize+\stackbaseaddr}
@@ -85,13 +91,16 @@
           {0x\hexversion};
   }
   \pgfmathsetmacro{\nbseps}{\stackwordsize-1}
-  \foreach \n in {1,...,\nbseps} {
-    \draw[\stackcolor!10] (\stacksizex/\stackwordsize*\n,0) -- +(0,\stacknbblocks*\stacksizey);
-  }
+  \pgfmathtruncatemacro\nbsepstrunc{\nbseps}
+  \ifnum\nbsepstrunc>0
+    \foreach \n in {1,...,\nbseps} {
+      \draw[\stackcolor!10] (\stacksizex/\stackwordsize*\n,0) -- +(0,\stacknbblocks*\stacksizey);
+    }
+  \fi
 }
 
 \newcommand\memorypushvalue[3]{
-  \draw node [left of=stack#1-#2] {#3};
+  \draw node at (stack#1-#2) {#3};
 }
 
 \newcounter{localcount}
@@ -112,15 +121,16 @@
   \addtocounter{memorystackindex}{1}
 }
 
-\newcommand\memorypushpointer[1]{
+\newcommand\memorypushpointer[2][]{
   \memorystackset{
     word size/.get=\stackwordsize,
     base address/.get=\stackbaseaddr
   }
-  \pgfmathparse{\arabic{memorystackindex}*\stackwordsize+\stackbaseaddr}
+  \pgfmathparse{#2*\stackwordsize+\stackbaseaddr}
   \pgfmathdectoBase\hexaddress{\pgfmathresult}{16}
-  \memorypushvalue{\arabic{memorystackindex}}{1}{0x\hexaddress}
-  \draw[\stackcolor!80,->] (stack\arabic{memorystackindex}-1.west) .. controls +(left:1) and +(left:1) .. (stack#1-1.west);
+  \memorypushvalue{\arabic{memorystackindex}}{1}{#1 0x\hexaddress}
+  \draw[\stackcolor!80,->] (stack\arabic{memorystackindex}-1.west) .. controls +(left:1) and +(left:1) .. (stack#2-1.west);
+  \addtocounter{memorystackindex}{1}
 }
 
 \newcommand\memorystruct[3]{
@@ -131,6 +141,9 @@
     node [midway, above, sloped] {#3};
 }
 
+\newcommand\memorygoto[1]{
+  \setcounter{memorystackindex}{#1}
+}
 \makeatother
 
 %%%%%%%%%%%%%%%%%%
@@ -195,7 +208,13 @@
   \tableofcontents[sectionstyle=show,subsectionstyle=hide]
 \end{frame}
 
-\include{concepts}
+\section[Concepts]{Quick review of $C^{++}$ concepts}
+\subsection[Introduction]{History and goals}
+\subsubsection{Origin of $C^{++}$}
+%\include{basicconcepts}
+
+\subsection[OO]{Object orientation}
+\include{objectorientation}
 
 %\include{advanced}
 

@@ -1,7 +1,3 @@
-\section[Concepts]{Quick review of $C^{++}$ concepts}
-\subsection[Introduction]{History and goals}
-\subsubsection{Origin of $C^{++}$}
-
 \includeonlyframes{current}
 
 \begin{frame}
@@ -98,6 +94,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Hello World}
+  preprocessor, functions, ;, for, decl,...
   \begin{cppcode}
     #include <iostream>
 
@@ -194,7 +191,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Static arrays}
-  \begin{cppcode*}{linenos=false}
+  \begin{cppcode*}{}
     int ai[4] = {1,2,3,4};
     int ai[] = {1,2,3,4};  // identical
     
@@ -211,7 +208,7 @@
 \begin{frame}[fragile]
   \frametitle{Pointers}
   \begin{multicols}{2}
-    \begin{cppcode*}{linenos=false,gobble=6}
+    \begin{cppcode*}{gobble=6}
       int i = 4;
       int *pi = &i;
       int j = *pi + 1;
@@ -227,27 +224,20 @@
     \end{cppcode*}
     \onslide<2->{
       \begin{tikzpicture}
-        \foreach \x/\xhex in {0,1,2,3,4,5,6,7,8,9,10/A}
-        \draw node (stack\xhex) at (0,\x/2)
-              [rectangle,minimum width=2.5cm,minimum height=0.5cm,draw] {}
-              node at +(2,\x/2) {0xFEA\xhex};
-        \onslide<3-> {\draw (0,0) node {$i = 4$};}
-        \onslide<4-> {\draw (0,0.5) node {$pi = 0xFEA0$};}
-        \onslide<5-> {\draw (0,1) node {$j = 5$};}
-        \onslide<6-> {\draw (0,1.5) node {$1$};}
-        \onslide<6-> {\draw (0,2) node {$2$};}
-        \onslide<6-> {\draw (0,2.5) node {$3$};}
-        \onslide<6-> {\draw (0,3) node {$ai = 0xFEA3$};}
-        \onslide<7-> {\draw (0,3.5) node {$pai = 0xFEA3$};}
-        \onslide<8-> {\draw (0,4) node {$paj = 0xFEA4$};}
-        \onslide<9-> {\draw (0,4.5) node {$k = 3$};}
-        \onslide<10-> {\draw (0,5) node {$pak = 3$};}
-        \onslide<4-> {\draw[->] (stack1.west) .. controls +(left:1) and +(left:1) .. (stack0.west);}
-        \onslide<6-> {\draw[->] (stack6.west) .. controls +(left:1) and +(left:1) .. (stack3.west);}
-        \onslide<7-> {\draw[->] (stack7.west) .. controls +(left:1) and +(left:1) .. (stack3.west);}
-        \onslide<8-> {\draw[->] (stack8.west) .. controls +(left:1) and +(left:1) .. (stack4.west);}
-        \onslide<10-> {\draw[->] (stackA.west) -- +(left:.5);}
-        \onslide<10-> {\draw node at +(-2.25,5) {??};}
+        \memorystack[size x=3cm,word size=1,nb blocks=11]
+        \onslide<3-> {\memorypush{$i = 4$}}
+        \onslide<4-> {\memorypushpointer[pi =]{1}}
+        \onslide<5-> {\memorypush{$j = 5$}}
+        \onslide<6-> {\memorypush{$1$}}
+        \onslide<6-> {\memorypush{$2$}}
+        \onslide<6-> {\memorypush{$3$}}
+        \onslide<6-> {\memorypushpointer[ai =]{4}}
+        \onslide<7-> {\memorypushpointer[pai =]{4}}
+        \onslide<8-> {\memorypushpointer[paj =]{5}}
+        \onslide<9-> {\memorypush{$k = 3$}}
+        \onslide<10-> {\memorypush{$pak = 3$}}
+        \onslide<10-> {\draw[\stackcolor!80,->] (stack11-1.west) -- +(-0.5cm,0)
+          node [anchor=east] {??};}
       \end{tikzpicture}
     }
   \end{multicols}
@@ -255,7 +245,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Dynamic Arrays}
-  \begin{cppcode*}{linenos=false}
+  \begin{cppcode*}{}
     #include <stdlib.h>
     #include <string.h>
 
@@ -341,133 +331,325 @@
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[fragile,label=current]
   \frametitle{struct}
   \begin{mdframed}[style=simplebox]
     \center ``members'' grouped together under one name
   \end{mdframed}
   \begin{multicols}{2}
-    \begin{cppcode*}{linenos=false,gobble=6}
+    \begin{cppcode*}{gobble=6}
       struct Individual {
         unsigned char age;
         float weight;
-        int userid;
       };
 
       Individual student;
       student.age = 25;
       student.weight = 78.5;
-      student.userid = 1234;
     \end{cppcode*}
-    \pause
     \columnbreak
-    \begin{cppcode*}{linenos=false,gobble=6}
+    \begin{cppcode*}{gobble=6,firstnumber=9}
       Individual teacher = {
         .age = 45,
-        .weight=67,
-        .userid=5678 };
+        .weight=67
+      };
     \end{cppcode*}
-    \onslide<2->{
-      \begin{tikzpicture}
-        \memorystack[nb blocks=10]
-        \onslide<3-> {
-          \memorypush{25,?,?,?}
-          \memorypush{7,8,.,5}
-          \memorypush{1,2,3,4}
-          \memorystruct{1}{3}{student}
-        }
-        \onslide<4-> {
-          \memorypush{45,?,?,?}
-          \memorypush{6,7,.,0}
-          \memorypush{5,6,7,8}
-          \memorystruct{4}{6}{teacher}
-        }
-      \end{tikzpicture}
-    }
+    \pause
+    \null \vfill
+    \begin{tikzpicture}
+      \memorystack[nb blocks=5]
+      \onslide<4-> {
+        \memorypush{25,?,?,?}
+        \memorypush{7,8,.,5}
+        \memorystruct{1}{2}{\scriptsize student}
+      }
+      \onslide<5-> {
+        \memorypush{45,?,?,?}
+        \memorypush{6,7,.,0}
+        \memorystruct{3}{4}{\scriptsize teacher}
+      }
+    \end{tikzpicture}
+    \vfill \null
   \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{union}
   \begin{mdframed}[style=simplebox]
     \center ``members'' packed together at same memory location
   \end{mdframed}
   \begin{multicols}{2}
-    \begin{cppcode*}{linenos=false,gobble=6}
+    \begin{cppcode*}{gobble=6}
       union Duration {
-        unsigned int seconds;
-        unsigned short hours;
-        unsigned char days;
+        int seconds;
+        short hours;
+        char days;
       };
 
       Duration d1, d2, d3;
       d1.seconds = 259200;
       d2.hours = 72;
       d3.days = 3;
-      d1.days = 3; // overwrite
+      d1.days = 3; // d1.seconds overwritten
+      int a = d1.seconds; // d1.seconds is garbage
     \end{cppcode*}
     \pause
     \columnbreak
+    \null \vfill
     \onslide<2->{
-      \vspace{2cm}
       \begin{tikzpicture}
-        \memorystack
-        \memorypush{25,?,?,?}
-        \memorypush{7,8,.,5}
-        \memorypush{1,2,3,4}
-        \memorystruct{1}{3}{student}
-        \memorypush{45,?,?,?}
-        \memorypush{6,7,.,0}
-        \memorypush{5,6,7,8}
-        \memorystruct{4}{6}{teacher}
+        \memorystack[word size=1,nb blocks=4]
+        \visible<3-5>{\memorypush{d1.seconds=259200}}
+        \onslide<4->{\memorypush{d2.hours=259200}}
+        \onslide<5->{\memorypush{d3.days=3}}
+        \memorygoto{1}
+        \onslide<6->{\memorypush{d1.days=3}}
       \end{tikzpicture}
     }
+    \vfill \null
   \end{multicols}
 \end{frame}
 
-\begin{frame}
-  \frametitle{enum}
+\begin{frame}[fragile]
+  \frametitle{Enums and typedefs}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6}
+      enum VehicleType {
+        BIKE,  // 0
+        CAR,   // 1
+        BUS,   // 2
+      };
+      VehicleType t = CAR;
+      
+      typedef uint64_t myint;
+      myint toto = 17;
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=6}
+      enum VehicleType {
+        BIKE = 3,
+        CAR = 5,
+        BUS = 7,
+      };
+      VehicleType t2 = BUS;
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{More sensible example}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6}
+      enum ShapeType {
+        CIRCLE,
+        RECTANGLE
+      };
+      
+      struct Rectangle {
+        float width;
+        float height;
+      };
+    \end{cppcode*}
+    \columnbreak
+    \pause
+    \begin{cppcode*}{gobble=6,firstnumber=10}
+      struct Shape {
+        ShapeType type;
+        union { 
+          float radius;
+          Rectangle rect;
+        };
+      };
+    \end{cppcode*}
+  \end{multicols}
+  \pause
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6,firstnumber=17}
+      Shape s;
+      s.type = CIRCLE;
+      s.radius = 3.4;
+      
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=6,firstnumber=20}
+      Shape t;
+      t.type = RECTANGLE;
+      t.rect.width = 3;
+      t.rect.height = 4;
+    \end{cppcode*}
+  \end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Custom types}
-  \begin{cppcode*}{linenos=false}
-    typedef unsigned long long int ulli;
-    ulli a = 12345;
-  \end{cppcode*}
-\end{frame}
-
-
-\begin{frame}
-  \frametitle{typedef}
-\end{frame}
-
-\begin{frame}
   \frametitle{Functions}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6}
+      // with return type
+      int square(int a) {
+        return a * a;
+      }
+
+      // multiple parameters
+      int mult(int a,
+               int b) {
+        return a*b;
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=6,firstnumber=11}
+      // no parameter
+      void hello() {
+        printf("Hello World");
+      }
+
+      // no return
+      void log(char* msg) {
+        printf("%s", msg);
+      }
+    \end{cppcode*}
+  \end{multicols}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
+  \frametitle{Parameter are passed by value}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6}
+      struct BigStruct {...};
+      BigStruct s;
+      
+      // parameter by value
+      void printBS(BigStruct p) {
+        ...
+      }
+      printBS(s); // replication
+      
+      // parameter by pointer
+      void printBSp(BigStruct *q) {
+        ...
+      }
+      printBSp(&s); // not replication
+    \end{cppcode*}
+    \columnbreak
+    \null \vfill
+    \onslide<2->{
+      \begin{tikzpicture}
+        \memorystack[word size=1, nb blocks=7, size x=3cm]
+        \onslide<3-> {
+          \memorypush{s1}
+          \memorypush{...}
+          \memorypush{sn}
+          \memorystruct{1}{3}{s}
+        }
+        \onslide<4> {
+          \memorypush{p1}
+          \memorypush{...}
+          \memorypush{pn}
+          \memorystruct{4}{6}{p}
+        }
+        \memorygoto{4}
+        \onslide<5> {
+          \memorypushpointer[q =]{1}
+        }
+      \end{tikzpicture}
+    }
+    \vfill \null
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Parameter are passed by value}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6}
+      struct SmallStruct {int a};
+      SmallStruct s = {.a = 1};
+      
+      void changeSS(SmallStruct p) {
+        p.a = 2;
+      }
+      changeSS(s);
+      // s.a = 1
+      
+      void changeSS2(SmallStruct *q) {
+        q->a = 2;  // i.e. (*q).a
+      }
+      changeSS2(s);
+      // s.a = 2
+    \end{cppcode*}
+    \columnbreak
+    \null \vfill
+    \onslide<2->{
+      \begin{tikzpicture}
+        \memorystack[word size=1, nb blocks=3, size x=3cm]
+        \onslide<3-6> {
+          \memorypush{s.a = 1}
+        }
+        \onslide<4> {
+          \memorypush{p.a = 1}
+        }
+        \memorygoto{2}
+        \onslide<5> {
+          \memorypush{p.a = 2}
+        }
+        \memorygoto{2}
+        \onslide<6-> {
+          \memorypushpointer[q =]{1}
+        }
+        \memorygoto{1}
+        \onslide<7> {
+          \memorypush{s.a = 2}
+        }
+      \end{tikzpicture}
+    }
+    \vfill \null
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile,label=current]
+  \frametitle{Headers and interfaces}
+  \begin{block}{Interface}
+    Set of declarations defining some functionnality
+    \begin{itemize}
+    \item defined in a ``header file''
+    \item no implementation defined
+    \end{itemize}
+  \end{block}
+  \begin{block}{Header : Hello.hpp}
+    \begin{cppcode*}{linenos=false,gobble=6}
+      void printHello();
+    \end{cppcode*}
+  \end{block}
+  \begin{block}{Usage : myfile.cpp}
+    \begin{cppcode*}{linenos=false,gobble=6}
+      #include "hello.hpp"
+      int main() {
+        printHello();
+      }
+    \end{cppcode*}  
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile,label=current]
   \frametitle{Preprocessor}
+  \begin{cppcode*}{}
+    // file inclusion
+    #include "hello.hpp"
+    // macros
+    #define MY_GOLDEN_NUMBER 1746
+    // compile time decision
+    #ifdef USE64NITS
+      typedef uint64_t myint;
+    #else
+      typedef uint32_t myint;
+    #endif
+  \end{cppcode*}
+  \pause
+  \begin{block}{Use only in very restricted cases}
+    \begin{itemize}
+    \item include of headers
+    \item hardcoded constants {\scriptsize (should this happen at all ?)}
+    \item portability necessity
+    \end{itemize}
+  \end{block}
 \end{frame}
 
-
-
-\subsection[OO]{Object orientation}
-
-\subsubsection{Classes}
-
-\subsubsection{Inheritance}
-\begin{frame}[fragile]
-  \frametitle{Inheritance basics}
-  \begin{cppcode}
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{public / protected / private}
-  \begin{minted}{c}
-  \end{minted}
-\end{frame}
-
-\subsubsection{Operators}
-\subsubsection{Exceptions}
