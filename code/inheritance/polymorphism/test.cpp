@@ -11,6 +11,6 @@ int main() {
     // create an Hexagon, call its parent's perimeter method
 
 
-    // retry virtual method
+    // retry with virtual methods
 
 }

@@ -2,6 +2,7 @@
 
 \subsection[Advanced OO]{Advanced Object orientation}
 
+
 \begin{frame}[fragile,label=current]
   \frametitle{Polymorphism}
   \begin{block}{the concept}
@@ -116,7 +117,6 @@
     \item for others, the type of the variable decides
     \end{itemize}
   \end{block}
-  \pause
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=6}
       Polygon *p = new Polygon();
@@ -182,6 +182,20 @@
   \end{multicols}
 \end{frame}
 
+\begin{frame}[fragile,label=current]
+  \frametitle{Polymorphism}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to inheritance/polymorphism
+    \item look at the code
+    \item open test.cpp
+    \item create a Pentagon, call its perimeter method
+    \item create an Hexagon, call its perimeter method
+    \item create an Hexagon, call its parent's perimeter method
+    \item retry with virtual methods
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
 
 \begin{frame}[fragile,label=current]
   \frametitle{Multiple Inheritance}
@@ -223,6 +237,7 @@
     \item are the members of the grand parent replicated ?
     \end{itemize}
   \end{block}
+  \vfill
   \hspace{2.5cm}
   \begin{tikzpicture}[]
     \classbox[]{Drawable}{
@@ -288,7 +303,7 @@
 
 \begin{frame}[fragile,label=current]
   \frametitle{Virtual inheritance}
-  \begin{block}{Exercise Time}
+  \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to inheritance/virtual
     \item look at the code
@@ -297,7 +312,7 @@
     \item Fix the code to call both draws by using types
     \item retry with virtual inheritance
     \end{itemize}
-  \end{block}
+  \end{alertblock}
 \end{frame}
 
 \begin{frame}[fragile,label=current]
@@ -308,14 +323,351 @@
 \end{frame}
 
 
-\subsubsection{Copy constructors}
-\subsubsection{Statics}
+\subsection{Operators}
+
+\begin{frame}
+  \frametitle{Operators}
+  \begin{block}{Definition for operators of a class}
+    \begin{itemize}
+    \item implemented as a regular method
+      \begin{itemize}
+      \item either inside the class, as a member function
+      \item or outside the class (for some)
+      \end{itemize}
+    \item with a special name (replace @ by anything)
+      \begin{tabular}{llll}
+        Expression & As member function & As non-member function \\
+        \hline
+        @a & (a).operator@() & operator@(a) \\
+        a@b & (a).operator@(b) & operator@(a,b) \\
+        a=b & (a).operator=(b) & cannot be non-member \\
+        a[b] & (a).operator[](b) & cannot be non-member \\
+        a-\textgreater & (a).operator-\textgreater() & cannot be non-member \\
+        a@ & (a).operator@(0) & operator@(a,0)
+        new/delete & 
+      \end{tabular}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Operators' example}
+  \begin{cppcode*}{}
+    struct Complex {
+      float m_real, m_complex;
+      Complex(float real, float complex);
+      Complex& operator+(Complex& other) {
+        m_real += other.m_real;
+        m_complex += other.m_complex;
+      }
+    }
+
+    Complex c1(2, 3), c2 (4, 5);
+    Complex c3 = c1 + c2;
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Non-member operator example}
+  \begin{cppcode*}{}
+    struct Complex {
+      float m_real, m_complex;
+      Complex(float real, float complex);
+    }
+
+    std::ostream& operator<<(std::ostream& os,
+                             const Complex& obj) {
+      os << "(" << m_real << ", " << m_complex << ")";
+      return os;
+    }
+
+    Complex c1(2, 3);
+    std::cout << c1 << std::endl;
+  \end{cppcode*}
+\end{frame}
+
+
+
 
 \subsection[Functions]{More around functions}
-\subsection{Operators}
-\subsubsection{Functors}
+
+
 \subsubsection{Pointers and references}
+
+\begin{frame}[fragile]
+  \frametitle{Value, pointers and references}
+  \begin{block}{Different ways to pass arguments to a function}
+    \begin{itemize}
+    \item by default arguments are passed by value
+    \item but pointers can be used
+    \item and references are also available
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    struct T {...};
+    void func   (T value);  // by value
+    void funcPtr(T *value); // pointer
+    void funcRef(T &value); // reference
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Value versus pointers/reference}
+  \begin{block}{Identical to C}
+    \begin{itemize}
+    \item by value, a copy is created
+      \begin{itemize}
+        \item calling the copy constructor for objects
+      \end{itemize}
+    \item using pointers, the memory address of value is passed
+    \item using reference, a reference to value is passed
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    T a;      // constructor called
+  \end{cppcode*}
+  \pause
+  \begin{cppcode*}{firstnumber=2}
+    funct(a); // copy constructor called on enter
+              // destructor called on exit
+  \end{cppcode*}
+  \pause
+  \begin{cppcode*}{firstnumber=4}
+    functPtr(&a); // no copy, but we pass a pointer
+    functRef(a);  // no copy, and standard syntax
+  \end{cppcode*}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Pointers vs References}
+  \begin{block}{Specificities of reference}
+    \begin{itemize}
+    \item natural syntax
+    \item will never by NULL
+    \item cannot reference temporary object
+    \end{itemize}
+  \end{block}
+  \begin{block}{Advantages of pointers}
+    \begin{itemize}
+    \item can be NULL
+    \item clearly indicates that argument may be modified
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{Good practice}
+    \begin{itemize}
+      \item Always use references when you can
+      \item Consider that a reference will be modified
+      \item Use const when it's not the case
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
 \subsubsection{Constness}
+
+\begin{frame}[fragile]
+  \frametitle{Constness}
+  \begin{block}{The {\it const} keyword}
+    \begin{itemize}
+    \item indicate that the element to the left is constant
+    \item this element won't be modifiable in the future
+    \item this is all checked at compile time
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    // standard syntax
+    int const i = 6;
+
+    // error : i is constant
+    i = 5
+
+    // also ok, when nothing on the left,
+    // const applies to element on the right
+    const int j = 6;
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Constness and pointers}
+  \begin{cppcode*}{}
+    // pointer to a constant integer
+    int a = 1, b = 2;
+    int const *i = &a;
+    *i = 5; // error, i is const
+    i = &b; // ok, pointer is not const
+
+    // constant pointer to an integer
+    int * const j = &a;
+    *j = 5; // ok, value can be changed
+    j = &b; // error, pointer is const
+
+    // constant pointer to an integer
+    int const * const k = &a;
+    *k = 5; // error, value is const
+    k = &b; // error, pointer is const
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile,label=current]
+  \frametitle{constness}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to constness/basic
+    \item open test.cpp
+    \item test pointer to constant
+    \item test constant pointer
+    \item test constant pointer to constant
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Function constness}
+  \begin{block}{The {\it const} keyword for class functions}
+    \begin{itemize}
+    \item indicate that the function does not modify the object
+    \item in other words,{\it this} is a pointer to constant
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    struct Exemple {
+      void foo() const  {
+        m_member = 0; // Error constant, function
+      }
+      int m_member;
+    };
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Function constness}
+  \begin{block}{Constness is part of the type}
+    \begin{itemize}
+    \item const T and T are different type
+    \item however, T is automatically casted in const T when needed
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    void func(int *a);
+    void funcConst(const int *a);
+
+    int *a = 0;
+    const int *b = 0;
+
+    func(a);      // ok
+    func(b);      // error : no matching function
+    funcConst(a); // ok
+    funcConst(a); // ok
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile,label=current]
+  \frametitle{constness}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go back to constness/basic
+    \item open test.cpp
+    \item test const members
+    \item test const part of type
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+
+\subsubsection{Functors}
+
+\begin{frame}[fragile]
+  \frametitle{Functors}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item a class that implements the () operator
+    \item allow to use objects in place of functions
+    \item and as objects have constructors, allow to construct functions
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    struct Adder {
+      int m_increment;
+      Adder(int increment) : m_increment(increment) {}
+      int operator()(int a) { return a + increment; }
+    };
+    
+    Adder inc1(1), inc10(10);
+    int i = 3;
+    int j = inc1(i);  // 4
+    int k = inc10(i); // 13
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Functors}
+  \begin{block}{Typical usage}
+    \begin{itemize}
+    \item pass a function to another one
+    \item or to an STL algorithm (see later)
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    struct BinaryFunction {
+      virtual double operator() (double a, double b) = 0;
+    };
+    struct Add : public BinaryFunction {
+      double operator() (double a, double b) { return a+b; }
+    };
+    double binary_op(double a, double b, BinaryFunction &func) {
+      return bin_func(a, b);
+    }
+    Add addfunc;
+    binary_op(a, b, addfunc);
+  \end{cppcode*}
+\end{frame}
+
+
+\subsubsection{Copy constructors}
+
+\begin{frame}[fragile,label=current]
+  \frametitle{Copy constructors}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item constructor called when replicating an object
+    \item in particular when the = operator is used
+    \item or when the object is passed by value
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    struct MyClass {
+      MyClass(const MyClass& other);
+      MyClass(MyClass& other);
+    }
+  \end{cppcode*}
+\end{frame}
+
+
+\begin{frame}[fragile,label=current]
+  \frametitle{Copy constructors}
+  \begin{alertblock}{Usually not needed}
+    \begin{itemize}
+    \item Provided by the compiler
+    \item Except when the compiler cannot know
+    \item Usually associated to non trivial constructor/destructor
+    \end{itemize}
+  \end{alertblock}
+  \begin{cppcode*}{}
+    struct Vector {
+      Vector(const Vector& other);
+      ~Vector() { free(m_data); };
+      int m_len;
+      int* m_data;
+    }
+    Vector::Vector(const Vector& other) :
+      m_len(other.m_len) {
+      int* m_data = (int*) malloc(m_len);
+      memcopy(m_data, other.m_data, m_len);
+    }
+  \end{cppcode*}
+\end{frame}
+
 
 \subsection{Templates}
 \subsubsection[Functions]{Templated functions}
