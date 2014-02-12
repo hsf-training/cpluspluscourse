@@ -1,0 +1,482 @@
+%\includeonlyframes{current}
+
+\subsection{Objects and Classes}
+
+\begin{frame}[fragile]
+  \frametitle{What are classes and objects}
+  \begin{block}{Classes}
+    structs on steroids
+    \begin{itemize}
+    \item with inheritance
+    \item with associated methods
+    \end{itemize}
+  \end{block}
+  \begin{block}{Objects}
+    instances of classes
+  \end{block}
+  \begin{block}{Encapsulates a concept}
+    \begin{itemize}
+    \item shows an interface
+    \item provides its implementation
+      \begin{itemize}
+      \item status, properties
+      \item possible interactions
+      \item construction and destruction
+      \end{itemize}    
+    \end{itemize}    
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{My First Class}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6}
+      struct MyFirstClass {
+        int a;
+        void squareA() {
+          a *= a;
+        };
+      };
+
+      MyFirstClass myObj;
+      myObj.a = 2;
+
+      // let's square a
+      myObj.squareA();
+    \end{cppcode*}
+    \columnbreak
+    \null \vfill
+    \begin{tikzpicture}
+      \tcbset{minted options={gobble=8}}
+      \begin{CodeNode}{0,-2}{MyFirstClass}{MyFirstClass}
+        int a;
+        void squareA();
+      \end{CodeNode}
+    \end{tikzpicture}
+    \vfill \null
+  \end{multicols}
+\end{frame}
+
+
+
+\begin{frame}[fragile,label=current]
+  \frametitle{private/ public inheritance}
+  /xxx
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Separating the interface}
+  \begin{block}{Header : MyFirstClass.hpp}
+    \begin{cppcode*}{linenos=false,gobble=6}
+      struct MyFirstClass {
+        int a;
+        void squareA();
+      };
+    \end{cppcode*}
+  \end{block}
+  \begin{block}{Implementation : MyFirstClass.cpp}
+    \begin{cppcode*}{linenos=false,gobble=6}
+      #include "MyFirstClass.hpp"
+      void MyFirstClass::squareA() {
+        a *= a;
+      };
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{A word on namespaces}
+  \begin{itemize}
+  \item Namespaces allow to segment your code to avoid name clashes
+  \item They can be embedded to create hierarchies (separator is '::')
+  \end{itemize}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6}
+      namespace n {
+        int a;
+      }      
+      namespace p {
+        int a; // no clash
+        namespace inner {
+          int a; // no clash
+        }
+      }
+      int f() {
+        n::a = 2;
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=6,firstnumber=13}
+      namespace p {
+        int f() {
+          p::a = 2;
+          a = 2;  //same as above
+          p::inner::a = 4;
+          inner::a = 4;
+          n::a = 5;
+        }
+      }
+      using namespace p::inner;
+      int g() {
+        a = 3; // using p::inner
+      }
+  \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Implementing methods}
+  \begin{block}{Standard practice}
+    \begin{itemize}
+    \item usually in .cpp, outside of class declaration
+    \item using the class name as namespace
+    \item when reference to the object is needed, use {\it this} keyword
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    void MyFirstClass::squareA() {
+      a *= a;
+    };
+
+    int MySecondClass::sum() {
+      int a = 0; // do not do that !
+      a += this->a;
+      a += this->b;
+      return a;
+    };
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Method overloading}
+  \begin{block}{The rules in \cpp}
+    \begin{itemize}
+    \item overloading is authorized and welcome
+    \item signature is part of the method identity
+    \item but not the return code
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    class MySecondClass : MyFirstClass {
+    public:
+      int sum();
+      int sum(int c);
+    }
+
+    int MySecondClass::sum() { return a + b; };
+
+    int MySecondClass::sum(int c) { return a + b + c; };
+  \end{cppcode*}
+\end{frame}
+
+\subsection{Inheritance}
+
+\begin{frame}[fragile]
+  \frametitle{First inheritance}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6,firstnumber=13}
+      struct MySecondClass :
+        MyFirstClass {
+        int b;
+        int sum() {
+          return a + b;
+        };
+      };
+
+      MySecondClass myObj2;
+      myObj2.a = 2;
+      myObj2.b = 5;
+
+      myObj2.squareA();
+      int i = myObj2.sum();
+      // i = 9
+    \end{cppcode*}
+    \columnbreak
+    \null \vfill
+    \begin{tikzpicture}
+      \tcbset{minted options={gobble=8}}
+      \begin{CodeNode}{0,1.5}{MyFirstClass}
+        int a;
+        void squareA();
+      \end{CodeNode}
+      \begin{CodeNode}{0,-1.5}{MySecondClass}
+        int b;
+        int sum();
+      \end{CodeNode}
+    \draw[very thick,->] (MySecondClass)--(MyFirstClass);
+    \end{tikzpicture}
+    \vfill \null
+  \end{multicols}
+\end{frame}
+
+
+\subsection{Encapsulation}
+
+\begin{frame}[fragile]
+  \frametitle{Managing access to class members}
+  \begin{block}{{\it public} / {\it private} keywords}
+    \begin{itemize}
+      \item {\it private} : access only inside the class
+      \item {\it public} : access from anywhere
+      \item Default is {\it private}
+      \item A {\it struct} is a {\it class} fully public
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6}
+      class MyFirstClass {
+      public:
+        void setA(int a);
+        int getA();
+        void squareA();
+      private:
+        int a;
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=6,firstnumber=9}
+      MyFirstClass obj;
+      obj.a = 5;   // error !
+      obj.setA(5); // ok
+      obj.squareA();
+      int b = obj.getA();
+    \end{cppcode*}
+    \pause
+    \begin{tcolorbox}[left=0mm,right=0mm,top=0mm,bottom=0mm,colback=red!5!white,colframe=red!75!black]
+      This breaks MySecondClass !
+    \end{tcolorbox}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Managing access to class members(2)}
+  \begin{block}{Solution is {\it protected} keyword}
+    Gives access to class descendant
+  \end{block}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6}
+      class MyFirstClass {
+      public:
+        void setA(int a);
+        int getA();
+        void squareA();
+      protected:
+        int a;
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=6,firstnumber=13}
+      class MySecondClass :
+        MyFirstClass {
+      public:
+        int sum() {
+          return a + b;
+        };
+      private:
+        int b;
+      }
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+
+\subsection{constructors and destructors}
+
+
+\begin{frame}[fragile]
+  \frametitle{Class Constructors and Destructor}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item special functions building/destroying an object
+    \item a class can have several constructors
+    \item the constructors have the name of the class
+    \item same for the destructor with a leading $\sim$
+    \end{itemize}
+  \end{block}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6}
+      class MyFirstClass {
+      public:
+        MyFirstClass();
+        MyFirstClass(int a);
+        ~MyFirstClass();
+        ...
+      protected:
+        int a;
+      };
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=6,firstnumber=10}
+      // note special notation for
+      // initialization of members
+      MyFirstClass() : a(0) {}
+      
+      MyFirstClass(int a_):a(_a) {}
+
+      ~MyFirstClass(){};
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Class Constructor and Destructors}
+  \begin{cppcode*}{}
+    class Vector {
+    public:
+      Vector(int n);
+      ~Vector();
+      void setN(int n, int value);
+      int getN(int n);
+    private:
+      int len;
+      int* data;
+    }
+    Vector::Vector(int n) : len(n) {
+      data = (int*)malloc(n*sizeof(int));
+    }
+    Vector::~Vector() {
+      free(data);
+    }
+  \end{cppcode*}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Constructor and inheritance}
+  \begin{cppcode*}{}
+    struct MyFirstClass {
+      MyFirstClass();
+      MyFirstClass(int a);
+    }
+
+    struct MySecondClass : MyFirstClass {
+      MySecondClass();
+      MySecondClass(int b);
+      MySecondClass(int a, int b);
+    }
+
+    MySecondClass() : MyFirstClass(), b(0) {};
+    MySecondClass(int b_) : MyFirstClass(), b(b_) {};
+    MySecondClass(int a_,
+                  int b_) : MyFirstClass(a_), b(b_) {};
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Object lifetime}
+  \begin{block}{On the stack}
+    \begin{itemize}
+    \item object are created when declared (constructor called)
+    \item object are destructed when out of scope (destructor is called)
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    {
+      MyFirstClass a; // default constructor called
+      ...
+    }  // destructor called
+
+    int f() {
+      MyFirstClass a(3); // constructor called
+      ...
+    } // destructor called
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Object lifetime}
+  \begin{block}{On the heap}
+    \begin{itemize}
+    \item object are created by calling {\it new} (constructor is called)
+    \item object are destructed by calling {\it delete} (destructor is called)
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    {
+      // default constructor called
+      MyFirstClass *a = new MyFirstClass;
+      ...
+      delete a; // destructor is called
+    }
+
+    int f() {
+      // constructor called
+      MyFirstClass *a = new MyFirstClass(3);
+      ...
+    } // memory leak !!!
+  \end{cppcode*}
+\end{frame}
+
+\subsection{Exceptions}
+
+\begin{frame}[fragile]
+  \frametitle{Exceptions}
+  \begin{block}{The concept}
+    \begin{itemize}
+    \item exceptional Event breaking linearity of the code
+    \item will be handled in dedicated place
+    \end{itemize}
+  \end{block}
+  \begin{block}{Pratically}
+    \begin{itemize}
+    \item you can throw any object with {\it throw}
+    \item you handle them using {\it try ... catch} blocks
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    try {
+      if (0 == name) {
+        throw std::string("Expected non empty name");
+      }
+      printf("%s\n", name);
+    } catch (std::string e) {
+      printf("empty name found\n");      
+    }
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exceptions}
+  \begin{block}{Rules}
+    \begin{itemize}
+    \item exception will skip all code until next {\it catch}
+    \begin{itemize}
+      \item still destructors are called when exiting scopes
+      \item but your own cleanup may not be
+    \end{itemize}
+    \item {\it catch} is selective on the exception type
+    \end{itemize}
+  \end{block}
+  \begin{multicols}{2}
+    \begin{cppcode*}{fontsize=\scriptsize,gobble=6}
+      class ZeroDivide {};
+      
+      int divide(int a, int b) {
+        if (0 == b) {
+          throw ZeroDivide();
+        }
+        return a/b;
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{fontsize=\scriptsize,gobble=6,firstnumber=9} 
+      int func(char* value) {
+        try {
+          errno = 0;
+          long l = strtol(value,0,10);
+          if (errno) {
+            throw string("Bad Value");
+          }
+          divide(100, l);
+        } catch (string e) {
+          printf("%s\n", e.c_str());
+        } catch (ZeroDivide e2) {
+          printf("Division error\n");
+        }
+      }
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}

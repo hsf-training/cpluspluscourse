@@ -1,100 +1,7 @@
-\includeonlyframes{current}
-
-\begin{frame}
-  \frametitle{C/\cpp origins}
-  \begin{minipage}{0.4\linewidth}
-    \tikzstyle{old}=[ellipse,draw=black,fill=orange!30,thick,inner sep=2pt]
-    \tikzstyle{new}=[rectangle,draw=black,fill=green!50,thick,inner sep=2pt]
-    \tikzstyle{direct}=[<-,semithick]
-    \tikzstyle{transverse}=[<-,dotted,semithick]
-    \begin{tikzpicture}[->, node distance=.75cm, font=\tiny]
-      \node[old] (Simula)      {Simula};
-      \node[left of=Simula,node distance=1.5cm] {1967};
-      \node[old] (BCPL) [right of=Simula, node distance=2cm] {BCPL};
-      \node[old] (B) [below of=BCPL] {B}
-      edge[transverse] (BCPL);
-      \node[old] (KandRC) [below of=B] {K and R C}
-      edge[transverse] (B);
-      \node[left of=KandRC,node distance=3.5cm] {1978};
-      \node[old] (ClassicC) [below of=KandRC] {Classic C}
-      edge[direct] (KandRC);
-      \node[old] (CwithClasses) [below of=Simula,node distance=3cm] {C with Classes}
-      edge[transverse] (Simula)
-      edge[transverse] (BCPL)
-      edge[direct] (ClassicC);
-      \node[left of=CwithClasses,node distance=1.5cm] {1980};
-      \node[old] (EarlyC++) [below of=CwithClasses] {Early \cpp}
-      edge[direct] (CwithClasses);
-      \node[left of=EarlyC++,node distance=1.5cm] {1985};
-      \node[old] (C89) [below of=ClassicC,node distance=2.25cm] {C89}
-      edge[direct] (ClassicC)
-      edge[transverse] (CwithClasses);
-      \node[old] (ARMC++) [below of=EarlyC++] {ARM \cpp}
-      edge[direct] (EarlyC++)
-      edge[transverse] (C89);
-      \node[left of=ARMC++,node distance=1.5cm] {1989};
-      \node[old] (C++98) [below of=ARMC++] {\cpp98}
-      edge[direct] (ARMC++)
-      edge[transverse] (C89);
-      \node[old] (C99) [below of=C89] {C99}
-      edge[direct] (C89)
-      edge[transverse] (ARMC++);
-      \node[left of=C++98,node distance=1.5cm] {1998};
-      \node[new] (C++11) [below of=C++98] {\cpp11}
-      edge[direct] (C++98)
-      edge[transverse] (C99);
-      \node[left of=C++11,node distance=1.5cm] {2011};
-      \node[new] (C11) [below of=C99] {C11}
-      edge[direct] (C99)
-      edge[transverse] (C++98);
-      \node[new] (C++14) [below of=C++11] {\cpp14}
-      edge[direct] (C++11);
-      \node[left of=C++14,node distance=1.5cm] {2014};
-    \end{tikzpicture}
-  \end{minipage}
-  \begin{minipage}{0.57\linewidth}
-    \begin{tabular}{cc}
-      \includegraphics[height=2.5cm]{ritchie.jpeg} & \includegraphics[height=2.5cm]{BjarneStroustrup.jpg} \\[-1ex]
-      \tiny{C inventor} & \tiny{\cpp inventor} \\[-1ex]
-      \scriptsize{Dennis M. Ritchie} & \scriptsize{Bjarne Stroustrup} \\
-    \end{tabular}
-    \begin{itemize}
-      {\footnotesize
-      \item Both C and \cpp are born in Bell Labs
-      \item \cpp \it{almost} embeds C
-      \item C and \cpp are still under development
-      \item we will mainly discuss \cpp98
-      }
-    \end{itemize}
-  \end{minipage}
-\end{frame}
-
-\subsubsection{Does it fit our needs ?}
-
-\begin{frame}
-  \frametitle{Why ic \cpp our language of choice ?}
-  \pause
-  \begin{block}{Adapted to large projects}
-    \begin{itemize}
-    \item strongly typed
-    \item object oriented
-    \item many available libraries
-    \end{itemize}
-  \end{block}
-  \pause
-  \begin{block}{Fast}
-    \begin{itemize}
-    \item as it's compiled (unlike Java or C\#)
-    \item allows to go close to hardware
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\subsection[Basics]{Langage basics}
+\subsection{Core syntax an types}
 
 \begin{frame}[fragile]
   \frametitle{Hello World}
-  preprocessor, functions, ;, for, decl,...
   \begin{cppcode}
     #include <iostream>
 
@@ -189,6 +96,8 @@
     \end{cppcode}
 \end{frame}
 
+\subsection{Arrays and Pointers}
+
 \begin{frame}[fragile]
   \frametitle{Static arrays}
   \begin{cppcode*}{}
@@ -265,6 +174,8 @@
   \end{cppcode*}
 \end{frame}
 
+\subsection{Operators}
+
 \begin{frame}[fragile]
   \frametitle{Operators(1)}
   \begin{block}{Binary \& Assignment Operators}
@@ -331,7 +242,9 @@
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\subsection{Compound data types}
+
+\begin{frame}[fragile]
   \frametitle{struct}
   \begin{mdframed}[style=simplebox]
     \center ``members'' grouped together under one name
@@ -481,6 +394,8 @@
   \end{multicols}
 \end{frame}
 
+\subsection{Functions}
+
 \begin{frame}[fragile]
   \frametitle{Functions}
   \begin{multicols}{2}
@@ -605,7 +520,12 @@
   \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\subsection{constructs}
+\xxx
+
+\subsection{Headers and interfaces}
+
+\begin{frame}[fragile]
   \frametitle{Headers and interfaces}
   \begin{block}{Interface}
     Set of declarations defining some functionnality
@@ -629,7 +549,7 @@
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Preprocessor}
   \begin{cppcode*}{}
     // file inclusion

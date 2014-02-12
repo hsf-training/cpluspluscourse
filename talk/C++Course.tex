@@ -42,6 +42,26 @@
 %%%%%%%%%%%%%%%%%%%
 \newcommand{\cpp}{C$^{++}$} 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% easy class diagrams in tikz %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\classbox[3][]{
+  \draw[thick] node (#2) [#1]
+       [rectangle,rounded corners,draw] {
+    \begin{tabular}{l}
+      \multicolumn{1}{c}{#2} \\
+      #3
+    \end{tabular}
+  };
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% easy memory stack diagrams in tikz %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newcounter{memorystackindex}
 
 \pgfkeys{
@@ -165,16 +185,6 @@
   \end{frame}
 }
 
-\AtBeginSubsection[] {
-  \begin{frame}<beamer>
-    \begin{multicols}{2}
-      \frametitle{TOC SubSection}
-      \setcounter{tocdepth}{3}
-      \tableofcontents[sectionstyle=show/hide,subsectionstyle=show/shaded/hide]
-    \end{multicols}
-  \end{frame}
-}
-
 %%%%%%%%%%%%%%
 % The slides %
 %%%%%%%%%%%%%%
@@ -208,15 +218,16 @@
   \tableofcontents[sectionstyle=show,subsectionstyle=hide]
 \end{frame}
 
-\section[Concepts]{Quick review of $C^{++}$ concepts}
-\subsection[Introduction]{History and goals}
-\subsubsection{Origin of $C^{++}$}
+\section[Introduction]{History and goals}
+%\include{introduction}
+
+\section[Basics]{Langage basics (C and \cpp)}
 %\include{basicconcepts}
 
-\subsection[OO]{Object orientation}
-\include{objectorientation}
+\section[OO]{Object orientation}
+%\include{objectorientation}
 
-%\include{advanced}
+\include{advanced}
 
 %\include{c++11}
 
