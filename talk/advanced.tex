@@ -1,9 +1,10 @@
 \section{Advanced Topics}
 
+\iffalse
 \subsection[Advanced OO]{Advanced Object orientation}
 
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Polymorphism}
   \begin{block}{the concept}
     \begin{itemize}
@@ -39,7 +40,7 @@
   \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Method overloading}
   \begin{block}{the problem}
     \begin{itemize}
@@ -73,7 +74,7 @@
 \end{frame}
 
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Virtual methods}
   \begin{block}{the concept}
     \begin{itemize}
@@ -108,7 +109,7 @@
   \end{multicols}    
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Virtual methods}
   \begin{block}{the concept}
     \begin{itemize}
@@ -142,7 +143,7 @@
   \end{multicols}    
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Pure Virtual methods}
   \begin{block}{Concept}
     \begin{itemize}
@@ -182,7 +183,7 @@
   \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Polymorphism}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
@@ -197,7 +198,7 @@
   \end{alertblock}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Multiple Inheritance}
   \begin{block}{Concept}
     \begin{itemize}
@@ -229,7 +230,7 @@
   \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{The diamond shape}
   \begin{block}{Concept}
     \begin{itemize}
@@ -255,7 +256,7 @@
   \end{tikzpicture}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Virtual inheritance}
   \begin{block}{Concept}
     \begin{itemize}
@@ -301,7 +302,7 @@
   \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Virtual inheritance}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
@@ -315,7 +316,7 @@
   \end{alertblock}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Virtual inheritance}
   \begin{alertblock}{Warning}
     in case of virtual inheritance it is the most derived class that calls the virtual base class' constructor
@@ -341,10 +342,10 @@
         @a & (a).operator@() & operator@(a) \\
         a@b & (a).operator@(b) & operator@(a,b) \\
         a=b & (a).operator=(b) & cannot be non-member \\
-        a[b] & (a).operator[](b) & cannot be non-member \\
+        a[b] & (a).operator[](b)
         a-\textgreater & (a).operator-\textgreater() & cannot be non-member \\
-        a@ & (a).operator@(0) & operator@(a,0)
-        new/delete & 
+        a@ & (a).operator@(0) & operator@(a,0) \\
+        (@)a & (a).operator@() & cannot be non-member \\
       \end{tabular}
     \end{itemize}
   \end{block}
@@ -354,11 +355,11 @@
   \frametitle{Operators' example}
   \begin{cppcode*}{}
     struct Complex {
-      float m_real, m_complex;
-      Complex(float real, float complex);
+      float m_real, m_imaginary;
+      Complex(float real, float imaginary);
       Complex& operator+(Complex& other) {
         m_real += other.m_real;
-        m_complex += other.m_complex;
+        m_imaginary += other.m_imaginary;
       }
     }
 
@@ -371,13 +372,13 @@
   \frametitle{Non-member operator example}
   \begin{cppcode*}{}
     struct Complex {
-      float m_real, m_complex;
-      Complex(float real, float complex);
+      float m_real, m_imaginary;
+      Complex(float real, float imaginary);
     }
 
     std::ostream& operator<<(std::ostream& os,
                              const Complex& obj) {
-      os << "(" << m_real << ", " << m_complex << ")";
+      os << "(" << m_real << ", " << m_imaginary << ")";
       return os;
     }
 
@@ -509,7 +510,7 @@
   \end{cppcode*}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{constness}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
@@ -562,7 +563,7 @@
   \end{cppcode*}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{constness}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
@@ -626,7 +627,7 @@
 
 \subsubsection{Copy constructors}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Copy constructors}
   \begin{block}{Concept}
     \begin{itemize}
@@ -644,7 +645,7 @@
 \end{frame}
 
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Copy constructors}
   \begin{alertblock}{Usually not needed}
     \begin{itemize}
@@ -668,10 +669,169 @@
   \end{cppcode*}
 \end{frame}
 
-
 \subsection{Templates}
-\subsubsection[Functions]{Templated functions}
-\subsubsection[Classes]{Templated classes}
+
+\begin{frame}[fragile]
+  \frametitle{Templates}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item The \cpp way to write reusable code
+      \begin{itemize}
+        \item aka macros on steroids
+      \end{itemize}
+    \item Applicable to functions and objects
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    template<class T>
+    const T & Max(const T &A, const T &B) {
+      return A > B ? A : B;
+    }
+
+    template<class T>
+    struct Vector {
+      int m_len;
+      T* m_data;
+    }
+ \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Templates}
+  \begin{alertblock}{Warning}
+    These are really like macros
+    \begin{itemize}
+      \item they are compiled n times
+      \item they need to be defined before used
+      \begin{itemize}
+        \item so all templated code has to be in headers
+      \end{itemize}
+      \item this may lead to longer compilation times and bigger libraries
+    \end{itemize}
+  \end{alertblock}
+  \newsavebox{\codepiece}
+  \begin{lrbox}{\codepiece}
+    \begin{minipage}{.35\linewidth}
+      \begin{cppcode*}{gobble=8,linenos=false}
+        template<class T>
+        void func(T a) {
+          return a;
+        }
+      \end{cppcode*}
+    \end{minipage}
+  \end{lrbox}
+  \newsavebox{\codepiecea}
+  \begin{lrbox}{\codepiecea}
+    \begin{minipage}{.4\linewidth}
+      \begin{cppcode*}{gobble=8,linenos=false}
+        void func(int a) {
+          return a;
+        }
+      \end{cppcode*}
+    \end{minipage}
+  \end{lrbox}
+  \newsavebox{\codepieceb}
+  \begin{lrbox}{\codepieceb}
+    \begin{minipage}{.4\linewidth}
+      \begin{cppcode*}{gobble=8,linenos=false}
+        void func(double a) {
+          return a;
+        }
+      \end{cppcode*}
+    \end{minipage}
+  \end{lrbox}
+  \begin{tikzpicture}[rectangle,rounded corners]
+    \draw node (template) [draw] {\usebox{\codepiece}}
+          node (templatea) [draw] at (6cm,+1cm) {\usebox{\codepiecea}}
+          node (templateb) [draw] at (6cm,-1cm) {\usebox{\codepieceb}};
+    \draw[->,thick] (template) -- (templatea) node [above,midway,sloped] {func(3)};
+    \draw[->,thick] (template) -- (templateb) node [below,midway,sloped] {func(5.2)};
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Templates}
+  \begin{block}{Arguments}
+    \begin{itemize}
+    \item can be a class, 
+    \item you can have several
+    \item that last ones can have a default value
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    template<class KeyType=int, class ValueType=KeyType>
+    struct Map {
+      void set(KeyType &key, ValueType value);
+      ValueType get(KeyType &key);
+    }
+
+    Map<std::string, int> m1;
+    Map<float> m2;   // Map<float, float>
+    Map<> m3;        // Map<int, int>
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Templates implementation}
+  \begin{cppcode*}{}
+    template<class KeyType=int, class ValueType=KeyType>
+    struct Map {
+      void set(KeyType &key, ValueType value);
+      ValueType get(KeyType &key);
+    }
+
+    template<class KeyType, class ElementType>
+    void Map<KeyType, ElementType>::set
+       (KeyType &key, ValueType value) {
+      ...
+    }
+
+    template<class KeyType, class ElementType>
+    ValueType Map<KeyType, ElementType>::set(KeyType &key) {
+      ...
+    }
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Templates}
+  \begin{block}{Specialization}
+    templates can be specialized for given values of their parameter
+  \end{block}
+  \begin{cppcode*}{}
+    template<unsigned int N> struct Polynom {
+      Polynom(float radius);
+      float perimeter();
+      float m_radius;
+    };
+    
+    template<>
+    struct Polynom<6> {
+      Polynom(float radius);
+      float perimeter() {return 6*m_radius;};
+      float m_radius;
+    };
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{The full power of templates}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to template/map
+    \item look at the OrderedVector code
+    \item compile and run test.cpp. See the ordering
+    \item reuse OrderedVector with Complex
+    \item improve OrderedVector to template the ordering
+    \item test manhattan order with complex type
+    \item check the implementation of Complex
+    \item try ordering complex of complex
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\fi  %iffalse
+
 
 \subsection[STL]{The Standard Template Library}
 \subsubsection[Containers]{Standard containers}
@@ -683,4 +843,3 @@
 \subsubsection{Static analyzer}
 \subsubsection{Debugger}
 \subsubsection{Memory checker}
-
