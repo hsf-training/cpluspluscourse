@@ -187,7 +187,7 @@
   \frametitle{Polymorphism}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
-    \item go to inheritance/polymorphism
+    \item go to code/polymorphism
     \item look at the code
     \item open test.cpp
     \item create a Pentagon, call its perimeter method
@@ -306,7 +306,7 @@
   \frametitle{Virtual inheritance}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
-    \item go to inheritance/virtual
+    \item go to code/virtual\_inheritance
     \item look at the code
     \item open test.cpp
     \item create a TextBox and call draw
@@ -514,7 +514,7 @@
   \frametitle{constness}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
-    \item go to constness/basic
+    \item go to code/constness
     \item open test.cpp
     \item test pointer to constant
     \item test constant pointer
@@ -818,7 +818,7 @@
   \frametitle{The full power of templates}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
-    \item go to template/map
+    \item go to code/template
     \item look at the OrderedVector code
     \item compile and run test.cpp. See the ordering
     \item reuse OrderedVector with Complex
@@ -832,11 +832,204 @@
 
 \fi  %iffalse
 
-
 \subsection[STL]{The Standard Template Library}
+
+\begin{frame}[fragile]
+  \frametitle{The Standerd Template Library}
+  \begin{block}{What it is}
+    \begin{itemize}
+    \item A library of standard templates
+    \item Eveything you need, or ever dreamed of
+      \begin{itemize}
+      \item strings, containers, iterators
+      \item algorithms, functions, sorters
+      \item functors, allocators
+      \item ...
+      \end{itemize}
+    \item Very portable
+    \item Very reusable
+    \item Very efficient
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{Just use it}
+    and adapt it to your needs, thanks to templates
+  \end{alertblock}
+\end{frame}
+
 \subsubsection[Containers]{Standard containers}
-\subsubsection[Customization]{Allocators. comparators and other containers}
-\subsubsection{Algorithms}
+
+\begin{frame}[fragile,label=STLcode]
+  \frametitle{STL's in practice}
+  \begin{cppcode*}{}
+    #include<vector>
+    #include<algorithm>
+
+    std::vector<int> vi, vr(3);
+    vi.push_back(5); vi.push_back(3); vi.push_back(4);
+
+    std::transform(vi.begin(), vi.end(),      // range1
+                   vi.begin(),          // start range2
+                   vr.begin(),          // start result
+                   std::multiplies<int>()); // function
+
+    for(std::vector<int>::iterator it = vr.begin();
+        it != vr.end();
+        it++) {
+      std::cout << *it << " ";
+    };
+    std::cout << std::endl;
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{STL's concepts}
+  \begin{block}{containers}
+    \begin{itemize}
+    \item a structure containing data
+    \item with a given way of handling it
+    \item irrespective of
+      \begin{itemize}
+      \item the data itself (templated)
+      \item the memory allocation of the structure (templated)
+      \item the algorithms that may use the structure
+      \end{itemize}
+    \item examples
+      \begin{itemize}
+      \item string
+      \item list, vector, deque
+      \item map, set, multimap, multiset, hash\_map, hash-set, ...
+      \item stack, queue, priority\_queue
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{STL's concepts}
+  \begin{block}{iterators}
+    \begin{itemize}
+    \item generalization of pointers
+    \item allowing iteration over some data
+    \item irrespective of
+      \begin{itemize}
+      \item the container used (templated)
+      \item the data itself (contained is templated)
+      \item the consumer of the data (templated algorithm)
+      \end{itemize}
+    \item examples
+      \begin{itemize}
+      \item iterator
+      \item reverse\_iterator
+      \item const\_iterator
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{STL's concepts}
+  \begin{block}{algorithms}
+    \begin{itemize}
+    \item implementation of an algorithm working on data
+    \item with a well defined behavior (speed garantee)
+    \item irrespective of
+      \begin{itemize}
+      \item the data handled
+      \item the container where data live
+      \item the iterator used to go through data
+      \end{itemize}
+    \item examples
+      \begin{itemize}
+      \item for\_each, find, find\_if, count, count\_if, search
+      \item copy, swap, transform, replace, fill, generate
+      \item remove, remove\_if
+      \item unique, reverse, rotate, random, partition
+      \item sort, partial\_sort, merge, min, max
+      \item lexicographical\_compare, iota, accumulate, partial\_sum
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+      
+\begin{frame}[fragile]
+  \frametitle{STL's concepts}
+  \begin{block}{functions / functors}
+    \begin{itemize}
+      \item generic utility functions/functors
+      \item mostly useful to be passed to STL algorithms
+    \item implemented independently of
+      \begin{itemize}
+      \item the data handled (templated)
+      \item the context (algorithm) calling it
+      \end{itemize}
+    \item examples
+      \begin{itemize}
+      \item plus, minus, multiply, divide, modulus, negate
+      \item equal\_to, less, greater, less\_equal, ...
+      \item logical\_and, logical\_or, logical\_not
+      \item identity, project1st, project2nd
+      \item binder1st, binder2nd, unary\_compose, binary\_compose
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\againframe{STLcode}
+
+\begin{frame}[fragile,label=STLcode]
+  \frametitle{More complex STL code}
+  \begin{cppcode*}{}
+    // Finds the first element in a list that lies in
+    // the range from 1 to 10.
+    list<int> L;
+    ...
+    list<int>::iterator in_range = 
+      find_if(L.begin(), L.end(),
+              compose2(logical_and<bool>(),
+                       bind2nd(greater_equal<int>(), 1),
+                       bind2nd(less_equal<int>(), 10)));
+
+    // Computes sin(x)/(x + DBL_MIN) for elements of a range.
+    transform(first, last, first,
+              compose2(divides<double>(),
+                       ptr_fun(sin),
+                       bind2nd(plus<double>(), DBL_MIN)));
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{STL's concepts}
+  \begin{block}{Welcome to lego programming !}
+    \pgfdeclareimage[height=0.5cm]{AtlasLego}{AtlasLego.jpg}
+    \includegraphics[width=\linewidth]{AtlasLego}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Using the STL}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/stl
+    \item look at the provided code
+      \begin{itemize}
+        \item it creates a vector a ints at regular intervals
+        \item it randomizes them
+        \item it computes differences between consecutive ints
+        \item and the mean and variance of it
+      \end{itemize}
+    \item ``translate'' it to STL
+    \item make sure that it's reusable for floats, doubles, ...
+    \item use it with complex numbers
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+Warning :
+  - template symtax awful (better in C++11)
+  - hard to debug (compilers spit out garbage)
+  - standard is not well defined
+
 
 \subsection[Tools]{Useful tools}
 \subsubsection{Compilers}
