@@ -20,12 +20,12 @@ struct Generator {
 };
 
 template<class T>
-struct square {
-    T operator()(T& a) { return a * a; };
+struct sumsquare {
+    T operator()(T& s, T& a) { return s + a * a; };
 };
     
 template<class T>
-void computeStdDev(int len, T initial, T step) {
+void compute(int len, T initial, T step) {
     // allocate vectors
     std::vector<T> v(len+1), diffs(len+1);
 
@@ -37,14 +37,8 @@ void computeStdDev(int len, T initial, T step) {
     adjacent_difference(v.begin(), v.end(), diffs.begin());    
 
     // compute standard deviation of it
-    T sum = T();
-    T sumsq = T();
-    sum = accumulate(diffs.begin()+1, diffs.end(), sum);
-    transform(diffs.begin()+1, diffs.end(),
-              diffs.begin()+1,
-              diffs.begin()+1,
-              multiplies<T>());
-    sumsq = accumulate(diffs.begin()+1, diffs.end(), sumsq);
+    T sum = accumulate(diffs.begin()+1, diffs.end(), T());
+    T sumsq = accumulate(diffs.begin()+1, diffs.end(), T(), sumsquare<T>());
     T mean = sum/len;
     T variance = sumsq/len - mean*mean;
 
@@ -54,6 +48,6 @@ void computeStdDev(int len, T initial, T step) {
 }
 
 int main() {
-    computeStdDev(1000, 0.0, 7.0);
-    computeStdDev(1000, Complex(0,0), Complex(1,2));
+    compute(1000, 0.0, 7.0);
+    compute(1000, Complex(0,0), Complex(1,2));
 }

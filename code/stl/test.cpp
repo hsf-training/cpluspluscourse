@@ -1,47 +1,41 @@
 #include <iostream>
 #include <math.h>
-#include <cstdlib>
+#include <algorithm>
+#include <vector>
+#include <ext/numeric>
+#include "Complex.hpp"
 
-#define LEN 1000
-#define STEP 7
+using namespace std;
+using namespace __gnu_cxx;
 
-void randomize(int* v, unsigned int len) {
-    // we randomize via len random inversions
-    for (unsigned int i = 0; i < len; i++) {
-        int a = rand()%len;
-        int b = rand()%len;
-        int mem = v[a];
-        v[a] = v[b];
-        v[b] = mem;
-    }
+template<class T>
+struct Generator {
+    ...
+};
+
+template<class T>
+void compute(int len, T initial, T step) {
+    // allocate vectors
+    std::vector<T> v(len+1), diffs(len+1);
+
+    // fill and randomize v
+    generate(, , Generator...);
+    random_shuffle(...);
+    
+    // compute differences
+    adjacent_difference(...);
+
+    // compute standard deviation of it
+    T sum = accumulate(...);
+    T sumsq = accumulate(...);
+    T mean = sum/len;
+    T variance = sumsq/len - mean*mean;
+
+    std::cout << "Range = [" << initial << ", " << step*len << "]\n"
+              << "Mean = " << mean << "\n"
+              << "Variance = " << variance << std::endl;
 }
 
 int main() {
-    // create vector
-    int *v = new int[LEN+1];
-    for (unsigned int i = 0; i <= LEN; i++) v[i] = i*STEP;
-
-    // randomize it
-    randomize(v, LEN+1);
-
-    // compute diffs
-    int *diffs = new int[LEN];
-    for (unsigned int i = 0; i < LEN; i++)
-        diffs[i] = v[i+1] - v[i];
-
-    // compute standard deviation of it
-    float sum = 0;
-    float sumsq = 0;
-    for (unsigned int i = 0; i < LEN; i ++) {
-        sum += diffs[i];
-        sumsq += diffs[i]*diffs[i];
-    }
-    float mean = sum/LEN;
-    float stddev = sqrt(sumsq/LEN - mean*mean) ;
-    std::cout << "Range = [0, " << STEP*LEN << "]\n"
-              << "Mean = " << mean
-              << "\nStdDev = " << stddev << std::endl;
-
-    delete[] v;
-    delete[] diffs;
+    compute(1000, 0.0, 7.0);
 }
