@@ -8,6 +8,3 @@ libpoly.so: Polygons.cpp Polygons.hpp
 
 test : test.cpp libpoly.so
 	$(CXX) -g -Wall -Wextra -o $@ $^
-
-test.sol : test.sol.cpp libpoly.so
-	$(CXX) -g -Wall -Wextra -o $@ $^
