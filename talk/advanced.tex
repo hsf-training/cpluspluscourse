@@ -1,8 +1,6 @@
 \section{Advanced Topics}
 
-\iffalse
 \subsection[Advanced OO]{Advanced Object orientation}
-
 
 \begin{frame}[fragile]
   \frametitle{Polymorphism}
@@ -392,9 +390,6 @@
 
 \subsection[Functions]{More around functions}
 
-
-\subsubsection{Pointers and references}
-
 \begin{frame}[fragile]
   \frametitle{Value, pointers and references}
   \begin{block}{Different ways to pass arguments to a function}
@@ -465,7 +460,6 @@
   \end{alertblock}
 \end{frame}
 
-\subsubsection{Constness}
 
 \begin{frame}[fragile]
   \frametitle{Constness}
@@ -576,7 +570,6 @@
 \end{frame}
 
 
-\subsubsection{Functors}
 
 \begin{frame}[fragile]
   \frametitle{Functors}
@@ -625,7 +618,6 @@
 \end{frame}
 
 
-\subsubsection{Copy constructors}
 
 \begin{frame}[fragile]
   \frametitle{Copy constructors}
@@ -669,7 +661,6 @@
   \end{cppcode*}
 \end{frame}
 
-\subsection{Templates}
 
 \begin{frame}[fragile]
   \frametitle{Templates}
@@ -855,7 +846,6 @@
   \end{alertblock}
 \end{frame}
 
-\subsubsection[Containers]{Standard containers}
 
 \begin{frame}[fragile,label=STLcode]
   \frametitle{STL's in practice}
@@ -1035,12 +1025,8 @@
   \end{alertblock}
 \end{frame}
 
-\fi  %iffalse
-
-
 \subsection[Tools]{Useful tools}
 
-\subsubsection{Editors}
 
 \begin{frame}[fragile]
   \frametitle{\cpp editor}
@@ -1071,7 +1057,6 @@
   \end{block}
 \end{frame}
 
-\subsubsection{Code management}
 
 \begin{frame}[fragile]
   \frametitle{Code management tool}
@@ -1120,7 +1105,6 @@
   \end{shell}
 \end{frame}
 
-\subsubsection{Compilers}
 
 \begin{frame}[fragile]
   \frametitle{The compiling chain}
@@ -1243,13 +1227,12 @@
     \item see library dependencies with ldd
     \item look at the Makefile
     \item try make clean; make
-    \item introduce an error in the code by droping ; at the end of a class
+    \item introduce an error in the code by dropping ; at the end of a class
     \item see gcc output versus clang output
     \end{itemize}
   \end{alertblock}
 \end{frame}
 
-\subsubsection{Debugger}
 
 \begin{frame}[fragile]
   \frametitle{Debugging}
@@ -1321,16 +1304,42 @@
 
 
 
-\subsubsection{Memory checker}
-
 \begin{frame}[fragile]
   \frametitle{The valgrind family}
-  principle of valgrind
+  \begin{block}{Valgrind fundamentals}
+    \begin{itemize}
+    \item valgrind is a framework for different tools
+    \item a processor simulator allowing checks in between instructions
+    \item slow (10-50 times slower than normal execution)
+    \item easy to use : ``valgrind \textless{}your executable\textgreater''
+      \begin{itemize}
+      \item no recompilation
+      \item better with -g -O0, but not strictly needed
+      \end{itemize}
+    \item it is free and open source
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Main tools}
+    \begin{description}
+      \item[memcheck] a memory checker (default tool) and leak detector
+      \item[callgrind] a call graph builder
+      \item[helgrind] a race condition detector
+    \end{description}
+  \end{block}
+\end{frame}
 
-  valgrind (mem access)
-  memcheck
-  callgrind / kcachegrind
-  helgrind
+\begin{frame}[fragile]
+  \frametitle{memcheck}
+  \begin{block}{}
+    \begin{itemize}
+      \item keeps track of all memory allocations and deallocations
+      \item is able to detect accesses to non allocated memory
+      \item and even tell you when it was deallocated if it was
+      \item or what it the closest array in case of overflow
+      \item is able to list still allocated memory when program exist (memory leaks)
+    \end{itemize}
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1355,10 +1364,29 @@
     \item go to code/memcheck
     \item compile, run, it should work
     \item run with valgrind, see LEAK summary
-    \item run with --leak-check=full -> see details
+    \item run with -{}-leak-check=full to get details
     \item analyze and correct it
     \end{itemize}
   \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{callgrind and kcachegrind}
+  \begin{block}{callgrind}
+    \begin{itemize}
+      \item keeps track of all function calls
+      \item and time spent in each function
+      \item build statistics on calls, CPU usages and more
+      \item outputs flat statistics file, quite unreadable
+    \end{itemize}
+  \end{block}
+  \begin{block}{kcachgrind}
+    \begin{itemize}
+      \item a gui exploiting statistics built by callgrind
+      \item able to browse graphically the program calls
+      \item able to ``graph'' CPU usage on the program structure
+    \end{itemize}
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1368,11 +1396,31 @@
     \item go to code/callgrind
     \item compile, run, it will be slow
     \item change nb iterations to 20
-    \item run with valgrind --tool=cachegrind
+    \item run with valgrind -{}-tool=cachegrind
     \item look at output with kcachegrind
     \item change fibo call to fibo2
     \item observe the change with callgrind
     \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{helgrind}
+  \begin{block}{}
+    \begin{itemize}
+      \item keeps track of all pthreads activity
+      \item in particular keeps track of all mutexes
+      \item builds a graph of dependencies of the different actions
+      \item works on the resulting graph to detect:
+        \begin{itemize}
+        \item possible dead locks
+        \item possible data races
+        \end{itemize}
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{}
+    Note the ``possible''. It finds future problems !
   \end{alertblock}
 \end{frame}
 
@@ -1383,22 +1431,43 @@
     \item go to code/helgrind
     \item compile, run
     \item check it with valgrind. All should be fine most of the time
-    \item check it with valgrind --tool=helgrind
+    \item check it with valgrind -{}-tool=helgrind
     \item understand issue and fix
-    \item check that the issue whould have been trigger for MIN=20
+    \item check that the issue is visible in valgrind for MIN=20
     \end{itemize}
   \end{alertblock}
 \end{frame}
 
 
-\subsubsection{Static analyzer}
 
 \begin{frame}[fragile]
   \frametitle{Static analysis}
-  Coverity
-  Cppcheck
-  cpplint
-  clang (scan-build)
+  \begin{alertblock}{The problem}
+    \begin{itemize}
+    \item all the tools discussed so far work on binaries
+    \item they analyze the code being run
+    \item so there is a coverage problem (e.g. for error cases)
+    \end{itemize}
+  \end{alertblock}
+  \pause
+  \begin{block}{A (partial) solution : analysizing the source code}
+    \begin{itemize}
+    \item build a graph of dependencies of the calls
+    \item using graph tools to detect potential memory corruptions,
+      memeory leaks ot missing initializations
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Existing tools}
+    \begin{description}
+    \item[\href{http://www.coverity.com/}{\beamergotobutton{Coverity}}]
+      proprietary tool, the most complete
+    \item[\href{http://cppcheck.sourceforge.net/}{\beamergotobutton{cppcheck}}]
+      free and opensource, but less complete
+    \item[\href{http://clang-analyzer.llvm.org/}{\beamergotobutton{scan-build}}]
+      the clang source analyzer, still young
+    \end{description}
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1407,7 +1476,7 @@
     \begin{itemize}
     \item go to code/cppcheck
     \item compile, run, see that it works
-    \item use valgrind : not issue
+    \item use valgrind : no issue
     \item use cppcheck, see the problem
     \item analyze the issue, see that the variance was biased
     \end{itemize}
