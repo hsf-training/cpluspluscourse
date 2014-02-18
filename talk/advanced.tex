@@ -684,7 +684,7 @@
       int m_len;
       T* m_data;
     }
- \end{cppcodes}
+ \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -965,9 +965,9 @@
 
 \againframe{STLcode}
 
-\begin{frame}[fragile,label=STLcode]
+\begin{frame}[fragile]
   \frametitle{More complex STL code}
-  \begin{cppcode*}{}
+  \begin{cppcode}
     // Finds the first element in a list that lies in
     // the range from 1 to 10.
     list<int> L;
@@ -983,7 +983,7 @@
               compose2(divides<double>(),
                        ptr_fun(sin),
                        bind2nd(plus<double>(), DBL_MIN)));
-  \end{cppcode*}
+  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1086,7 +1086,7 @@
 
 \begin{frame}[fragile]
   \frametitle{GIT crash course}
-  \begin{shell}
+  \begin{minted}{text}
     # mkdir myProject; cd myProject; git init
     Initialized empty Git repository in /tmp/myProject/.git/
 
@@ -1102,7 +1102,7 @@
     ...
 
     # git diff f24a6ce bb54d15
-  \end{shell}
+  \end{minted}
 \end{frame}
 
 

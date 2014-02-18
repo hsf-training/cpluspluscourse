@@ -46,70 +46,17 @@
       myObj.squareA();
     \end{cppcode*}
     \columnbreak
+    \center
     \null \vfill
     \begin{tikzpicture}
-      \tcbset{minted options={gobble=8}}
-      \begin{CodeNode}{0,-2}{MyFirstClass}{MyFirstClass}
-        int a;
+      \classbox{MyFirstClass}{
+        \\
+        int a; \\
         void squareA();
-      \end{CodeNode}
+      }
     \end{tikzpicture}
     \vfill \null
   \end{multicols}
-\end{frame}
-
-
-
-
-\begin{frame}[fragile,label=current]
-\xxx
-  \frametitle{Static members}
-  \begin{block}{Concept}
-    \begin{itemize}
-    \item members attached to a class rather than to an object
-    \item usable with or without an instance of the class
-    \item identified by the {\it static} keyword
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-    Class Text {
-    public:
-      static std::string upper(std::string);
-    private:
-      static int s_bCallsToUpper;
-    }
-    int Text::s_bCallsToUpper = 0;
-    std::string s = "my text";
-    std::string uppers = Text::upper("my text");
-    // now Text::s_bCallsToUpper is 1
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile,label=current]
-  \frametitle{private/ public inheritance}
-  /xxx
-\end{frame}
-
-\begin{frame}[fragile,label=current]
-  \frametitle{static functions}
-  /xxx
-\end{frame}
-
-\begin{frame}[fragile,label=current]
-  \frametitle{static variable}
-  /xxx
-\end{frame}
-
-\begin{frame}[fragile,label=current]
-  \frametitle{interfaces}
-  /xxx
-\end{frame}
-
-\begin{frame}[fragile,label=current]
-  \frametitle{Advices}
-  /xxx
-  no multiple inheritance but for interfaces
-  think 2x, or 3x
 \end{frame}
 
 \begin{frame}[fragile]
@@ -240,18 +187,18 @@
       // i = 9
     \end{cppcode*}
     \columnbreak
+    \center
     \null \vfill
-    \begin{tikzpicture}
-      \tcbset{minted options={gobble=8}}
-      \begin{CodeNode}{0,1.5}{MyFirstClass}
-        int a;
+    \begin{tikzpicture}[node distance=2.5cm]
+      \classbox{MyFirstClass}{
+        int a; \\
         void squareA();
-      \end{CodeNode}
-      \begin{CodeNode}{0,-1.5}{MySecondClass}
-        int b;
+      }
+      \classbox[below of=MyFirstClass]{MySecondClass}{
+        int b; \\
         int sum();
-      \end{CodeNode}
-    \draw[very thick,->] (MySecondClass)--(MyFirstClass);
+      }
+      \draw[very thick,->] (MySecondClass)--(MyFirstClass);
     \end{tikzpicture}
     \vfill \null
   \end{multicols}
@@ -457,10 +404,26 @@
   \end{cppcode}
 \end{frame}
 
-\begin{frame}
-  \frametitle{new/delete for arrays}
-  \xxx
+\begin{frame}[fragile]
+  \frametitle{Object lifetime}
+  \begin{block}{Arrays on the heap}
+    \begin{itemize}
+    \item arrays of objects are created by calling {\it new[]} \\
+      default constructors are called
+    \item arrays of object are destructed by calling {\it delete[]} \\
+      destructors are called
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    {
+      // default constructor called 10 times
+      MyFirstClass *a = new MyFirstClass[10];
+      ...
+      delete[] a; // destructor called 10 times
+    }
+  \end{cppcode}
 \end{frame}
+
 
 \subsection{Exceptions}
 
@@ -533,5 +496,62 @@
   \end{multicols}
 \end{frame}
 
+\iffalse
 \xxx throw declaration for a function
 \xxx only at run time !!!
+
+
+
+
+
+\begin{frame}[fragile,label=current]
+\xxx
+  \frametitle{Static members}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item members attached to a class rather than to an object
+    \item usable with or without an instance of the class
+    \item identified by the {\it static} keyword
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    Class Text {
+    public:
+      static std::string upper(std::string);
+    private:
+      static int s_bCallsToUpper;
+    }
+    int Text::s_bCallsToUpper = 0;
+    std::string s = "my text";
+    std::string uppers = Text::upper("my text");
+    // now Text::s_bCallsToUpper is 1
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile,label=current]
+  \frametitle{private/ public inheritance}
+  /xxx
+\end{frame}
+
+\begin{frame}[fragile,label=current]
+  \frametitle{static functions}
+  /xxx
+\end{frame}
+
+\begin{frame}[fragile,label=current]
+  \frametitle{static variable}
+  /xxx
+\end{frame}
+
+\begin{frame}[fragile,label=current]
+  \frametitle{interfaces}
+  /xxx
+\end{frame}
+
+\begin{frame}[fragile,label=current]
+  \frametitle{Advices}
+  /xxx
+  no multiple inheritance but for interfaces
+  think 2x, or 3x
+\end{frame}
+\fi

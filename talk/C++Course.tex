@@ -35,6 +35,8 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows,automata,snakes,shapes}
 
+\usepackage{tcolorbox}
+
 \usepackage[framemethod=TikZ]{mdframed}
 \mdfdefinestyle{simplebox}{roundcorner=4pt,linewidth=0,backgroundcolor=blue!50!black,fontcolor=white}
 
@@ -188,7 +190,7 @@
 \AtBeginSubsection[] {
   \begin{frame}<beamer>
     \frametitle{TOC SubSection}
-    \tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/show/hide]
+    \tableofcontents[sectionstyle=show/hide,subsectionstyle=show/shaded/hide]
   \end{frame}
 }
 
@@ -229,10 +231,10 @@
 
 %\include{basicconcepts}
 
-%\include{objectorientation}
+\include{objectorientation}
 
 %\include{advanced}
 
-\include{c++11}
+%\include{c++11}
 
 \end{document}
