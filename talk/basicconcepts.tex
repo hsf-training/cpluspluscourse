@@ -1,6 +1,5 @@
 \section[Basics]{Langage basics (C and \cpp)}
 
-\iffalse
 \subsection{Core syntax an types}
 
 \begin{frame}[fragile]
@@ -103,7 +102,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Static arrays}
-  \begin{cppcode*}{}
+  \begin{cppcode}
     int ai[4] = {1,2,3,4};
     int ai[] = {1,2,3,4};  // identical
     
@@ -114,7 +113,7 @@
     int i = ai[2];  // i = 3
     char c = ac[8]; // garbage
     int i = ai[4];  // also garbage !
-  \end{cppcode*}
+  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -157,7 +156,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Dynamic Arrays}
-  \begin{cppcode*}{}
+  \begin{cppcode}
     #include <stdlib.h>
     #include <string.h>
 
@@ -174,7 +173,7 @@
     
     // liberate memory
     free(ai);
-  \end{cppcode*}
+  \end{cppcode}
 \end{frame}
 
 \subsection{Operators}
@@ -523,8 +522,6 @@
   \end{multicols}
 \end{frame}
 
-\fi  %iffalse
-
 \subsection{control instructions}
 
 \begin{frame}[fragile]
@@ -550,7 +547,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Control instructions : if}
-  \begin{block}{Practical example}
+  \begin{exampleblock}{Practical example}
     \begin{cppcode*}{linenos=false}
       int collatz(int a) {
         if (a <= 0) {
@@ -564,7 +561,7 @@
         }
       }
     \end{cppcode*}
-  \end{block}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -580,13 +577,13 @@
     \end{itemize}
   \end{block}
   \pause
-  \begin{block}{Practical example}
+  \begin{exampleblock}{Practical example}
     \begin{cppcode*}{linenos=false}
       int collatz(int a) {
         return a==1 ? 1 : collatz(a%2 ? 3*a+1 : a/2);
       }
     \end{cppcode*}
-  \end{block}
+  \end{exampleblock}
   \pause
   \begin{alertblock}{Do not abuse}
     explicit ifs are easier to read \\
@@ -621,7 +618,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Control instructions : switch}
-  \begin{block}{Practical example}
+  \begin{exampleblock}{Practical example}
     \begin{cppcode*}{linenos=false}
       enum Lang { FRENCH, GERMAN, ENGLISH, OTHER };
       ...
@@ -638,7 +635,7 @@
       default:
         printf("I do not talk your langage");
     \end{cppcode*}
-  \end{block}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -657,13 +654,13 @@
     \end{itemize}
   \end{block}
   \pause
-  \begin{block}{Practical example}
+  \begin{exampleblock}{Practical example}
     \begin{cppcode*}{linenos=false}
       for(int i = 0, j = 0 ; i < 10 ; i++, j = i*i) {
         std::cout << i << "^2 is " << j << "\n";
       }
     \end{cppcode*}
-  \end{block}
+  \end{exampleblock}
   \pause
   \begin{alertblock}{Do not abuse the syntax}
     The for statement should fit in 1-3 lines
@@ -687,13 +684,13 @@
     \end{itemize}
   \end{block}
   \pause
-  \begin{block}{Practical example}
+  \begin{exampleblock}{Practical example}
     \begin{cppcode*}{linenos=false}
       while (n != 1)
         if (0 == n%2) n /= 2; 
         else n = 3 * n + 1;
     \end{cppcode*}
-  \end{block}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -706,7 +703,7 @@
     \end{description}
   \end{block}
   \pause
-  \begin{block}{Practical example}
+  \begin{exampleblock}{Practical example}
     \begin{cppcode*}{linenos=false}
       while (1) {
         if (n == 1) break;
@@ -718,10 +715,9 @@
         n = 3 * n + 1;
       }
     \end{cppcode*}
-  \end{block}
+  \end{exampleblock}
 \end{frame}
 
-\iffalse
 \subsection{Headers and interfaces}
 
 \begin{frame}[fragile]
@@ -750,7 +746,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Preprocessor}
-  \begin{cppcode*}{}
+  \begin{cppcode}
     // file inclusion
     #include "hello.hpp"
     // macros
@@ -761,7 +757,7 @@
     #else
       typedef uint32_t myint;
     #endif
-  \end{cppcode*}
+  \end{cppcode}
   \pause
   \begin{block}{Use only in very restricted cases}
     \begin{itemize}
@@ -771,5 +767,3 @@
     \end{itemize}
   \end{block}
 \end{frame}
-
-\fi %false

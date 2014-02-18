@@ -71,7 +71,7 @@
     \item identified by the {\it static} keyword
     \end{itemize}
   \end{block}
-  \begin{cppcode*}{}
+  \begin{cppcode}
     Class Text {
     public:
       static std::string upper(std::string);
@@ -82,7 +82,7 @@
     std::string s = "my text";
     std::string uppers = Text::upper("my text");
     // now Text::s_bCallsToUpper is 1
-  \end{cppcode*}
+  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile,label=current]
@@ -181,7 +181,7 @@
     \item when reference to the object is needed, use {\it this} keyword
     \end{itemize}
   \end{block}
-  \begin{cppcode*}{}
+  \begin{cppcode}
     void MyFirstClass::squareA() {
       a *= a;
     };
@@ -192,7 +192,7 @@
       a += this->b;
       return a;
     };
-  \end{cppcode*}
+  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -204,7 +204,7 @@
     \item but not the return code
     \end{itemize}
   \end{block}
-  \begin{cppcode*}{}
+  \begin{cppcode}
     class MySecondClass : MyFirstClass {
     public:
       int sum();
@@ -214,7 +214,7 @@
     int MySecondClass::sum() { return a + b; };
 
     int MySecondClass::sum(int c) { return a + b + c; };
-  \end{cppcode*}
+  \end{cppcode}
 \end{frame}
 
 \subsection{Inheritance}
@@ -370,7 +370,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Class Constructor and Destructors}
-  \begin{cppcode*}{}
+  \begin{cppcode}
     class Vector {
     public:
       Vector(int n);
@@ -387,13 +387,13 @@
     Vector::~Vector() {
       free(data);
     }
-  \end{cppcode*}
+  \end{cppcode}
 \end{frame}
 
 
 \begin{frame}[fragile]
   \frametitle{Constructor and inheritance}
-  \begin{cppcode*}{}
+  \begin{cppcode}
     struct MyFirstClass {
       MyFirstClass();
       MyFirstClass(int a);
@@ -409,7 +409,7 @@
     MySecondClass(int b_) : MyFirstClass(), b(b_) {};
     MySecondClass(int a_,
                   int b_) : MyFirstClass(a_), b(b_) {};
-  \end{cppcode*}
+  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -420,7 +420,7 @@
     \item object are destructed when out of scope (destructor is called)
     \end{itemize}
   \end{block}
-  \begin{cppcode*}{}
+  \begin{cppcode}
     {
       MyFirstClass a; // default constructor called
       ...
@@ -430,7 +430,7 @@
       MyFirstClass a(3); // constructor called
       ...
     } // destructor called
-  \end{cppcode*}
+  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -441,7 +441,7 @@
     \item object are destructed by calling {\it delete} (destructor is called)
     \end{itemize}
   \end{block}
-  \begin{cppcode*}{}
+  \begin{cppcode}
     {
       // default constructor called
       MyFirstClass *a = new MyFirstClass;
@@ -454,7 +454,7 @@
       MyFirstClass *a = new MyFirstClass(3);
       ...
     } // memory leak !!!
-  \end{cppcode*}
+  \end{cppcode}
 \end{frame}
 
 \begin{frame}
@@ -478,7 +478,7 @@
     \item you handle them using {\it try ... catch} blocks
     \end{itemize}
   \end{block}
-  \begin{cppcode*}{}
+  \begin{cppcode}
     try {
       if (0 == name) {
         throw std::string("Expected non empty name");
@@ -487,7 +487,7 @@
     } catch (std::string e) {
       printf("empty name found\n");      
     }
-  \end{cppcode*}
+  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
