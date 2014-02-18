@@ -182,6 +182,30 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitle{Pure Abtract Class aka Interface}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item a class that has no data member and only pure virtual methods
+    \item the equivalent of an Interface in Java
+    \end{itemize}
+  \end{block}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6}
+      struct Drawable {
+        virtual void draw() = 0;
+      }
+    \end{cppcode*}
+    \columnbreak
+    \center
+    \begin{tikzpicture}[node distance=1.5cm]
+      \classbox{Drawable}{
+        virtual void draw() = 0;
+      }
+    \end{tikzpicture}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitle{Polymorphism}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
@@ -298,6 +322,23 @@
       \draw node at (1.5cm,1cm) [rectangle] {standard};
     \end{tikzpicture}
   \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Multiple inheritance advice}
+  \begin{block}{Do not use multiple inheritance}
+    \begin{itemize}
+    \item Except for inheriting from interfaces
+    \item and for very seldom special cases
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{Do not use diamond shape inheritance}
+    \begin{itemize}
+    \item This is a sign that your architecture is not correct
+    \item In case you are tempted, think twice and change mind
+    \end{itemize}
+  \end{alertblock}
 \end{frame}
 
 \begin{frame}[fragile]

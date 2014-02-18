@@ -171,7 +171,7 @@
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=6,firstnumber=13}
       struct MySecondClass :
-        MyFirstClass {
+        public MyFirstClass {
         int b;
         int sum() {
           return a + b;
@@ -203,9 +203,6 @@
     \vfill \null
   \end{multicols}
 \end{frame}
-
-
-\subsection{Encapsulation}
 
 \begin{frame}[fragile]
   \frametitle{Managing access to class members}
@@ -263,7 +260,7 @@
     \columnbreak
     \begin{cppcode*}{gobble=6,firstnumber=13}
       class MySecondClass :
-        MyFirstClass {
+        public MyFirstClass {
       public:
         int sum() {
           return a + b;
@@ -275,6 +272,30 @@
   \end{multicols}
 \end{frame}
 
+\begin{frame}[fragile,label=current]
+  \frametitle{Managing inheritance privacy}
+  \begin{block}{Inheritance can be public, protected or private}
+    The influences the privacy of inherited members for external code.\\
+    The code of the class itself can still access them the same way.
+    \begin{description}
+    \item[public] the easiest : no change to privacy of inherited members
+    \item[protected] inherited public members are seen as protected
+    \item[private] all inherited members are seen as private \\
+      the default if nothing is specified
+    \end{description}
+  \end{block}
+  \pause
+  \begin{block}{Net result for external code}
+    \begin{itemize}
+    \item only public members of public inheritance are accessible
+    \end{itemize}
+  \end{block}
+  \begin{block}{Net result for grand child code}
+    \begin{itemize}
+    \item only public and protected members of public and protected parents are accessible
+    \end{itemize}
+  \end{block}
+\end{frame}
 
 \subsection{constructors and destructors}
 
@@ -358,6 +379,35 @@
                   int b_) : MyFirstClass(a_), b(b_) {};
   \end{cppcode}
 \end{frame}
+
+
+\subsection{Static members}
+
+\begin{frame}[fragile,label=current]
+  \frametitle{Static members}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item members attached to a class rather than to an object
+    \item usable with or without an instance of the class
+    \item identified by the {\it static} keyword
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    Class Text {
+    public:
+      static std::string upper(std::string);
+    private:
+      static int s_bCallsToUpper;
+    }
+    int Text::s_bCallsToUpper = 0;
+    std::string s = "my text";
+    std::string uppers = Text::upper("my text");
+    // now Text::s_bCallsToUpper is 1
+  \end{cppcode}
+\end{frame}
+
+
+\subsection{Memory allocation}
 
 \begin{frame}[fragile]
   \frametitle{Object lifetime}
@@ -496,62 +546,52 @@
   \end{multicols}
 \end{frame}
 
-\iffalse
-\xxx throw declaration for a function
-\xxx only at run time !!!
-
-
-
-
-
-\begin{frame}[fragile,label=current]
-\xxx
-  \frametitle{Static members}
-  \begin{block}{Concept}
+\begin{frame}[fragile]
+  \frametitle{Controlling exceptions}
+  \begin{block}{Declaring expected exceptions}
     \begin{itemize}
-    \item members attached to a class rather than to an object
-    \item usable with or without an instance of the class
-    \item identified by the {\it static} keyword
+    \item each function can declare the set of expected exceptions
+    \item using the {\it throw} statement in its declaration
+    \item other exceptions won't exit the scope of the function
+      \begin{itemize}
+      \item instead, the {\it unexpected} handler is called
+      \item by default, it terminates the program
+      \end{itemize}
     \end{itemize}
   \end{block}
+  \pause
   \begin{cppcode}
-    Class Text {
-    public:
-      static std::string upper(std::string);
-    private:
-      static int s_bCallsToUpper;
+    int func(int a) throw(int) {
+      if (0 == a) {
+        throw 2;  // ok, goes out
+      } else {
+        throw "hello"; // std::unexpected called
+      }
     }
-    int Text::s_bCallsToUpper = 0;
-    std::string s = "my text";
-    std::string uppers = Text::upper("my text");
-    // now Text::s_bCallsToUpper is 1
   \end{cppcode}
-\end{frame}
+\end{frame}  
 
-\begin{frame}[fragile,label=current]
-  \frametitle{private/ public inheritance}
-  /xxx
-\end{frame}
+\begin{frame}[fragile]
+  \frametitle{Controlling exceptions}
+  \begin{block}{Good to know}
+    \begin{itemize}
+    \item The check in done at runtime, not at compile time
+      \begin{itemize}
+      \item unlike Java
+      \end{itemize}
+    \item When the {\it throw} clause is absent, any exception can go out
+    \item To block all exceptions, use {\it throw()}
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{cppcode}
+    int func(int a) {
+      // any exception can go out
+    }
+    int otherfunc(int a) throw() {
+      // no exception can go out
+    }
+  \end{cppcode}
+\end{frame}  
 
-\begin{frame}[fragile,label=current]
-  \frametitle{static functions}
-  /xxx
-\end{frame}
 
-\begin{frame}[fragile,label=current]
-  \frametitle{static variable}
-  /xxx
-\end{frame}
-
-\begin{frame}[fragile,label=current]
-  \frametitle{interfaces}
-  /xxx
-\end{frame}
-
-\begin{frame}[fragile,label=current]
-  \frametitle{Advices}
-  /xxx
-  no multiple inheritance but for interfaces
-  think 2x, or 3x
-\end{frame}
-\fi
