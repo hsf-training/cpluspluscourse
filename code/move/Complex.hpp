@@ -3,6 +3,8 @@
 template <class T=float>
 class Complex_t {
 public:
+    typedef T BaseType;
+
     Complex_t(T r, T i);
     Complex_t();
 
@@ -16,6 +18,7 @@ public:
     Complex_t operator/(const T dividend) const;
     Complex_t& operator=(const Complex_t& other);
     Complex_t& operator+=(const Complex_t& other);
+    T sqnorm() const;
     bool operator<(const Complex_t& a) const;
 private:
     T m_r, m_i;
@@ -24,7 +27,7 @@ private:
 typedef Complex_t<> Complex;
 
 template <class T>
-Complex_t<T>::Complex_t() {}
+Complex_t<T>::Complex_t() : m_r(T()), m_i(T()) {}
 
 template <class T>
 Complex_t<T>::Complex_t(T r, T i) : m_r(r), m_i(i) {}
@@ -70,6 +73,11 @@ Complex_t<T>& Complex_t<T>::operator+=(const Complex_t<T>& other) {
 }
 
 template <class T>
+T Complex_t<T>::sqnorm() const {
+    return m_r*m_r+m_i*m_i;
+}
+
+template <class T>
 bool Complex_t<T>::operator<(const Complex_t<T>& other) const {
     return (m_r*m_r+m_i*m_i) < (other.m_r*other.m_r+other.m_i*other.m_i);
 }
@@ -77,6 +85,6 @@ bool Complex_t<T>::operator<(const Complex_t<T>& other) const {
 template <class T>
 std::ostream& operator<<(std::ostream& os,
                          const Complex_t<T>& c) {
-    os << "(" << c.real() << ", " << c.imaginary() << ")";
+    os <<  "(" << c.real() << ", " << c.imaginary() << ")";
     return os;
 }

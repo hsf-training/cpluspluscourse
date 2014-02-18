@@ -460,6 +460,17 @@
 
 \fi  %iffalse
 
+\begin{frame}[fragile]
+  \frametitle{Lambdas}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/lambdas
+    \item look at the code (it's the solution to the stl exercise)
+    \item use lambdas to simplify it
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
 \subsection{Move semantic}
 
 \begin{frame}[fragile]
@@ -588,6 +599,7 @@
       \item still, I advice to never leave inconsistent object
       \end{itemize}
     \end{itemize}
+    \item the whole STL can understand the move semantic
   \end{block}
 \end{frame}
 
@@ -647,12 +659,22 @@
           swap(*this, other);
           return *this;
         }
-        friend void swap(Movable2 &a, Movable2 &b);        
+        friend void swap(Movable &a, Movable &b);        
       };
       void swap(Movable &a, Movable &b);
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
 
-\subsection{Smart pointers}
-
+\begin{frame}[fragile]
+  \frametitle{Move Semantic}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/move
+    \item look at the code
+    \item understand how inefficient it is
+    \item implement move semantic the easy way
+    \item check efficiency improvements
+    \end{itemize}
+  \end{alertblock}
+\end{frame}

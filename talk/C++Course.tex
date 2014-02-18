@@ -181,7 +181,13 @@
 \AtBeginSection[] {
   \begin{frame}<beamer>
     \frametitle{TOC Section}
-    \setcounter{tocdepth}{2}
+    \tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/show/hide]
+  \end{frame}
+}
+
+\AtBeginSubsection[] {
+  \begin{frame}<beamer>
+    \frametitle{TOC SubSection}
     \tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/show/hide]
   \end{frame}
 }

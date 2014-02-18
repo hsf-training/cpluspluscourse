@@ -12,7 +12,7 @@ public:
     Complex_t operator+(const Complex_t& other) const;
     Complex_t operator-(const Complex_t& other) const;
     Complex_t operator*(const Complex_t& other) const;
-    Complex_t operator*(const T dividend) const;
+    Complex_t operator*(const T factor) const;
     Complex_t operator/(const T dividend) const;
     Complex_t& operator=(const Complex_t& other);
     Complex_t& operator+=(const Complex_t& other);
@@ -46,8 +46,8 @@ Complex_t<T> Complex_t<T>::operator*(const Complex_t<T>& other) const {
 }
 
 template <class T>
-Complex_t<T> Complex_t<T>::operator*(const T dividend) const {
-    return Complex_t(m_r*dividend, m_i*dividend);
+Complex_t<T> Complex_t<T>::operator*(const T factor) const {
+    return Complex_t(m_r*factor, m_i*factor);
 }
 
 template <class T>
