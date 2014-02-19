@@ -1,6 +1,6 @@
 \section[OO]{Object orientation}
 
-\subsection{Objects and Classes}
+\subsection[Objects]{Objects and Classes}
 
 \begin{frame}[fragile]
   \frametitle{What are classes and objects}
@@ -8,13 +8,13 @@
     structs on steroids
     \begin{itemize}
     \item with inheritance
-    \item with associated methods
+    \item including methods
     \end{itemize}
   \end{block}
   \begin{block}{Objects}
     instances of classes
   \end{block}
-  \begin{block}{Encapsulates a concept}
+  \begin{block}{A class encapsulates a concept}
     \begin{itemize}
     \item shows an interface
     \item provides its implementation
@@ -37,6 +37,9 @@
         void squareA() {
           a *= a;
         };
+        int sum(int b) {
+          return a + b;
+        };
       };
 
       MyFirstClass myObj;
@@ -50,9 +53,9 @@
     \null \vfill
     \begin{tikzpicture}
       \classbox{MyFirstClass}{
-        \\
         int a; \\
-        void squareA();
+        void squareA(); \\
+        int sum(int b);
       }
     \end{tikzpicture}
     \vfill \null
@@ -66,6 +69,7 @@
       struct MyFirstClass {
         int a;
         void squareA();
+        int sum(int b)();
       };
     \end{cppcode*}
   \end{block}
@@ -74,6 +78,9 @@
       #include "MyFirstClass.hpp"
       void MyFirstClass::squareA() {
         a *= a;
+      };
+      void MyFirstClass::sum(int b) {
+        return a + b;
       };
     \end{cppcode*}
   \end{block}
@@ -133,10 +140,10 @@
       a *= a;
     };
 
-    int MySecondClass::sum() {
+    int MyFirstClass::sum(int b) {
       int a = 0; // do not do that !
       a += this->a;
-      a += this->b;
+      a += b;
       return a;
     };
   \end{cppcode}
@@ -152,15 +159,17 @@
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    class MySecondClass : MyFirstClass {
-    public:
-      int sum();
-      int sum(int c);
+    struct MyFirstClass {
+      int a;
+      int sum(int b);
+      int sum(int b, int c);
     }
 
-    int MySecondClass::sum() { return a + b; };
+    int MyFirstClass::sum(int b) { return a + b; };
 
-    int MySecondClass::sum(int c) { return a + b + c; };
+    int MyFirstClass::sum(int b, int c) {
+      return a + b + c;
+    };
   \end{cppcode}
 \end{frame}
 
@@ -169,22 +178,22 @@
 \begin{frame}[fragile]
   \frametitle{First inheritance}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6,firstnumber=13}
+    \begin{cppcode*}{gobble=6}
+      struct MyFirstClass {
+        int a;
+        void squareA() { a *= a; };
+      };
       struct MySecondClass :
-        public MyFirstClass {
+        MyFirstClass {
         int b;
-        int sum() {
-          return a + b;
-        };
+        int sum() { return a + b; };
       };
 
       MySecondClass myObj2;
       myObj2.a = 2;
       myObj2.b = 5;
-
       myObj2.squareA();
-      int i = myObj2.sum();
-      // i = 9
+      int i = myObj2.sum(); // i = 9
     \end{cppcode*}
     \columnbreak
     \center
@@ -207,11 +216,13 @@
 \begin{frame}[fragile]
   \frametitle{Managing access to class members}
   \begin{block}{{\it public} / {\it private} keywords}
+    \begin{description}
+      \item[private] allows access only within the class
+      \item[public] allows access from anywhere
+    \end{description}
     \begin{itemize}
-      \item {\it private} : access only inside the class
-      \item {\it public} : access from anywhere
       \item Default is {\it private}
-      \item A {\it struct} is a {\it class} fully public
+      \item A {\it struct} is a {\it class} where all members are public
     \end{itemize}
   \end{block}
   \pause
@@ -244,7 +255,7 @@
 \begin{frame}[fragile]
   \frametitle{Managing access to class members(2)}
   \begin{block}{Solution is {\it protected} keyword}
-    Gives access to class descendant
+    Gives access to classes inheriting from base class
   \end{block}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=6}
@@ -272,16 +283,16 @@
   \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile,label=current]
+\begin{frame}[fragile]
   \frametitle{Managing inheritance privacy}
   \begin{block}{Inheritance can be public, protected or private}
     The influences the privacy of inherited members for external code.\\
-    The code of the class itself can still access them the same way.
+    The code of the class itself is not affected
     \begin{description}
-    \item[public] the easiest : no change to privacy of inherited members
+    \item[public] privacy of inherited members remains unchanged
     \item[protected] inherited public members are seen as protected
     \item[private] all inherited members are seen as private \\
-      the default if nothing is specified
+      this is the default if nothing is specified
     \end{description}
   \end{block}
   \pause
@@ -297,8 +308,7 @@
   \end{block}
 \end{frame}
 
-\subsection{constructors and destructors}
-
+\subsection[Constructors]{Constructors/destructors}
 
 \begin{frame}[fragile]
   \frametitle{Class Constructors and Destructor}
@@ -337,7 +347,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{Class Constructor and Destructors}
+  \frametitle{Class Constructors and Destructors}
   \begin{cppcode}
     class Vector {
     public:
@@ -357,7 +367,6 @@
     }
   \end{cppcode}
 \end{frame}
-
 
 \begin{frame}[fragile]
   \frametitle{Constructor and inheritance}
@@ -380,10 +389,55 @@
   \end{cppcode}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Copy constructor}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item special constructor called for replicating an object
+    \item takes a single parameter of type const ref to class
+    \item will be implemented by the compiler if not provided
+    \item in order to forbid copy, declare a private copy constructor without implementing it
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{cppcode}
+    struct MySecondClass : MyFirstClass {
+      MySecondClass();
+      MySecondClass(const MySecondClass &other);
+    }    
+  \end{cppcode}
+  \pause
+  \begin{exampleblock}{The rule of 3}
+    \begin{itemize}
+    \item if a class defines a destructor, a copy constructor or an assignment operator (see later), it should define all three
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
 
-\subsection{Static members}
+\begin{frame}[fragile]
+  \frametitle{Class Constructors and Destructors}
+  \begin{cppcode}
+    class Vector {
+    public:
+      Vector(int n);
+      Vector(const Vector &other);
+      ~Vector();
+      ...
+    }
+    Vector::Vector(int n) : len(other.len) {
+      data = (int*)malloc(len*sizeof(int));
+      memcpy(data, other.data, len);
+    }
+    Vector::Vector(const Vector &other) : len(n) {
+      data = (int*)malloc(n*sizeof(int));
+    }
+    Vector::~Vector() { free(data); }
+  \end{cppcode}
+\end{frame}
 
-\begin{frame}[fragile,label=current]
+\subsection[Static]{Static members}
+
+\begin{frame}[fragile]
   \frametitle{Static members}
   \begin{block}{Concept}
     \begin{itemize}
@@ -397,20 +451,58 @@
     public:
       static std::string upper(std::string);
     private:
-      static int s_bCallsToUpper;
+      static int s_nbCallsToUpper;
     }
-    int Text::s_bCallsToUpper = 0;
+    int Text::s_nbCallsToUpper = 0;
     std::string s = "my text";
     std::string uppers = Text::upper("my text");
-    // now Text::s_bCallsToUpper is 1
+    // now Text::s_nbCallsToUpper is 1
   \end{cppcode}
 \end{frame}
 
 
-\subsection{Memory allocation}
+\subsection[New]{Allocating objects}
 
 \begin{frame}[fragile]
-  \frametitle{Object lifetime}
+  \frametitle{Process memory organization}
+  \begin{block}{4 main areas}
+    \begin{description}
+    \item[the code segment] for the code of the executable
+    \item[the data segment] for global variables
+    \item[the heap] for dynamically allocated variables
+    \item[the stack] for parameters of functions and local variables
+    \end{description}
+  \end{block}
+  \hspace{2.5cm}
+  \begin{tikzpicture}
+    \memorystack[size x=5cm,word size=1,nb blocks=6,addresses=0]
+    \memorypush{code segment}
+    \memorypush{data segment}
+    \memorypush{stack}
+    \memorypush{...}
+    \memorypush{...}
+    \memorypush{heap}
+    \draw[->] (stack3-1.north) ++(-1cm,0) -- +(0,.3cm);
+    \draw[->] (stack3-1.north) ++(1cm,0) -- +(0,.3cm);
+    \draw[->] (stack6-1.south) ++(-1cm,0) -- +(0,-.3cm);
+    \draw[->] (stack6-1.south) ++(1cm,0) -- +(0,-.3cm);
+  \end{tikzpicture}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{The Stack}
+  \begin{block}{Main characteristics}
+    \begin{itemize}
+    \item allocation on the stack stays in scope as long as it is on the stack \\
+    It is destroyed when it is popped off the stack.
+    \item memory allocated on the stack is known at compile time and can thus be accessed through a variable.
+    \item the stack is relatively small, it is not a good idea to allocate large arrays, structures or classes
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Object allocation on the stack}
   \begin{block}{On the stack}
     \begin{itemize}
     \item object are created when declared (constructor called)
@@ -431,7 +523,21 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Object lifetime}
+  \frametitle{The Heap}
+  \begin{block}{Main characteristics}
+    \begin{itemize}
+    \item Allocated memory stays allocated until it is specifically deallocated
+      \begin{itemize}
+      \item beware memory leaks
+      \end{itemize}
+    \item Dynamically allocated memory must be accessed through pointers
+    \item large arrays, structures, or classes should be allocated here
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Object allocation on the heap}
   \begin{block}{On the heap}
     \begin{itemize}
     \item object are created by calling {\it new} (constructor is called)
@@ -455,13 +561,13 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Object lifetime}
+  \frametitle{Array allocation on the heap}
   \begin{block}{Arrays on the heap}
     \begin{itemize}
     \item arrays of objects are created by calling {\it new[]} \\
-      default constructors are called
+      default constructor is called for each object of the array
     \item arrays of object are destructed by calling {\it delete[]} \\
-      destructors are called
+      destructor is called for each object of the array
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -550,7 +656,7 @@
   \frametitle{Controlling exceptions}
   \begin{block}{Declaring expected exceptions}
     \begin{itemize}
-    \item each function can declare the set of expected exceptions
+    \item each function can declare a set of expected exceptions
     \item using the {\it throw} statement in its declaration
     \item other exceptions won't exit the scope of the function
       \begin{itemize}
@@ -593,5 +699,3 @@
     }
   \end{cppcode}
 \end{frame}  
-
-

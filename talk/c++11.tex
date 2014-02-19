@@ -1,5 +1,7 @@
 \section[C$^{++}$11]{C$^{++}$11 preview}
 
+\subsection[Intro]{Introduction}
+
 \begin{frame}
   \frametitle{Introduction to \cpp11}
   \begin{block}{status}
@@ -18,7 +20,7 @@
   \end{block}
 \end{frame}
 
-\subsection[]{nullptr}
+\subsection[nullptr]{nullptr}
 
 \begin{frame}[fragile]
   \frametitle{nullptr}
@@ -39,7 +41,7 @@
   \end{exampleblock}
 \end{frame}
 
-\subsection{Range based loops}
+\subsection[Loops]{Range based loops}
 
 \begin{frame}[fragile]
   \frametitle{Range based loops}
@@ -65,7 +67,7 @@
   \end{exampleblock}
 \end{frame}
 
-\subsection[Auto]{auto keyword}
+\subsection[auto]{auto keyword}
 
 \begin{frame}[fragile]
   \frametitle{Auto keyword}
@@ -80,6 +82,7 @@
       int b = v.size();  // bug ? unsigned to signed
     \end{cppcode*}
   \end{block}
+  \pause
   \begin{block}{New way}
     \begin{cppcode*}{linenos=false}
       std::vector<int> v;
@@ -102,6 +105,7 @@
       }
     \end{cppcode*}
   \end{block}
+  \pause
   \begin{block}{New way}
     \begin{cppcode*}{gobble=6}
       std::vector<int> v;
@@ -110,6 +114,8 @@
     \end{cppcode*}
   \end{block}
 \end{frame}
+
+\subsection[begin]{non-member begin/end}
 
 \begin{frame}[fragile]
   \frametitle{non-member begin and end}
@@ -133,7 +139,7 @@
   \end{block}
 \end{frame}
 
-\subsection{initializers}
+\subsection[Init]{Initializers}
 
 \begin{frame}[fragile]
   \frametitle{Initializers}
@@ -252,10 +258,11 @@
   \frametitle{\cpp Lambdas}
   \begin{block}{Simplified syntax}
     \begin{cppcode*}{gobble=6}
-      [] (args) {
+      [] (args) -> type {
         code;
       }
     \end{cppcode*}
+    The type specification is optionnal
   \end{block}
   \begin{exampleblock}{Usage example}
     \begin{cppcode*}{gobble=6}
@@ -467,7 +474,7 @@
   \end{alertblock}
 \end{frame}
 
-\subsection{Move semantic}
+\subsection[Move]{Move semantic}
 
 \begin{frame}[fragile]
   \frametitle{Move semantics : the problem}
@@ -496,7 +503,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Move semantics : the problem}
-  \begin{exampleblock}{Dedicated fficient code}
+  \begin{exampleblock}{Dedicated efficient code}
     \begin{cppcode*}{gobble=6}
       std::vector<int> v, w;
       for (int i = 0; i < 10000; i++) v.push_back(i);
@@ -587,12 +594,12 @@
   \frametitle{Move semantics}
   \begin{block}{A few important points concerning move semantic}
     \begin{itemize}
-    \item if not implemented, it falls back to copy semantic
+    \item if not implemented, it falls back to copy version
     \item move is called by the compiler whenever possible
     \item move assignement operator is allowed to destroy source
       \begin{itemize}
       \item so do not reuse source afterward
-      \item still, I advice to never leave inconsistent object
+      \item still, I advice to never leave inconsistent objects
       \end{itemize}
     \item the whole STL can understand the move semantic
     \end{itemize}
@@ -633,9 +640,13 @@
     \item use swap in move assignment
       \begin{itemize}
       \item pass parameter by value
-      \item this forces creation of a local replica of source
-      \item move semantic will be used reusing our move constructor
+      \item this should force creation of a local replica of source
+      \item as we are in the move assignement \\
+        our move constructor will be called \\
+        and source will be filled with an empty object
       \item swap local object with *this
+      \item let local object be destructed when exiting the method \\
+        this will actually destroy the original content of the target
       \end{itemize}
     \end{itemize}
   \end{block}

@@ -1,6 +1,6 @@
 \section{Advanced Topics}
 
-\subsection[Advanced OO]{Advanced Object orientation}
+\subsection[OO]{Object orientation}
 
 \begin{frame}[fragile]
   \frametitle{Polymorphism}
@@ -26,14 +26,45 @@
     \columnbreak
     \center
     \begin{tikzpicture}[node distance=1.5cm]
-      \classbox{Drawable}{
-      }
-      \classbox[below of=Drawable]{Shape}{
-      }
-      \classbox[below of=Shape]{Polygon}{
-      }
+      \classbox{Drawable}{}
+      \classbox[below of=Drawable]{Shape}{}
+      \classbox[below of=Shape]{Polygon}{}
       \draw[very thick,->] (Polygon) -- (Shape);
       \draw[very thick,->] (Shape) -- (Drawable);
+    \end{tikzpicture}
+  \end{multicols}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Inheritance privacy and polymorphism}
+  \begin{block}{Only public inheritance is visible to code outside the class}
+    \begin{itemize}
+    \item private and protected are not
+    \item this may restrict usage of polymorphism
+    \end{itemize}
+  \end{block}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=6}
+      Polygon *p = new Polygon();
+
+      int f(Drawable *d) {...};
+      f(p);  // Not ok anymore
+
+      try {
+        throw *p;
+      } catch (Shape e) {
+        // ok, will be caught
+      }
+    \end{cppcode*}
+    \columnbreak
+    \center
+    \begin{tikzpicture}[node distance=1.5cm]
+      \classbox{Drawable}{}
+      \classbox[below of=Drawable]{Shape}{}
+      \classbox[below of=Shape]{Polygon}{}
+      \draw[very thick,->] (Polygon) -- (Shape) node[midway,right] {public};
+      \draw[very thick,->] (Shape) -- (Drawable) node[midway,right] {private};
     \end{tikzpicture}
   \end{multicols}
 \end{frame}
@@ -60,8 +91,7 @@
       \classbox{Drawable}{
         void draw();
       }
-      \classbox[below of=Drawable]{Shape}{
-      }
+      \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
         void draw();
       }
@@ -96,8 +126,7 @@
       \classbox{Drawable}{
         void draw();
       }
-      \classbox[below of=Drawable]{Shape}{
-      }
+      \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
         void draw();
       }
@@ -130,8 +159,7 @@
       \classbox{Drawable}{
         virtual void draw();
       }
-      \classbox[below of=Drawable]{Shape}{
-      }
+      \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
         void draw();
       }
@@ -170,8 +198,7 @@
       \classbox{Drawable}{
         void draw() = 0;
       }
-      \classbox[below of=Drawable]{Shape}{
-      }
+      \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
         void draw();
       }
@@ -183,9 +210,13 @@
 
 \begin{frame}[fragile]
   \frametitle{Pure Abtract Class aka Interface}
-  \begin{block}{Concept}
+  \begin{block}{Definition of pure abstract class}
     \begin{itemize}
-    \item a class that has no data member and only pure virtual methods
+    \item a class that has
+      \begin{itemize}
+        \item no data member
+        \item all its methods pure virtual
+      \end{itemize}
     \item the equivalent of an Interface in Java
     \end{itemize}
   \end{block}
@@ -229,14 +260,10 @@
   \end{block}
   \begin{multicols}{2}
     \begin{tikzpicture}[]
-      \classbox[]{Polygon}{
-      }
-      \classbox[below of=Polygon,node distance=1.5cm]{Rectangle}{
-      }
-      \classbox[right of=Rectangle,node distance=3cm]{Text}{
-      }
-      \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{
-      }
+      \classbox[]{Polygon}{}
+      \classbox[below of=Polygon,node distance=1.5cm]{Rectangle}{}
+      \classbox[right of=Rectangle,node distance=3cm]{Text}{}
+      \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{}
       \draw[very thick,->] (Polygon) -- (Rectangle);
       \draw[very thick,->] (Rectangle) -- (TextBox);
       \draw[very thick,->] (Text) -- (TextBox);
@@ -254,23 +281,23 @@
 
 \begin{frame}[fragile]
   \frametitle{The diamond shape}
-  \begin{block}{Concept}
+  \begin{block}{Definition}
     \begin{itemize}
-    \item one class may inherit several times form a given grand parent
-    \item are the members of the grand parent replicated ?
+    \item situation when one class inherits several times from a given grand parent
     \end{itemize}
   \end{block}
+  \begin{alertblock}{Problem}
+    \begin{itemize}
+    \item are the members of the grand parent replicated ?
+    \end{itemize}
+  \end{alertblock}
   \vfill
   \hspace{2.5cm}
   \begin{tikzpicture}[]
-    \classbox[]{Drawable}{
-    }
-    \classbox[below left of=Drawable,node distance=2cm]{Rectangle}{
-    }
-    \classbox[right of=Rectangle,node distance=3cm]{Text}{
-    }
-    \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{
-    }
+    \classbox[]{Drawable}{}
+    \classbox[below left of=Drawable,node distance=2cm]{Rectangle}{}
+    \classbox[right of=Rectangle,node distance=3cm]{Text}{}
+    \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{}
     \draw[very thick,->] (Drawable) -- (Rectangle);
     \draw[very thick,->] (Drawable) -- (Text);
     \draw[very thick,->] (Rectangle) -- (TextBox);
@@ -280,7 +307,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Virtual inheritance}
-  \begin{block}{Concept}
+  \begin{block}{Solution}
     \begin{itemize}
     \item inheritance can be {\it virtual} or not
     \item {\it virtual} inheritance will ``share'' parents
@@ -290,14 +317,10 @@
   \begin{multicols}{2}
     \begin{tikzpicture}[]
       \draw node (title) [rectangle] {virtual};
-      \classbox[below of=title]{Drawable}{
-      }
-      \classbox[below left of=Drawable,node distance=2cm]{Rectangle}{
-      }
-      \classbox[right of=Rectangle,node distance=3cm]{Text}{
-      }
-      \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{
-      }
+      \classbox[below of=title]{Drawable}{}
+      \classbox[below left of=Drawable,node distance=2cm]{Rectangle}{}
+      \classbox[right of=Rectangle,node distance=3cm]{Text}{}
+      \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{}
       \draw[very thick,->] (Drawable) -- (Rectangle);
       \draw[very thick,->] (Drawable) -- (Text);
       \draw[very thick,->] (Rectangle) -- (TextBox);
@@ -305,18 +328,13 @@
     \end{tikzpicture}
     \columnbreak
     \begin{tikzpicture}[]
-      \classbox[]{Drawable1}{
-      }
-      \classbox[below of=Drawable1,node distance=1.5cm]{Rectangle}{
-      }
+      \classbox[]{Drawable1}{}
+      \classbox[below of=Drawable1,node distance=1.5cm]{Rectangle}{}
       \draw[very thick,->] (Drawable1) -- (Rectangle);
-      \classbox[right of=Drawable1,node distance=3cm]{Drawable2}{
-      }
-      \classbox[below of=Drawable2,node distance=1.5cm]{Text}{
-      }
+      \classbox[right of=Drawable1,node distance=3cm]{Drawable2}{}
+      \classbox[below of=Drawable2,node distance=1.5cm]{Text}{}
       \draw[very thick,->] (Drawable2) -- (Text);
-      \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{
-      }
+      \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{}
       \draw[very thick,->] (Rectangle) -- (TextBox);
       \draw[very thick,->] (Text) -- (TextBox);
       \draw node at (1.5cm,1cm) [rectangle] {standard};
@@ -333,7 +351,7 @@
     \end{itemize}
   \end{block}
   \pause
-  \begin{alertblock}{Do not use diamond shape inheritance}
+  \begin{alertblock}{Do not use diamond shapes}
     \begin{itemize}
     \item This is a sign that your architecture is not correct
     \item In case you are tempted, think twice and change mind
@@ -372,16 +390,16 @@
     \item implemented as a regular method
       \begin{itemize}
       \item either inside the class, as a member function
-      \item or outside the class (for some)
+      \item or outside the class (not all)
       \end{itemize}
     \item with a special name (replace @ by anything)
       \begin{tabular}{llll}
-        Expression & As member function & As non-member function \\
+        Expression & As member & As non-member \\
         \hline
         @a & (a).operator@() & operator@(a) \\
         a@b & (a).operator@(b) & operator@(a,b) \\
         a=b & (a).operator=(b) & cannot be non-member \\
-        a[b] & (a).operator[](b)
+        a[b] & (a).operator[](b) & cannot be non-member \\
         a-\textgreater & (a).operator-\textgreater() & cannot be non-member \\
         a@ & (a).operator@(0) & operator@(a,0) \\
         (@)a & (a).operator@() & cannot be non-member \\
@@ -396,14 +414,14 @@
     struct Complex {
       float m_real, m_imaginary;
       Complex(float real, float imaginary);
-      Complex& operator+(Complex& other) {
-        m_real += other.m_real;
-        m_imaginary += other.m_imaginary;
+      Complex operator+(Complex& other) {
+        return Complex(m_real + other.m_real,
+                       m_imaginary + other.m_imaginary);
       }
     }
 
     Complex c1(2, 3), c2 (4, 5);
-    Complex c3 = c1 + c2;
+    Complex c3 = c1 + c2; // (6, 8)
   \end{cppcode}
 \end{frame}
 
@@ -426,10 +444,30 @@
   \end{cppcode}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Other reason to have non-member operators ?}
+  \begin{block}{Yes, symetry}
+  \end{block}
+  \begin{cppcode}
+    struct Complex {
+      float m_real, m_imaginary;
+      Complex operator+(float other) {
+        return Complex(m_real + other, m_imaginary);
+      }
+    }
+    Complex c1(2, 3);
+    Complex c2 = c1 + 4;  // ok
+    Complex c3 = 4 + c1;  // not ok !!
+  \end{cppcode}
+  \pause
+  \begin{cppcode*}{firstnumber=10}
+    Complex operator+(float a, const Complex& obj) {
+      return Complex(a + obj.m_real, obj.m_imaginary);
+    }
+  \end{cppcode*}
+\end{frame}
 
-
-
-\subsection[Functions]{More around functions}
+\subsection[Refs]{Value, pointers and references}
 
 \begin{frame}[fragile]
   \frametitle{Value, pointers and references}
@@ -501,6 +539,7 @@
   \end{alertblock}
 \end{frame}
 
+\subsection[const]{Constness}
 
 \begin{frame}[fragile]
   \frametitle{Constness}
@@ -516,7 +555,7 @@
     int const i = 6;
 
     // error : i is constant
-    i = 5
+    i = 5;
 
     // also ok, when nothing on the left,
     // const applies to element on the right
@@ -538,7 +577,7 @@
     *j = 5; // ok, value can be changed
     j = &b; // error, pointer is const
 
-    // constant pointer to an integer
+    // constant pointer to a constant integer
     int const * const k = &a;
     *k = 5; // error, value is const
     k = &b; // error, pointer is const
@@ -546,30 +585,17 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{constness}
-  \begin{alertblock}{Exercise Time}
-    \begin{itemize}
-    \item go to code/constness
-    \item open test.cpp
-    \item test pointer to constant
-    \item test constant pointer
-    \item test constant pointer to constant
-    \end{itemize}
-  \end{alertblock}
-\end{frame}
-
-\begin{frame}[fragile]
   \frametitle{Function constness}
   \begin{block}{The {\it const} keyword for class functions}
     \begin{itemize}
     \item indicate that the function does not modify the object
-    \item in other words,{\it this} is a pointer to constant
+    \item in other words, {\it this} is a pointer to constant object
     \end{itemize}
   \end{block}
   \begin{cppcode}
     struct Exemple {
       void foo() const  {
-        m_member = 0; // Error constant, function
+        m_member = 0; // Error : function is constant
       }
       int m_member;
     };
@@ -592,32 +618,36 @@
     const int *b = 0;
 
     func(a);      // ok
-    func(b);      // error : no matching function
+    func(b);      // error : no cannot cast int* to const
     funcConst(a); // ok
     funcConst(a); // ok
   \end{cppcode}
 \end{frame}
 
+
 \begin{frame}[fragile]
   \frametitle{constness}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
-    \item go back to constness/basic
+    \item go to code/constness
     \item open test.cpp
-    \item test const members
-    \item test const part of type
+    \item try pointer to constant
+    \item try constant pointer
+    \item try constant pointer to constant
+    \item try constant arguments of functions
+    \item try constant method in a class
     \end{itemize}
   \end{alertblock}
 \end{frame}
 
-
+\subsection[Functors]{Functors}
 
 \begin{frame}[fragile]
   \frametitle{Functors}
   \begin{block}{Concept}
     \begin{itemize}
     \item a class that implements the () operator
-    \item allow to use objects in place of functions
+    \item allows to use objects in place of functions
     \item and as objects have constructors, allow to construct functions
     \end{itemize}
   \end{block}
@@ -651,57 +681,14 @@
       double operator() (double a, double b) { return a+b; }
     };
     double binary_op(double a, double b, BinaryFunction &func) {
-      return bin_func(a, b);
+      return func(a, b);
     }
     Add addfunc;
-    binary_op(a, b, addfunc);
+    double c = binary_op(a, b, addfunc);
   \end{cppcode}
 \end{frame}
 
-
-
-\begin{frame}[fragile]
-  \frametitle{Copy constructors}
-  \begin{block}{Concept}
-    \begin{itemize}
-    \item constructor called when replicating an object
-    \item in particular when the = operator is used
-    \item or when the object is passed by value
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-    struct MyClass {
-      MyClass(const MyClass& other);
-      MyClass(MyClass& other);
-    }
-  \end{cppcode}
-\end{frame}
-
-
-\begin{frame}[fragile]
-  \frametitle{Copy constructors}
-  \begin{alertblock}{Usually not needed}
-    \begin{itemize}
-    \item Provided by the compiler
-    \item Except when the compiler cannot know
-    \item Usually associated to non trivial constructor/destructor
-    \end{itemize}
-  \end{alertblock}
-  \begin{cppcode}
-    struct Vector {
-      Vector(const Vector& other);
-      ~Vector() { free(m_data); };
-      int m_len;
-      int* m_data;
-    }
-    Vector::Vector(const Vector& other) :
-      m_len(other.m_len) {
-      int* m_data = (int*) malloc(m_len);
-      memcopy(m_data, other.m_data, m_len);
-    }
-  \end{cppcode}
-\end{frame}
-
+\subsection[\textless{}T\textgreater]{Templates}
 
 \begin{frame}[fragile]
   \frametitle{Templates}
@@ -853,8 +840,9 @@
     \item go to code/template
     \item look at the OrderedVector code
     \item compile and run test.cpp. See the ordering
-    \item reuse OrderedVector with Complex
+    \item modify test.cpp and reuse OrderedVector with Complex
     \item improve OrderedVector to template the ordering
+    \item test reverse ordering of strings (from the last letter)
     \item test manhattan order with complex type
     \item check the implementation of Complex
     \item try ordering complex of complex
@@ -862,10 +850,10 @@
   \end{alertblock}
 \end{frame}
 
-\subsection[STL]{The Standard Template Library}
+\subsection[STL]{The STL}
 
 \begin{frame}[fragile]
-  \frametitle{The Standerd Template Library}
+  \frametitle{The Standard Template Library}
   \begin{block}{What it is}
     \begin{itemize}
     \item A library of standard templates
@@ -876,9 +864,9 @@
       \item functors, allocators
       \item ...
       \end{itemize}
-    \item Very portable
-    \item Very reusable
-    \item Very efficient
+    \item Portable
+    \item Reusable
+    \item Efficient
     \end{itemize}
   \end{block}
   \pause
@@ -943,7 +931,7 @@
     \item irrespective of
       \begin{itemize}
       \item the container used (templated)
-      \item the data itself (contained is templated)
+      \item the data itself (container is templated)
       \item the consumer of the data (templated algorithm)
       \end{itemize}
     \item examples
@@ -961,7 +949,7 @@
   \begin{block}{algorithms}
     \begin{itemize}
     \item implementation of an algorithm working on data
-    \item with a well defined behavior (speed garantee)
+    \item with a well defined behavior (defined complexity)
     \item irrespective of
       \begin{itemize}
       \item the data handled
@@ -1028,8 +1016,8 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{STL's concepts}
-  \begin{block}{Welcome to lego programming !}
+  \frametitle{Welcome to lego programming !}
+  \begin{block}{}
     \pgfdeclareimage[height=0.5cm]{AtlasLego}{AtlasLego.jpg}
     \includegraphics[width=\linewidth]{AtlasLego}
   \end{block}
@@ -1048,7 +1036,7 @@
         \item and the mean and variance of it
       \end{itemize}
     \item open test.cpp and complete the ``translation'' to STL
-    \item reuse the code with complex numbers
+    \item see how easy it is to reuse the code with complex numbers
     \end{itemize}
   \end{alertblock}
 \end{frame}
@@ -1092,7 +1080,7 @@
       similar again, also portable
     \item[\href{http://www.gnu.org/software/emacs/}{\beamergotobutton{Emacs}}]
       the expert way. Extremely powerful. Programmable \\
-      is to IDEs what latex is to PowerPoint
+      It is to IDEs what latex is to PowerPoint
     \end{description}
     Choosing one is mostly a matter of taste
   \end{block}
@@ -1127,12 +1115,13 @@
 
 \begin{frame}[fragile]
   \frametitle{GIT crash course}
-  \begin{minted}{text}
+  \begin{minted}[gobble=4]{text}
     # mkdir myProject; cd myProject; git init
     Initialized empty Git repository in /tmp/myProject/.git/
 
     # vim file.cpp; vim file2.cpp
-    # git add file.cpp file2.cpp; git commit -m "commiting first 2 files"
+    # git add file.cpp file2.cpp
+    # git commit -m "commiting first 2 files"
     [master (root-commit) c481716] commiting first 2 files
     ...
 
@@ -1212,7 +1201,7 @@
   \begin{block}{Get more warnings}
     \begin{description}
       \item[-Wall -Wextra] the way to get all warnings
-      \item[-Werror] the way to force you to look at them
+      \item[-Werror] the way to force yourself to look at warnings
     \end{description}
   \end{block}
   \begin{block}{Around optimization}
@@ -1378,7 +1367,8 @@
       \item is able to detect accesses to non allocated memory
       \item and even tell you when it was deallocated if it was
       \item or what it the closest array in case of overflow
-      \item is able to list still allocated memory when program exist (memory leaks)
+      \item is able to list still allocated memory when program exist\\
+        (memory leaks detection)
     \end{itemize}
   \end{block}
 \end{frame}
@@ -1391,6 +1381,8 @@
     \item compile, run, it should work
     \item run with valgrind, see the problem
     \item analyze the issue, see that the variance is biaised
+    \item fix the problem
+      \vspace{.3cm}
     \item go back to the code/debug exercise
     \item check it with valgrind
     \item fix the issue
@@ -1421,7 +1413,7 @@
       \item outputs flat statistics file, quite unreadable
     \end{itemize}
   \end{block}
-  \begin{block}{kcachgrind}
+  \begin{block}{kcachegrind}
     \begin{itemize}
       \item a gui exploiting statistics built by callgrind
       \item able to browse graphically the program calls
@@ -1473,8 +1465,8 @@
     \item compile, run
     \item check it with valgrind. All should be fine most of the time
     \item check it with valgrind -{}-tool=helgrind
-    \item understand issue and fix
     \item check that the issue is visible in valgrind for MIN=20
+    \item understand issue and fix
     \end{itemize}
   \end{alertblock}
 \end{frame}
@@ -1491,11 +1483,11 @@
     \end{itemize}
   \end{alertblock}
   \pause
-  \begin{block}{A (partial) solution : analysizing the source code}
+  \begin{block}{A (partial) solution : analyzing the source code}
     \begin{itemize}
     \item build a graph of dependencies of the calls
-    \item using graph tools to detect potential memory corruptions,
-      memeory leaks ot missing initializations
+    \item use graph tools to detect potential memory corruptions,
+      memory leaks ot missing initializations
     \end{itemize}
   \end{block}
   \pause

@@ -14,7 +14,7 @@
   \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
     \usebeamerfont{title in head/foot}\insertshorttitle
   \end{beamercolorbox}}%
-    \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.2cm plus1fill,rightskip=.3cm]{date in head/foot}
+    \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.1cm plus1fill,rightskip=.1cm]{date in head/foot}
       \usebeamerfont{date in head/foot} \insertframenumber{} / \inserttotalframenumber 
     \end{beamercolorbox}
   \vskip0pt%
@@ -52,13 +52,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand\classbox[3][]{
-  \draw[thick] node (#2) [#1]
-       [rectangle,rounded corners,draw] {
-    \begin{tabular}{l}
-      \multicolumn{1}{c}{#2} \\
-      #3
-    \end{tabular}
-  };
+  \def\temp{#3}
+  \ifx\temp\empty
+    \draw[thick] node (#2) [#1]
+         [rectangle,rounded corners,draw] {#2};
+  \else
+    \draw[thick] node (#2) [#1]
+         [rectangle,rounded corners,draw] {
+      \begin{tabular}{l}
+        \multicolumn{1}{c}{#2} \\
+        \hline
+        #3
+      \end{tabular}
+    };
+  \fi
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -75,7 +82,8 @@
   word size/.initial=4,
   nb blocks/.initial=8,
   base address/.initial=12351,
-  color/.initial=black
+  color/.initial=black,
+  addresses/.initial=1
 }
 
 \makeatletter
@@ -88,7 +96,8 @@
     word size/.get=\stackwordsize,
     nb blocks/.get=\stacknbblocks,
     base address/.get=\stackbaseaddr,
-    color/.get=\stackcolor
+    color/.get=\stackcolor,
+    addresses/.get=\displayaddrs
   }
   \draw[thick,\stackcolor,text=white] node (title)
         at (\stacksizex/2, \stacknbblocks*\stacksizey+.5cm)
@@ -108,10 +117,12 @@
             at (\stacksizex/\stackwordsize*\p-\stacksizex/\stackwordsize/2,\n*\stacksizey-\stacksizey/2)
             [rectangle,minimum width=\stacksizex,minimum height=\stacksizey] {};
     }
-    \pgfmathparse{\n*\stackwordsize+\stackbaseaddr}
-    \pgfmathdectoBase\hexversion{\pgfmathresult}{16}
-    \draw node at (\stacksizex,\n*\stacksizey-\stacksizey/2) [right=2pt]
-          {0x\hexversion};
+    \ifnum1=\displayaddrs\relax
+      \pgfmathparse{\n*\stackwordsize+\stackbaseaddr}
+      \pgfmathdectoBase\hexversion{\pgfmathresult}{16}
+      \draw node at (\stacksizex,\n*\stacksizey-\stacksizey/2) [right=2pt]
+            {0x\hexversion};
+    \fi
   }
   \pgfmathsetmacro{\nbseps}{\stackwordsize-1}
   \pgfmathtruncatemacro\nbsepstrunc{\nbseps}
@@ -182,14 +193,16 @@
 
 \AtBeginSection[] {
   \begin{frame}<beamer>
-    \frametitle{TOC Section}
-    \tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/show/hide]
+    \frametitle{\insertsection}
+    \begin{multicols}{2}
+      \tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/show/hide]
+    \end{multicols}
   \end{frame}
 }
 
 \AtBeginSubsection[] {
   \begin{frame}<beamer>
-    \frametitle{TOC SubSection}
+    \frametitle{\insertsubsection}
     \tableofcontents[sectionstyle=show/hide,subsectionstyle=show/shaded/hide]
   \end{frame}
 }
@@ -208,23 +221,34 @@
   \frametitle{Foreword}
   \begin{block}{What this course is not}
     \begin{itemize}
-    \item It is not for complete beginners
+    \item It is not for absolute beginners
     \item It is not for experts
-    \item This is not complete at all
+    \item It is not complete at all (would need 3 weeks...)
+      \begin{itemize}
+      \item although is it already too long for the time we have
+      \end{itemize}
     \end{itemize}
   \end{block}
-  \begin{block}{What it should be}
-    \begin{itemize}
-    \item Adaptative
-    \item Interactive
-    \item Useful
-    \end{itemize}
+  \begin{block}{How I see it}
+    \begin{description}
+    \item[Adaptative] pick what you want
+    \item[Interactive] tell me what to skip/insist on
+    \item[Practical] let's spend time on real code
+    \end{description}
   \end{block}
 \end{frame}
 
 \begin{frame}
   \frametitle{Outline}
   \tableofcontents[sectionstyle=show,subsectionstyle=hide]
+\end{frame}
+
+\begin{frame}
+  \frametitle{Detailed outline}
+  \vspace{-0.5cm}
+  \begin{multicols}{2}
+    \tableofcontents[sectionstyle=show,subsectionstyle=show]
+  \end{multicols}
 \end{frame}
 
 \include{introduction}

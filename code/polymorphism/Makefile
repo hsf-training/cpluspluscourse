@@ -1,4 +1,4 @@
-all: libpoly.so test
+all: test
 
 clean:
 	rm -f *o *so test *~ test.sol

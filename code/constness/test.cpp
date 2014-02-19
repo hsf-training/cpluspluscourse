@@ -1,13 +1,16 @@
 int main() {
-    // test pointer to constant
+    // try pointer to constant
 
 
-    // test constant pointer
+    // try constant pointer
 
 
-    // test constant pointer to constant
+    // try constant pointer to constant
 
 
-    // test function constness
+    // try constant arguments of functions
+
+
+    // try constant method in a class
 
 }

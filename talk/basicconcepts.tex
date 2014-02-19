@@ -1,6 +1,6 @@
 \section[Basics]{Langage basics (C and \cpp)}
 
-\subsection{Core syntax an types}
+\subsection[Core]{Core syntax and types}
 
 \begin{frame}[fragile]
   \frametitle{Hello World}
@@ -98,7 +98,7 @@
     \end{cppcode}
 \end{frame}
 
-\subsection{Arrays and Pointers}
+\subsection[Pointers]{Arrays and Pointers}
 
 \begin{frame}[fragile]
   \frametitle{Static arrays}
@@ -129,7 +129,7 @@
       int *paj = pai + 1;
       int k = *paj + 1;
       
-      int *pak = k;
+      int *pak = k; // not compiling
       int *pak = (int*)k;
       int l = *pak; // seg fault !
     \end{cppcode*}
@@ -160,7 +160,7 @@
     #include <stdlib.h>
     #include <string.h>
 
-    int *ai;     // pointer to random address
+    int *bad;    // pointer to random address
     int *ai = 0; // better. Can be tested
 
     // allocate array of 10 ints (not initialized)
@@ -244,7 +244,7 @@
   \end{block}
 \end{frame}
 
-\subsection{Compound data types}
+\subsection[Compound]{Compound data types}
 
 \begin{frame}[fragile]
   \frametitle{struct}
@@ -261,16 +261,16 @@
       Individual student;
       student.age = 25;
       student.weight = 78.5;
-    \end{cppcode*}
-    \columnbreak
-    \begin{cppcode*}{gobble=6,firstnumber=9}
+
       Individual teacher = {
         .age = 45,
         .weight=67
       };
     \end{cppcode*}
     \pause
+    \columnbreak
     \null \vfill
+    \hspace{-1.5cm}
     \begin{tikzpicture}
       \memorystack[nb blocks=5]
       \onslide<4-> {
@@ -396,7 +396,7 @@
   \end{multicols}
 \end{frame}
 
-\subsection{Functions}
+\subsection[$f()$]{Functions}
 
 \begin{frame}[fragile]
   \frametitle{Functions}
@@ -459,13 +459,13 @@
           \memorystruct{1}{3}{s}
         }
         \onslide<4> {
-          \memorypush{p1}
+          \memorypush{p1 = s1}
           \memorypush{...}
-          \memorypush{pn}
+          \memorypush{pn = sn}
           \memorystruct{4}{6}{p}
         }
         \memorygoto{4}
-        \onslide<5> {
+        \onslide<6> {
           \memorypushpointer[q =]{1}
         }
       \end{tikzpicture}
@@ -498,7 +498,7 @@
     \onslide<2->{
       \begin{tikzpicture}
         \memorystack[word size=1, nb blocks=3, size x=3cm]
-        \onslide<3-6> {
+        \onslide<3-7> {
           \memorypush{s.a = 1}
         }
         \onslide<4> {
@@ -509,11 +509,11 @@
           \memorypush{p.a = 2}
         }
         \memorygoto{2}
-        \onslide<6-> {
+        \onslide<7-> {
           \memorypushpointer[q =]{1}
         }
         \memorygoto{1}
-        \onslide<7> {
+        \onslide<8> {
           \memorypush{s.a = 2}
         }
       \end{tikzpicture}
@@ -522,7 +522,7 @@
   \end{multicols}
 \end{frame}
 
-\subsection{control instructions}
+\subsection[Control]{Control instructions}
 
 \begin{frame}[fragile]
   \frametitle{Control instructions : if}
@@ -596,15 +596,16 @@
   \begin{block}{Syntax}
     \begin{cppcode*}{gobble=6,linenos=false}
       switch(identifier) {
-        case c1 : instructions1; [break;]
-        case c2 : instructions2; [break;]
-        case c3 : instructions3; [break;]
+        case c1 : instructions1; break;
+        case c2 : instructions2; break;
+        case c3 : instructions3; break;
         ...
-        default : instructiond; [break;] 
+        default : instructiond; break;
       }
     \end{cppcode*}
     \vspace{-0.5cm}
     \begin{itemize}
+      \item {\it break} is not mandatory but...
       \item cases are entry points, not independant pieces
       \item execution carries on with the next case if no {\it break} is present !
       \item {\it default} may be omitted
@@ -612,7 +613,7 @@
   \end{block}
   \pause
   \begin{alertblock}{Use break}
-    Do not try to make use of nob breaking cases
+    Do not try to make use of non breaking cases
   \end{alertblock}
 \end{frame}
 
@@ -622,7 +623,7 @@
     \begin{cppcode*}{linenos=false}
       enum Lang { FRENCH, GERMAN, ENGLISH, OTHER };
       ...
-      switch (l):
+      switch (language):
       case FRENCH:
         printf("Bonjour");
         break;
@@ -642,7 +643,7 @@
   \frametitle{Control instructions : for loop}
   \begin{block}{for loop syntax}
     \begin{cppcode*}{linenos=false}
-      for(initializes;condition;increments) {
+      for(initializations; condition; increments) {
         instructions;
       }
     \end{cppcode*}
@@ -671,7 +672,7 @@
   \frametitle{Control instructions : while loop}
   \begin{block}{while loop syntax}
     \begin{cppcode*}{linenos=false}
-      while(condition){
+      while(condition) {
         instructions;
       }
       do {
@@ -718,7 +719,7 @@
   \end{exampleblock}
 \end{frame}
 
-\subsection{Headers and interfaces}
+\subsection[Headers]{Headers and interfaces}
 
 \begin{frame}[fragile]
   \frametitle{Headers and interfaces}
@@ -734,7 +735,7 @@
       void printHello();
     \end{cppcode*}
   \end{block}
-  \begin{block}{Usage : myfile.cpp}
+  \begin{block}{Implementation : myfile.cpp}
     \begin{cppcode*}{linenos=false,gobble=6}
       #include "hello.hpp"
       int main() {
@@ -752,7 +753,7 @@
     // macros
     #define MY_GOLDEN_NUMBER 1746
     // compile time decision
-    #ifdef USE64NITS
+    #ifdef USE64BITS
       typedef uint64_t myint;
     #else
       typedef uint32_t myint;
