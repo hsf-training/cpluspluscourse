@@ -1,7 +1,10 @@
 all: test
 
 clean:
-	rm -f *o test *~
+	rm -f *o test test.sol *~
 
-test : test.cpp Complex.hpp NVector.hpp
+test : test.cpp NVector.hpp
+	${CXX} -g -std=c++11 -O0 -Wall -Wextra -L. -o $@ $<
+
+test.sol : test.sol.cpp NVector.sol.hpp
 	${CXX} -g -std=c++11 -O0 -Wall -Wextra -L. -o $@ $<

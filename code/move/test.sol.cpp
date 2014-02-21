@@ -1,12 +1,14 @@
 #include <iostream>
 #include <vector>
-#include "NVector.hpp"
+#include "NVector.sol.hpp"
 
 template<class T>
 void swap(std::vector<T> &v, int a, int b) {
-    T mem = v[a];
-    v[a] = v[b];
-    v[b] = mem;    
+    T mem = std::move(v[a]);
+    v[a] = std::move(v[b]);
+    v[b] = std::move(mem);
+    // event better
+    //swap(v[a], v[b]);
 }
 
 template<class T>

@@ -594,15 +594,53 @@
   \frametitle{Move semantics}
   \begin{block}{A few important points concerning move semantic}
     \begin{itemize}
-    \item if not implemented, it falls back to copy version
-    \item move is called by the compiler whenever possible
+    \item the whole STL can understand the move semantic
     \item move assignement operator is allowed to destroy source
       \begin{itemize}
       \item so do not reuse source afterward
       \item still, I advice to never leave inconsistent objects
       \end{itemize}
-    \item the whole STL can understand the move semantic
+    \item if not implemented, move falls back to copy version
+    \item move is called by the compiler whenever possible
+      \begin{itemize}
+      \item e.g. when passing temporary
+      \end{itemize}
     \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Practically}
+    \begin{cppcode*}{gobble=6}
+      T a;
+      T b = a;      // 1. Copy assign
+      T c = T(2);   // 2. Move assign
+      T d = func(); // 3. Move assign
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Move semantics}
+  \begin{block}{In some cases, you want to force a move}
+    \begin{cppcode*}{gobble=6}
+      template <class T> void swap(T &a, T &b) {
+        T c = a;  // copy
+        a = b;    // copy
+        b = c;    // copy
+      }
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{There are mainly two ways}
+    \begin{itemize}
+    \item casting to an rvalue reference
+    \item using the std::move function
+    \end{itemize}
+    \begin{cppcode*}{gobble=6}
+      T a;
+      T b = a;                   // 1. Copy assign
+      T c = std::move(a);        // 4. Move assign
+      T d = static_cast<T&&>(a); // 5. Move assign
+    \end{cppcode*}
   \end{block}
 \end{frame}
 
@@ -678,10 +716,12 @@
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/move
-    \item look at the code
+    \item look at the code and run it with callgrind
     \item understand how inefficient it is
-    \item implement move semantic the easy way
-    \item check efficiency improvements
+    \item implement move semantic the easy way in NVector
+    \item run with callgrind and see no improvement
+    \item understand why and fix test.cpp
+    \item see efficiency improvements
     \end{itemize}
   \end{alertblock}
 \end{frame}

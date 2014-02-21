@@ -1,170 +1,138 @@
 #include <ostream>
 #include <assert.h>
+#include <algorithm>
 
-template <class T=float>
-class NVector_t {
-    NVector_t(unsigned int dimension);
+template <int N, class T=float>
+class NVector {
 public:
     typedef T BaseType;
 
-    NVector_t();
-    NVector_t(unsigned int dimension, T initialValue, T inc);
-    NVector_t(const NVector_t &other);
-    ~NVector_t();
+    NVector();
+    NVector(T initialValue, T inc);
+    NVector(const NVector &other);
+    ~NVector();
 
-    NVector_t operator-() const;
-    NVector_t operator+(const NVector_t& other) const;
-    NVector_t operator-(const NVector_t& other) const;
-    NVector_t operator*(const NVector_t& other) const;
-    NVector_t operator*(const T factor) const;
-    NVector_t operator/(const T dividend) const;
-    NVector_t& operator=(const NVector_t& other);
-    NVector_t& operator+=(const NVector_t& other);
+    NVector& operator-() const;
+    NVector& operator+(const NVector other) const;
+    NVector& operator-(const NVector other) const;
+    NVector& operator*(const NVector other) const;
+    NVector& operator*(const T factor) const;
+    NVector& operator/(const T dividend) const;
+    NVector& operator=(const NVector other);
+    NVector& operator+=(const NVector other);
     T sqnorm() const;
-    bool operator<(const NVector_t& a) const;
+    bool operator<(const NVector a) const;
 
     void print(std::ostream& os) const;
 private:
-    unsigned int m_dimension;
     T *m_data;
 };
 
-typedef NVector_t<> NVector;
-
-template <class T>
-NVector_t<T>::NVector_t() :
-    m_dimension(0), m_data(0) {
+template <int N, class T>
+NVector<N,T>::NVector() {
+    m_data = new T[N];
 }
 
-template <class T>
-NVector_t<T>::NVector_t(unsigned int dimension) :
-    m_dimension(dimension) {
-    m_data = new T[dimension];
-}
-
-template <class T>
-NVector_t<T>::NVector_t(unsigned int dimension, T initialValue, T inc) :
-    NVector_t(dimension) {
+template <int N, class T>
+NVector<N,T>::NVector(T initialValue, T inc) :
+    NVector() {
     T curValue = initialValue;
-    std::generate(m_data, m_data+m_dimension,
+    std::generate(m_data, m_data+N,
                   [&curValue, inc]() { T cur = curValue;
                                        curValue += inc;
                                        return cur;});
 }
 
-template <class T>
-NVector_t<T>::NVector_t(const NVector_t<T>& other) {
-    m_dimension = other.m_dimension;
-    m_data = new T[m_dimension];
-    std::copy(other.m_data, other.m_data+other.m_dimension, m_data);
+template <int N, class T>
+NVector<N,T>::NVector(const NVector<N,T>& other) {
+    m_data = new T[N];
+    std::copy(other.m_data, other.m_data+N, m_data);
 }
 
-template <class T>
-NVector_t<T>::~NVector_t() {
+template <int N, class T>
+NVector<N,T>::~NVector() {
     if (m_data) delete[](m_data);
 }
 
-template <class T>
-NVector_t<T> NVector_t<T>::operator-() const {
-    assert(m_dimension > 0);
-    NVector_t res(m_dimension);
-    std::transform(m_data, m_data+m_dimension, res.m_data,
+template <int N, class T>
+NVector<N,T>& NVector<N,T>::operator-() const {
+    NVector res;
+    std::transform(m_data, m_data+N, res.m_data,
                    [](T a) {return -a;});
     return res;
 }
 
-template <class T>
-NVector_t<T> NVector_t<T>::operator+(const NVector_t<T>& other) const {
-    assert((m_dimension == other.m_dimension && m_dimension > 0) || 0 == m_dimension);
-    if (0 == m_dimension) {
-        return NVector_t(other);
-    }
-    NVector_t res(other.m_dimension);
-    std::transform(m_data, m_data+m_dimension,
+template <int N, class T>
+NVector<N,T>& NVector<N,T>::operator+(const NVector<N,T> other) const {
+    NVector res;
+    std::transform(m_data, m_data+N,
                    other.m_data, res.m_data,
                    [](T a, T b) {return a + b;});
     return res;
 }
 
-template <class T>
-NVector_t<T> NVector_t<T>::operator-(const NVector_t<T>& other) const {
-    assert((m_dimension == other.m_dimension && m_dimension > 0) || 0 == m_dimension);
-    if (0 == m_dimension) {
-        return -NVector_t(other);
-    }
-    NVector_t res(m_dimension);
-    std::transform(m_data, m_data+m_dimension,
+template <int N, class T>
+NVector<N,T>& NVector<N,T>::operator-(const NVector<N,T> other) const {
+    NVector res;
+    std::transform(m_data, m_data+N,
                    other.m_data, res.m_data,
                    [](T a, T b) {return a - b;});
     return res;
 }
 
-template <class T>
-NVector_t<T> NVector_t<T>::operator*(const T factor) const {
-    assert(m_dimension > 0);
-    NVector_t res(m_dimension);
-    std::transform(m_data, m_data+m_dimension, res.m_dat,
+template <int N, class T>
+NVector<N,T>& NVector<N,T>::operator*(const T factor) const {
+    NVector res;
+    std::transform(m_data, m_data+N, res.m_dat,
                    [factor](T a) {return a * factor;});
     return res;
 }
 
-template <class T>
-NVector_t<T> NVector_t<T>::operator/(const T dividend) const {
-    assert(m_dimension > 0);
-    NVector_t res(m_dimension);
-    std::transform(m_data, m_data+m_dimension, res.m_data,
+template <int N, class T>
+NVector<N,T>& NVector<N,T>::operator/(const T dividend) const {
+    NVector res;
+    std::transform(m_data, m_data+N, res.m_data,
                    [dividend](T a) {return a / dividend;});
     return res;
 }
 
-template <class T>
-NVector_t<T>& NVector_t<T>::operator=(const NVector_t<T>& other) {
+template <int N, class T>
+NVector<N,T>& NVector<N,T>::operator=(const NVector<N,T> other) {
     if (m_data) delete[](m_data);
-    m_dimension = other.m_dimension;
-    m_data = new T[m_dimension];
-    std::copy(other.m_data, other.m_data+other.m_dimension, m_data);
+    m_data = new T[N];
+    std::copy(other.m_data, other.m_data+N, m_data);
     return *this;
 }
 
-template <class T>
-NVector_t<T>& NVector_t<T>::operator+=(const NVector_t<T>& other) {
-    assert(m_dimension == other.m_dimension || 0 == m_dimension);
-    if (0 == m_dimension) {
-        m_dimension = other.m_dimension;
-        m_data = new T[m_dimension];
-        std::copy(other.m_data, other.m_data+other.m_dimension, m_data);
-        return *this;
-    }
-    std::transform(m_data, m_data+m_dimension,
+template <int N, class T>
+NVector<N,T>& NVector<N,T>::operator+=(const NVector<N,T> other) {
+    std::transform(m_data, m_data+N,
                    other.m_data, m_data,
                    [](T a, T b) {return a + b;});
     return *this;
 }
 
-template <class T>
-T NVector_t<T>::sqnorm() const {
-    assert(m_dimension > 0);
+template <int N, class T>
+T NVector<N,T>::sqnorm() const {
     T norm;
-    std::for_each(m_data, m_data+m_dimension,
+    std::for_each(m_data, m_data+N,
                   [&norm](T a) { norm += a*a; });
     return norm;
 }
 
-template <class T>
-bool NVector_t<T>::operator<(const NVector_t<T>& other) const {
-    assert(m_dimension == other.m_dimension);
+template <int N, class T>
+bool NVector<N,T>::operator<(const NVector<N,T> other) const {
     return this->sqnorm() < other.sqnorm();
 }
 
-template <class T>
-void NVector_t<T>::print(std::ostream& os) const {
-    assert(m_dimension > 0);
-    std::for_each(m_data, m_data+m_dimension, [&os](T a) { os << a << ", ";});
+template <int N, class T>
+void NVector<N,T>::print(std::ostream& os) const {
+    std::for_each(m_data, m_data+N, [&os](T a) { os << a << ", ";});
 }
 
-template <class T>
+template <int N, class T>
 std::ostream& operator<<(std::ostream& os,
-                         const NVector_t<T>& c) {
+                         const NVector<N,T>& c) {
     os << "(";
     c.print(os);
     os << ")";
