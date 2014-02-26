@@ -196,7 +196,7 @@
     \center
     \begin{tikzpicture}[node distance=1.5cm]
       \classbox{Drawable}{
-        void draw() = 0;
+        virtual void draw() = 0;
       }
       \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
@@ -620,7 +620,7 @@
     func(a);      // ok
     func(b);      // error : no cannot cast int* to const
     funcConst(a); // ok
-    funcConst(a); // ok
+    funcConst(b); // ok
   \end{cppcode}
 \end{frame}
 
@@ -1055,7 +1055,6 @@
 \end{frame}
 
 \subsection[Tools]{Useful tools}
-
 
 \begin{frame}[fragile]
   \frametitle{\cpp editor}

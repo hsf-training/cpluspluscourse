@@ -62,7 +62,7 @@
     \begin{cppcode*}{linenos=false}
       std::vector<int> v;
       int sum = 0;
-      for (int a : v) { s += a; }
+      for (int a : v) { sum += a; }
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -134,7 +134,7 @@
       std::vector<int> v;
       for(it = begin(v); it != end(v); it++) {...}
       int a[] = {1,2,3};
-      for(i = begin(a); i != end(a); i++) {...}
+      for(int* i = begin(a); i != end(a); i++) {...}
     \end{cppcode}
   \end{block}
 \end{frame}
@@ -142,17 +142,20 @@
 \subsection[Init]{Initializers}
 
 \begin{frame}[fragile]
-  \frametitle{Initializers}
+  \frametitle{Initializers - objects}
   \begin{block}{\cpp98 nightmare}
     \begin{multicols}{2}
       \begin{cppcode*}{gobble=6}
         struct A {
+          int a;
+          float b;
           A();
           A(int);
           A(int, int);
         };
       \end{cppcode*}
-      \begin{cppcode*}{gobble=6,firstnumber=6}
+      \columnbreak
+      \begin{cppcode*}{gobble=6,firstnumber=8}
         struct B {
           int a;
           float b;
@@ -160,49 +163,66 @@
       \end{cppcode*}
     \end{multicols}
     \pause
-    \begin{cppcode*}{firstnumber=10}
+    \begin{cppcode*}{firstnumber=12}
      A a(1,2);       // A::A(int, int)
      A a(1);         // A::A(int)
      A a();          // declaration of a function !
      A a;            // A::A()
      B b = {1, 2.3}; // OK
      A a = {1,2};    // not allowed
-     int ip[3] = {1,2,3};         // OK
-     int* ip = new int[3]{1,2,3}; // not allowed;
     \end{cppcode*}
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Initializers}
+  \frametitle{Initializers - objects}
   \begin{block}{\cpp11 uniformization}
     \begin{multicols}{2}
       \begin{cppcode*}{gobble=6}
         struct A {
+          int a;
+          float b;
           A();
           A(int);
           A(int, int);
         };
       \end{cppcode*}
-      \begin{cppcode*}{gobble=6,firstnumber=6}
+      \columnbreak
+      \begin{cppcode*}{gobble=6,firstnumber=8}
         struct B {
           int a;
           float b;
         };
       \end{cppcode*}
     \end{multicols}
-    \pause
-    \begin{cppcode*}{firstnumber=10}
+    \begin{cppcode*}{firstnumber=12}
      A a{1,2};       // A::A(int, int)
      A a{1};         // A::A(int)
      A a{};          // A::A()
      A a;            // A::A()
      B b = {1, 2.3}; // OK
      A a = {1,2};    // OK, A::A(int, int)
-     int ip[3] = {1,2,3};         // OK
-     int* ip = new int[3]{1,2,3}; // OK
     \end{cppcode*}
   \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Initializers - arrays and vectors}
+  \begin{block}{\cpp98 nightmare}
+    \begin{cppcode*}{firstnumber=10}
+     int ip[3] = {1,2,3};          // OK
+     int* ip = new int[3]{1,2,3};  // not allowed
+     std::vector<int> v = {1,2,3}; // not allowed
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{exampleblock}{\cpp11 uniformization}
+    \begin{cppcode*}{firstnumber=10}
+     int ip[3] = {1,2,3};          // OK
+     int* ip = new int[3]{1,2,3};  // OK
+     std::vector<int> v = {1,2,3}; // OK
+    \end{cppcode*}
+  \end{exampleblock}
 \end{frame}
 
 \subsection{Lambdas}

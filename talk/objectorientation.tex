@@ -94,11 +94,12 @@
   \end{itemize}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=6}
+      int a;
       namespace n {
-        int a;
+        int a;   // no clash
       }      
       namespace p {
-        int a; // no clash
+        int a;   // no clash
         namespace inner {
           int a; // no clash
         }
@@ -108,7 +109,7 @@
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=6,firstnumber=13}
+    \begin{cppcode*}{gobble=6,firstnumber=14}
       namespace p {
         int f() {
           p::a = 2;
@@ -308,6 +309,132 @@
   \end{block}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Managing inheritance privacy - public}
+  \begin{multicols}{2}
+    \begin{tikzpicture}[node distance=3cm]
+      \classbox{MyFirstClass}{
+      private: \\
+        \hspace{0.4cm}int priv; \\
+      protected: \\
+        \hspace{0.4cm}int prot; \\
+      public: \\
+        \hspace{0.4cm}int pub;
+      }
+      \classbox[below of=MyFirstClass]{MySecondClass}{
+        void funcSecond();
+      }
+      \classbox[below of=MySecondClass,node distance=1.75cm]{MyThirdClass}{
+        void funcThird();
+      }
+      \draw[very thick,->] (MySecondClass)--(MyFirstClass) node[midway,right] {public};
+      \draw[very thick,->] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
+    \end{tikzpicture}
+    \columnbreak
+    \begin{cppcode*}{gobble=6}
+      void funcSecond() {
+        int a = priv;   // Error
+        int b = prot;   // OK
+        int c = pub;    // OK
+      }
+      void funcThird() {
+        int a = priv;   // Error
+        int b = prot;   // OK
+        int c = pub;    // OK
+      }
+      void extFunc(MyThirdClass t) {
+        int a = t.priv; // Error
+        int b = t.prot; // Error
+        int c = t.pub;  // OK
+      }
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Managing inheritance privacy - protected}
+  \begin{multicols}{2}
+    \begin{tikzpicture}[node distance=3cm]
+      \classbox{MyFirstClass}{
+      private: \\
+        \hspace{0.4cm}int priv; \\
+      protected: \\
+        \hspace{0.4cm}int prot; \\
+      public: \\
+        \hspace{0.4cm}int pub;
+      }
+      \classbox[below of=MyFirstClass]{MySecondClass}{
+        void funcSecond();
+      }
+      \classbox[below of=MySecondClass,node distance=1.75cm]{MyThirdClass}{
+        void funcThird();
+      }
+      \draw[very thick,->] (MySecondClass)--(MyFirstClass) node[midway,right] {protected};
+      \draw[very thick,->] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
+    \end{tikzpicture}
+    \columnbreak
+    \begin{cppcode*}{gobble=6}
+      void funcSecond() {
+        int a = priv;   // Error
+        int b = prot;   // OK
+        int c = pub;    // OK
+      }
+      void funcThird() {
+        int a = priv;   // Error
+        int b = prot;   // OK
+        int c = pub;    // OK
+      }
+      void extFunc(MyThirdClass t) {
+        int a = t.priv; // Error
+        int b = t.prot; // Error
+        int c = t.pub;  // Error
+      }
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Managing inheritance privacy - private}
+  \begin{multicols}{2}
+    \begin{tikzpicture}[node distance=3cm]
+      \classbox{MyFirstClass}{
+      private: \\
+        \hspace{0.4cm}int priv; \\
+      protected: \\
+        \hspace{0.4cm}int prot; \\
+      public: \\
+        \hspace{0.4cm}int pub;
+      }
+      \classbox[below of=MyFirstClass]{MySecondClass}{
+        void funcSecond();
+      }
+      \classbox[below of=MySecondClass,node distance=1.75cm]{MyThirdClass}{
+        void funcThird();
+      }
+      \draw[very thick,->] (MySecondClass)--(MyFirstClass) node[midway,right] {private};
+      \draw[very thick,->] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
+    \end{tikzpicture}
+    \columnbreak
+    \begin{cppcode*}{gobble=6}
+      void funcSecond() {
+        int a = priv;   // Error
+        int b = prot;   // OK
+        int c = pub;    // OK
+      }
+      void funcThird() {
+        int a = priv;   // Error
+        int b = prot;   // Error
+        int c = pub;    // Error
+      }
+      void extFunc(MyThirdClass t) {
+        int a = t.priv; // Error
+        int b = t.prot; // Error
+        int c = t.pub;  // Error
+      }
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
 \subsection[Constructors]{Constructors/destructors}
 
 \begin{frame}[fragile]
@@ -338,7 +465,7 @@
       // initialization of members
       MyFirstClass() : a(0) {}
       
-      MyFirstClass(int a_):a(_a) {}
+      MyFirstClass(int a_):a(a_) {}
 
       ~MyFirstClass(){};
     \end{cppcode*}
@@ -424,12 +551,12 @@
       ~Vector();
       ...
     }
-    Vector::Vector(int n) : len(other.len) {
+    Vector::Vector(int n) : len(n) {
+      data = (int*)calloc(n, sizeof(int));
+    }
+    Vector::Vector(const Vector &other) : len(other.len) {
       data = (int*)malloc(len*sizeof(int));
       memcpy(data, other.data, len);
-    }
-    Vector::Vector(const Vector &other) : len(n) {
-      data = (int*)malloc(n*sizeof(int));
     }
     Vector::~Vector() { free(data); }
   \end{cppcode}
@@ -449,7 +576,7 @@
   \begin{cppcode}
     Class Text {
     public:
-      static std::string upper(std::string);
+      static std::string upper(std::string) {...};
     private:
       static int s_nbCallsToUpper;
     }

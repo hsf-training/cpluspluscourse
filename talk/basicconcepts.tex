@@ -166,7 +166,7 @@
     // allocate array of 10 ints (not initialized)
     ai = (int*) malloc(10*sizeof(int));
     // and set them to 0
-    memset(ai, 10, sizeof(int));
+    memset(ai, 0, 10*sizeof(int));
 
     // Both in one go
     ai = (int*) calloc(10, sizeof(int));
@@ -315,7 +315,7 @@
       \begin{tikzpicture}
         \memorystack[word size=1,nb blocks=4]
         \visible<3-5>{\memorypush{d1.seconds=259200}}
-        \onslide<4->{\memorypush{d2.hours=259200}}
+        \onslide<4->{\memorypush{d2.hours=72}}
         \onslide<5->{\memorypush{d3.days=3}}
         \memorygoto{1}
         \onslide<6->{\memorypush{d1.days=3}}
