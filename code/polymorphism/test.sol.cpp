@@ -15,6 +15,7 @@ int main() {
     Polygon *poly = hexa2;
     std::cout << "Hexa : perimeter = " << hexa2->computePerimeter() << std::endl;
     std::cout << "Hexa as Poly : perimeter = " << poly->computePerimeter() << std::endl;
+    delete hexa2;
 
     // retry virtual method
 }
