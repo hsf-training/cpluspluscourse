@@ -6,7 +6,6 @@
 #include "Complex.hpp"
 
 using namespace std;
-using namespace __gnu_cxx;
 
 template<class T>
 void compute(int len, T initial, T step) {

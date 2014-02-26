@@ -6,7 +6,6 @@
 #include "Complex.hpp"
 
 using namespace std;
-using namespace __gnu_cxx;
 
 template<class T>
 struct Generator {
