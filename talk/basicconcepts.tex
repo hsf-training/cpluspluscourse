@@ -273,12 +273,12 @@
     \hspace{-1.5cm}
     \begin{tikzpicture}
       \memorystack[nb blocks=5]
-      \onslide<4-> {
+      \onslide<3-> {
         \memorypush{25,?,?,?}
         \memorypush{7,8,.,5}
         \memorystruct{1}{2}{\scriptsize student}
       }
-      \onslide<5-> {
+      \onslide<4-> {
         \memorypush{45,?,?,?}
         \memorypush{6,7,.,0}
         \memorystruct{3}{4}{\scriptsize teacher}
@@ -623,7 +623,7 @@
     \begin{cppcode*}{linenos=false}
       enum Lang { FRENCH, GERMAN, ENGLISH, OTHER };
       ...
-      switch (language):
+      switch (language) {
       case FRENCH:
         printf("Bonjour");
         break;
@@ -635,6 +635,7 @@
         break;
       default:
         printf("I do not talk your langage");
+      }
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
