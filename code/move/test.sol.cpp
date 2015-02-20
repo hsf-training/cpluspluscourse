@@ -7,7 +7,7 @@ void swap(std::vector<T> &v, int a, int b) {
     T mem = std::move(v[a]);
     v[a] = std::move(v[b]);
     v[b] = std::move(mem);
-    // event better
+    // even better
     //swap(v[a], v[b]);
 }
 

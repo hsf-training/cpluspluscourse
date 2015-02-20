@@ -25,8 +25,6 @@ unsigned int fibo(unsigned a) {
 void * computation(void* arg) {
     WorkToDo *work = (WorkToDo*) arg;
     unsigned long f = fibo(work->a);
-    free(work->title);
-    work->title = 0;
     return (void*)f;
 }
 
@@ -42,6 +40,8 @@ void launchFibo(const char* title, int a) {
     struct timespec sl = {.tv_sec = 0, .tv_nsec=1000};
     nanosleep(&sl, NULL);
     std::cout << "Computing " << w.title << std::endl;
+    free(w.title);
+    w.title = 0;
     void *result;
     pthread_join(t, &(result));
     std::cout << title << " = " << (unsigned long)result << std::endl;
