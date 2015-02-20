@@ -1,47 +1,33 @@
-\section[C$^{++}$11]{C$^{++}$11 preview}
+\section[C$^{++}$11]{C$^{++}$11 and C$^{++}$14 preview}
 
+\iffalse
 \subsection[Intro]{Introduction}
 
 \begin{frame}
-  \frametitle{Introduction to \cpp11}
+  \frametitle{Introduction to \cpp11 and \cpp14}
   \begin{block}{status}
     \begin{itemize}
-    \item Latest \cpp specification
+    \item Latest \cpp specifications
     \item Not yet digested by most programmers
     \item Bringing a lot of goodies
-    \end{itemize}        
+    \end{itemize}
   \end{block}
   \pause
-  \begin{block}{How to use it}
+  \begin{block}{How to use \cpp11 features}
     \begin{itemize}
     \item Use a compatible compiler gcc $\geq$ 4.8, clang $\geq$ 3.3
     \item add -std=c++11 to compilation flags
     \end{itemize}    
   \end{block}
-\end{frame}
-
-\subsection[nullptr]{nullptr}
-
-\begin{frame}[fragile]
-  \frametitle{nullptr}
-  \begin{block}{Finally a \cpp NULL pointer}
+  \begin{block}{How to use \cpp14 features}
     \begin{itemize}
-    \item works like 0 or NULL in standard cases
-    \item provokes compilation error when mapped to integer
-    \end{itemize}
+    \item Use a compatible compiler gcc $\geq$ 4.9, clang $\geq$ 3.4
+    \item add -std=c++14 to compilation flags
+    \end{itemize}    
   \end{block}
-  \pause
-  \begin{exampleblock}{Example code}
-    \begin{cppcode*}{linenos=false}
-      void* vp = nullptr;
-      int* ip = nullptr;
-      int i = NULL;      // OK -> bug ?
-      int i = nullptr;   // ERROR
-    \end{cppcode*}
-  \end{exampleblock}
 \end{frame}
 
-\subsection[Loops]{Range based loops}
+\subsection[loop]{Range based loops}
 
 \begin{frame}[fragile]
   \frametitle{Range based loops}
@@ -139,7 +125,7 @@
   \end{block}
 \end{frame}
 
-\subsection[Init]{Initializers}
+\subsection[init]{Initializers}
 
 \begin{frame}[fragile]
   \frametitle{Initializers - objects}
@@ -225,7 +211,7 @@
   \end{exampleblock}
 \end{frame}
 
-\subsection{Lambdas}
+\subsection[$\lambda$]{Lambdas}
 
 \begin{frame}[fragile]
   \frametitle{Function return type}
@@ -494,7 +480,7 @@
   \end{alertblock}
 \end{frame}
 
-\subsection[Move]{Move semantic}
+\subsection[mv]{Move semantic}
 
 \begin{frame}[fragile]
   \frametitle{Move semantics : the problem}
@@ -556,7 +542,7 @@
     \end{cppcode*}
   \end{exampleblock}
   \pause
-  \begin{alertblock}{What really happens during assignement}
+  \begin{alertblock}{What really happens during assignment}
     \begin{itemize}
     \item 10k allocations + 10k releases
     \item 10k copies
@@ -595,7 +581,7 @@
       \item 2 new members in every class, with move semantic :
       \begin{description}
       \item[a move constructor] similar to copy constructor
-      \item[a move assignement operator] similar to assignement operator (now called copy assignement operator)
+      \item[a move assignment operator] similar to assignment operator (now called copy assignment operator)
       \end{description}
     \end{itemize}
   \end{block}
@@ -615,7 +601,7 @@
   \begin{block}{A few important points concerning move semantic}
     \begin{itemize}
     \item the whole STL can understand the move semantic
-    \item move assignement operator is allowed to destroy source
+    \item move assignment operator is allowed to destroy source
       \begin{itemize}
       \item so do not reuse source afterward
       \item still, I advice to never leave inconsistent objects
@@ -699,7 +685,7 @@
       \begin{itemize}
       \item pass parameter by value
       \item this should force creation of a local replica of source
-      \item as we are in the move assignement \\
+      \item as we are in the move assignment \\
         our move constructor will be called \\
         and source will be filled with an empty object
       \item swap local object with *this
@@ -744,4 +730,600 @@
     \item see efficiency improvements
     \end{itemize}
   \end{alertblock}
+\end{frame}
+
+\fi
+
+\subsection[RAII]{pointers and RAII}
+
+\begin{frame}[fragile]
+  \frametitle{nullptr}
+  \begin{block}{Finally a \cpp~NULL pointer}
+    \begin{itemize}
+    \item works like 0 or NULL in standard cases
+    \item triggers compilation error when mapped to integer
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{}
+      void* vp = nullptr;
+      int* ip = nullptr;
+      int i = NULL;      // OK -> bug ?
+      int i = nullptr;   // ERROR
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Pointers : why they are error prone ?}
+  \begin{exampleblock}{They need initialization
+      \hfill \onslide<2->{\textcolor{orange}{\bf Seg Fault}}}
+    \begin{cppcode*}{linenos=false}
+      char *s;
+      try {
+        foo();
+        s = (char*) malloc(...);
+        strncpy(s, ...);
+      } catch (...) { ... }
+      bar(s);
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \pause
+  \vspace{-2cm}
+  \begin{exampleblock}{They need to be released
+      \hfill \onslide<4->{\textcolor{orange}{\bf Memory leak}}}
+    \begin{cppcode*}{linenos=false}
+      char *s = (char*) malloc(...);
+      strncpy(s, ...);
+      if (0 != strncmp(s, ...)) return;
+      foo(s);
+      free(s);
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \pause
+  \vspace{-2cm}
+  \begin{exampleblock}{They need clear ownership
+      \hfill \onslide<6->{\textcolor{orange}{\bf Who should release ?}}}
+    \begin{cppcode*}{linenos=false}
+      char *s = (char*) malloc(...);
+      strncpy(s, ...);
+      someVector.push_back(s);
+      someSet.add(s);
+      std::thread t1(vecConsumer, someVector);
+      std::thread t2(setConsumer, someSet);
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{This problem exists for any resource}
+  \begin{exampleblock}{For example with a file}
+    \begin{cppcode*}{}
+      try {
+        FILE *handle = std::fopen(path, "r");
+        if (0 == handle) { throw ... }
+        if (std::fputs(str, handle) == EOF) {
+          throw ...
+        }
+        fclose(handle);
+      } catch (...) { ... }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Resource Acquisition Is Initialization}
+  \begin{block}{Practically}
+    Use object semantic to acquire/release resources
+    \begin{itemize}
+    \item wrap the resource inside an object
+    \item acquire resource via object constructor
+    \item release resource in destructor
+    \item create this object on the stack so that it is automatically destructed when leaving the scope
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{RAII in practice}
+  \begin{exampleblock}{File class}
+    \begin{cppcode*}{}
+    class File {
+    public:
+      File(const char* filename) :
+        m_file_handle(std::fopen(filename, "w+")) {
+        if (m_file_handle == NULL) { throw ... }
+      }
+      ~File() { std::fclose(m_file_handle); }
+      void write (const char* str) {
+        if (std::fputs(str, m_file_handle) == EOF) {
+          throw ...
+        }
+      }
+    private:
+      FILE* m_file_handle;
+    };
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{RAII usage}
+  \begin{exampleblock}{Usage of File class}
+    \begin{cppcode*}{}
+      void log_function() {
+        // file opening, aka resource acquisition
+        File logfile("logfile.txt") ;
+
+        // file usage
+        logfile.write("hello logfile!") ;
+ 
+        // file is automatically closed by the call to
+        // its destructor, even in case of exception !
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{std::unique\_ptr}
+  \begin{block}{an RAII pointer}
+    \begin{itemize}
+    \item wraps a regular pointer
+    \item has move only semantic
+      \begin{itemize}
+      \item the pointer is only owned once
+      \end{itemize}
+    \item in \textless{}memory\textgreater{} header
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Usage}
+    \begin{cppcode*}{}
+      Foo *p = new Foo{};  // allocation
+      std::unique_ptr<Foo> uptr(p);
+      std::cout << uptr.get() << " points to "
+                << uptr->someMember << std::endl;
+      void f(std::unique_ptr<Foo> ptr);
+      f(std::move(uptr)); // transfer of ownership
+      // deallocation when exiting f
+      std::cout << uptr.get() << std::endl; // 0
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Quizz}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{}
+      Foo *p = new Foo{};  // allocation
+      std::unique_ptr<Foo> uptr(p);
+      void f(std::unique_ptr<Foo> ptr);
+      f(uptr); // transfer of ownership
+    \end{cppcode*}
+    What do you expect ?
+  \end{exampleblock}
+  \pause
+  \begin{alertblock}{Compilation Error}
+    \begin{minted}{text}
+test.cpp:15:5: error: call to deleted constructor
+of 'std::unique_ptr<Foo>'
+  f(uptr);
+    ^~~~
+/usr/include/c++/4.9/bits/unique_ptr.h:356:7: note: 
+ 'unique_ptr' has been explicitly marked deleted here
+ unique_ptr(const unique_ptr&) = delete;
+ ^
+    \end{minted}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{std::make\_unique}
+  \begin{block}{}
+    \begin{itemize}
+    \item allocates directly a unique\_ptr
+    \item no new or delete calls anymore !
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{make\_unique usage}
+    \begin{cppcode*}{}
+      // allocation of one Foo object,
+      // calling constructor with one argument
+      auto a = std::make_unique<Foo>(memberValue);
+      std::cout << a.get() << " points to "
+                << a->someMember << std::endl;
+      // allocation of an array of Foos
+      // calling default constructor
+      auto b = std::make_unique<Foo[]>(10);
+      // deallocations
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{RAII or raw pointers}
+  \begin{block}{When to use what ?}
+    \begin{itemize}
+    \item Always use RAII for allocations
+    \item You thus never have to deallocate !
+    \item Use raw pointers for observer functions (or references)
+      \begin{itemize}
+      \item remember that unique\_ptr is move only
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{A question of ownership}
+    \begin{cppcode*}{}
+      unique_ptr<T> producer();
+      void observer(T*);
+      void consumer(unique_ptr<T>);
+
+      unique_ptr<T> pt{producer()};
+      observer(pt.get());       // Keep ownership
+      consumer(std::move(pt));  // Transfer ownership
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{unique\_ptr usage summary}
+  \begin{block}{It's about lifetime management}
+    \begin{itemize}
+    \item Use unique\_ptr in functions taking part to the lifetime management
+    \item Otherwise use raw pointers or references
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{shared\_ptr, make\_shared}
+  \begin{block}{shared\_ptr : a reference counting pointers}
+    \begin{itemize}
+    \item wraps a regular pointer like unique\_ptr
+    \item has move and copy semantic
+    \item uses internally reference counting
+      \begin{itemize}
+      \item "Would the last person out, please turn off the lights ?"
+      \end{itemize}
+    \item is thread safe, thus the reference counting is costly
+    \end{itemize}
+  \end{block}
+  \begin{block}{make\_shared : creates a shared\_ptr}
+    \begin{cppcode*}{}
+      {
+        auto sp = std::make_shared<Foo>(); // #ref = 1
+        vector.push_back(sp);              // #ref = 2
+        set.insert(sp);                    // #ref = 3
+      } // #ref 2
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\subsection[thread]{Concurrency and asynchronicity}
+
+\begin{frame}[fragile]
+  \frametitle{Basic concurrency}
+  \begin{block}{Threading}
+    \begin{itemize}
+    \item new object std::thread in \textless{}thread\textgreater{} header
+    \item takes a function as argument of its constructor
+    \item must be called on join or program is terminated
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{}
+      void doSth() {...};
+      void doSthElse() {...};
+      int main() {
+        std::thread t1(doSth);
+        std::thread t2(doSthElse);
+        for (auto t: {&t1,&t2}) t->join();
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{The thread constructor}
+  \begin{exampleblock}{Can take a function and its arguments}
+    \begin{cppcode*}{}
+      void function(int j, double j) {...};
+      std::thread t1(function, 1, 2.0);
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{exampleblock}{Can take any function like object}
+    \begin{cppcode*}{}
+      struct AdderFunctor {
+        AdderFunctor(int i): m_i(i) {}
+        int operator() (int j) { return i+j; };
+        int m_i;
+      };
+      std::thread t2(AdderFunctor(2), 5);
+      int a;
+      std::thread t3([](int i) { return i+2; }, a);
+      std::thread t4([a]       { return a+2; });
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Basic asynchronicity}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item separation of the specification of what should be done and the retrieval of the results
+    \item ``start working on this, and ping me when it's ready''
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Pratically}
+    \begin{itemize}
+    \item std::async function launches and asynchronous task
+    \item std::future template allows to handle the result
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{}
+      int computeSth() {...}
+      std::future<int> res = std::async(computeSth);
+      std::cout << res->get() << std::endl;
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Mixing the two}
+  \begin{block}{Is async running concurrent code ?}
+    \begin{itemize}
+    \item it depends !
+    \item you can control this with a launch policy argument
+      \begin{description}
+      \item[std::launch::async] spawns a thread for immediate execution
+      \item[std::launch::deferred] causes lazy execution in current thread
+      \end{description}
+      \begin{itemize}
+      \item execution starts when get() is called
+      \end{itemize}
+    \item default is not specified !
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Usage}
+    \begin{cppcode*}{}
+      int computeSth() {...}
+      auto res = std::async(std::launch::async,
+                            computeSth);
+      auto res2 = std::async(std::launch::deferred,
+                             computeSth);
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Fine grained control on asynchronous execution}
+  \begin{block}{std::packaged\_task template}
+    \begin{itemize}
+    \item creates an asynchronous version of any function like object
+      \begin{itemize}
+      \item identical arguments
+      \item returns a std::future
+      \end{itemize}
+    \item provides access to the returned future
+    \item associated with threads, gives full control on execution
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Usage}
+    \begin{cppcode*}{}
+      int task() { return 42; }
+      std::packaged_task<int()> pckd_task(task);
+      auto future = pckd_task.get_future();
+      pckd_task();
+      std::cout << future.get() << std::endl;
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\subsection[mutex]{Mutexes}
+
+\begin{frame}[fragile]
+  \frametitle{Races}
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{}
+      int a = 0;
+      void inc() { a++; };
+      void inc100() {
+        for (int i=0; i < 100; i++) inc();
+      };
+      int main() {
+        std::thread t1(inc100);
+        std::thread t2(inc100);
+        for (auto t: {&t1,&t2}) t->join();
+        std::cout << a << std::endl;
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{block}{What do you expect ?}
+    \pause
+    Anything between 100 and 200 !!!
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Atomicity}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item property of an operation that in cannot be half executed
+    \item either it's done, or not done at all
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Is ++ operator atomic ?}
+    Usually not. It behaves like :
+    \begin{cppcode*}{}
+      eax = a       // memory to register copy
+      increase eax  // increase (atomic CPU instruction)
+      a = eax       // copy back to memory
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Timing}
+  \begin{exampleblock}{Code}
+    \begin{cppcode*}{}
+      eax = a       // memory to register copy
+      increase eax  // increase (atomic CPU instruction)
+      a = eax       // copy back to memory
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{block}{For 2 threads}
+    \begin{tikzpicture}
+      \begin{umlseqdiag}
+        \umlobject[x=0, class=eax]{Thread 1}
+        \umlobject[x=3, class=a, fill=blue!20]{Memory}
+        \umlobject[x=6, class=eax]{Thread 2}
+        \begin{umlcall}[op=read, type=synchron, return=0]{Thread 1}{Memory}
+        \end{umlcall}
+        \begin{umlcall}[padding=3, op=read, type=synchron, return=0]{Thread 2}{Memory}
+        \end{umlcall}
+        \begin{umlcallself}[op=incr, type=synchron]{Thread 1}
+        \end{umlcallself}
+        \begin{umlcallself}[op=incr, type=synchron]{Thread 2}
+        \end{umlcallself}
+        \begin{umlcall}[op=write 1]{Thread 2}{Memory}
+        \end{umlcall}
+        \begin{umlcall}[padding=3, op=write 1]{Thread 1}{Memory}
+        \end{umlcall}
+      \end{umlseqdiag}
+      \draw[-triangle 60](8.5,0) -- (8.5,-4) node[right, pos=0.5]{time};
+    \end{tikzpicture}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Mutexes}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item a lock to serialize access to a non atomic piece of code
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{The objects}
+    \begin{description}
+    \item[std::mutex] in the mutex header
+    \item[std::lock\_guard] for an RAII version of it
+    \item[std::unique\_lock] same and can be released/relocked
+    \end{description}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Practically}
+    \begin{cppcode*}{}
+      int a = 0;
+      std::mutex m;
+      void inc() {
+        std::lock_guard<std::mutex> guard(m);
+        a++;
+      };
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Dead lock}
+  \begin{exampleblock}{Scenario}
+    \begin{itemize}
+    \item 2 locks, 2 threads
+    \item locking order inverted in the 2 threads
+    \end{itemize}
+  \end{exampleblock}
+  \pause
+  \begin{block}{Sequence diagram}
+    \begin{tikzpicture}
+      \begin{umlseqdiag}
+        \umlobject[x=0]{Thread 1}
+        \umlobject[x=2.5, fill=blue!20]{Mutex A}
+        \umlobject[x=5, fill=blue!20]{Mutex B}
+        \umlobject[x=7.5]{Thread 2}
+        \begin{umlcall}[op=lock]{Thread 1}{Mutex A}
+        \end{umlcall}
+        \begin{umlcall}[op=lock, dt=6]{Thread 2}{Mutex B}
+        \end{umlcall}
+        \begin{umlcall}[op=lock (block), dt=6]{Thread 1}{Mutex B}
+        \end{umlcall} 
+        \begin{umlcall}[op=lock (block), dt=12]{Thread 2}{Mutex A}
+        \end{umlcall}
+      \end{umlseqdiag}
+      \draw[-triangle 60](9,0) -- (9,-4) node[right, pos=0.5]{time};
+    \end{tikzpicture}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Dead Lock}
+  \begin{block}{Solutions}
+    \begin{itemize}
+    \item Do not take several locks
+      \begin{itemize}
+      \item Or add master lock protecting the locking phase
+      \end{itemize}
+    \item Respect a strict order in the locking in all threads
+    \item Lock free programming
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Handling dependencies}
+  \begin{block}{Condition variables}
+    \begin{itemize}
+    \item They allow a thread to sleep until a given condition is satisfied
+    \item std::condition\_variable object from condition\_variable header
+    \item works on top of an RAII guard on a mutex
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{How does it work}
+    \begin{itemize}
+    \item it uses a RAII lock around a mutex
+    \item the wait() method releases the lock to run the check
+    \item and takes it again once done
+    \item check is done at construction and on call to notify\_*()
+    \item several conditions can share the same mutex
+    \item notify\_one will wake up a single one
+    \item notify\_all() will wake up all
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Condition variable usage}
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{}
+      int value = -1;
+      std::mutex mutex;
+      std::condition cond;
+      auto t = std::thread([] () {
+        value = ... long proces ...;
+        cond.notify_all();
+      });
+      auto t = std::thread([] () {
+        std::unique_lock<std::mutex> lock{mutex};
+        condition.wait(lock, [] { return value > 0; });
+        ... use value ...
+      });
+      { std::unique_lock<std::mutex> lock{mutex};
+        condition.wait(lock, [] { return value > 0; });
+        std::cout << value << std::endl; }
+    \end{cppcode*}
+  \end{exampleblock}
 \end{frame}
