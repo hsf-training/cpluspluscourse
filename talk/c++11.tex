@@ -1,6 +1,5 @@
 \section[C$^{++}$11]{C$^{++}$11 and C$^{++}$14 preview}
 
-\iffalse
 \subsection[Intro]{Introduction}
 
 \begin{frame}
@@ -732,8 +731,6 @@
   \end{alertblock}
 \end{frame}
 
-\fi
-
 \subsection[RAII]{pointers and RAII}
 
 \begin{frame}[fragile]
@@ -1160,27 +1157,33 @@ of 'std::unique_ptr<Foo>'
 
 \begin{frame}[fragile]
   \frametitle{Atomicity}
-  \begin{block}{Concept}
+  \begin{exampleblock}{Definition (wikipedia)}
     \begin{itemize}
-    \item property of an operation that in cannot be half executed
-    \item either it's done, or not done at all
+    \item an operation (or set of operations) is atomic if it appears to the rest of the system to occur instantaneously
+    \end{itemize}
+  \end{exampleblock}
+  \begin{block}{Practically}
+    \begin{itemize}
+    \item an operation that won't run concurrently to another one
+    \item an operation that will have a stable environment during execution
     \end{itemize}
   \end{block}
   \pause
-  \begin{exampleblock}{Is ++ operator atomic ?}
+  \begin{alertblock}{Is ++ operator atomic ?}
+    \pause
     Usually not. It behaves like :
-    \begin{cppcode*}{}
+    \begin{cppcode*}{linenos=false}
       eax = a       // memory to register copy
       increase eax  // increase (atomic CPU instruction)
       a = eax       // copy back to memory
     \end{cppcode*}
-  \end{exampleblock}
+  \end{alertblock}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Timing}
   \begin{exampleblock}{Code}
-    \begin{cppcode*}{}
+    \begin{cppcode*}{linenos=false}
       eax = a       // memory to register copy
       increase eax  // increase (atomic CPU instruction)
       a = eax       // copy back to memory
@@ -1239,11 +1242,24 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitle{Mutexes}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item Go to code/race
+    \item Look at the code and try it\\
+      See that it has a race condition
+    \item Use a mutex to fix the issue
+    \item See the difference in execution time
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitle{Dead lock}
   \begin{exampleblock}{Scenario}
     \begin{itemize}
-    \item 2 locks, 2 threads
-    \item locking order inverted in the 2 threads
+    \item 2 mutexes, 2 threads
+    \item locking order different in the 2 threads
     \end{itemize}
   \end{exampleblock}
   \pause
@@ -1269,38 +1285,40 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Dead Lock}
-  \begin{block}{Solutions}
+  \frametitle{How to avoid dead locks}
+  \begin{block}{Possible solutions}
     \begin{itemize}
-    \item Do not take several locks
+    \item Never take several locks
       \begin{itemize}
       \item Or add master lock protecting the locking phase
       \end{itemize}
-    \item Respect a strict order in the locking in all threads
-    \item Lock free programming
+    \item Respect a strict order in the locking across all threads
+    \item Do not use locks
+      \begin{itemize}
+      \item Use other techniques, e.g. queues
+      \end{itemize}
     \end{itemize}
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Handling dependencies}
-  \begin{block}{Condition variables}
+  \frametitle{Condition variables}
+  \begin{block}{How to express thread dependencies}
     \begin{itemize}
-    \item They allow a thread to sleep until a given condition is satisfied
+    \item Allows a thread to sleep until a given condition is satisfied
     \item std::condition\_variable object from condition\_variable header
-    \item works on top of an RAII guard on a mutex
     \end{itemize}
   \end{block}
   \pause
-  \begin{block}{How does it work}
+  \begin{block}{Usage}
     \begin{itemize}
-    \item it uses a RAII lock around a mutex
-    \item the wait() method releases the lock to run the check
-    \item and takes it again once done
-    \item check is done at construction and on call to notify\_*()
-    \item several conditions can share the same mutex
-    \item notify\_one will wake up a single one
-    \item notify\_all() will wake up all
+    \item wraps an RAII lock around a mutex
+    \item wait() will hang until the condition is met
+      \begin{itemize}
+      \item you can have several waiters sharing the same mutex
+      \end{itemize}
+    \item notify\_one() will wake up on waiter
+    \item notify\_all() will wake up all waiters
     \end{itemize}
   \end{block}
 \end{frame}
@@ -1313,7 +1331,7 @@ of 'std::unique_ptr<Foo>'
       std::mutex mutex;
       std::condition cond;
       auto t = std::thread([] () {
-        value = ... long proces ...;
+        value = ... long process ...;
         cond.notify_all();
       });
       auto t = std::thread([] () {
