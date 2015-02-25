@@ -210,6 +210,73 @@
   \end{exampleblock}
 \end{frame}
 
+\subsection[exc]{Exceptions}
+
+\begin{frame}[fragile]
+  \frametitle{Deprecation of \cpp98 exceptions}
+  \begin{block}{}
+    After a lot of thinking and experiencing, the conclusions of the community on exception handling are :
+    \begin{itemize}
+    \item Never write an exception specification
+    \item Except possibly an empty one
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{Some of the reasons}
+    \begin{itemize}
+    \item throw specification is runtime only
+      \begin{itemize}
+      \item does not allow compiler optimizations
+      \item on the contrary forces extra checks
+      \item generally terminates your program if violated
+      \end{itemize}
+    \item throw specification clashes with templates
+      \begin{itemize}
+      \item one cannot ``template'' the throw clause
+      \end{itemize}      
+    \end{itemize}    
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{What remains \cpp11/14}
+  \begin{block}{throw is dead}
+    \begin{itemize}
+    \item throw statements are deprecated
+    \item even throw() (no exceptions)
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{long live noexcept}
+    \begin{itemize}
+    \item noexcept a somehow equivalent to throw()
+    \item but is checked at compile time
+    \item so allows compiler optimizations
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Full power of noexcept}
+  \begin{block}{3 uses of noexcept}
+    \begin{itemize}
+    \item standalone
+      \begin{cppcode*}{gobble=6, linenos=false}
+        int f() noexcept;
+      \end{cppcode*}
+    \item as an expression saying whether exceptions can be sent
+      \begin{cppcode*}{gobble=6, linenos=false}
+        int f() noexcept(sizeof(long long) == 8);
+      \end{cppcode*}    
+    \item as an operator to know whether a function launches exceptions
+      \begin{cppcode*}{gobble=6, linenos=false}
+        template <class T> void foo()
+             noexcept(noexcept(T())) {};
+      \end{cppcode*}     
+   \end{itemize}    
+  \end{block}
+\end{frame}
+
 \subsection[$\lambda$]{Lambdas}
 
 \begin{frame}[fragile]
@@ -1002,7 +1069,7 @@ of 'std::unique_ptr<Foo>'
   \end{block}
 \end{frame}
 
-\subsection[thread]{Concurrency and asynchronicity}
+\subsection[thr]{Concurrency and asynchronicity}
 
 \begin{frame}[fragile]
   \frametitle{Basic concurrency}
