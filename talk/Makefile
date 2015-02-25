@@ -9,4 +9,7 @@ compile2: C++Course.tex basicconcepts.tex objectorientation.tex advanced.tex c++
 	pdflatex -shell-escape C++Course.tex
 
 clean:
-	rm -f *.aux *.log *.nav *.out *.pyg *.snm *.vrb *.toc C++Course.pdf
+	rm -f *.aux *.log *.nav *.out *.pyg *.snm *.vrb *.toc
+
+clobber: clean
+	rm -f C++Course.pdf
