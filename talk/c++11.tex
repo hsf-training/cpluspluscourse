@@ -100,13 +100,13 @@
       }
       constexpr float get(const char unit) const {
         return convertFromSI(m_value, unit);
-    }
-  };
-  constexpr DimLength km(1, 'k');
-  constexpr float km_y = km.get('y');
-  constexpr float km_i = km.get('i');
-  std::cout << "1 km = " << km_y << " yards\n"
-            << "     = " << km_i << " inches\n";
+      }
+    };
+    constexpr DimLength km(1, 'k');
+    constexpr float km_y = km.get('y');
+    constexpr float km_i = km.get('i');
+    std::cout << "1 km = " << km_y << " yards\n"
+              << "     = " << km_i << " inches\n";
   \end{cppcode*}
 \end{frame}
 
