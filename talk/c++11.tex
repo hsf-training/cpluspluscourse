@@ -80,7 +80,7 @@
 \begin{frame}[fragile]
   \frametitle{Loops and auto keyword with the STL}
   \begin{block}{Old way}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       std::vector<int> v;
       int sum = 0;
       for (std::vector<int>::iterator it = a.begin();
@@ -92,7 +92,7 @@
   \end{block}
   \pause
   \begin{block}{New way}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       std::vector<int> v;
       int sum = 0;
       for (auto a : v) { sum += a; }
@@ -130,7 +130,7 @@
   \frametitle{Initializers - objects}
   \begin{block}{\cpp98 nightmare}
     \begin{multicols}{2}
-      \begin{cppcode*}{gobble=6}
+      \begin{cppcode*}{gobble=4}
         struct A {
           int a;
           float b;
@@ -140,7 +140,7 @@
         };
       \end{cppcode*}
       \columnbreak
-      \begin{cppcode*}{gobble=6,firstnumber=8}
+      \begin{cppcode*}{gobble=4,firstnumber=8}
         struct B {
           int a;
           float b;
@@ -148,13 +148,13 @@
       \end{cppcode*}
     \end{multicols}
     \pause
-    \begin{cppcode*}{firstnumber=12}
-     A a(1,2);       // A::A(int, int)
-     A a(1);         // A::A(int)
-     A a();          // declaration of a function !
-     A a;            // A::A()
-     B b = {1, 2.3}; // OK
-     A a = {1,2};    // not allowed
+    \begin{cppcode*}{gobble=2, firstnumber=12}
+      A a(1,2);       // A::A(int, int)
+      A a(1);         // A::A(int)
+      A a();          // declaration of a function !
+      A a;            // A::A()
+      B b = {1, 2.3}; // OK
+      A a = {1,2};    // not allowed
     \end{cppcode*}
   \end{block}
 \end{frame}
@@ -163,7 +163,7 @@
   \frametitle{Initializers - objects}
   \begin{block}{\cpp11 uniformization}
     \begin{multicols}{2}
-      \begin{cppcode*}{gobble=6}
+      \begin{cppcode*}{gobble=4}
         struct A {
           int a;
           float b;
@@ -173,20 +173,20 @@
         };
       \end{cppcode*}
       \columnbreak
-      \begin{cppcode*}{gobble=6,firstnumber=8}
+      \begin{cppcode*}{gobble=4,firstnumber=8}
         struct B {
           int a;
           float b;
         };
       \end{cppcode*}
     \end{multicols}
-    \begin{cppcode*}{firstnumber=12}
-     A a{1,2};       // A::A(int, int)
-     A a{1};         // A::A(int)
-     A a{};          // A::A()
-     A a;            // A::A()
-     B b = {1, 2.3}; // OK
-     A a = {1,2};    // OK, A::A(int, int)
+    \begin{cppcode*}{gobble=2, firstnumber=12}
+      A a{1,2};       // A::A(int, int)
+      A a{1};         // A::A(int)
+      A a{};          // A::A()
+      A a;            // A::A()
+      B b = {1, 2.3}; // OK
+      A a = {1,2};    // OK, A::A(int, int)
     \end{cppcode*}
   \end{block}
 \end{frame}
@@ -233,8 +233,8 @@
     \item throw specification clashes with templates
       \begin{itemize}
       \item one cannot ``template'' the throw clause
-      \end{itemize}      
-    \end{itemize}    
+      \end{itemize}
+    \end{itemize}
   \end{alertblock}
 \end{frame}
 
@@ -261,19 +261,19 @@
   \begin{block}{3 uses of noexcept}
     \begin{itemize}
     \item standalone
-      \begin{cppcode*}{gobble=6, linenos=false}
+      \begin{cppcode*}{gobble=2, linenos=false}
         int f() noexcept;
       \end{cppcode*}
     \item as an expression saying whether exceptions can be sent
-      \begin{cppcode*}{gobble=6, linenos=false}
+      \begin{cppcode*}{gobble=2, linenos=false}
         int f() noexcept(sizeof(long) == 8);
-      \end{cppcode*}    
+      \end{cppcode*}
     \item as an operator to know whether a function launches exceptions
-      \begin{cppcode*}{gobble=6, linenos=false}
+      \begin{cppcode*}{gobble=2, linenos=false}
         template <class T> void foo()
              noexcept(noexcept(T())) {};
-      \end{cppcode*}     
-   \end{itemize}    
+      \end{cppcode*}
+   \end{itemize}
   \end{block}
 \end{frame}
 
@@ -291,7 +291,7 @@
   \begin{block}{Advantages}
     \begin{itemize}
     \item Allows to simplify inner type definition
-      \begin{cppcode*}{linenos=false,gobble=8}
+      \begin{cppcode*}{linenos=false,gobble=4}
         class TheClass {
           typedef int inner_type;
           inner_type func();
@@ -329,7 +329,7 @@
 \begin{frame}[fragile]
   \frametitle{\cpp Lambdas}
   \begin{block}{Simplified syntax}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       [] (args) -> type {
         code;
       }
@@ -337,7 +337,7 @@
     The type specification is optionnal
   \end{block}
   \begin{exampleblock}{Usage example}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       std::vector<int> data{1,2,3,4,5};
       for_each(begin(data), end(data),
                [](int i) {
@@ -388,7 +388,7 @@
   \end{block}
   \pause
   \begin{exampleblock}{Example}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       int increment = 4;
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
       for_each(begin(data), end(data),
@@ -412,7 +412,7 @@
   \end{exampleblock}
   \pause
   \begin{alertblock}{Error}
-    \begin{minted}[gobble=6]{text}
+    \begin{minted}[gobble=4]{text}
       error: assignment of read-only variable 'sum'
                [sum](int x) { sum += x; });
     \end{minted}
@@ -473,7 +473,7 @@
 \begin{frame}[fragile]
   \frametitle{Closures}
   \begin{exampleblock}{Example}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       auto build_incrementer = [](int inc) {
         return [inc](int value) { return value + inc; };
       };
@@ -497,7 +497,7 @@
 \begin{frame}[fragile]
   \frametitle{\cpp11 makes the STL usable}
   \begin{block}{Before lambdas}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       struct Incrementer {
         int m_inc;
         Incrementer(int inc) : m_inc(inc) {}
@@ -506,7 +506,7 @@
         };
       };
       std::vector<int> v;
-      v.push_back(1); v.push_back(2); v.push_back(3); 
+      v.push_back(1); v.push_back(2); v.push_back(3);
       std::transform(v.begin(), v.end(), v.begin(),
                      Incrementer(1));
       for (std::vector<int>::iterator it = v.begin();
@@ -519,7 +519,7 @@
 \begin{frame}[fragile]
   \frametitle{\cpp11 makes the STL usable}
   \begin{exampleblock}{With lambdas}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       std::vector<int> v = {1, 2, 3};
       int inc = 1;
       std::transform(v.begin(), v.end(), v.begin(),
@@ -551,7 +551,7 @@
 \begin{frame}[fragile]
   \frametitle{Move semantics : the problem}
   \begin{exampleblock}{Non efficient code}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       template <class T>
       void swap(T &a, T &b) {
         T c = a;
@@ -576,7 +576,7 @@
 \begin{frame}[fragile]
   \frametitle{Move semantics : the problem}
   \begin{exampleblock}{Dedicated efficient code}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       std::vector<int> v, w;
       for (int i = 0; i < 10000; i++) v.push_back(i);
       for (int i = 0; i < 10000; i++) w.push_back(i);
@@ -596,7 +596,7 @@
 \begin{frame}[fragile]
   \frametitle{Move semantics : the problem}
   \begin{exampleblock}{Another non efficient code}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       std::vector<int> vrandom(unsigned int n) {
         std::vector<int> result;
         for (int i = 0; i < n; i++) {
@@ -619,7 +619,7 @@
 \begin{frame}[fragile]
   \frametitle{Move semantics : the problem}
   \begin{exampleblock}{Dedicated efficient way}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       void vrandom(unsigned int n, std::vector<int> &v) {
         for (int i = 0; i < n; i++) {
           v.push_back(rand());
@@ -653,7 +653,7 @@
   \end{block}
   \pause
   \begin{exampleblock}{Practically}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       T(const T&  other); // copy construction
       T(      T&& other); // move construction
       T& operator=(const T&  other); // copy assignment
@@ -681,7 +681,7 @@
   \end{block}
   \pause
   \begin{exampleblock}{Practically}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       T a;
       T b = a;      // 1. Copy assign
       T c = T(2);   // 2. Move assign
@@ -693,7 +693,7 @@
 \begin{frame}[fragile]
   \frametitle{Move semantics}
   \begin{block}{In some cases, you want to force a move}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       template <class T> void swap(T &a, T &b) {
         T c = a;  // copy
         a = b;    // copy
@@ -707,7 +707,7 @@
     \item casting to an rvalue reference
     \item using the std::move function
     \end{itemize}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       T a;
       T b = a;                   // 1. Copy assign
       T c = std::move(a);        // 4. Move assign
@@ -765,7 +765,7 @@
 \begin{frame}[fragile]
   \frametitle{Move semantics : the easy way}
   \begin{exampleblock}{Practically}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{}
       class Movable {
         Movable();
         Movable(Movable &&other) :
@@ -776,7 +776,7 @@
           swap(*this, other);
           return *this;
         }
-        friend void swap(Movable &a, Movable &b);        
+        friend void swap(Movable &a, Movable &b);
       };
       void swap(Movable &a, Movable &b);
     \end{cppcode*}
@@ -895,21 +895,21 @@
   \frametitle{RAII in practice}
   \begin{exampleblock}{File class}
     \begin{cppcode*}{}
-    class File {
-    public:
-      File(const char* filename) :
-        m_file_handle(std::fopen(filename, "w+")) {
-        if (m_file_handle == NULL) { throw ... }
-      }
-      ~File() { std::fclose(m_file_handle); }
-      void write (const char* str) {
-        if (std::fputs(str, m_file_handle) == EOF) {
-          throw ...
+      class File {
+      public:
+        File(const char* filename) :
+          m_file_handle(std::fopen(filename, "w+")) {
+          if (m_file_handle == NULL) { throw ... }
         }
-      }
-    private:
-      FILE* m_file_handle;
-    };
+        ~File() { std::fclose(m_file_handle); }
+        void write (const char* str) {
+          if (std::fputs(str, m_file_handle) == EOF) {
+            throw ...
+          }
+        }
+      private:
+        FILE* m_file_handle;
+      };
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -924,7 +924,7 @@
 
         // file usage
         logfile.write("hello logfile!") ;
- 
+
         // file is automatically closed by the call to
         // its destructor, even in case of exception !
       }
@@ -977,7 +977,7 @@ test.cpp:15:5: error: call to deleted constructor
 of 'std::unique_ptr<Foo>'
   f(uptr);
     ^~~~
-/usr/include/c++/4.9/bits/unique_ptr.h:356:7: note: 
+/usr/include/c++/4.9/bits/unique_ptr.h:356:7: note:
  'unique_ptr' has been explicitly marked deleted here
  unique_ptr(const unique_ptr&) = delete;
  ^
@@ -1289,7 +1289,7 @@ of 'std::unique_ptr<Foo>'
   \end{block}
   \pause
   \begin{block}{The objects}
-    \begin{description}
+    \begin{description}[labelwidth=1.8cm]
     \item[std::mutex] in the mutex header
     \item[std::lock\_guard] for an RAII version of it
     \item[std::unique\_lock] same and can be released/relocked
@@ -1342,7 +1342,7 @@ of 'std::unique_ptr<Foo>'
         \begin{umlcall}[op=lock, dt=6]{Thread 2}{Mutex B}
         \end{umlcall}
         \begin{umlcall}[op=lock (block), dt=6]{Thread 1}{Mutex B}
-        \end{umlcall} 
+        \end{umlcall}
         \begin{umlcall}[op=lock (block), dt=12]{Thread 2}{Mutex A}
         \end{umlcall}
       \end{umlseqdiag}

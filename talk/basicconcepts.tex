@@ -40,7 +40,7 @@
      * \param i input
      * \return true if i is odd, otherwise false
      */
-     bool isOdd(int i);
+    bool isOdd(int i);
   \end{cppcode}
 \end{frame}
 
@@ -119,7 +119,7 @@
 \begin{frame}[fragile]
   \frametitle{Pointers}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       int i = 4;
       int *pi = &i;
       int j = *pi + 1;
@@ -181,7 +181,7 @@
 \begin{frame}[fragile]
   \frametitle{Operators(1)}
   \begin{block}{Binary \& Assignment Operators}
-    \begin{cppcode*}{linenos=false,gobble=4}
+    \begin{cppcode*}{linenos=false}
       int i = 1 + 4 - 2;  // 3
       i *= 3;             // 9
       i /= 2;             // 4
@@ -203,7 +203,7 @@
 \begin{frame}[fragile]
   \frametitle{Operators(2)}
   \begin{block}{Bitwise and Assignment Operators}
-    \begin{cppcode*}{linenos=false,gobble=4}
+    \begin{cppcode*}{linenos=false}
       int i = 0xee & 0x55;  // 0x44
       i |= 0xee;            // 0xee
       i ^= 0x55;            // 0xbb
@@ -214,7 +214,7 @@
   \end{block}
   \pause
   \begin{block}{Boolean Operators}
-    \begin{cppcode*}{linenos=false,gobble=4}
+    \begin{cppcode*}{linenos=false}
       bool a = true;
       bool b = false;
       bool c = a && b;    // false
@@ -227,7 +227,7 @@
 \begin{frame}[fragile]
   \frametitle{Operators(3)}
   \begin{block}{Comparison Operators}
-    \begin{cppcode*}{linenos=false,gobble=4}
+    \begin{cppcode*}{linenos=false}
       bool a = (3 == 3);  // true
       bool b = (3 != 3);  // false
       bool c = (4 < 4);   // false
@@ -252,7 +252,7 @@
     \center ``members'' grouped together under one name
   \end{mdframed}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       struct Individual {
         unsigned char age;
         float weight;
@@ -294,7 +294,7 @@
     \center ``members'' packed together at same memory location
   \end{mdframed}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       union Duration {
         int seconds;
         short hours;
@@ -328,7 +328,7 @@
 \begin{frame}[fragile]
   \frametitle{Enums and typedefs}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       enum VehicleType {
         BIKE,  // 0
         CAR,   // 1
@@ -340,7 +340,7 @@
       myint toto = 17;
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       enum VehicleType {
         BIKE = 3,
         CAR = 5,
@@ -355,7 +355,7 @@
 \begin{frame}[fragile]
   \frametitle{More sensible example}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       enum ShapeType {
         CIRCLE,
         RECTANGLE
@@ -368,7 +368,7 @@
     \end{cppcode*}
     \columnbreak
     \pause
-    \begin{cppcode*}{gobble=6,firstnumber=10}
+    \begin{cppcode*}{gobble=2,firstnumber=10}
       struct Shape {
         ShapeType type;
         union { 
@@ -380,14 +380,14 @@
   \end{multicols}
   \pause
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6,firstnumber=17}
+    \begin{cppcode*}{gobble=2,firstnumber=17}
       Shape s;
       s.type = CIRCLE;
       s.radius = 3.4;
       
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=6,firstnumber=20}
+    \begin{cppcode*}{gobble=2,firstnumber=20}
       Shape t;
       t.type = RECTANGLE;
       t.rect.width = 3;
@@ -401,7 +401,7 @@
 \begin{frame}[fragile]
   \frametitle{Functions}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       // with return type
       int square(int a) {
         return a * a;
@@ -414,7 +414,7 @@
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=6,firstnumber=11}
+    \begin{cppcode*}{gobble=2,firstnumber=11}
       // no parameter
       void hello() {
         printf("Hello World");
@@ -431,7 +431,7 @@
 \begin{frame}[fragile]
   \frametitle{Parameter are passed by value}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       struct BigStruct {...};
       BigStruct s;
       
@@ -477,7 +477,7 @@
 \begin{frame}[fragile]
   \frametitle{Parameter are passed by value}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       struct SmallStruct {int a};
       SmallStruct s = {.a = 1};
       
@@ -594,7 +594,7 @@
 \begin{frame}[fragile]
   \frametitle{Control instructions : switch}
   \begin{block}{Syntax}
-    \begin{cppcode*}{gobble=6,linenos=false}
+    \begin{cppcode*}{gobble=2,linenos=false}
       switch(identifier) {
         case c1 : instructions1; break;
         case c2 : instructions2; break;
@@ -732,12 +732,12 @@
     \end{itemize}
   \end{block}
   \begin{block}{Header : Hello.hpp}
-    \begin{cppcode*}{linenos=false,gobble=6}
+    \begin{cppcode*}{linenos=false}
       void printHello();
     \end{cppcode*}
   \end{block}
   \begin{block}{Implementation : myfile.cpp}
-    \begin{cppcode*}{linenos=false,gobble=6}
+    \begin{cppcode*}{linenos=false}
       #include "hello.hpp"
       int main() {
         printHello();

@@ -11,7 +11,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       Polygon *p = new Polygon();
 
       int f(Drawable *d) {...};
@@ -45,7 +45,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       Polygon *p = new Polygon();
 
       int f(Drawable *d) {...};
@@ -78,7 +78,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       Polygon *p = new Polygon();
       p->draw(); // ?
       
@@ -113,7 +113,7 @@
   \end{block}
   \pause
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       Polygon *p = new Polygon();
       p->draw(); // Polygon.draw
       
@@ -146,7 +146,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       Polygon *p = new Polygon();
       p->draw(); // Polygon.draw
       
@@ -181,7 +181,7 @@
   \end{block}
   \pause
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       // Error : abstract class
       Shape *s = new Shape();
 
@@ -221,7 +221,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       struct Drawable {
         virtual void draw() = 0;
       }
@@ -270,7 +270,7 @@
     \end{tikzpicture}
     \columnbreak
     \vspace{2cm}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       class TextBox :
         public Rectangle, Text {
         // inherits of both
@@ -731,7 +731,7 @@
   \newsavebox{\codepiece}
   \begin{lrbox}{\codepiece}
     \begin{minipage}{.35\linewidth}
-      \begin{cppcode*}{gobble=8,linenos=false}
+      \begin{cppcode*}{gobble=4,linenos=false}
         template<class T>
         void func(T a) {
           return a;
@@ -742,7 +742,7 @@
   \newsavebox{\codepiecea}
   \begin{lrbox}{\codepiecea}
     \begin{minipage}{.4\linewidth}
-      \begin{cppcode*}{gobble=8,linenos=false}
+      \begin{cppcode*}{gobble=4,linenos=false}
         void func(int a) {
           return a;
         }
@@ -752,7 +752,7 @@
   \newsavebox{\codepieceb}
   \begin{lrbox}{\codepieceb}
     \begin{minipage}{.4\linewidth}
-      \begin{cppcode*}{gobble=8,linenos=false}
+      \begin{cppcode*}{gobble=4,linenos=false}
         void func(double a) {
           return a;
         }

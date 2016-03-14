@@ -31,7 +31,7 @@
 \begin{frame}[fragile]
   \frametitle{My First Class}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       struct MyFirstClass {
         int a;
         void squareA() {
@@ -65,7 +65,7 @@
 \begin{frame}[fragile]
   \frametitle{Separating the interface}
   \begin{block}{Header : MyFirstClass.hpp}
-    \begin{cppcode*}{linenos=false,gobble=6}
+    \begin{cppcode*}{linenos=false}
       struct MyFirstClass {
         int a;
         void squareA();
@@ -74,7 +74,7 @@
     \end{cppcode*}
   \end{block}
   \begin{block}{Implementation : MyFirstClass.cpp}
-    \begin{cppcode*}{linenos=false,gobble=6}
+    \begin{cppcode*}{linenos=false}
       #include "MyFirstClass.hpp"
       void MyFirstClass::squareA() {
         a *= a;
@@ -93,7 +93,7 @@
   \item They can be embedded to create hierarchies (separator is '::')
   \end{itemize}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       int a;
       namespace n {
         int a;   // no clash
@@ -109,7 +109,7 @@
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=6,firstnumber=14}
+    \begin{cppcode*}{gobble=2,firstnumber=14}
       namespace p {
         int f() {
           p::a = 2;
@@ -179,7 +179,7 @@
 \begin{frame}[fragile]
   \frametitle{First inheritance}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       struct MyFirstClass {
         int a;
         void squareA() { a *= a; };
@@ -228,7 +228,7 @@
   \end{block}
   \pause
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       class MyFirstClass {
       public:
         void setA(int a);
@@ -239,7 +239,7 @@
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=6,firstnumber=9}
+    \begin{cppcode*}{gobble=2,firstnumber=9}
       MyFirstClass obj;
       obj.a = 5;   // error !
       obj.setA(5); // ok
@@ -259,7 +259,7 @@
     Gives access to classes inheriting from base class
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       class MyFirstClass {
       public:
         void setA(int a);
@@ -270,7 +270,7 @@
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=6,firstnumber=13}
+    \begin{cppcode*}{gobble=2,firstnumber=13}
       class MySecondClass :
         public MyFirstClass {
       public:
@@ -331,7 +331,7 @@
       \draw[very thick,->] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
     \end{tikzpicture}
     \columnbreak
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       void funcSecond() {
         int a = priv;   // Error
         int b = prot;   // OK
@@ -373,7 +373,7 @@
       \draw[very thick,->] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
     \end{tikzpicture}
     \columnbreak
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       void funcSecond() {
         int a = priv;   // Error
         int b = prot;   // OK
@@ -415,7 +415,7 @@
       \draw[very thick,->] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
     \end{tikzpicture}
     \columnbreak
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       void funcSecond() {
         int a = priv;   // Error
         int b = prot;   // OK
@@ -448,7 +448,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=6}
+    \begin{cppcode*}{gobble=2}
       class MyFirstClass {
       public:
         MyFirstClass();
@@ -460,7 +460,7 @@
       };
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=6,firstnumber=10}
+    \begin{cppcode*}{gobble=2,firstnumber=10}
       // note special notation for
       // initialization of members
       MyFirstClass() : a(0) {}
@@ -749,7 +749,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{fontsize=\scriptsize,gobble=6}
+    \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
       class ZeroDivide {};
       
       int divide(int a, int b) {
@@ -760,7 +760,7 @@
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{fontsize=\scriptsize,gobble=6,firstnumber=9} 
+    \begin{cppcode*}{fontsize=\scriptsize,gobble=2,firstnumber=9} 
       int func(char* value) {
         try {
           errno = 0;
