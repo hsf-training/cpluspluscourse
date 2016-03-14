@@ -26,6 +26,90 @@
   \end{block}
 \end{frame}
 
+\subsection[constexpr]{Generalized Constant Expressions}
+
+\begin{frame}[fragile]
+  \frametitle{Generalized Constant Expressions}
+  \begin{block}{Reason of being}
+    \begin{itemize}
+    \item compute constant expressions at compile time
+    \item even if non trivial
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{linenos=false}
+      constexpr int f(int x) {
+        return x > 1 ? x * f(x - 1) : 1;
+      }
+      int a = f(5); // now computed at compile time
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Generalized Constant Expressions(2)}
+  \begin{alertblock}{Few limitations}
+    \begin{itemize}
+    \item function's body cannot contain try-catch or static variables
+    \item arguments should be constexpr or literals in order to benefit from compile time computation
+    \end{itemize}
+  \end{alertblock}
+  \begin{block}{Notes}
+    \begin{itemize}
+    \item classes can have constexpr functions
+    \item objects can be constexpr
+      \begin{itemize}
+      \item if the constructor of their class is
+      \end{itemize}
+    \item a constexpr function can also be used normally
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Real life example}
+  \begin{cppcode*}{linenos=true}
+    constexpr float toSI(const float v, const char unit) {
+      switch (unit) {
+      case 'k': return 1000*v;
+      case 'm': return 0.001*v;
+      case 'y': return 0.9144*v;
+      case 'i': return 0.0254*v;
+      ...
+      default: return v;
+      }
+    }
+    constexpr float fromSI(const float v, const char unit) {
+      switch (unit) {
+      case 'k': return 0.001*v;
+      ...
+      }
+    }
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Real life example(2)}
+  \begin{cppcode*}{linenos=true}
+    class DimLength {
+      const float m_value;
+    public:
+      constexpr DimLength(const float v, const char unit):
+        m_value(convertToSI(v, unit)) {
+      }
+      constexpr float get(const char unit) const {
+        return convertFromSI(m_value, unit);
+    }
+  };
+  constexpr DimLength km(1, 'k');
+  constexpr float km_y = km.get('y');
+  constexpr float km_i = km.get('i');
+  std::cout << "1 km = " << km_y << " yards\n"
+            << "     = " << km_i << " inches\n";
+  \end{cppcode*}
+\end{frame}
+
 \subsection[loop]{Range based loops}
 
 \begin{frame}[fragile]
