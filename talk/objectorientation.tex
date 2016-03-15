@@ -574,12 +574,12 @@
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    Class Text {
+    class Text {
     public:
       static std::string upper(std::string) {...};
     private:
       static int s_nbCallsToUpper;
-    }
+    };
     int Text::s_nbCallsToUpper = 0;
     std::string s = "my text";
     std::string uppers = Text::upper("my text");
