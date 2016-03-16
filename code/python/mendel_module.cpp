@@ -1,5 +1,5 @@
 #include <Python.h>
-#include "mendel_cwrapper.hpp"
+#include "mendel.hpp"
 
 static PyObject * mendel_wrapper(PyObject * self,
                                  PyObject * args) {
@@ -7,7 +7,7 @@ static PyObject * mendel_wrapper(PyObject * self,
   float r, i;
   if (!PyArg_ParseTuple(args, "ff", &r, &i)) return NULL;
   // Call C function
-  int result = mendel(r, i);
+  int result = mendel(Complex(r, i));
   // Build returned objects
   return Py_BuildValue("i", result);
 }

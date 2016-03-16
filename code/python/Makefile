@@ -1,7 +1,7 @@
-mendel.so:mendel_module.o mendel_cwrapper.o libmendel.so
+mendel.so:mendel_module.o libmendel.so
 	g++ -shared $^ -o $@
 
-mendel_module.o:mendel_module.cpp libmendelc.so
+mendel_module.o:mendel_module.cpp
 	g++ -pthread -O3 -Wall -std=c++14 -fPIC -I. -I/usr/include/python2.7 -c $< -o $@
 
 libmendelc.so:mendel_cwrapper.o libmendel.so
