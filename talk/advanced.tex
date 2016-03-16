@@ -735,7 +735,7 @@
     \begin{minipage}{.35\linewidth}
       \begin{cppcode*}{gobble=4,linenos=false}
         template<class T>
-        void func(T a) {
+        T func(T a) {
           return a;
         }
       \end{cppcode*}
@@ -745,7 +745,7 @@
   \begin{lrbox}{\codepiecea}
     \begin{minipage}{.4\linewidth}
       \begin{cppcode*}{gobble=4,linenos=false}
-        void func(int a) {
+        int func(int a) {
           return a;
         }
       \end{cppcode*}
@@ -755,7 +755,7 @@
   \begin{lrbox}{\codepieceb}
     \begin{minipage}{.4\linewidth}
       \begin{cppcode*}{gobble=4,linenos=false}
-        void func(double a) {
+        double func(double a) {
           return a;
         }
       \end{cppcode*}
@@ -820,15 +820,15 @@
     templates can be specialized for given values of their parameter
   \end{block}
   \begin{cppcode*}{}
-    template<unsigned int N> struct Polynom {
-      Polynom(float radius);
+    template<unsigned int N> struct Polygon {
+      Polygon(float radius);
       float perimeter();
       float m_radius;
     };
     
     template<>
-    struct Polynom<6> {
-      Polynom(float radius);
+    struct Polygon<6> {
+      Polygon(float radius);
       float perimeter() {return 6*m_radius;};
       float m_radius;
     };
