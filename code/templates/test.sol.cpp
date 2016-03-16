@@ -16,7 +16,7 @@ struct RevOrderString {
 
 struct ManhattanOrder {
     bool operator() (const Complex &a, const Complex &b) const {
-        return a.real() + a.imaginary() < b.real() + b.imaginary();
+        return abs(a.real()) + abs(a.imaginary()) < abs(b.real()) + abs(b.imaginary());
     }
 };
 
