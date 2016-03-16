@@ -1,0 +1,198 @@
+\section{Marrying \cpp and python}
+
+\subsection[module]{Writing a python module}
+
+\begin{frame}[fragile]
+  \frametitle{How to build a python module around \cpp code}
+  \begin{block}{\cpp code : mendel.hpp}
+    \begin{cppcode*}{}
+      int mendel(const Complex &a);
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+  
+\begin{frame}[fragile]
+  \frametitle{Basic Module(1) : wrap your method}
+  \begin{block}{mendelModule.cpp}
+    \begin{cppcode*}{}
+      #include <Python.h>
+      #include "mendel.hpp"      
+      static PyObject * mendel_wrapper(PyObject * self,
+                                       PyObject * args) {
+        // Parse Input
+        float r, i;
+        if (!PyArg_ParseTuple(args, "ff", &r, &i))
+          return NULL;
+        // Call C++ function
+        int result = mendel(Complex(r, i));
+        // Build returned objects
+        return Py_BuildValue("i", result);
+      }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Basic Module(2) : create the python module}
+  \begin{block}{mendelModule.cpp}
+    \begin{cppcode*}{}
+      // declare the modules' methods
+      static PyMethodDef MendelMethods[] = {
+          {"mendel", mendel_wrapper, METH_VARARGS,
+          "computes nb of iterations for mendelbrot set"},
+          {NULL, NULL, 0, NULL}
+      };
+      // initialize the module
+      PyMODINIT_FUNC initmendel(void) {
+        (void) Py_InitModule("mendel", MendelMethods);
+      }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Basic Module(3) : use it}
+  \begin{block}{mendel.py}
+    \begin{minted}[gobble=4,linenos]{python}
+      from mendel import mendel
+      v = mendel(0.7, 1.2)
+    \end{minted}
+  \end{block}
+\end{frame}
+
+
+\subsection[C]{Marrying \cpp and C}
+
+\begin{frame}[fragile]
+  \frametitle{A question of mangling}
+  \begin{block}{Mangling}
+    the act of converting the name of variable or function to a symbol name in the binary code
+  \end{block}
+  \begin{block}{C versus \cpp symbol names}
+    \begin{itemize}
+    \item C uses bare function name
+    \item \cpp allows overloading of functions by taking the signature into account
+    \item so \cpp mangling has to contain signature
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{C mangling}
+  \begin{exampleblock}{Source : file.c}
+    \begin{cppcode*}{}
+      float sum(float a, float b);
+      int square(int a);
+      // won't compile : conflicting types for ‘square’
+      // float square(float a);
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{block}{Binary symbols : file.o}
+    \begin{minted}[gobble=4]{shell}
+      # nm file.o
+      000000000000001a T square
+      0000000000000000 T sum
+    \end{minted}
+  \end{block}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{\cpp mangling}
+  \begin{exampleblock}{Source : file.cpp}
+    \begin{cppcode*}{}
+      float sum(float a, float b);
+      int square(int a);
+      // ok, signature is different
+      float square(float a);
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{block}{Binary symbols : file.o}
+    \begin{minted}[gobble=4]{shell}
+      # nm file.o
+      0000000000000000 T _Z3sumff
+      000000000000002a T _Z6squaref
+      000000000000001a T _Z6squarei
+    \end{minted}
+  \end{block}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Forcing C mangling in \cpp}
+  \begin{block}{extern ``C''}
+    These functions will use C mangling :
+    \begin{cppcode*}{gobble=1}
+      extern "C" {
+        float sum(float a, float b);
+        int square(int a);
+      }
+    \end{cppcode*}
+  \end{block}
+  \pause
+  You can now call these \cpp functions from C code
+  \pause
+  \begin{alertblock}{Limitations}
+    \begin{itemize}
+    \item no \cpp types should go out
+    \item no exceptions either (use noexcept here)
+    \item member functions cannot be used
+      \begin{itemize}
+      \item they need to be wrapped one by one
+      \end{itemize}
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\subsection[ctypes]{Using the ctypes module}
+
+\begin{frame}[fragile]
+  \frametitle{The ctypes python module}
+  \begin{block}{From the documentation}
+    \begin{itemize}
+    \item provides C compatible data types
+    \item allows calling functions in DLLs or shared libraries
+    \item can be used to wrap these libraries in pure Python
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{ctypes : usage example}
+  \begin{block}{\cpp code : mendel.hpp}
+    \begin{cppcode*}{}
+      int mendel(const Complex &a);
+    \end{cppcode*}
+  \end{block}
+  \begin{block}{``C'' code : mendel\_cwrapper.hpp}
+    \begin{cppcode*}{}
+      extern "C" {
+        int mendel(float r, float i) {
+          return mendel(Complex(r, i));
+        };
+      }
+    \end{cppcode*}
+  \end{block}
+  \begin{exampleblock}{calling the mendel library}
+    \begin{minted}[gobble=4,linenos]{python}
+      from ctypes import *
+      libmendel = CDLL('libmendelc.so')
+      v = libmendel.mendel(c_float(0.3), c_float(1.2))
+    \end{minted}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Marrying \cpp and python}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/python
+    \item look at the original python code mendel.py
+    \item time it
+    \item look at the code in mendel.hpp/cpp
+    \item look at the python module mendel\_module.cpp
+    \item compile and modify mendel.py to use it
+    \item see the gain in time
+    \item look at the C wrapper in mendel\_cwrapper.cpp
+    \item modify mendel.py to use libmendelc directly with ctypes
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
