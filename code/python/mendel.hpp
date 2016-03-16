@@ -1,14 +1,10 @@
 #include "Complex.hpp"
 
-template <class T=float>
-int mendel(T a) {
-  T z = 0;
-  for (int n = 1; n < 100; n++) {
-    z = z*z + a;
-    if (T(2) < z) {
-      return n;
-    }
-  }
-  return -1;
-}
+/**
+ * computes number of iterations of the mendelbrot
+ * formula you need before reaching a norm > 2
+ * returned value is -1 if 100 iterations are reached
+ * without reaching it
+ */
+int mendel(const Complex &a);
 
