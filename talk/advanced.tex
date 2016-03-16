@@ -426,45 +426,47 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Non-member operator example}
-  \begin{cppcode}
-    struct Complex {
-      float m_real, m_imaginary;
-      Complex(float real, float imaginary);
-    }
-
-    std::ostream& operator<<(std::ostream& os,
-                             const Complex& obj) {
-      os << "(" << m_real << ", " << m_imaginary << ")";
-      return os;
-    }
-
-    Complex c1(2, 3);
-    std::cout << c1 << std::endl;
-  \end{cppcode}
+  \frametitle{Why to have non-member operators ?}
+  \begin{block}{Symetry}
+    \begin{cppcode}
+      struct Complex {
+        float m_real, m_imaginary;
+        Complex operator+(float other) {
+          return Complex(m_real + other, m_imaginary);
+        }
+      }
+      Complex c1(2, 3);
+      Complex c2 = c1 + 4;  // ok
+      Complex c3 = 4 + c1;  // not ok !!
+    \end{cppcode}
+    \pause
+    \begin{cppcode*}{firstnumber=10}
+      Complex operator+(float a, const Complex& obj) {
+        return Complex(a + obj.m_real, obj.m_imaginary);
+      }
+    \end{cppcode*}
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Other reason to have non-member operators ?}
-  \begin{block}{Yes, symetry}
-  \end{block}
-  \begin{cppcode}
-    struct Complex {
-      float m_real, m_imaginary;
-      Complex operator+(float other) {
-        return Complex(m_real + other, m_imaginary);
+  \begin{block}{Extending existing classes}
+    \begin{cppcode}
+      struct Complex {
+        float m_real, m_imaginary;
+        Complex(float real, float imaginary);
       }
-    }
-    Complex c1(2, 3);
-    Complex c2 = c1 + 4;  // ok
-    Complex c3 = 4 + c1;  // not ok !!
-  \end{cppcode}
-  \pause
-  \begin{cppcode*}{firstnumber=10}
-    Complex operator+(float a, const Complex& obj) {
-      return Complex(a + obj.m_real, obj.m_imaginary);
-    }
-  \end{cppcode*}
+
+      std::ostream& operator<<(std::ostream& os,
+                               const Complex& obj) {
+        os << "(" << m_real << ", " << m_imaginary << ")";
+        return os;
+      }
+
+      Complex c1(2, 3);
+      std::cout << c1 << std::endl;
+    \end{cppcode}
+  \end{block}
 \end{frame}
 
 \subsection[Refs]{Value, pointers and references}
