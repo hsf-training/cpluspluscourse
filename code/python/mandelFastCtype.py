@@ -3,7 +3,7 @@ from numpy import NaN
 from ctypes import *
 
 # interface with C library
-libmendel = CDLL('libmendelc.so')
+libmandel = CDLL('libmandelc.so')
  
 X = arange(-2, .5, .002)
 Y = arange(-1,  1, .002)
@@ -12,7 +12,7 @@ Z = zeros((len(Y), len(X)))
 for iy, y in enumerate(Y):
     print (iy, "of", len(Y))
     for ix, x in enumerate(X):
-        v = libmendel.mendel(c_float(x), c_float(y))
+        v = libmandel.mandel(c_float(x), c_float(y))
         if v >= 0 :
             Z[iy,ix] = v
         else:

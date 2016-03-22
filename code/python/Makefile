@@ -1,16 +1,18 @@
-mendel.so:mendel_module.o libmendel.so
+all: mandel.so libmandelc.so
+
+mandel.so:mandel_module.o libmandel.so
 	g++ -shared $^ -o $@
 
-mendel_module.o:mendel_module.cpp
+mandel_module.o:mandel_module.cpp
 	g++ -pthread -O3 -Wall -std=c++14 -fPIC -I. -I/usr/include/python2.7 -c $< -o $@
 
-libmendelc.so:mendel_cwrapper.o libmendel.so
+libmandelc.so:mandel_cwrapper.o libmandel.so
 	g++ -shared $^ -o $@
 
-mendel_cwrapper.o:mendel_cwrapper.cpp
+mandel_cwrapper.o:mandel_cwrapper.cpp
 	g++ -O3 -Wall -std=c++14 -fPIC -c $< -o $@
 
-libmendel.so:mendel.cpp Complex.hpp
+libmandel.so:mandel.cpp Complex.hpp
 	g++ -shared -O3 -Wall -std=c++14 -fPIC $< -o $@
 
 clean:

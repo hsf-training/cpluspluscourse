@@ -1,6 +1,6 @@
 from pylab import *
 from numpy import NaN
-from mendel import mendel
+from mandel import mandel
  
 X = arange(-2, .5, .002)
 Y = arange(-1,  1, .002)
@@ -9,7 +9,7 @@ Z = zeros((len(Y), len(X)))
 for iy, y in enumerate(Y):
     print (iy, "of", len(Y))
     for ix, x in enumerate(X):
-        v = mendel(x, y)
+        v = mandel(x, y)
         if v >= 0 :
             Z[iy,ix] = v
         else:

@@ -1,6 +1,6 @@
-#include "mendel.hpp"
+#include "mandel.hpp"
 
-int mendel(const Complex &a) {
+int mandel(const Complex &a) {
   Complex z = 0;
   for (int n = 1; n < 100; n++) {
     z = z*z + a;
