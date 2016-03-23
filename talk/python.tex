@@ -1,30 +1,30 @@
-\section{Marrying \cpp and python}
+\section[python]{Marrying \cpp and python}
 
 \subsection[module]{Writing a python module}
 
 \begin{frame}[fragile]
   \frametitle{How to build a python module around \cpp code}
-  \begin{block}{\cpp code : mendel.hpp}
+  \begin{block}{\cpp code : mandel.hpp}
     \begin{cppcode*}{}
-      int mendel(const Complex &a);
+      int mandel(const Complex &a);
     \end{cppcode*}
   \end{block}
 \end{frame}
   
 \begin{frame}[fragile]
   \frametitle{Basic Module(1) : wrap your method}
-  \begin{block}{mendelModule.cpp}
+  \begin{block}{mandelModule.cpp}
     \begin{cppcode*}{}
       #include <Python.h>
-      #include "mendel.hpp"      
-      static PyObject * mendel_wrapper(PyObject * self,
+      #include "mandel.hpp"
+      static PyObject * mandel_wrapper(PyObject * self,
                                        PyObject * args) {
         // Parse Input
         float r, i;
         if (!PyArg_ParseTuple(args, "ff", &r, &i))
           return NULL;
         // Call C++ function
-        int result = mendel(Complex(r, i));
+        int result = mandel(Complex(r, i));
         // Build returned objects
         return Py_BuildValue("i", result);
       }
@@ -34,17 +34,17 @@
 
 \begin{frame}[fragile]
   \frametitle{Basic Module(2) : create the python module}
-  \begin{block}{mendelModule.cpp}
+  \begin{block}{mandelModule.cpp}
     \begin{cppcode*}{}
       // declare the modules' methods
-      static PyMethodDef MendelMethods[] = {
-          {"mendel", mendel_wrapper, METH_VARARGS,
-          "computes nb of iterations for mendelbrot set"},
+      static PyMethodDef MandelMethods[] = {
+          {"mandel", mandel_wrapper, METH_VARARGS,
+          "computes nb of iterations for mandelbrot set"},
           {NULL, NULL, 0, NULL}
       };
       // initialize the module
-      PyMODINIT_FUNC initmendel(void) {
-        (void) Py_InitModule("mendel", MendelMethods);
+      PyMODINIT_FUNC initmandel(void) {
+        (void) Py_InitModule("mandel", MandelMethods);
       }
     \end{cppcode*}
   \end{block}
@@ -52,10 +52,10 @@
 
 \begin{frame}[fragile]
   \frametitle{Basic Module(3) : use it}
-  \begin{block}{mendel.py}
+  \begin{block}{mandel.py}
     \begin{minted}[gobble=4,linenos]{python}
-      from mendel import mendel
-      v = mendel(0.7, 1.2)
+      from mandel import mandel
+      v = mandel(0.7, 1.2)
     \end{minted}
   \end{block}
 \end{frame}
@@ -157,25 +157,25 @@
 
 \begin{frame}[fragile]
   \frametitle{ctypes : usage example}
-  \begin{block}{\cpp code : mendel.hpp}
+  \begin{block}{\cpp code : mandel.hpp}
     \begin{cppcode*}{}
-      int mendel(const Complex &a);
+      int mandel(const Complex &a);
     \end{cppcode*}
   \end{block}
-  \begin{block}{``C'' code : mendel\_cwrapper.hpp}
+  \begin{block}{``C'' code : mandel\_cwrapper.hpp}
     \begin{cppcode*}{}
       extern "C" {
-        int mendel(float r, float i) {
-          return mendel(Complex(r, i));
+        int mandel(float r, float i) {
+          return mandel(Complex(r, i));
         };
       }
     \end{cppcode*}
   \end{block}
-  \begin{exampleblock}{calling the mendel library}
+  \begin{exampleblock}{calling the mandel library}
     \begin{minted}[gobble=4,linenos]{python}
       from ctypes import *
-      libmendel = CDLL('libmendelc.so')
-      v = libmendel.mendel(c_float(0.3), c_float(1.2))
+      libmandel = CDLL('libmandelc.so')
+      v = libmandel.mandel(c_float(0.3), c_float(1.2))
     \end{minted}
   \end{exampleblock}
 \end{frame}
@@ -185,14 +185,14 @@
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/python
-    \item look at the original python code mendel.py
+    \item look at the original python code mandel.py
     \item time it
-    \item look at the code in mendel.hpp/cpp
-    \item look at the python module mendel\_module.cpp
-    \item compile and modify mendel.py to use it
+    \item look at the code in mandel.hpp/cpp
+    \item look at the python module mandel\_module.cpp
+    \item compile and modify mandel.py to use it
     \item see the gain in time
-    \item look at the C wrapper in mendel\_cwrapper.cpp
-    \item modify mendel.py to use libmendelc directly with ctypes
+    \item look at the C wrapper in mandel\_cwrapper.cpp
+    \item modify mandel.py to use libmandelc directly with ctypes
     \end{itemize}
   \end{alertblock}
 \end{frame}
