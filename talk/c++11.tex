@@ -184,6 +184,52 @@
   \end{block}
 \end{frame}
 
+\subsection[over]{override and final keywords}
+
+\begin{frame}[fragile]
+  \frametitle{Override keyword}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item make sure you do not accidentally create a new virtual function, when intending to override      
+    \end{itemize}
+    \begin{cppcode}
+      struct Base {
+        virtual void some_func(float);
+      };
+      struct Derived : Base {
+        virtual void some_func(double); // oups !
+      };
+    \end{cppcode}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct Derived : Base {
+        virtual void some_func(double) override; // error
+      };
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Final keyword}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item make sure you cannot override a given method
+    \item by declaring it final
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct Base {
+        virtual void some_func(float) final;
+      };
+      struct Derived : Base {
+        virtual void some_func(float) override; // error
+      };
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
 \subsection[it]{non-member begin/end}
 
 \begin{frame}[fragile]
@@ -291,6 +337,94 @@
      int* ip = new int[3]{1,2,3};  // OK
      std::vector<int> v = {1,2,3}; // OK
     \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\subsection[cons]{Constructors}
+
+\begin{frame}[fragile]
+  \frametitle{Default Constructor}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item avoid writing explicitely default constructors
+    \item by declaring them as default
+    \end{itemize}
+  \end{block}
+  \begin{block}{Details}
+    \begin{itemize}
+    \item when no user defined constructor, a default is provided
+    \item any user defined constructor disables default ones
+    \item but they can be enforced.
+    \item rule can be more subtle depending on members
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      ClassName() = default;  // provide/force default
+      ClassName() = delete;   // do not provide default
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Constructor delegation}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item avoid replication of code in several constructors
+    \item by delegating to another constructor, in the initializer list
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct Delegate {
+        Delegate() { ... complex initialization ...};
+        Delegate(int i) : Delegate(), m_i(i) {};
+      }
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Constructor inheritance}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item avoid declaring empty constructors inheriting parent's ones
+    \item by stating that we inherit all parent constructors
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct BaseClass {
+        BaseClass(int value);
+      };
+      struct DerivedClass : BaseClass {
+        using BaseClass::BaseClass;
+      };
+      DerivedClass *a = new{5};
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Member initialization}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item avoid redefining same default value for members in all constructors
+    \item by defining it once at member declaration time
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct BaseClass {
+        int a{5};
+        BaseClass() = default;
+      };
+      struct DerivedClass : BaseClass {
+        int b{6};
+        using BaseClass::BaseClass;
+      };
+      DerivedClass *a = new DerivedClass{};
+    \end{cppcode}
   \end{exampleblock}
 \end{frame}
 
@@ -798,24 +932,6 @@
       T d = static_cast<T&&>(a); // 5. Move assign
     \end{cppcode*}
   \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Diversion : constructor delegation}
-  \begin{block}{Idea}
-    \begin{itemize}
-    \item avoid replication of code in several constructors
-    \item by delegating to another constructor, in the initializer list
-    \end{itemize}
-  \end{block}
-  \begin{exampleblock}{Practically}
-    \begin{cppcode}
-      struct Delegate {
-        Delegate() { ... complex initialization ...};
-        Delegate(int i) : Delegate(), m_i(i) {};
-      }
-    \end{cppcode}
-  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
