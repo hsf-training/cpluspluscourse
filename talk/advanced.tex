@@ -1,4 +1,4 @@
-\section{Advanced Topics}
+\section[Advanced]{Advanced Topics}
 
 \subsection[OO]{Object orientation}
 
@@ -70,10 +70,10 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Method overloading}
+  \frametitle{Method overriding}
   \begin{block}{the problem}
     \begin{itemize}
-    \item a given method of the parent can be overloaded in a child
+    \item a given method of the parent can be overriden in a child
     \item but which one is called ?
     \end{itemize}
   \end{block}
@@ -234,6 +234,28 @@
       }
     \end{tikzpicture}
   \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Overriding overloaded methods}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item overriding an overloaded method will hide the others
+    \item unless you inherit them using {\it using}
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{gobble=0}
+    struct BaseClass {
+      int foo(std::string);
+      int foo(int);
+    }
+    struct DerivedClass : BaseClass {
+      using BaseClass::foo;
+      int foo(std::string);
+    }
+    DerivedClass dc;
+    dc.foo(4);      // error if no using
+    \end{cppcode*}
 \end{frame}
 
 \begin{frame}[fragile]
