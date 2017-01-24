@@ -82,7 +82,7 @@
   \frametitle{Portable numeric types}
   \alert{One needs to include specific header}
   \begin{cppcode}
-    #include <stdint.h>
+    #include <cstdint>
     
     int8_t c = -3;     // 8 bits, replaces char
     uint8_t c = 4;     // 8 bits, replaces unsigned char
@@ -111,7 +111,7 @@
     char ac[4] = {'a','b','c',0}; // same valid string
     
     int i = ai[2];  // i = 3
-    char c = ac[8]; // garbage
+    char c = ac[8]; // at best garbage, may segfault
     int i = ai[4];  // also garbage !
   \end{cppcode}
 \end{frame}
@@ -157,8 +157,8 @@
 \begin{frame}[fragile]
   \frametitle{Dynamic Arrays}
   \begin{cppcode}
-    #include <stdlib.h>
-    #include <string.h>
+    #include <cstdlib>
+    #include <cstring>
 
     int *bad;    // pointer to random address
     int *ai = 0; // better. Can be tested
@@ -552,6 +552,7 @@
       int collatz(int a) {
         if (a <= 0) {
           std::cout << "not supported";
+          return 0;
         } else if (a == 1) {
           return 1;
         } else if (a%2 == 0) {

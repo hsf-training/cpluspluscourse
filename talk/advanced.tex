@@ -823,14 +823,14 @@
       ValueType get(KeyType &key);
     }
 
-    template<class KeyType, class ElementType>
-    void Map<KeyType, ElementType>::set
+    template<class KeyType, class ValueType>
+    void Map<KeyType, ValueType>::set
        (KeyType &key, ValueType value) {
       ...
     }
 
-    template<class KeyType, class ElementType>
-    ValueType Map<KeyType, ElementType>::get(KeyType &key) {
+    template<class KeyType, class ValueType>
+    ValueType Map<KeyType, ValueType>::get(KeyType &key) {
       ...
     }
   \end{cppcode*}
@@ -881,7 +881,7 @@
   \begin{block}{What it is}
     \begin{itemize}
     \item A library of standard templates
-    \item Eveything you need, or ever dreamed of
+    \item Everything you need, or ever dreamed of
       \begin{itemize}
       \item strings, containers, iterators
       \item algorithms, functions, sorters
