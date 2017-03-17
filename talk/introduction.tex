@@ -50,6 +50,9 @@
       \node[new] (C++14) [below of=C++11] {\cpp14}
       edge[direct] (C++11);
       \node[left of=C++14,node distance=1.5cm] {2014};
+      \node[new] (C++17) [below of=C++14] {\cpp17}
+      edge[direct] (C++14);
+      \node[left of=C++17,node distance=1.5cm] {2017};
     \end{tikzpicture}
   \end{minipage}
   \begin{minipage}{0.57\linewidth}
@@ -63,8 +66,8 @@
       \item Both C and \cpp are born in Bell Labs
       \item \cpp \it{almost} embeds C
       \item C and \cpp are still under development
-      \item we will mainly discuss \cpp98
-      \item and \cpp11/14 in the last part
+      \item we will discuss \cpp98 first
+      \item and \cpp11/14/17 in a second step
       }
     \end{itemize}
   \end{minipage}

@@ -481,10 +481,10 @@
 
       std::ostream& operator<<(std::ostream& os,
                                const Complex& obj) {
-        os << "(" << m_real << ", " << m_imaginary << ")";
+        os << "(" << obj.m_real << ", "
+                  << obj.m_imaginary << ")";
         return os;
       }
-
       Complex c1(2, 3);
       std::cout << c1 << std::endl;
     \end{cppcode}
@@ -679,7 +679,7 @@
     struct Adder {
       int m_increment;
       Adder(int increment) : m_increment(increment) {}
-      int operator()(int a) { return a + increment; }
+      int operator()(int a) { return a + m_increment; }
     };
     
     Adder inc1(1), inc10(10);
@@ -1212,7 +1212,7 @@
   \end{block}
   \begin{alertblock}{My prefered choice today}
     \begin{itemize}
-      \item \alert{clang} for its error reporting
+      \item \hspace{0pt}\alert{clang} for its error reporting
       \item \alert{gcc} is not far and tries to catch up
     \end{itemize}
   \end{alertblock}
