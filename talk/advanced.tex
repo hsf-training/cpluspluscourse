@@ -405,6 +405,23 @@
 
 \subsection{Operators}
 
+\begin{frame}[fragile]
+  \frametitle{Operators' example}
+  \begin{cppcode}
+    struct Complex {
+      float m_real, m_imaginary;
+      Complex(float real, float imaginary);
+      Complex operator+(Complex& other) {
+        return Complex(m_real + other.m_real,
+                       m_imaginary + other.m_imaginary);
+      }
+    }
+
+    Complex c1(2, 3), c2 (4, 5);
+    Complex c3 = c1 + c2; // (6, 8)
+  \end{cppcode}
+\end{frame}
+
 \begin{frame}
   \frametitle{Operators}
   \begin{block}{Definition for operators of a class}
@@ -421,30 +438,13 @@
         @a & (a).operator@() & operator@(a) \\
         a@b & (a).operator@(b) & operator@(a,b) \\
         a=b & (a).operator=(b) & cannot be non-member \\
+        a(b...) & (a).operator()(b...) & cannot be non-member \\
         a[b] & (a).operator[](b) & cannot be non-member \\
         a-\textgreater & (a).operator-\textgreater() & cannot be non-member \\
         a@ & (a).operator@(0) & operator@(a,0) \\
-        (@)a & (a).operator@() & cannot be non-member \\
       \end{tabular}
     \end{itemize}
   \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Operators' example}
-  \begin{cppcode}
-    struct Complex {
-      float m_real, m_imaginary;
-      Complex(float real, float imaginary);
-      Complex operator+(Complex& other) {
-        return Complex(m_real + other.m_real,
-                       m_imaginary + other.m_imaginary);
-      }
-    }
-
-    Complex c1(2, 3), c2 (4, 5);
-    Complex c3 = c1 + c2; // (6, 8)
-  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]

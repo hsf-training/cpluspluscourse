@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <cmath>
 
 struct RevOrderString {
     bool operator() (const std::string &s, const std::string &t) const {
@@ -16,7 +17,7 @@ struct RevOrderString {
 
 struct ManhattanOrder {
     bool operator() (const Complex &a, const Complex &b) const {
-        return abs(a.real()) + abs(a.imaginary()) < abs(b.real()) + abs(b.imaginary());
+        return std::abs(a.real()) + std::abs(a.imaginary()) < std::abs(b.real()) + std::abs(b.imaginary());
     }
 };
 

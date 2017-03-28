@@ -406,7 +406,7 @@
       struct DerivedClass : BaseClass {
         using BaseClass::BaseClass;
       };
-      DerivedClass *a = new{5};
+      DerivedClass a{5};
     \end{cppcode}
   \end{exampleblock}
 \end{frame}
@@ -791,7 +791,7 @@
   \pause
   \begin{alertblock}{What really happens during swap}
     \begin{itemize}
-    \item 30k allocations + 30k releases
+    \item 10k allocations + 10k releases
     \item 30k copies
     \end{itemize}
   \end{alertblock}
@@ -810,7 +810,7 @@
   \pause
   \begin{block}{What probably happens during swap}
     \begin{itemize}
-    \item 3 allocations + 3 releases
+    \item 1 allocations + 1 releases
     \item 3 copies
     \end{itemize}
     only the pointers to underlying arrays were swapped
