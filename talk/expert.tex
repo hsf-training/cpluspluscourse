@@ -1,0 +1,490 @@
+\section[exp]{Expert C$^{++}$14}
+
+\subsection[forward]{Perfect forwarding}
+
+%http://eli.thegreenplace.net/2014/perfect-forwarding-and-universal-references-in-c/
+\begin{frame}[fragile]
+  \frametitle{The problem}
+  Trying to write a generic wrapper function
+  \begin{cppcode*}{}
+    template <typename T>
+    void wrapper(T arg) {
+      func(arg);
+    }
+  \end{cppcode*}
+  Example usage :
+  \begin{itemize}
+  \item emplace\_back
+  \item make\_unique
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Why is is not so simple ?}
+  \begin{cppcode*}{}
+    template <typename T>
+    void wrapper(T arg) {
+      func(arg);
+    }
+  \end{cppcode*}
+  \begin{alertblock}
+    what if func takes references to avoid copies ?\\
+    wrapper would force a copy and we fail to use references
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Second try, second failure ?}
+  \begin{cppcode*}{}
+    template <typename T>
+    void wrapper(T &arg) {
+      func(arg);
+    }
+    wrapper(42);
+    // invalid initialization of
+    // non-const reference from
+    // an rvalue
+  \end{cppcode*}
+  \begin{alertblock}{}
+    const ref won't help : you may want to pass something non const\\
+    and rvalue are not yet supported...
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{The solution : cover all cases}
+  \begin{cppcode*}{}
+    template <typename T>
+    void wrapper(T& arg) { func(arg); }
+
+    template <typename T>
+    void wrapper(const T& arg) { func(arg); }
+
+    template <typename T>
+    void wrapper(T&& arg) { func(arg); }
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{The new problem : scaling to n arguments}
+  \begin{cppcode*}{}
+    template <typename T1, typename T2>
+    void wrapper(T1& arg1, T2& arg2)
+    { func(arg1, arg2); }
+
+    template <typename T1, typename T2>
+    void wrapper(const T1& arg1, T2& arg2)
+    { func(arg1, arg2); }
+    
+    template <typename T1, typename T2>
+    void wrapper(T1& arg1, const T2& arg2)
+    { func(arg1, arg2); }
+    ...
+  \end{cppcode*}
+  \begin{alertblock}{Exploding complexity}
+    3$^{n}$ complexity\\
+    you do not want to try n = 5...
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Reference collapsing in \cpp98}
+  \begin{block}{Reference to references}
+    They are forbidden in \cpp\\
+    But still may happen
+    \begin{cppcode*}{}
+      template <typename T>
+      void foo(T t) {
+        T& k = t;
+        ...
+      }
+      int ii = 4;
+      foo<int&>(ii);
+    \end{cppcode*}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    all compilers where collapsing the 2 references
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Reference collapsing in \cpp11}
+  \begin{block}{rvalues have been added}
+    \begin{itemize}
+    \item what about int\&\& \& ?
+    \item and int \&\& \&\& ?
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{\cpp11 standardization}
+    The rule is simple : \& always wins\\
+    \&\& \&, \& \&\&, \& \& $\rightarrow$ \&\\
+    \&\& \&\& $\rightarrow$ \&\&
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{rvalue in type-deducing context}
+  \begin{cppcode*}{}
+    template <class T>
+    void func(T&& t) {}
+  \end{cppcode*}
+  In this context, \&\& is not an rvalue\\
+  It means that the T type depends on the arguments passed to func
+  \begin{itemize}
+  \item if an lvalue of type U is given, T is deduced to U\&
+  \item if an rvalue, T is deduced to U
+  \end{itemize}
+  \begin{cppcode*}{}
+    func(4);        // rvalue -> T is int
+    double d = 3.14;
+    func(d);        // lvalue -> T is double&
+    float f() {...}
+    func(f());      // rvalue -> T is float
+    int foo(int i) {
+      func(i);      // lvalue -> T is int&
+    }
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{std::remove\_reference}
+  Some template trickery removing reference from a type
+  \begin{cppcode*}{}
+    template< class T >
+    struct remove_reference
+    {typedef T type;};
+
+    template< class T >
+    struct remove_reference<T&>
+    {typedef T type;};
+
+    template< class T >
+    struct remove_reference<T&&>
+    {typedef T type;};
+  \end{cppcode*}
+  If T is a reference type, T::type is the type referred to by T.\\
+  Otherwise T::type is T.
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{std::forward}
+  Another template trickery keeping references and mapping non reference types to rvalue references
+  \begin{cppcode*}{}
+    template<class T>
+    T&& forward(typename std::remove_reference<T>::type& t)
+      noexcept {
+      return static_cast<T&&>(t);
+    }
+  \end{cppcode*}
+  \begin{block}{How it works}
+    \begin{itemize}
+    \item if T is int, if returns int \&\&
+    \item if T is int\&, it returns int\& \&\& ie int\&
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Perfect forwarding}
+  Putting it all together
+  \begin{cppcode*}{}
+    template <typename T>
+    void wrapper(T&& arg) {
+      func(forward<T>(arg));
+    }
+  \end{cppcode*}
+  \begin{block}{How it works}
+    \begin{itemize}
+    \item if we pass an rvalue to T (U\&\&)
+      \begin{itemize}
+      \item arg will be of type U\&\&
+      \item func will be called with a U\&\&
+      \end{itemize}
+    \item if we pass an lvalue to T (U\&)
+      \begin{itemize}
+      \item arg will be of type U\&
+      \item func will be called with a U\&
+      \end{itemize}
+    \end{itemize}
+  \end{block}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Real life example}
+  \begin{cppcode*}{}
+    template<typename T, typename... Args>
+    unique_ptr<T> make_unique(Args&&... args) {
+      return unique_ptr<T>
+        (new T(std::forward<Args>(args)...));
+    }
+  \end{cppcode*}  
+\end{frame}
+
+\subsection[tmpl]{Variadic templates}
+
+%http://eli.thegreenplace.net/2014/variadic-templates-in-c/
+
+\begin{frame}[fragile]
+  \frametitle{Basic variadic template}
+  \begin{block}{The idea}
+    \begin{itemize}
+    \item a template with an arbitrary number of parameters
+    \item ... syntax as in good old printf
+    \item using recursivity and specialization for stopping it
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode*}{}
+      template<typename T, typename... Args>
+      T adder(T first, Args... args) {
+        return first + adder(args...);
+      }
+      template<typename T>
+      T adder(T v) {
+        return v;
+      }
+      long sum = adder(1, 2, 3, 8, 7);
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{A couple of remarks}
+  \begin{block}{About performance}
+    \begin{itemize}
+    \item do not be afraid by recursivity
+    \item everything is at compile time !
+    \item unlike C style variadic functions
+    \end{itemize}
+  \end{block}
+  \begin{block}{Why is it better than variadic functions}
+    \begin{itemize}
+    \item it's more performant
+    \item type safety is included
+    \item it applies to everything, including objects
+    \end{itemize}    
+  \end{block}
+\end{frame}
+  
+\begin{frame}[fragile]
+  \frametitle{Variadic templated class}
+  \begin{block}{The tuple example}
+    \begin{cppcode*}{}
+      template <class... Ts> struct tuple {};
+      
+      template <class T, class... Ts>
+      struct tuple<T, Ts...> : tuple<Ts...> {
+        tuple(T t, Ts... ts) :
+          tuple<Ts...>(ts...), m_tail(t) {}
+        T m_tail;
+      };
+      
+      tuple<double, uint64_t, const char*>
+        t1(12.2, 42, "big");
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+
+\subsection[snifae]{SFINAE}
+
+%https://jguegant.github.io/blogs/tech/sfinae-introduction.html
+\begin{frame}[fragile]
+  \frametitle{Substitution Failure Is Not An Error}
+  \begin{block}{The main idea}
+    \begin{itemize}
+    \item substitution replaces template parameters with the provided types or values
+    \item if it leads to an invalid code, do not fail but try other overloads
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      template <typename T>
+      void f(const T& t,
+             typename T::iterator* it = nullptr) { }
+      void f(...) { }   // ``sink'' function
+
+      f(1); // Calls void f(...)
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{decltype}
+  \begin{block}{The main idea}
+    \begin{itemize}
+    \item gives the type of the of the expression it will evaluate
+    \item at compile time
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      struct A { double x; };
+      A a;
+      decltype(a.x) y;       // double
+      decltype((a.x)) z = y; // double& (lvalue)
+ 
+      template<typename T, typename U>
+      auto add(T t, U u) -> decltype(t + u);
+      // return type depends on template parameters
+    \end{cppcode*}
+  \end{exampleblock}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{declval}
+  \begin{block}{The main idea}
+    \begin{itemize}
+    \item gives you a "fake reference" to an object at compile time
+    \item useful for types that cannot be easily constructed
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      struct Default {
+        int foo() const { return 1; }
+      };
+      struct NonDefault {
+        NonDefault(int i) { }
+        int foo() const { return 1; }
+      }; 
+      decltype(Default().foo()) n1 = 1;     // int
+      decltype(NonDefault().foo()) n2 = n1; // error
+      decltype(std::declval<NonDefault>().foo()) n2 = n1;
+    \end{cppcode*}
+  \end{exampleblock}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{true\_type and false\_type}
+  \begin{block}{The main idea}
+    \begin{itemize}
+    \item encapsulate a constexpr boolean ``true'' and ``false''
+    \item can be inherited
+    \item constexpr
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      struct testStruct : std::true_type { };
+      constexpr bool testVar = testStruct();
+      bool test = testStruct::value; // true
+    \end{cppcode*}
+  \end{exampleblock}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Using SFINAE for instrospection}
+  \begin{block}{The main idea}
+    \begin{itemize}
+    \item use a template specialization that may or may not create valid code
+    \item use SFINAE to choose between them
+    \item inherit from true/false\_type
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      template <typename T, typename = void>
+      struct hasFoo : std::false_type {};
+
+      template <typename T>
+      struct hasFoo<T, decltype(std::declval<T>().foo())>
+        : std::true_type {};
+
+      std::cout << hasFoo<MyType>::value << std::endl;
+    \end{cppcode*}
+  \end{exampleblock}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{SFINAE and the STL}
+  Lot's of useful stuff there
+  \begin{block}{enable\_if}
+    \begin{cppcode*}{}
+      template<bool B, class T = void>
+      struct enable_if {};
+      template<class T>
+      struct enable_if<true, T> { typedef T type; };
+    \end{cppcode*}
+    \begin{itemize}
+    \item If B is true, has a typedef \texttt{type} to type T
+    \item otherwise, has no \texttt{type} typedef
+    \end{itemize}
+  \end{block}
+  \begin{block}{is\_*$<T>$ (float/signed/object/final/abstract/...}
+    \begin{itemize}
+    \item Checks whether T is ...
+    \item At compile time
+    \item Has member \texttt{value}, as boolean telling whether it was
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{exampleblock}{Gaudi usage example}
+    \begin{cppcode*}{}
+      constexpr struct deref_t {
+        template
+          <typename In,
+           typename = typename std::enable_if
+                      <!std::is_pointer<In>::value>::type>
+        In& operator()( In& in ) const { return in; }
+
+        template <typename In>
+        In& operator()( In* in ) const {
+          assert(in!=nullptr); return *in;
+        }
+      } deref {};
+    \end{cppcode*}
+  \end{exampleblock}  
+  
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Back to variadic templated class}
+  \begin{block}{The tuple get method}
+    \begin{cppcode*}{}
+      template <class T, class... Ts>
+      struct elem_type_holder<0, tuple<T, Ts...>> {
+        typedef T type;
+      };
+      
+      template <size_t k, class T, class... Ts>
+      struct elem_type_holder<k, tuple<T, Ts...>> {
+        typedef typename elem_type_holder
+           <k - 1, tuple<Ts...>>::type type;
+      };
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Back to variadic templated class}
+  \begin{block}{The tuple get method}
+    \begin{cppcode*}{}
+      template <size_t k, class... Ts>
+      typename std::enable_if<k == 0,
+        typename elem_type_holder
+          <0, tuple<Ts...>>::type&>::type
+      get(tuple<Ts...>& t) {
+        return t.m_tail;
+      }      
+      template <size_t k, class T, class... Ts>
+      typename std::enable_if<k != 0,
+        typename elem_type_holder
+           <k-1, tuple<Ts...>>::type&>::type
+      get(tuple<T, Ts...>& t) {
+        tuple<Ts...>& base = t;
+        return get<k - 1>(base);
+      }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+
+\subsection[C$^{++}$17]{C$^{++}$17}
+
+\begin{frame}
+  to be written...
+\end{frame}
