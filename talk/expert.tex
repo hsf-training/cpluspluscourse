@@ -27,7 +27,7 @@
       func(arg);
     }
   \end{cppcode*}
-  \begin{alertblock}
+  \begin{alertblock}{What about references ?}
     what if func takes references to avoid copies ?\\
     wrapper would force a copy and we fail to use references
   \end{alertblock}
@@ -103,7 +103,7 @@
     \end{cppcode*}
   \end{block}
   \begin{exampleblock}{Practically}
-    all compilers where collapsing the 2 references
+    all compilers were collapsing the 2 references
   \end{exampleblock}
 \end{frame}
 
@@ -411,7 +411,7 @@
     \item otherwise, has no \texttt{type} typedef
     \end{itemize}
   \end{block}
-  \begin{block}{is\_*$<T>$ (float/signed/object/final/abstract/...}
+  \begin{block}{is\_*$<T>$ (float/signed/object/final/abstract/...)}
     \begin{itemize}
     \item Checks whether T is ...
     \item At compile time

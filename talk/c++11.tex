@@ -165,10 +165,10 @@
   \frametitle{Loops and auto keyword with the STL}
   \begin{block}{Old way}
     \begin{cppcode*}{}
-      std::vector<int> v;
+      std::vector<int> a = ...;
       int sum = 0;
-      for (std::vector<int>::iterator it = a.begin();
-           it != a.end(); it++) {
+      for (std::vector<int>::iterator it = v.begin();
+           it != v.end(); it++) {
         sum += *it;
       }
     \end{cppcode*}
@@ -176,7 +176,7 @@
   \pause
   \begin{block}{New way}
     \begin{cppcode*}{}
-      std::vector<int> v;
+      std::vector<int> v = ...;
       int sum = 0;
       for (auto a : v) { sum += a; }
     \end{cppcode*}
@@ -184,7 +184,7 @@
   \pause
   \begin{exampleblock}{STL way}
     \begin{cppcode*}{}
-      std::vector<int> v;
+      std::vector<int> v = ...;
       int sum = std::accumulate(v.begin(), v.end(), 0);
     \end{cppcode*}
   \end{exampleblock}
@@ -383,6 +383,7 @@
   \begin{exampleblock}{Practically}
     \begin{cppcode}
       struct Delegate {
+        int m_i;
         Delegate() { ... complex initialization ...};
         Delegate(int i) : Delegate(), m_i(i) {};
       }
@@ -708,7 +709,6 @@
       i = inc10(i);  // i = 11
     \end{cppcode*}
   \end{exampleblock}
-  \pause
   \begin{block}{How it works}
     \begin{itemize}
       \item build\_incrementer returns a function object
@@ -933,9 +933,9 @@
     \end{itemize}
     \begin{cppcode*}{}
       T a;
-      T b = a;                   // 1. Copy assign
-      T c = std::move(a);        // 4. Move assign
-      T d = static_cast<T&&>(a); // 5. Move assign
+      T b = a;                   // Copy assign
+      T c = static_cast<T&&>(a); // Move assign
+      T d = std::move(a);        // Move assign
     \end{cppcode*}
   \end{block}
 \end{frame}

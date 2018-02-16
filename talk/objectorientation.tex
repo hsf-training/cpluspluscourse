@@ -438,7 +438,7 @@
 \subsection[Constructors]{Constructors/destructors}
 
 \begin{frame}[fragile]
-  \frametitle{Class Constructors and Destructor}
+  \frametitle{Class Constructors and Destructors}
   \begin{block}{Concept}
     \begin{itemize}
     \item special functions building/destroying an object
@@ -620,7 +620,7 @@
   \frametitle{The Stack}
   \begin{block}{Main characteristics}
     \begin{itemize}
-    \item allocation on the stack stays in scope as long as it is on the stack \\
+    \item allocation on the stack stays valid for the duration of the current scope.
     It is destroyed when it is popped off the stack.
     \item memory allocated on the stack is known at compile time and can thus be accessed through a variable.
     \item the stack is relatively small, it is not a good idea to allocate large arrays, structures or classes
@@ -637,15 +637,15 @@
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    {
-      MyFirstClass a; // default constructor called
-      ...
-    }  // destructor called
-
     int f() {
       MyFirstClass a(3); // constructor called
       ...
     } // destructor called
+
+    {
+      MyFirstClass a; // default constructor called
+      ...
+    }  // destructor called
   \end{cppcode}
 \end{frame}
 
