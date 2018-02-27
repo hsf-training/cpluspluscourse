@@ -1,0 +1,174 @@
+\section[17]{C$^{++}$17 features}
+
+\subsection[NS]{Nested namespace}
+
+\begin{frame}[fragile]
+  \frametitle{Nested namespaces}
+  Easier way to declare nested namespaces
+  \begin{alertblock}{\cpp14}
+    \begin{cppcode*}{}
+      namespace A {
+        namespace B {
+          namespace C {
+            //...
+          }
+        }
+      }
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp17}
+    \begin{cppcode*}{}
+      namespace A::B::C {
+        //...
+      }
+    \end{cppcode*}    
+  \end{exampleblock}
+\end{frame}
+
+\subsection[copy]{Copy elision}
+
+\begin{frame}[fragile]
+  \frametitle{Guaranteed copy elision}
+  \begin{block}{What is copy elision}
+    \begin{cppcode*}{}
+      struct Foo { ... };
+      Foo f() {
+        return Foo();
+      }
+      int main() {
+        // compiler was authorised to elude the copy
+        Foo foo = f();
+      }
+    \end{cppcode*}
+  \end{block}
+  \begin{exampleblock}{New in \cpp17}
+    The elision is guaranteed.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Guaranteed copy elision}
+  Allows to write code not allowed with \cpp14 (would not compile)
+  \begin{block}{One case where the guarantee is needed}
+    \begin{cppcode*}{}
+      struct Foo {
+        Foo() { ... }
+        Foo(const Foo &) = delete;
+        Foo(const Foo &&) = delete;
+      };
+      Foo f() {
+        return Foo();
+      }
+      int main() {
+        Foo foo = f();
+      }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\subsection[attr]{[[fallthrough]]}
+
+\AtBeginEnvironment{minted}{%
+  \renewcommand{\fcolorbox}[4][]{#4}}
+
+\begin{frame}[fragile]
+  \frametitle{\texttt{[[fallthrough]]} attribute}
+  \begin{alertblock}{\cpp14}
+    \begin{cppcode}
+      switch (c) {
+        case 'a':
+          f();; // Warning emitted
+        case 'c':
+          h();;
+      }
+    \end{cppcode}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp17}
+    \begin{cppcode*}{}
+      switch (c) {
+        case 'a':
+          f();;
+          [[fallthrough]];; // Warning suppressed
+        case 'c':
+          h();;
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\subsection[bind]{Structured Binding Declarations}
+
+\begin{frame}[fragile]
+  \frametitle{Structured Binding Declarations}
+  Helps when using tuples as a return type.\\
+  Automatically creates variables and ties them.
+  \begin{alertblock}{\cpp14}
+    \begin{cppcode*}{}
+      int a = 0;
+      double b = 0.0;
+      long c = 0;
+      // a, b, c need to be declared first
+      std::tie(a, b, c) = tuple;
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp17}
+    \begin{cppcode*}{}
+      auto [ a, b, c ] = tuple;
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\subsection[if]{init-statements for if and switch}
+
+\begin{frame}[fragile]
+  \frametitle{init-statements for if and switch}
+  Allows to simplify if and switch statements
+  \begin{alertblock}{\cpp14}
+    \begin{cppcode*}{}
+      auto val = GetValue();
+      if (condition(val)) {
+        // on success
+      } else {
+        // on false...
+      }
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp17}
+    \begin{cppcode*}{}
+      if (auto val = GetValue(); condition(val)) {
+        // on success
+      } else {
+        // on false...
+      }
+    \end{cppcode*}
+    \vspace{-.3cm}
+    val is visible only inside the if and else statements
+  \end{exampleblock}  
+\end{frame}
+
+\subsection[STL]{new STL types}
+
+\begin{frame}[fragile]
+  \frametitle{Some new STL types}
+  \begin{block}{\texttt{std::optional}}
+    \begin{itemize}
+    \item manages an optional contained value
+    \item contextually converted to bool
+    \item useful for the return value of a function that may fail
+    \end{itemize}
+  \end{block}
+  \begin{block}{\texttt{std::any}}
+    \begin{itemize}
+    \item a type-safe container for single values of any type
+    \item the \texttt{any\_cast} function provides type-safe access
+    \item and throws \texttt{std::bad\_any\_cast} for bad access
+    \end{itemize}
+  \end{block}
+  \begin{block}{\texttt{std::variant}}
+    \begin{itemize}
+    \item a type-safe union
+    \item \texttt{std::get} reads the value of the variant
+    \item and throws \texttt{std::bad\_variant\_access} for bad accesses
+    \end{itemize}
+  \end{block}
+\end{frame}
