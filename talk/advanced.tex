@@ -1,9 +1,9 @@
-\section[Adv]{Advanced Topics}
+\section[Adv]{Advanced \cpp}
 
-\subsection[OO]{Object orientation}
+\subsection[OO]{Advanced OO}
 
 \begin{frame}[fragile]
-  \frametitle{Polymorphism}
+  \frametitlegb{Polymorphism}
   \begin{block}{the concept}
     \begin{itemize}
     \item objects actually have multiple types concurrently
@@ -37,7 +37,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{Inheritance privacy and polymorphism}
+  \frametitlegb{Inheritance privacy and polymorphism}
   \begin{block}{Only public inheritance is visible to code outside the class}
     \begin{itemize}
     \item private and protected are not
@@ -70,11 +70,71 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Method overriding}
+  \frametitleii{Method overriding}
+  \begin{block}{Principle}
+    \begin{itemize}
+    \item a given method of the parent can be overriden in a child
+    \item so that the behavior is adapted
+    \item the \mintinline{cpp}|override| keyword needs to be used
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct Base {
+        void some_func(float);
+      };
+      struct Derived : Base {
+        void some_func(float) override;
+      };
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Why was {\texttt override} keyword introduced ?}
+  To detect mistakes in the following code :
+  \begin{block}{Without {\texttt override} (\cpp98)}
+    \begin{cppcode}
+      struct Base {
+        void some_func(float);
+      };
+      struct Derived : Base {
+        void some_func(double); // oups !
+      };
+    \end{cppcode}
+  \end{block}
+  \begin{itemize}
+  \item with \mintinline{cpp}|override|, you get a compiler error
+  \item if you forget \mintinline{cpp}|override| when you should have it, you get a compiler warning
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{{\texttt final} keyword}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item make sure you cannot override a given method
+    \item by declaring it final
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct Base {
+        void some_func(float) final;
+      };
+      struct Derived : Base {
+        void some_func(float) override; // error
+      };
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Method overriding : which version is called ?}
   \begin{block}{the problem}
     \begin{itemize}
     \item a given method of the parent can be overriden in a child
-    \item but which one is called ?
+    \item if you use polymorphism and see the child as a parent, which one is called ?
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
@@ -101,9 +161,8 @@
   \end{multicols}
 \end{frame}
 
-
 \begin{frame}[fragile]
-  \frametitle{Virtual methods}
+  \frametitlegb{Virtual methods}
   \begin{block}{the concept}
     \begin{itemize}
     \item methods can be declared {\it virtual}
@@ -137,7 +196,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Virtual methods}
+  \frametitlegb{Virtual methods}
   \begin{block}{the concept}
     \begin{itemize}
     \item methods can be declared {\it virtual}
@@ -170,7 +229,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Pure Virtual methods}
+  \frametitlegb{Pure Virtual methods}
   \begin{block}{Concept}
     \begin{itemize}
     \item methods that exist but are not implemented
@@ -209,7 +268,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Pure Abtract Class aka Interface}
+  \frametitlegb{Pure Abtract Class aka Interface}
   \begin{block}{Definition of pure abstract class}
     \begin{itemize}
     \item a class that has
@@ -237,7 +296,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Overriding overloaded methods}
+  \frametitlegb{Overriding overloaded methods}
   \begin{block}{Concept}
     \begin{itemize}
     \item overriding an overloaded method will hide the others
@@ -259,7 +318,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Polymorphism}
+  \frametitlegb{Polymorphism}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/polymorphism
@@ -274,7 +333,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Multiple Inheritance}
+  \frametitlegb{Multiple Inheritance}
   \begin{block}{Concept}
     \begin{itemize}
     \item one class can inherit from multiple parents
@@ -302,7 +361,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{The diamond shape}
+  \frametitlegb{The diamond shape}
   \begin{block}{Definition}
     \begin{itemize}
     \item situation when one class inherits several times from a given grand parent
@@ -328,7 +387,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Virtual inheritance}
+  \frametitlegb{Virtual inheritance}
   \begin{block}{Solution}
     \begin{itemize}
     \item inheritance can be {\it virtual} or not
@@ -365,7 +424,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Multiple inheritance advice}
+  \frametitlegb{Multiple inheritance advice}
   \begin{block}{Do not use multiple inheritance}
     \begin{itemize}
     \item Except for inheriting from interfaces
@@ -382,7 +441,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Virtual inheritance}
+  \frametitlegb{Virtual inheritance}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/virtual\_inheritance
@@ -396,7 +455,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Virtual inheritance}
+  \frametitlegb{Virtual inheritance}
   \begin{alertblock}{Warning}
     in case of virtual inheritance it is the most derived class that calls the virtual base class' constructor
   \end{alertblock}
@@ -406,7 +465,7 @@
 \subsection{Operators}
 
 \begin{frame}[fragile]
-  \frametitle{Operators' example}
+  \frametitlegb{Operators' example}
   \begin{cppcode}
     struct Complex {
       float m_real, m_imaginary;
@@ -423,7 +482,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Operators}
+  \frametitlegb{Operators}
   \begin{block}{Definition for operators of a class}
     \begin{itemize}
     \item implemented as a regular method
@@ -448,7 +507,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Why to have non-member operators ?}
+  \frametitlegb{Why to have non-member operators ?}
   \begin{block}{Symetry}
     \begin{cppcode}
       struct Complex {
@@ -471,7 +530,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Other reason to have non-member operators ?}
+  \frametitlegb{Other reason to have non-member operators ?}
   \begin{block}{Extending existing classes}
     \begin{cppcode}
       struct Complex {
@@ -491,231 +550,10 @@
   \end{block}
 \end{frame}
 
-\subsection[Refs]{Value, pointers and references}
-
-\begin{frame}[fragile]
-  \frametitle{Value, pointers and references}
-  \begin{block}{Different ways to pass arguments to a function}
-    \begin{itemize}
-    \item by default arguments are passed by value
-    \item but pointers can be used
-    \item and references are also available
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-    struct T {...};
-    void func   (T value);  // by value
-    void funcPtr(T *value); // pointer
-    void funcRef(T &value); // reference
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Value versus pointers/reference}
-  \begin{block}{Identical to C}
-    \begin{itemize}
-    \item by value, a copy is created
-      \begin{itemize}
-        \item calling the copy constructor for objects
-      \end{itemize}
-    \item using pointers, the memory address of value is passed
-    \item using reference, a reference to value is passed
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-    T a;      // constructor called
-  \end{cppcode}
-  \pause
-  \begin{cppcode*}{firstnumber=2}
-    funct(a); // copy constructor called on enter
-              // destructor called on exit
-  \end{cppcode*}
-  \pause
-  \begin{cppcode*}{firstnumber=4}
-    functPtr(&a); // no copy, but we pass a pointer
-    functRef(a);  // no copy, and standard syntax
-  \end{cppcode*}
-\end{frame}
-
-
-\begin{frame}[fragile]
-  \frametitle{Pointers vs References}
-  \begin{block}{Specificities of reference}
-    \begin{itemize}
-    \item natural syntax
-    \item will never be NULL
-    \item cannot reference temporary object
-    \end{itemize}
-  \end{block}
-  \begin{block}{Advantages of pointers}
-    \begin{itemize}
-    \item can be NULL
-    \item clearly indicates that argument may be modified
-    \end{itemize}
-  \end{block}
-  \pause
-  \begin{alertblock}{Good practice}
-    \begin{itemize}
-      \item Always use references when you can
-      \item Consider that a reference will be modified
-      \item Use const when it's not the case
-    \end{itemize}
-  \end{alertblock}
-\end{frame}
-
-\subsection[const]{Constness}
-
-\begin{frame}[fragile]
-  \frametitle{Constness}
-  \begin{block}{The {\it const} keyword}
-    \begin{itemize}
-    \item indicate that the element to the left is constant
-    \item this element won't be modifiable in the future
-    \item this is all checked at compile time
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-    // standard syntax
-    int const i = 6;
-
-    // error : i is constant
-    i = 5;
-
-    // also ok, when nothing on the left,
-    // const applies to element on the right
-    const int j = 6;
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Constness and pointers}
-  \begin{cppcode}
-    // pointer to a constant integer
-    int a = 1, b = 2;
-    int const *i = &a;
-    *i = 5; // error, int is const
-    i = &b; // ok, pointer is not const
-
-    // constant pointer to an integer
-    int * const j = &a;
-    *j = 5; // ok, value can be changed
-    j = &b; // error, pointer is const
-
-    // constant pointer to a constant integer
-    int const * const k = &a;
-    *k = 5; // error, value is const
-    k = &b; // error, pointer is const
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Function constness}
-  \begin{block}{The {\it const} keyword for class functions}
-    \begin{itemize}
-    \item indicate that the function does not modify the object
-    \item in other words, {\it this} is a pointer to constant object
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-    struct Exemple {
-      void foo() const  {
-        m_member = 0; // Error : function is constant
-      }
-      int m_member;
-    };
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Function constness}
-  \begin{block}{Constness is part of the type}
-    \begin{itemize}
-    \item const T and T are different type
-    \item however, T is automatically casted in const T when needed
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-    void func(int *a);
-    void funcConst(const int *a);
-
-    int *a = 0;
-    const int *b = 0;
-
-    func(a);      // ok
-    func(b);      // error : no cannot cast int* to const
-    funcConst(a); // ok
-    funcConst(b); // ok
-  \end{cppcode}
-\end{frame}
-
-
-\begin{frame}[fragile]
-  \frametitle{constness}
-  \begin{alertblock}{Exercise Time}
-    \begin{itemize}
-    \item go to code/constness
-    \item open test.cpp
-    \item try pointer to constant
-    \item try constant pointer
-    \item try constant pointer to constant
-    \item try constant arguments of functions
-    \item try constant method in a class
-    \end{itemize}
-  \end{alertblock}
-\end{frame}
-
-\subsection[Functors]{Functors}
-
-\begin{frame}[fragile]
-  \frametitle{Functors}
-  \begin{block}{Concept}
-    \begin{itemize}
-    \item a class that implements the () operator
-    \item allows to use objects in place of functions
-    \item and as objects have constructors, allow to construct functions
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-    struct Adder {
-      int m_increment;
-      Adder(int increment) : m_increment(increment) {}
-      int operator()(int a) { return a + m_increment; }
-    };
-    
-    Adder inc1(1), inc10(10);
-    int i = 3;
-    int j = inc1(i);  // 4
-    int k = inc10(i); // 13
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{Functors}
-  \begin{block}{Typical usage}
-    \begin{itemize}
-    \item pass a function to another one
-    \item or to an STL algorithm (see later)
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-    struct BinaryFunction {
-      virtual double operator() (double a, double b) = 0;
-    };
-    struct Add : public BinaryFunction {
-      double operator() (double a, double b) { return a+b; }
-    };
-    double binary_op(double a, double b, BinaryFunction &func) {
-      return func(a, b);
-    }
-    Add addfunc;
-    double c = binary_op(a, b, addfunc);
-  \end{cppcode}
-\end{frame}
-
 \subsection[\textless{}T\textgreater]{Templates}
 
 \begin{frame}[fragile]
-  \frametitle{Templates}
+  \frametitlegb{Templates}
   \begin{block}{Concept}
     \begin{itemize}
     \item The \cpp way to write reusable code
@@ -740,7 +578,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Templates}
+  \frametitlegb{Templates}
   \begin{alertblock}{Warning}
     These are really like macros
     \begin{itemize}
@@ -793,7 +631,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Templates}
+  \frametitlegb{Templates}
   \begin{block}{Arguments}
     \begin{itemize}
     \item can be a class, 
@@ -815,7 +653,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Templates implementation}
+  \frametitlegb{Templates implementation}
   \begin{cppcode*}{}
     template<class KeyType=int, class ValueType=KeyType>
     struct Map {
@@ -837,7 +675,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Templates}
+  \frametitlegb{Templates}
   \begin{block}{Specialization}
     templates can be specialized for given values of their parameter
   \end{block}
@@ -858,7 +696,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{The full power of templates}
+  \frametitlegb{The full power of templates}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/template
@@ -877,7 +715,7 @@
 \subsection[STL]{The STL}
 
 \begin{frame}[fragile]
-  \frametitle{The Standard Template Library}
+  \frametitlegb{The Standard Template Library}
   \begin{block}{What it is}
     \begin{itemize}
     \item A library of standard templates
@@ -901,7 +739,7 @@
 
 
 \begin{frame}[fragile,label=STLcode]
-  \frametitle{STL in practice}
+  \frametitlegb{STL in practice}
   \begin{cppcode*}{}
     #include <vector>
     #include <algorithm>
@@ -923,7 +761,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{STL's concepts}
+  \frametitlegb{STL's concepts}
   \begin{block}{containers}
     \begin{itemize}
     \item a structure containing data
@@ -937,7 +775,7 @@
     \item examples
       \begin{itemize}
       \item string
-      \item list, vector, deque
+      \item tuple, list, vector, deque
       \item map, set, multimap, multiset, hash\_map, hash-set, ...
       \item stack, queue, priority\_queue
       \end{itemize}
@@ -946,7 +784,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{STL's concepts}
+  \frametitlegb{STL's concepts}
   \begin{block}{iterators}
     \begin{itemize}
     \item generalization of pointers
@@ -968,7 +806,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{STL's concepts}
+  \frametitlegb{STL's concepts}
   \begin{block}{algorithms}
     \begin{itemize}
     \item implementation of an algorithm working on data
@@ -993,7 +831,7 @@
 \end{frame}
       
 \begin{frame}[fragile]
-  \frametitle{STL's concepts}
+  \frametitlegb{STL's concepts}
   \begin{block}{functions / functors}
     \begin{itemize}
       \item generic utility functions/functors
@@ -1017,8 +855,56 @@
 
 \againframe{STLcode}
 
+\subsection[Functors]{Functors}
+
 \begin{frame}[fragile]
-  \frametitle{More complex STL code}
+  \frametitlegb{Functors}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item a class that implements the () operator
+    \item allows to use objects in place of functions
+    \item and as objects have constructors, allow to construct functions
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    struct Adder {
+      int m_increment;
+      Adder(int increment) : m_increment(increment) {}
+      int operator()(int a) { return a + m_increment; }
+    };
+    
+    Adder inc1(1), inc10(10);
+    int i = 3;
+    int j = inc1(i);  // 4
+    int k = inc10(i); // 13
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Functors}
+  \begin{block}{Typical usage}
+    \begin{itemize}
+    \item pass a function to another one
+    \item or to an STL algorithm (see later)
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    struct BinaryFunction {
+      virtual double operator() (double a, double b) = 0;
+    };
+    struct Add : public BinaryFunction {
+      double operator() (double a, double b) { return a+b; }
+    };
+    double binary_op(double a, double b, BinaryFunction &func) {
+      return func(a, b);
+    }
+    Add addfunc;
+    double c = binary_op(a, b, addfunc);
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{STL and functors}
   \begin{cppcode}
     // Finds the first element in a list that lies in
     // the range from 1 to 10.
@@ -1039,7 +925,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Welcome to lego programming !}
+  \frametitlegb{Welcome to lego programming !}
   \begin{block}{}
     \pgfdeclareimage[height=0.5cm]{AtlasLego}{AtlasLego.jpg}
     \includegraphics[width=\linewidth]{AtlasLego}
@@ -1047,7 +933,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Using the STL}
+  \frametitlegb{Using the STL}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/stl
@@ -1065,7 +951,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Using the STL}
+  \frametitlegb{Using the STL}
   \begin{alertblock}{Some last warning}
     You may find the STL quite difficult to use.
     \begin{itemize}
@@ -1075,4 +961,624 @@
     \end{itemize}
     However, this has improved a lot with \cpp11
   \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Loops and auto keyword with the STL}
+  \begin{block}{Old way}
+    \begin{cppcode*}{}
+      std::vector<int> a = ...;
+      int sum = 0;
+      for (std::vector<int>::iterator it = v.begin();
+           it != v.end(); it++) {
+        sum += *it;
+      }
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{New way}
+    \begin{cppcode*}{}
+      std::vector<int> v = ...;
+      int sum = 0;
+      for (auto a : v) { sum += a; }
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{exampleblock}{STL way}
+    \begin{cppcode*}{}
+      std::vector<int> v = ...;
+      int sum = std::accumulate(v.begin(), v.end(), 0);
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\subsection{More STL}
+
+\begin{frame}[fragile]
+  \frametitleit{Some new STL types}
+  \begin{block}{\texttt{std::optional}}
+    \begin{itemize}
+    \item manages an optional contained value
+    \item contextually converted to bool
+    \item useful for the return value of a function that may fail
+    \end{itemize}
+  \end{block}
+  \begin{block}{\texttt{std::any}}
+    \begin{itemize}
+    \item a type-safe container for single values of any type
+    \item the \texttt{any\_cast} function provides type-safe access
+    \item and throws \texttt{std::bad\_any\_cast} for bad access
+    \end{itemize}
+  \end{block}
+  \begin{block}{\texttt{std::variant}}
+    \begin{itemize}
+    \item a type-safe union
+    \item \texttt{std::get} reads the value of the variant
+    \item and throws \texttt{std::bad\_variant\_access} for bad accesses
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{non-member begin and end}
+  \begin{alertblock}{The problem}
+    STL containers and arrays have different syntax for loop
+    \begin{cppcode}
+      std::vector<int> v;
+      for(it = v.begin(); it != v.end(); it++) {...}
+      int a[] = {1,2,3};
+      for(i = 0; i < 3; i++) {...}
+    \end{cppcode}
+  \end{alertblock}
+  \pause
+  \begin{block}{The new syntax}
+    \begin{cppcode}
+      std::vector<int> v;
+      for(auto it = begin(v); it != end(v); it++) {...}
+      int a[] = {1,2,3};
+      for(int* i = begin(a); i != end(a); i++) {...}
+    \end{cppcode}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleit{Structured Binding Declarations}
+  Helps when using tuples as a return type.\\
+  Automatically creates variables and ties them.
+  \begin{alertblock}{\cpp14}
+    \begin{cppcode*}{}
+      void foo(std::tuple<int, double, long> tuple) {
+        int a = 0;
+        double b = 0.0;
+        long c = 0;
+        // a, b, c need to be declared first
+        std::tie(a, b, c) = tuple;
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp17}
+    \begin{cppcode*}{}
+      void foo(std::tuple<int, double, long> tuple) {
+        auto [ a, b, c ] = tuple;
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\subsection[$\lambda$]{Lambdas}
+
+\begin{frame}[fragile]
+  \frametitleii{Function return type}
+  \begin{block}{A new way to specify function's return type}
+    \begin{cppcode*}{linenos=false}
+      ReturnType fn_name(ArgType1, ArgType2);  //old
+      auto fn_name(ArgType1, ArgType2) -> ReturnType;
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{Advantages}
+    \begin{itemize}
+    \item Allows to simplify inner type definition
+      \begin{cppcode*}{linenos=false,gobble=4}
+        class TheClass {
+          typedef int inner_type;
+          inner_type func();
+        }
+        TheClass::inner_type TheClass::func() {...}
+        auto TheClass::func() -> inner_type {...}
+      \end{cppcode*}
+    \item will be used for lambdas
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitleii{Lambdas}
+  \begin{block}{Definition}
+    a lambda is a function with no name
+  \end{block}
+  \pause
+  \begin{exampleblock}{Python example}
+    \begin{pythoncode*}{}
+      data = [1,9,3,8,3,7,4,6,5]
+
+      # without lambdas
+      def isOdd(n):
+        return n%2 == 1
+      print filter(isOdd, data)
+
+      # with lambdas
+      print filter(lambda n:n%2==1, data)
+    \end{pythoncode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{\cpp Lambdas}
+  \begin{block}{Simplified syntax}
+    \begin{cppcode*}{gobble=2}
+      [] (args) -> type {
+        code;
+      }
+    \end{cppcode*}
+    The type specification is optionnal
+  \end{block}
+  \begin{exampleblock}{Usage example}
+    \begin{cppcode*}{gobble=2}
+      std::vector<int> data{1,2,3,4,5};
+      for_each(begin(data), end(data),
+               [](int i) {
+                 std::cout << "The square of " << i
+                           << " is " << i*i << std::endl;
+               });
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitleii{Capture}
+  \begin{block}{Python code}
+    \begin{pythoncode*}{}
+      increment = 3
+      data = [1,9,3,8,3,7,4,6,5]
+      map(lambda x : x + increment, data)
+    \end{pythoncode*}
+  \end{block}
+  \pause
+  \begin{block}{First attempt in \cpp}
+    \begin{cppcode}
+      int increment = 4;
+      std::vector<int> data{1,9,3,8,3,7,4,6,5};
+      for_each(begin(data), end(data),
+               [](int x) { std::cout << x+increment; });
+      std::cout << std::endl;
+    \end{cppcode}
+  \end{block}
+  \pause
+  \begin{alertblock}{Error}
+    \begin{minted}[gobble=6]{text}
+        error: 'increment' is not captured
+          [](int x) { std::cout << x+increment; });
+                                     ^
+    \end{minted}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Capture}
+  \begin{block}{Variable capture}
+    \begin{itemize}
+    \item external variables need to be explicitely captured
+    \item captured variables are listed within initial []
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      int increment = 4;
+      std::vector<int> data{1,9,3,8,3,7,4,6,5};
+      for_each(begin(data), end(data),
+               [increment](int x) {
+                 std::cout << x+increment;
+               });
+      std::cout << std::endl;
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Default capture is by value}
+  \begin{exampleblock}{Code example}
+    \begin{cppcode}
+      int sum = 0;
+      std::vector<int> data{1,9,3,8,3,7,4,6,5};
+      for_each(begin(data), end(data),
+              [sum](int x) { sum += x; });
+    \end{cppcode}
+  \end{exampleblock}
+  \pause
+  \begin{alertblock}{Error}
+    \begin{minted}[gobble=4]{text}
+      error: assignment of read-only variable 'sum'
+               [sum](int x) { sum += x; });
+    \end{minted}
+  \end{alertblock}
+  \pause
+  \begin{block}{Explanation}
+    By default, variables are captured by value
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Capture by reference}
+  \begin{exampleblock}{Simple example}
+    In order to capture by reference, add '\&' before the variable
+    \begin{cppcode}
+      int sum = 0;
+      std::vector<int> data{1,9,3,8,3,7,4,6,5};
+      for_each(begin(data), end(data),
+              [&sum](int x) { sum += x; });
+    \end{cppcode}
+  \end{exampleblock}
+  \pause
+  \begin{exampleblock}{Mixed case}
+    One can of course mix values and references
+    \begin{cppcode}
+      int sum = 0, offset = 1;
+      std::vector<int> data{1,9,3,8,3,7,4,6,5};
+      for_each(begin(data), end(data),
+              [&sum, offset](int x) {
+                sum += x + offset;
+              });
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Capture all}
+  \begin{block}{by value}
+    \begin{cppcode*}{linenos=false}
+      [=](...) { ... };
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{by reference}
+    \begin{cppcode*}{linenos=false}
+      [&](...) { ... };
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{exceptions}
+    \begin{cppcode*}{linenos=false}
+      [&, b](...) { ... };
+      [=, &b](...) { ... };
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Closures}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      auto build_incrementer = [](int inc) {
+        return [inc](int value) { return value + inc; };
+      };
+      auto inc1 = build_incrementer(1);
+      auto inc10 = build_incrementer(10);
+      int i = 0;
+      i = inc1(i);   // i = 1
+      i = inc10(i);  // i = 11
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{block}{How it works}
+    \begin{itemize}
+      \item build\_incrementer returns a function object
+      \item this function's behavior depends on a parameter
+      \item note how {\it auto} is useful here !
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{\cpp11 makes the STL usable}
+  \begin{block}{Before lambdas}
+    \begin{cppcode*}{}
+      struct Incrementer {
+        int m_inc;
+        Incrementer(int inc) : m_inc(inc) {}
+        int operator() (int value) {
+          return value + m_inc;
+        };
+      };
+      std::vector<int> v;
+      v.push_back(1); v.push_back(2); v.push_back(3);
+      std::transform(begin(v), end(v), begin(v),
+                     Incrementer(1));
+      for (std::vector<int>::iterator it = begin(v);
+           it != end(v);
+           it++) std::cout << *it << " ";
+      \end{cppcode*}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{\cpp11 makes the STL usable}
+  \begin{exampleblock}{With lambdas}
+    \begin{cppcode*}{}
+      std::vector<int> v = {1, 2, 3};
+      int inc = 1;
+      std::transform(begin(v), end(v), begin(v),
+                     [inc](int value) {
+                       return value + inc;
+                     });
+      for (auto a : v) std::cout << a << " ";
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{alertblock}{Conclusion}
+    Use the STL !
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Lambdas}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/lambdas
+    \item look at the code (it's the solution to the stl exercise)
+    \item use lambdas to simplify it
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\subsection[RAII]{pointers and RAII}
+
+\begin{frame}[fragile]
+  \frametitlegb{Pointers : why they are error prone ?}
+  \begin{exampleblock}{They need initialization
+      \hfill \onslide<2->{\textcolor{orange}{\bf Seg Fault}}}
+    \begin{cppcode*}{linenos=false}
+      char *s;
+      try {
+        foo();
+        s = (char*) malloc(...);
+        strncpy(s, ...);
+      } catch (...) { ... }
+      bar(s);
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \pause
+  \vspace{-2cm}
+  \begin{exampleblock}{They need to be released
+      \hfill \onslide<4->{\textcolor{orange}{\bf Memory leak}}}
+    \begin{cppcode*}{linenos=false}
+      char *s = (char*) malloc(...);
+      strncpy(s, ...);
+      if (0 != strncmp(s, ...)) return;
+      foo(s);
+      free(s);
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \pause
+  \vspace{-2cm}
+  \begin{exampleblock}{They need clear ownership
+      \hfill \onslide<6->{\textcolor{orange}{\bf Who should release ?}}}
+    \begin{cppcode*}{linenos=false}
+      char *s = (char*) malloc(...);
+      strncpy(s, ...);
+      someVector.push_back(s);
+      someSet.add(s);
+      std::thread t1(vecConsumer, someVector);
+      std::thread t2(setConsumer, someSet);
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{This problem exists for any resource}
+  \begin{exampleblock}{For example with a file}
+    \begin{cppcode*}{}
+      try {
+        FILE *handle = std::fopen(path, "w+");
+        if (0 == handle) { throw ... }
+        if (std::fputs(str, handle) == EOF) {
+          throw ...
+        }
+        fclose(handle);
+      } catch (...) { ... }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitlegb{Resource Acquisition Is Initialization}
+  \begin{block}{Practically}
+    Use object semantic to acquire/release resources
+    \begin{itemize}
+    \item wrap the resource inside an object
+    \item acquire resource via object constructor
+    \item release resource in destructor
+    \item create this object on the stack so that it is automatically destructed when leaving the scope
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{RAII in practice}
+  \begin{exampleblock}{File class}
+    \begin{cppcode*}{}
+      class File {
+      public:
+        File(const char* filename) :
+          m_file_handle(std::fopen(filename, "w+")) {
+          if (m_file_handle == NULL) { throw ... }
+        }
+        ~File() { std::fclose(m_file_handle); }
+        void write (const char* str) {
+          if (std::fputs(str, m_file_handle) == EOF) {
+            throw ...
+          }
+        }
+      private:
+        FILE* m_file_handle;
+      };
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{RAII usage}
+  \begin{exampleblock}{Usage of File class}
+    \begin{cppcode*}{}
+      void log_function() {
+        // file opening, aka resource acquisition
+        File logfile("logfile.txt") ;
+
+        // file usage
+        logfile.write("hello logfile!") ;
+
+        // file is automatically closed by the call to
+        // its destructor, even in case of exception !
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{std::unique\_ptr}
+  \begin{block}{an RAII pointer}
+    \begin{itemize}
+    \item wraps a regular pointer
+    \item has move only semantic
+      \begin{itemize}
+      \item the pointer is only owned once
+      \end{itemize}
+    \item in \textless{}memory\textgreater{} header
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Usage}
+    \begin{cppcode*}{}
+      Foo *p = new Foo{};  // allocation
+      std::unique_ptr<Foo> uptr(p);
+      std::cout << uptr.get() << " points to "
+                << uptr->someMember << std::endl;
+      void f(std::unique_ptr<Foo> ptr);
+      f(std::move(uptr)); // transfer of ownership
+      // deallocation when exiting f
+      std::cout << uptr.get() << std::endl; // 0
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Quizz}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{}
+      Foo *p = new Foo{};  // allocation
+      std::unique_ptr<Foo> uptr(p);
+      void f(std::unique_ptr<Foo> ptr);
+      f(uptr); // transfer of ownership
+    \end{cppcode*}
+    What do you expect ?
+  \end{exampleblock}
+  \pause
+  \begin{alertblock}{Compilation Error}
+    \begin{minted}{text}
+test.cpp:15:5: error: call to deleted constructor
+of 'std::unique_ptr<Foo>'
+  f(uptr);
+    ^~~~
+/usr/include/c++/4.9/bits/unique_ptr.h:356:7: note:
+ 'unique_ptr' has been explicitly marked deleted here
+ unique_ptr(const unique_ptr&) = delete;
+ ^
+    \end{minted}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{std::make\_unique}
+  \begin{block}{}
+    \begin{itemize}
+    \item allocates directly a unique\_ptr
+    \item no new or delete calls anymore !
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{make\_unique usage}
+    \begin{cppcode*}{}
+      // allocation of one Foo object,
+      // calling constructor with one argument
+      auto a = std::make_unique<Foo>(memberValue);
+      std::cout << a.get() << " points to "
+                << a->someMember << std::endl;
+      // allocation of an array of Foos
+      // calling default constructor
+      auto b = std::make_unique<Foo[]>(10);
+      // deallocations
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{RAII or raw pointers}
+  \begin{block}{When to use what ?}
+    \begin{itemize}
+    \item Always use RAII for allocations
+    \item You thus never have to deallocate !
+    \item Use raw pointers for observer functions (or references)
+      \begin{itemize}
+      \item remember that unique\_ptr is move only
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{A question of ownership}
+    \begin{cppcode*}{}
+      unique_ptr<T> producer();
+      void observer(T*);
+      void consumer(unique_ptr<T>);
+
+      unique_ptr<T> pt{producer()};
+      observer(pt.get());       // Keep ownership
+      consumer(std::move(pt));  // Transfer ownership
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{unique\_ptr usage summary}
+  \begin{block}{It's about lifetime management}
+    \begin{itemize}
+    \item Use unique\_ptr in functions taking part to the lifetime management
+    \item Otherwise use raw pointers or references
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleia{shared\_ptr, make\_shared}
+  \begin{block}{shared\_ptr : a reference counting pointers}
+    \begin{itemize}
+    \item wraps a regular pointer like unique\_ptr
+    \item has move and copy semantic
+    \item uses internally reference counting
+      \begin{itemize}
+      \item "Would the last person out, please turn off the lights ?"
+      \end{itemize}
+    \item is thread safe, thus the reference counting is costly
+    \end{itemize}
+  \end{block}
+  \begin{block}{make\_shared : creates a shared\_ptr}
+    \begin{cppcode*}{}
+      {
+        auto sp = std::make_shared<Foo>(); // #ref = 1
+        vector.push_back(sp);              // #ref = 2
+        set.insert(sp);                    // #ref = 3
+      } // #ref 2
+    \end{cppcode*}
+  \end{block}
 \end{frame}

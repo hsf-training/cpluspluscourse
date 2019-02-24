@@ -1,10 +1,75 @@
-\section[exp]{Expert C$^{++}$11/14/17}
+\section[exp]{Expert \cpp}
+
+\subsection[tmpl]{Variadic templates}
+
+%http://eli.thegreenplace.net/2014/variadic-templates-in-c/
+
+\begin{frame}[fragile]
+  \frametitleii{Basic variadic template}
+  \begin{block}{The idea}
+    \begin{itemize}
+    \item a template with an arbitrary number of parameters
+    \item ... syntax as in good old printf
+    \item using recursivity and specialization for stopping it
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode*}{}
+      template<typename T, typename... Args>
+      T adder(T first, Args... args) {
+        return first + adder(args...);
+      }
+      template<typename T>
+      T adder(T v) {
+        return v;
+      }
+      long sum = adder(1, 2, 3, 8, 7);
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitleii{A couple of remarks}
+  \begin{block}{About performance}
+    \begin{itemize}
+    \item do not be afraid by recursivity
+    \item everything is at compile time !
+    \item unlike C style variadic functions
+    \end{itemize}
+  \end{block}
+  \begin{block}{Why is it better than variadic functions}
+    \begin{itemize}
+    \item it's more performant
+    \item type safety is included
+    \item it applies to everything, including objects
+    \end{itemize}    
+  \end{block}
+\end{frame}
+  
+\begin{frame}[fragile]
+  \frametitleii{Variadic templated class}
+  \begin{block}{The tuple example}
+    \begin{cppcode*}{}
+      template <class... Ts> struct tuple {};
+      
+      template <class T, class... Ts>
+      struct tuple<T, Ts...> : tuple<Ts...> {
+        tuple(T t, Ts... ts) :
+          tuple<Ts...>(ts...), m_tail(t) {}
+        T m_tail;
+      };
+      
+      tuple<double, uint64_t, const char*>
+        t1(12.2, 42, "big");
+    \end{cppcode*}
+  \end{block}
+\end{frame}
 
 \subsection[forward]{Perfect forwarding}
 
 %http://eli.thegreenplace.net/2014/perfect-forwarding-and-universal-references-in-c/
 \begin{frame}[fragile]
-  \frametitle{The problem}
+  \frametitleii{The problem}
   Trying to write a generic wrapper function
   \begin{cppcode*}{}
     template <typename T>
@@ -20,7 +85,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Why is is not so simple ?}
+  \frametitleii{Why is is not so simple ?}
   \begin{cppcode*}{}
     template <typename T>
     void wrapper(T arg) {
@@ -34,7 +99,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Second try, second failure ?}
+  \frametitleii{Second try, second failure ?}
   \begin{cppcode*}{}
     template <typename T>
     void wrapper(T &arg) {
@@ -52,7 +117,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{The solution : cover all cases}
+  \frametitleii{The solution : cover all cases}
   \begin{cppcode*}{}
     template <typename T>
     void wrapper(T& arg) { func(arg); }
@@ -66,7 +131,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{The new problem : scaling to n arguments}
+  \frametitleii{The new problem : scaling to n arguments}
   \begin{cppcode*}{}
     template <typename T1, typename T2>
     void wrapper(T1& arg1, T2& arg2)
@@ -88,7 +153,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Reference collapsing in \cpp98}
+  \frametitleii{Reference collapsing in \cpp98}
   \begin{block}{Reference to references}
     They are forbidden in \cpp\\
     But still may happen
@@ -108,7 +173,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Reference collapsing in \cpp11}
+  \frametitleii{Reference collapsing in \cpp11}
   \begin{block}{rvalues have been added}
     \begin{itemize}
     \item what about int\&\& \& ?
@@ -123,7 +188,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{rvalue in type-deducing context}
+  \frametitleii{rvalue in type-deducing context}
   \begin{cppcode*}{}
     template <class T>
     void func(T&& t) {}
@@ -147,7 +212,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{std::remove\_reference}
+  \frametitleii{std::remove\_reference}
   Some template trickery removing reference from a type
   \begin{cppcode*}{}
     template< class T >
@@ -167,7 +232,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{std::forward}
+  \frametitleii{std::forward}
   Another template trickery keeping references and mapping non reference types to rvalue references
   \begin{cppcode*}{}
     template<class T>
@@ -185,7 +250,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Perfect forwarding}
+  \frametitleii{Perfect forwarding}
   Putting it all together
   \begin{cppcode*}{}
     template <typename T>
@@ -210,7 +275,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Real life example}
+  \frametitleii{Real life example}
   \begin{cppcode*}{}
     template<typename T, typename... Args>
     unique_ptr<T> make_unique(Args&&... args) {
@@ -220,77 +285,11 @@
   \end{cppcode*}  
 \end{frame}
 
-\subsection[tmpl]{Variadic templates}
-
-%http://eli.thegreenplace.net/2014/variadic-templates-in-c/
-
-\begin{frame}[fragile]
-  \frametitle{Basic variadic template}
-  \begin{block}{The idea}
-    \begin{itemize}
-    \item a template with an arbitrary number of parameters
-    \item ... syntax as in good old printf
-    \item using recursivity and specialization for stopping it
-    \end{itemize}
-  \end{block}
-  \begin{exampleblock}{Practically}
-    \begin{cppcode*}{}
-      template<typename T, typename... Args>
-      T adder(T first, Args... args) {
-        return first + adder(args...);
-      }
-      template<typename T>
-      T adder(T v) {
-        return v;
-      }
-      long sum = adder(1, 2, 3, 8, 7);
-    \end{cppcode*}
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}
-  \frametitle{A couple of remarks}
-  \begin{block}{About performance}
-    \begin{itemize}
-    \item do not be afraid by recursivity
-    \item everything is at compile time !
-    \item unlike C style variadic functions
-    \end{itemize}
-  \end{block}
-  \begin{block}{Why is it better than variadic functions}
-    \begin{itemize}
-    \item it's more performant
-    \item type safety is included
-    \item it applies to everything, including objects
-    \end{itemize}    
-  \end{block}
-\end{frame}
-  
-\begin{frame}[fragile]
-  \frametitle{Variadic templated class}
-  \begin{block}{The tuple example}
-    \begin{cppcode*}{}
-      template <class... Ts> struct tuple {};
-      
-      template <class T, class... Ts>
-      struct tuple<T, Ts...> : tuple<Ts...> {
-        tuple(T t, Ts... ts) :
-          tuple<Ts...>(ts...), m_tail(t) {}
-        T m_tail;
-      };
-      
-      tuple<double, uint64_t, const char*>
-        t1(12.2, 42, "big");
-    \end{cppcode*}
-  \end{block}
-\end{frame}
-
-
 \subsection[snifae]{SFINAE}
 
 %https://jguegant.github.io/blogs/tech/sfinae-introduction.html
 \begin{frame}[fragile]
-  \frametitle{Substitution Failure Is Not An Error}
+  \frametitleii{Substitution Failure Is Not An Error}
   \begin{block}{The main idea}
     \begin{itemize}
     \item substitution replaces template parameters with the provided types or values
@@ -310,7 +309,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{decltype}
+  \frametitleii{decltype}
   \begin{block}{The main idea}
     \begin{itemize}
     \item gives the type of the of the expression it will evaluate
@@ -332,7 +331,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{declval}
+  \frametitleii{declval}
   \begin{block}{The main idea}
     \begin{itemize}
     \item gives you a "fake reference" to an object at compile time
@@ -356,7 +355,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{true\_type and false\_type}
+  \frametitleii{true\_type and false\_type}
   \begin{block}{The main idea}
     \begin{itemize}
     \item encapsulate a constexpr boolean ``true'' and ``false''
@@ -374,7 +373,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Using SFINAE for instrospection}
+  \frametitleii{Using SFINAE for instrospection}
   \begin{block}{The main idea}
     \begin{itemize}
     \item use a template specialization that may or may not create valid code
@@ -397,7 +396,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{SFINAE and the STL}
+  \frametitleii{SFINAE and the STL}
   Lot's of useful stuff there
   \begin{block}{enable\_if}
     \begin{cppcode*}{}
@@ -442,7 +441,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{Back to variadic templated class}
+  \frametitleii{Back to variadic templated class}
   \begin{block}{The tuple get method}
     \begin{cppcode*}{}
       template <class T, class... Ts>
@@ -460,7 +459,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Back to variadic templated class}
+  \frametitleii{Back to variadic templated class}
   \begin{block}{The tuple get method}
     \begin{cppcode*}{}
       template <size_t k, class... Ts>

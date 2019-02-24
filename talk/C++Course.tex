@@ -27,10 +27,10 @@
 \defbeamertemplate*{headline}{mysplit theme}
 {%
   \leavevmode%
-  \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.5ex,dp=1.125ex]{section in head/foot}%
+  \begin{beamercolorbox}[wd=.45\paperwidth,ht=2.5ex,dp=1.125ex]{section in head/foot}%
     \insertsectionnavigationhorizontal{.4\paperwidth}{\hskip0pt plus1filll}{}%
   \end{beamercolorbox}%
-  \begin{beamercolorbox}[wd=.6\paperwidth,ht=2.5ex,dp=1.125ex]{subsection in head/foot}%
+  \begin{beamercolorbox}[wd=.55\paperwidth,ht=2.5ex,dp=1.125ex]{subsection in head/foot}%
     \insertsubsectionnavigationhorizontal{.6\paperwidth}{}{\hskip0pt plus1filll}%
   \end{beamercolorbox}%
 }
@@ -63,6 +63,27 @@
 %%%%%%%%%%%%%%%%%%%
 \newcommand{\cpp}{C$^{++}$} 
 \newcommand{\deprecated}{\textcolor{red}{\bf Deprecated}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% frametitle with C++ version %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% used reverse leet speech for the numbers as a latex command cannot use numbers
+% 98 -> gb, 11 -> ii, 14 -> ia, 17 -> it, 20 -> so
+\newcommand\frametitlegb[1]{
+  \frametitle{#1 \hfill \cpp98}
+}
+\newcommand\frametitleii[1]{
+  \frametitle{#1 \hfill \cpp11}
+}
+\newcommand\frametitleia[1]{
+  \frametitle{#1 \hfill \cpp14}
+}
+\newcommand\frametitleit[1]{
+  \frametitle{#1 \hfill \cpp17}
+}
+\newcommand\frametitleso[1]{
+  \frametitle{#1 \hfill \cpp20}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % easy class diagrams in tikz %
@@ -204,7 +225,7 @@
 \title{\cpp course}
 \author[S. Ponce]{S\'ebastien Ponce  \texttt{sebastien.ponce@cern.ch}}
 \institute{CERN}
-\date{ESIPAP 2018}
+\date{ESIPAP 2019}
 \pgfdeclareimage[height=0.5cm]{cernlogo}{CERN-logo.jpg}
 \logo{\pgfuseimage{cernlogo}}
 
@@ -230,6 +251,10 @@
 
 \begin{document}
 
+\showboxdepth=\maxdimen
+\showboxbreadth=\maxdimen
+
+
 \begin{frame}
   \titlepage
 \end{frame}
@@ -243,7 +268,7 @@
     \item It is not complete at all (would need 3 weeks...)
       \begin{itemize}
       \item although is it already too long for the time we have
-      \item \inserttotalframenumber{} slides...., 15 exercises
+      \item \inserttotalframenumber{} slides, \insertpresentationendpage{} pages, 15 exercises...
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -276,11 +301,12 @@
 \include{introduction}
 \include{basicconcepts}
 \include{objectorientation}
+\include{morelanguage}
 \include{advanced}
-\include{tools}
-\include{c++11}
 \include{c++17}
 \include{expert}
+\include{tools}
+\include{concurrency}
 \include{python}
 
 \begin{frame}

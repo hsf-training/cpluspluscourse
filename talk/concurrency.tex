@@ -1,0 +1,347 @@
+\section[conc]{Concurrency}
+
+\subsection[thr]{Threads and async}
+
+\begin{frame}[fragile]
+  \frametitleii{Basic concurrency}
+  \begin{block}{Threading}
+    \begin{itemize}
+    \item new object std::thread in \textless{}thread\textgreater{} header
+    \item takes a function as argument of its constructor
+    \item must be called on join or program is terminated
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{}
+      void doSth() {...};
+      void doSthElse() {...};
+      int main() {
+        std::thread t1(doSth);
+        std::thread t2(doSthElse);
+        for (auto t: {&t1,&t2}) t->join();
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{The thread constructor}
+  \begin{exampleblock}{Can take a function and its arguments}
+    \begin{cppcode*}{}
+      void function(int j, double j) {...};
+      std::thread t1(function, 1, 2.0);
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{exampleblock}{Can take any function like object}
+    \begin{cppcode*}{}
+      struct AdderFunctor {
+        AdderFunctor(int i): m_i(i) {}
+        int operator() (int j) { return i+j; };
+        int m_i;
+      };
+      std::thread t2(AdderFunctor(2), 5);
+      int a;
+      std::thread t3([](int i) { return i+2; }, a);
+      std::thread t4([a]       { return a+2; });
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Basic asynchronicity}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item separation of the specification of what should be done and the retrieval of the results
+    \item ``start working on this, and ping me when it's ready''
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Pratically}
+    \begin{itemize}
+    \item std::async function launches and asynchronous task
+    \item std::future template allows to handle the result
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{}
+      int computeSth() {...}
+      std::future<int> res = std::async(computeSth);
+      std::cout << res->get() << std::endl;
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Mixing the two}
+  \begin{block}{Is async running concurrent code ?}
+    \begin{itemize}
+    \item it depends !
+    \item you can control this with a launch policy argument
+      \begin{description}
+      \item[std::launch::async] spawns a thread for immediate execution
+      \item[std::launch::deferred] causes lazy execution in current thread
+      \end{description}
+      \begin{itemize}
+      \item execution starts when get() is called
+      \end{itemize}
+    \item default is not specified !
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Usage}
+    \begin{cppcode*}{}
+      int computeSth() {...}
+      auto res = std::async(std::launch::async,
+                            computeSth);
+      auto res2 = std::async(std::launch::deferred,
+                             computeSth);
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Fine grained control on asynchronous execution}
+  \begin{block}{std::packaged\_task template}
+    \begin{itemize}
+    \item creates an asynchronous version of any function like object
+      \begin{itemize}
+      \item identical arguments
+      \item returns a std::future
+      \end{itemize}
+    \item provides access to the returned future
+    \item associated with threads, gives full control on execution
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Usage}
+    \begin{cppcode*}{}
+      int task() { return 42; }
+      std::packaged_task<int()> pckd_task(task);
+      auto future = pckd_task.get_future();
+      pckd_task();
+      std::cout << future.get() << std::endl;
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\subsection[mutex]{Mutexes}
+
+\begin{frame}[fragile]
+  \frametitleii{Races}
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{}
+      int a = 0;
+      void inc() { a++; };
+      void inc100() {
+        for (int i=0; i < 100; i++) inc();
+      };
+      int main() {
+        std::thread t1(inc100);
+        std::thread t2(inc100);
+        for (auto t: {&t1,&t2}) t->join();
+        std::cout << a << std::endl;
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{block}{What do you expect ? Try it in code/race}
+    \pause
+    Anything between 100 and 200 !!!
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Atomicity}
+  \begin{exampleblock}{Definition (wikipedia)}
+    \begin{itemize}
+    \item an operation (or set of operations) is atomic if it appears to the rest of the system to occur instantaneously
+    \end{itemize}
+  \end{exampleblock}
+  \begin{block}{Practically}
+    \begin{itemize}
+    \item an operation that won't run concurrently to another one
+    \item an operation that will have a stable environment during execution
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{Is ++ operator atomic ?}
+    \pause
+    Usually not. It behaves like :
+    \begin{cppcode*}{linenos=false}
+      eax = a       // memory to register copy
+      increase eax  // increase (atomic CPU instruction)
+      a = eax       // copy back to memory
+    \end{cppcode*}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Timing}
+  \begin{exampleblock}{Code}
+    \begin{cppcode*}{linenos=false}
+      eax = a       // memory to register copy
+      increase eax  // increase (atomic CPU instruction)
+      a = eax       // copy back to memory
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{block}{For 2 threads}
+    \begin{tikzpicture}
+      \begin{umlseqdiag}
+        \umlobject[x=0, class=eax]{Thread 1}
+        \umlobject[x=3, class=a, fill=blue!20]{Memory}
+        \umlobject[x=6, class=eax]{Thread 2}
+        \begin{umlcall}[op=read, type=synchron, return=0]{Thread 1}{Memory}
+        \end{umlcall}
+        \begin{umlcall}[padding=3, op=read, type=synchron, return=0]{Thread 2}{Memory}
+        \end{umlcall}
+        \begin{umlcallself}[op=incr, type=synchron]{Thread 1}
+        \end{umlcallself}
+        \begin{umlcallself}[op=incr, type=synchron]{Thread 2}
+        \end{umlcallself}
+        \begin{umlcall}[op=write 1]{Thread 2}{Memory}
+        \end{umlcall}
+        \begin{umlcall}[padding=3, op=write 1]{Thread 1}{Memory}
+        \end{umlcall}
+      \end{umlseqdiag}
+      \draw[-triangle 60](8.5,0) -- (8.5,-4) node[right, pos=0.5]{time};
+    \end{tikzpicture}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Mutexes}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item a lock to serialize access to a non atomic piece of code
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{The objects}
+    \begin{description}[labelwidth=1.8cm]
+    \item[std::mutex] in the mutex header
+    \item[std::lock\_guard] for an RAII version of it
+    \item[std::unique\_lock] same and can be released/relocked
+    \end{description}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Practically}
+    \begin{cppcode*}{}
+      int a = 0;
+      std::mutex m;
+      void inc() {
+        std::lock_guard<std::mutex> guard(m);
+        a++;
+      };
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Mutexes}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item Go to code/race
+    \item Look at the code and try it\\
+      See that it has a race condition
+    \item Use a mutex to fix the issue
+    \item See the difference in execution time
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Dead lock}
+  \begin{exampleblock}{Scenario}
+    \begin{itemize}
+    \item 2 mutexes, 2 threads
+    \item locking order different in the 2 threads
+    \end{itemize}
+  \end{exampleblock}
+  \pause
+  \begin{block}{Sequence diagram}
+    \begin{tikzpicture}
+      \begin{umlseqdiag}
+        \umlobject[x=0]{Thread 1}
+        \umlobject[x=2.5, fill=blue!20]{Mutex A}
+        \umlobject[x=5, fill=blue!20]{Mutex B}
+        \umlobject[x=7.5]{Thread 2}
+        \begin{umlcall}[op=lock]{Thread 1}{Mutex A}
+        \end{umlcall}
+        \begin{umlcall}[op=lock, dt=6]{Thread 2}{Mutex B}
+        \end{umlcall}
+        \begin{umlcall}[op=lock (block), dt=6]{Thread 1}{Mutex B}
+        \end{umlcall}
+        \begin{umlcall}[op=lock (block), dt=12]{Thread 2}{Mutex A}
+        \end{umlcall}
+      \end{umlseqdiag}
+      \draw[-triangle 60](9,0) -- (9,-4) node[right, pos=0.5]{time};
+    \end{tikzpicture}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{How to avoid dead locks}
+  \begin{block}{Possible solutions}
+    \begin{itemize}
+    \item Never take several locks
+      \begin{itemize}
+      \item Or add master lock protecting the locking phase
+      \end{itemize}
+    \item Respect a strict order in the locking across all threads
+    \item Do not use locks
+      \begin{itemize}
+      \item Use other techniques, e.g. queues
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Condition variables}
+  \begin{block}{How to express thread dependencies}
+    \begin{itemize}
+    \item Allows a thread to sleep until a given condition is satisfied
+    \item std::condition\_variable object from condition\_variable header
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Usage}
+    \begin{itemize}
+    \item wraps an RAII lock around a mutex
+    \item wait() will hang until the condition is met
+      \begin{itemize}
+      \item you can have several waiters sharing the same mutex
+      \end{itemize}
+    \item notify\_one() will wake up on waiter
+    \item notify\_all() will wake up all waiters
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Condition variable usage}
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{}
+      int value = -1;
+      std::mutex mutex;
+      std::condition cond;
+      auto t = std::thread([] () {
+        value = ... long process ...;
+        cond.notify_all();
+      });
+      auto t = std::thread([] () {
+        std::unique_lock<std::mutex> lock{mutex};
+        cond.wait(lock, [] { return value > 0; });
+        ... use value ...
+      });
+      { std::unique_lock<std::mutex> lock{mutex};
+        cond.wait(lock, [] { return value > 0; });
+        std::cout << value << std::endl; }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+

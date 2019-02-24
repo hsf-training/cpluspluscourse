@@ -1,9 +1,9 @@
-\section[base]{Langage basics (C and \cpp)}
+\section[base]{Langage basics}
 
 \subsection[Core]{Core syntax and types}
 
 \begin{frame}[fragile]
-  \frametitle{Hello World}
+  \frametitlegb{Hello World}
   \begin{cppcode}
     #include <iostream>
 
@@ -23,7 +23,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Comments}
+  \frametitlegb{Comments}
   \begin{cppcode}
     // simple comment for integer declaration
     int i;
@@ -45,7 +45,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Basic types(1)}
+  \frametitlegb{Basic types(1)}
   \begin{cppcode}
     bool b = true;            // boolean, true or false
     
@@ -62,7 +62,7 @@
   \end{cppcode}
 \end{frame}
 \begin{frame}[fragile]
-  \frametitle{Basic types(2)}
+  \frametitlegb{Basic types(2)}
   \begin{cppcode}
     int i = -123456;          // 32 bits signed integer
     unsigned int i = 1234567; // 32 bits signed integer
@@ -79,7 +79,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Portable numeric types}
+  \frametitlegb{Portable numeric types}
   \alert{One needs to include specific header}
   \begin{cppcode}
     #include <cstdint>
@@ -101,7 +101,7 @@
 \subsection[Pointers]{Arrays and Pointers}
 
 \begin{frame}[fragile]
-  \frametitle{Static arrays}
+  \frametitlegb{Static arrays}
   \begin{cppcode}
     int ai[4] = {1,2,3,4};
     int ai[] = {1,2,3,4};  // identical
@@ -117,7 +117,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Pointers}
+  \frametitlegb{Pointers}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       int i = 4;
@@ -129,9 +129,12 @@
       int *paj = pai + 1;
       int k = *paj + 1;
       
-      int *pak = k; // not compiling
+      // not compiling
+      int *pak = k;
+      
+      // seg fault !
       int *pak = (int*)k;
-      int l = *pak; // seg fault !
+      int l = *pak;
     \end{cppcode*}
     \onslide<2->{
       \begin{tikzpicture}
@@ -155,13 +158,13 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Dynamic Arrays}
+  \frametitlegb{Dynamic Arrays}
   \begin{cppcode}
     #include <cstdlib>
     #include <cstring>
 
     int *bad;    // pointer to random address
-    int *ai = 0; // better. Can be tested
+    int *ai = 0; // better. Can be tested. C++98
 
     // allocate array of 10 ints (not initialized)
     ai = (int*) malloc(10*sizeof(int));
@@ -176,10 +179,29 @@
   \end{cppcode}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitleii{nullptr}
+  \begin{block}{Finally a \cpp~NULL pointer}
+    \begin{itemize}
+    \item works like 0 or NULL in standard cases
+    \item triggers compilation error when mapped to integer
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{}
+      void* vp = nullptr;
+      int* ip = nullptr;
+      int i = NULL;      // OK -> bug ?
+      int i = nullptr;   // ERROR
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
 \subsection{Operators}
 
 \begin{frame}[fragile]
-  \frametitle{Operators(1)}
+  \frametitlegb{Operators(1)}
   \begin{block}{Binary \& Assignment Operators}
     \begin{cppcode*}{linenos=false}
       int i = 1 + 4 - 2;  // 3
@@ -201,7 +223,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Operators(2)}
+  \frametitlegb{Operators(2)}
   \begin{block}{Bitwise and Assignment Operators}
     \begin{cppcode*}{linenos=false}
       int i = 0xee & 0x55;  // 0x44
@@ -225,7 +247,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Operators(3)}
+  \frametitlegb{Operators(3)}
   \begin{block}{Comparison Operators}
     \begin{cppcode*}{linenos=false}
       bool a = (3 == 3);  // true
@@ -247,7 +269,7 @@
 \subsection[Compound]{Compound data types}
 
 \begin{frame}[fragile]
-  \frametitle{struct}
+  \frametitlegb{struct}
   \begin{mdframed}[style=simplebox]
     \center ``members'' grouped together under one name
   \end{mdframed}
@@ -289,7 +311,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{union}
+  \frametitlegb{union}
   \begin{mdframed}[style=simplebox]
     \center ``members'' packed together at same memory location
   \end{mdframed}
@@ -326,7 +348,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Enums and typedefs}
+  \frametitlegb{Enums and typedefs}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       enum VehicleType {
@@ -353,7 +375,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{More sensible example}
+  \frametitlegb{More sensible example}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       enum ShapeType {
@@ -399,7 +421,7 @@
 \subsection[$f()$]{Functions}
 
 \begin{frame}[fragile]
-  \frametitle{Functions}
+  \frametitlegb{Functions}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       // with return type
@@ -429,7 +451,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Parameter are passed by value}
+  \frametitlegb{Parameter are passed by value}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       struct BigStruct {...};
@@ -475,7 +497,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Parameter are passed by value}
+  \frametitlegb{Parameter are passed by value}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       struct SmallStruct {int a};
@@ -525,7 +547,7 @@
 \subsection[Control]{Control instructions}
 
 \begin{frame}[fragile]
-  \frametitle{Control instructions : if}
+  \frametitlegb{Control instructions : if}
   \begin{block}{if syntax}
     \begin{cppcode*}{linenos=false}
       if (condition1) {
@@ -546,7 +568,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Control instructions : if}
+  \frametitlegb{Control instructions : if}
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{linenos=false}
       int collatz(int a) {
@@ -566,7 +588,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Control instructions : conditional operator}
+  \frametitlegb{Control instructions : conditional operator}
   \begin{block}{Syntax}
     \begin{cppcode*}{linenos=false}
       test ? expression1 : expression2;
@@ -593,7 +615,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Control instructions : switch}
+  \frametitlegb{Control instructions : switch}
   \begin{block}{Syntax}
     \begin{cppcode*}{gobble=2,linenos=false}
       switch(identifier) {
@@ -619,7 +641,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Control instructions : switch}
+  \frametitlegb{Control instructions : switch}
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{linenos=false}
       enum Lang { FRENCH, GERMAN, ENGLISH, OTHER };
@@ -641,8 +663,61 @@
   \end{exampleblock}
 \end{frame}
 
+\AtBeginEnvironment{minted}{\renewcommand{\fcolorbox}[4][]{#4}}
+
 \begin{frame}[fragile]
-  \frametitle{Control instructions : for loop}
+  \frametitleit{\texttt{[[fallthrough]]} attribute}
+  \begin{alertblock}{\cpp14}
+    \begin{cppcode}
+      switch (c) {
+        case 'a':
+          f();; // Warning emitted
+        case 'c':
+          h();;
+      }
+    \end{cppcode}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp17}
+    \begin{cppcode*}{}
+      switch (c) {
+        case 'a':
+          f();;
+          [[fallthrough]];; // Warning suppressed
+        case 'c':
+          h();;
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleit{init-statements for if and switch}
+  Allows to simplify if and switch statements
+  \begin{alertblock}{\cpp14}
+    \begin{cppcode*}{}
+      auto val = GetValue();
+      if (condition(val)) {
+        // on success
+      } else {
+        // on false...
+      }
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp17}
+    \begin{cppcode*}{}
+      if (auto val = GetValue(); condition(val)) {
+        // on success
+      } else {
+        // on false...
+      }
+    \end{cppcode*}
+    \vspace{-.3cm}
+    val is visible only inside the if and else statements
+  \end{exampleblock}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Control instructions : for loop}
   \begin{block}{for loop syntax}
     \begin{cppcode*}{linenos=false}
       for(initializations; condition; increments) {
@@ -671,7 +746,31 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Control instructions : while loop}
+  \frametitleii{Range based loops}
+  \begin{block}{Reason of being}
+    \begin{itemize}
+    \item simplifies loops tremendously
+    \item especially with STL containers
+    \end{itemize}
+  \end{block}
+  \begin{block}{Syntax}
+    \begin{cppcode*}{linenos=false}
+      for ( type iteration_variable : container ) {
+        // body using iteration_variable
+      }
+    \end{cppcode*}
+  \end{block}
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{linenos=false}
+      int v[4] = {1,2,3,4};
+      int sum = 0;
+      for (int a : v) { sum += a; }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Control instructions : while loop}
   \begin{block}{while loop syntax}
     \begin{cppcode*}{linenos=false}
       while(condition) {
@@ -697,7 +796,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Control instructions : commands}
+  \frametitlegb{Control instructions : commands}
   \begin{block}{control commands}
     \begin{description}
     \item[break] goes out of the loop
@@ -724,7 +823,7 @@
 \subsection[Headers]{Headers and interfaces}
 
 \begin{frame}[fragile]
-  \frametitle{Headers and interfaces}
+  \frametitlegb{Headers and interfaces}
   \begin{block}{Interface}
     Set of declarations defining some functionnality
     \begin{itemize}
@@ -748,7 +847,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Preprocessor}
+  \frametitlegb{Preprocessor}
   \begin{cppcode}
     // file inclusion
     #include "hello.hpp"

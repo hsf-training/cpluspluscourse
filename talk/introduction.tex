@@ -1,5 +1,7 @@
 \section[Intro]{History and goals}
 
+\subsection[Hist]{History}
+
 \begin{frame}
   \frametitle{C/\cpp origins}
   \begin{minipage}{0.4\linewidth}
@@ -7,7 +9,7 @@
     \tikzstyle{new}=[rectangle,draw=black,fill=green!50,thick,inner sep=2pt]
     \tikzstyle{direct}=[<-,semithick]
     \tikzstyle{transverse}=[<-,dotted,semithick]
-    \begin{tikzpicture}[->, node distance=.75cm, font=\tiny]
+    \begin{tikzpicture}[->, node distance=.75cm, font=\tiny, scale=0.9, every node/.style={scale=0.9}]
       \node[old] (Simula)      {Simula};
       \node[left of=Simula,node distance=1.5cm] {1967};
       \node[old] (BCPL) [right of=Simula, node distance=2cm] {BCPL};
@@ -53,6 +55,9 @@
       \node[new] (C++17) [below of=C++14] {\cpp17}
       edge[direct] (C++14);
       \node[left of=C++17,node distance=1.5cm] {2017};
+      \node[new] (C++20) [below of=C++17] {\cpp20}
+      edge[direct] (C++17);
+      \node[left of=C++20,node distance=1.5cm] {2020};
     \end{tikzpicture}
   \end{minipage}
   \begin{minipage}{0.57\linewidth}
@@ -64,18 +69,48 @@
     \begin{itemize}
       {\footnotesize
       \item Both C and \cpp are born in Bell Labs
-      \item \cpp \it{almost} embeds C
+      \item \cpp {\it almost} embeds C
       \item C and \cpp are still under development
-      \item we will discuss \cpp98 first
-      \item and \cpp11/14/17 in a second step
+      \item We will discuss all \cpp specs
+      \item Each will be marked with first spec introducting the feature
       }
     \end{itemize}
   \end{minipage}
 \end{frame}
 
 \begin{frame}
-  \frametitle{Why is \cpp our language of choice ?}
+  \frametitle{\cpp11, \cpp14, \cpp17, \cpp20...}
+  \begin{block}{status}
+    \begin{itemize}
+    \item A new \cpp specification every 3 years
+    \item Bringing each time a lot of goodies
+    \end{itemize}
+  \end{block}
   \pause
+  \begin{block}{How to use \cpp11 features}
+    \begin{itemize}
+    \item Use a compatible compiler gcc $\geq$ 4.8, clang $\geq$ 3.3
+    \item add -std=c++11 to compilation flags
+    \end{itemize}
+  \end{block}
+  \begin{block}{How to use \cpp14 features}
+    \begin{itemize}
+    \item Use a compatible compiler gcc $\geq$ 4.9, clang $\geq$ 3.4
+    \item add -std=c++14 to compilation flags
+    \end{itemize}
+  \end{block}
+  \begin{block}{How to use \cpp17 features}
+    \begin{itemize}
+    \item Use a compatible compiler gcc $\geq$ 7.3, clang $\geq$ 5
+    \item add -std=c++17 to compilation flags
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\subsection[Use]{Why we use it ?}
+
+\begin{frame}
+  \frametitle{Why is \cpp our language of choice ?}
   \begin{block}{Adapted to large projects}
     \begin{itemize}
     \item strongly typed

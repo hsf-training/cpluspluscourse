@@ -1,9 +1,9 @@
-\section[OO]{Object orientation}
+\section[OO]{Object orientation (OO)}
 
 \subsection[Objects]{Objects and Classes}
 
 \begin{frame}[fragile]
-  \frametitle{What are classes and objects}
+  \frametitlegb{What are classes and objects}
   \begin{block}{Classes}
     structs on steroids
     \begin{itemize}
@@ -29,7 +29,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{My First Class}
+  \frametitlegb{My First Class}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       struct MyFirstClass {
@@ -63,7 +63,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Separating the interface}
+  \frametitlegb{Separating the interface}
   \begin{block}{Header : MyFirstClass.hpp}
     \begin{cppcode*}{linenos=false}
       struct MyFirstClass {
@@ -87,7 +87,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{A word on namespaces}
+  \frametitlegb{A word on namespaces}
   \begin{itemize}
   \item Namespaces allow to segment your code to avoid name clashes
   \item They can be embedded to create hierarchies (separator is '::')
@@ -128,7 +128,30 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Implementing methods}
+  \frametitleit{Nested namespaces}
+  Easier way to declare nested namespaces
+  \begin{alertblock}{\cpp14}
+    \begin{cppcode*}{}
+      namespace A {
+        namespace B {
+          namespace C {
+            //...
+          }
+        }
+      }
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp17}
+    \begin{cppcode*}{}
+      namespace A::B::C {
+        //...
+      }
+    \end{cppcode*}    
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Implementing methods}
   \begin{block}{Standard practice}
     \begin{itemize}
     \item usually in .cpp, outside of class declaration
@@ -151,7 +174,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Method overloading}
+  \frametitlegb{Method overloading}
   \begin{block}{The rules in \cpp}
     \begin{itemize}
     \item overloading is authorized and welcome
@@ -177,7 +200,7 @@
 \subsection{Inheritance}
 
 \begin{frame}[fragile]
-  \frametitle{First inheritance}
+  \frametitlegb{First inheritance}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       struct MyFirstClass {
@@ -215,7 +238,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Managing access to class members}
+  \frametitlegb{Managing access to class members}
   \begin{block}{{\it public} \color{white} / {\it private} keywords}
     \begin{description}
       \item[private] allows access only within the class
@@ -254,7 +277,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Managing access to class members(2)}
+  \frametitlegb{Managing access to class members(2)}
   \begin{block}{Solution is {\it protected} keyword}
     Gives access to classes inheriting from base class
   \end{block}
@@ -285,7 +308,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Managing inheritance privacy}
+  \frametitlegb{Managing inheritance privacy}
   \begin{block}{Inheritance can be public, protected or private}
     It influences the privacy of inherited members for external code.\\
     The code of the class itself is not affected
@@ -310,7 +333,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Managing inheritance privacy - public}
+  \frametitlegb{Managing inheritance privacy - public}
   \begin{multicols}{2}
     \begin{tikzpicture}[node distance=3cm]
       \classbox{MyFirstClass}{
@@ -352,7 +375,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Managing inheritance privacy - protected}
+  \frametitlegb{Managing inheritance privacy - protected}
   \begin{multicols}{2}
     \begin{tikzpicture}[node distance=3cm]
       \classbox{MyFirstClass}{
@@ -394,7 +417,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Managing inheritance privacy - private}
+  \frametitlegb{Managing inheritance privacy - private}
   \begin{multicols}{2}
     \begin{tikzpicture}[node distance=3cm]
       \classbox{MyFirstClass}{
@@ -435,10 +458,30 @@
   \end{multicols}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitleii{Final class}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item make sure you cannot inherit from a given class
+    \item by declaring it final
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct Base final {
+        ...
+      };
+      struct Derived : Base { // compiler error
+        ...
+      };
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
 \subsection[Constructors]{Constructors/destructors}
 
 \begin{frame}[fragile]
-  \frametitle{Class Constructors and Destructors}
+  \frametitlegb{Class Constructors and Destructors}
   \begin{block}{Concept}
     \begin{itemize}
     \item special functions building/destroying an object
@@ -474,7 +517,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitle{Class Constructors and Destructors}
+  \frametitlegb{Class Constructors and Destructors}
   \begin{cppcode}
     class Vector {
     public:
@@ -496,7 +539,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Constructor and inheritance}
+  \frametitlegb{Constructor and inheritance}
   \begin{cppcode}
     struct MyFirstClass {
       MyFirstClass();
@@ -517,7 +560,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Copy constructor}
+  \frametitlegb{Copy constructor}
   \begin{block}{Concept}
     \begin{itemize}
     \item special constructor called for replicating an object
@@ -534,15 +577,15 @@
     }    
   \end{cppcode}
   \pause
-  \begin{exampleblock}{The rule of 3}
+  \begin{exampleblock}{The rule of 3/5 (\cpp98/\cpp11)}
     \begin{itemize}
-    \item if a class defines a destructor, a copy constructor or an assignment operator (see later), it should define all three
+    \item if a class has a destructor, a copy/move constructor or a (move) assignment operator, it should have all five
     \end{itemize}
   \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Class Constructors and Destructors}
+  \frametitlegb{Class Constructors and Destructors}
   \begin{cppcode}
     class Vector {
     public:
@@ -562,10 +605,98 @@
   \end{cppcode}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitleii{Default Constructor}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item avoid writing explicitely default constructors
+    \item by declaring them as default
+    \end{itemize}
+  \end{block}
+  \begin{block}{Details}
+    \begin{itemize}
+    \item when no user defined constructor, a default is provided
+    \item any user defined constructor disables default ones
+    \item but they can be enforced.
+    \item rule can be more subtle depending on members
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      ClassName() = default;  // provide/force default
+      ClassName() = delete;   // do not provide default
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Constructor delegation}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item avoid replication of code in several constructors
+    \item by delegating to another constructor, in the initializer list
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct Delegate {
+        int m_i;
+        Delegate() { ... complex initialization ...};
+        Delegate(int i) : Delegate(), m_i(i) {};
+      }
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Constructor inheritance}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item avoid declaring empty constructors inheriting parent's ones
+    \item by stating that we inherit all parent constructors
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct BaseClass {
+        BaseClass(int value);
+      };
+      struct DerivedClass : BaseClass {
+        using BaseClass::BaseClass;
+      };
+      DerivedClass a{5};
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Member initialization}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item avoid redefining same default value for members in all constructors
+    \item by defining it once at member declaration time
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct BaseClass {
+        int a{5};
+        BaseClass() = default;
+        BaseClass(int \_a) : a(\_a) {};
+      };
+      struct DerivedClass : BaseClass {
+        int b{6};
+        using BaseClass::BaseClass;
+      };
+      DerivedClass a{7}; // a = 7, b = 6
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
 \subsection[Static]{Static members}
 
 \begin{frame}[fragile]
-  \frametitle{Static members}
+  \frametitlegb{Static members}
   \begin{block}{Concept}
     \begin{itemize}
     \item members attached to a class rather than to an object
@@ -587,11 +718,74 @@
   \end{cppcode}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitleii{Calling contructors}
+  \begin{block}{After object declaration, arguments within \{\}}
+    \begin{multicols}{2}
+      \begin{cppcode*}{gobble=4}
+        struct A {
+          int a;
+          float b;
+          A();
+          A(int);
+          A(int, int);
+        };
+      \end{cppcode*}
+      \columnbreak
+      \begin{cppcode*}{gobble=4,firstnumber=8}
+        struct B {
+          int a;
+          float b;
+        };
+      \end{cppcode*}
+    \end{multicols}
+    \begin{cppcode*}{gobble=2, firstnumber=12}
+      A a{1,2};       // A::A(int, int)
+      A a{1};         // A::A(int)
+      A a{};          // A::A()
+      A a;            // A::A()
+      A a = {1,2};    // A::A(int, int)
+      B b = {1, 2.3}; // default constructor
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Calling constructors the old way}
+  \begin{block}{Arguments are given within (), aka \cpp98 nightmare}
+    \begin{multicols}{2}
+      \begin{cppcode*}{gobble=4}
+        struct A {
+          int a;
+          float b;
+          A();
+          A(int);
+          A(int, int);
+        };
+      \end{cppcode*}
+      \columnbreak
+      \begin{cppcode*}{gobble=4,firstnumber=8}
+        struct B {
+          int a;
+          float b;
+        };
+      \end{cppcode*}
+    \end{multicols}
+    \begin{cppcode*}{gobble=2, firstnumber=12}
+      A a(1,2);       // A::A(int, int)
+      A a(1);         // A::A(int)
+      A a();          // declaration of a function !
+      A a;            // A::A()
+      A a = {1,2};    // not allowed
+      B b = {1, 2.3}; // OK
+    \end{cppcode*}
+  \end{block}
+\end{frame}
 
 \subsection[New]{Allocating objects}
 
 \begin{frame}[fragile]
-  \frametitle{Process memory organization}
+  \frametitlegb{Process memory organization}
   \begin{block}{4 main areas}
     \begin{description}
     \item[the code segment] for the code of the executable
@@ -617,7 +811,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{The Stack}
+  \frametitlegb{The Stack}
   \begin{block}{Main characteristics}
     \begin{itemize}
     \item allocation on the stack stays valid for the duration of the current scope.
@@ -629,7 +823,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Object allocation on the stack}
+  \frametitlegb{Object allocation on the stack}
   \begin{block}{On the stack}
     \begin{itemize}
     \item object are created when declared (constructor called)
@@ -650,7 +844,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{The Heap}
+  \frametitlegb{The Heap}
   \begin{block}{Main characteristics}
     \begin{itemize}
     \item Allocated memory stays allocated until it is specifically deallocated
@@ -664,7 +858,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Object allocation on the heap}
+  \frametitlegb{Object allocation on the heap}
   \begin{block}{On the heap}
     \begin{itemize}
     \item object are created by calling {\it new} (constructor is called)
@@ -688,7 +882,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Array allocation on the heap}
+  \frametitlegb{Array allocation on the heap}
   \begin{block}{Arrays on the heap}
     \begin{itemize}
     \item arrays of objects are created by calling {\it new[]} \\
@@ -707,11 +901,29 @@
   \end{cppcode}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitleii{Back to calling constructors - arrays and vectors}
+  \begin{exampleblock}{list of items given within \{\}}
+    \begin{cppcode*}{firstnumber=10}
+     int ip[3]{1,2,3};
+     int* ip = new int[3]{1,2,3};
+     std::vector<int> v{1,2,3};
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{block}{\cpp98 nightmare}
+    \begin{cppcode*}{firstnumber=10}
+     int ip[3]{1,2,3};            // OK
+     int* ip = new int[3]{1,2,3}; // not allowed
+     std::vector<int> v{1,2,3};   // not allowed
+    \end{cppcode*}
+  \end{block}
+\end{frame}
 
 \subsection[Exceptions]{Exceptions}
 
 \begin{frame}[fragile]
-  \frametitle{Exceptions}
+  \frametitlegb{Exceptions}
   \begin{block}{The concept}
     \begin{itemize}
     \item exceptional Event breaking linearity of the code
@@ -737,7 +949,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Exceptions}
+  \frametitlegb{Exceptions}
   \begin{block}{Rules}
     \begin{itemize}
     \item exception will skip all code until next {\it catch}
@@ -780,7 +992,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Controlling exceptions \hfill \deprecated}
+  \frametitlegb{Controlling exceptions \hfill \deprecated}
   \begin{block}{Declaring expected exceptions}
     \begin{itemize}
     \item each function can declare a set of expected exceptions
@@ -805,7 +1017,7 @@
 \end{frame}  
 
 \begin{frame}[fragile]
-  \frametitle{Controlling exceptions \hfill \deprecated}
+  \frametitlegb{Controlling exceptions \hfill \deprecated}
   \begin{block}{Good to know}
     \begin{itemize}
     \item The check in done at runtime, not at compile time
@@ -826,3 +1038,68 @@
     }
   \end{cppcode}
 \end{frame}  
+
+\begin{frame}[fragile]
+  \frametitleii{Deprecation of \cpp98 exceptions}
+  \begin{block}{}
+    After a lot of thinking and experiencing, the conclusions of the community on exception handling are :
+    \begin{itemize}
+    \item Never write an exception specification
+    \item Except possibly an empty one
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{Some of the reasons}
+    \begin{itemize}
+    \item throw specification is runtime only
+      \begin{itemize}
+      \item does not allow compiler optimizations
+      \item on the contrary forces extra checks
+      \item generally terminates your program if violated
+      \end{itemize}
+    \item throw specification clashes with templates
+      \begin{itemize}
+      \item one cannot ``template'' the throw clause
+      \end{itemize}
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{What remains}
+  \begin{block}{throw is dead}
+    \begin{itemize}
+    \item throw statements are deprecated
+    \item even throw() (no exceptions)
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{long live noexcept}
+    \begin{itemize}
+    \item noexcept a somehow equivalent to throw()
+    \item but is checked at compile time
+    \item so allows compiler optimizations
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Full power of noexcept}
+  \begin{block}{3 uses of noexcept}
+    \begin{itemize}
+    \item standalone
+      \begin{cppcode*}{gobble=2, linenos=false}
+        int f() noexcept;
+      \end{cppcode*}
+    \item as an expression saying whether exceptions can be sent
+      \begin{cppcode*}{gobble=2, linenos=false}
+        int f() noexcept(sizeof(long) == 8);
+      \end{cppcode*}
+    \item as an operator to know whether a function launches exceptions
+      \begin{cppcode*}{gobble=2, linenos=false}
+        template <class T> void foo()
+             noexcept(noexcept(T())) {};
+      \end{cppcode*}
+   \end{itemize}
+  \end{block}
+\end{frame}

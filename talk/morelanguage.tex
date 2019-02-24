@@ -1,0 +1,560 @@
+\section[More]{More \cpp features}
+
+\subsection[const]{Constant Expressions}
+
+\begin{frame}[fragile]
+  \frametitleii{Generalized Constant Expressions}
+  \begin{block}{Reason of being}
+    \begin{itemize}
+    \item compute constant expressions at compile time
+    \item even if non trivial
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{linenos=false}
+      constexpr int f(int x) {
+        return x > 1 ? x * f(x - 1) : 1;
+      }
+      int a = f(5); // now computed at compile time
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Generalized Constant Expressions(2)}
+  \begin{alertblock}{Few limitations}
+    \begin{itemize}
+    \item function's body cannot contain try-catch or static variables
+    \item arguments should be constexpr or literals in order to benefit from compile time computation
+    \end{itemize}
+  \end{alertblock}
+  \begin{block}{Notes}
+    \begin{itemize}
+    \item classes can have constexpr functions
+    \item objects can be constexpr
+      \begin{itemize}
+      \item if the constructor of their class is
+      \end{itemize}
+    \item a constexpr function can also be used normally
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Real life example}
+  \begin{cppcode*}{linenos=true}
+    constexpr float toSI(const float v, const char unit) {
+      switch (unit) {
+      case 'k': return 1000*v;
+      case 'm': return 0.001*v;
+      case 'y': return 0.9144*v;
+      case 'i': return 0.0254*v;
+      ...
+      default: return v;
+      }
+    }
+    constexpr float fromSI(const float v, const char unit) {
+      switch (unit) {
+      case 'k': return 0.001*v;
+      ...
+      }
+    }
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Real life example(2)}
+  \begin{cppcode*}{linenos=true}
+    class DimLength {
+      const float m_value;
+    public:
+      constexpr DimLength(const float v, const char unit):
+        m_value(convertToSI(v, unit)) {
+      }
+      constexpr float get(const char unit) const {
+        return convertFromSI(m_value, unit);
+      }
+    };
+    constexpr DimLength km(1, 'k');
+    constexpr float km_y = km.get('y');
+    constexpr float km_i = km.get('i');
+    std::cout << "1 km = " << km_y << " yards\n"
+              << "     = " << km_i << " inches\n";
+  \end{cppcode*}
+\end{frame}
+
+
+\subsection[auto]{Auto keyword}
+
+\begin{frame}[fragile]
+  \frametitleii{Auto keyword}
+  \begin{block}{Reason of being}
+    \begin{itemize}
+    \item many type declarations are redundant
+    \item and lead to compiler error if you mess up
+    \end{itemize}
+    \begin{cppcode*}{linenos=false}
+      std::vector<int> v;
+      int a = v[3];
+      int b = v.size();  // bug ? unsigned to signed
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{Practical usage}
+    \begin{cppcode*}{linenos=false}
+      std::vector<int> v;
+      auto a = v[3];
+      auto b = v.size();
+      int sum{0};
+      for (auto n : v) { sum += n; }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\subsection[Refs]{References}
+
+\begin{frame}[fragile]
+  \frametitlegb{Value, pointers and references}
+  \begin{block}{Different ways to pass arguments to a function}
+    \begin{itemize}
+    \item by default arguments are passed by value
+    \item but pointers can be used
+    \item and references are also available in \cpp11
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    struct T {...};
+    void func   (T value);  // by value
+    void funcPtr(T *value); // pointer
+    void funcRef(T &value); // reference
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Value versus pointers/reference}
+  \begin{block}{Identical to C}
+    \begin{itemize}
+    \item by value, a copy is created
+      \begin{itemize}
+        \item calling the copy constructor for objects
+      \end{itemize}
+    \item using pointers, the memory address of value is passed
+    \item using reference, a reference to value is passed
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    T a;      // constructor called
+  \end{cppcode}
+  \pause
+  \begin{cppcode*}{firstnumber=2}
+    funct(a); // copy constructor called on enter
+              // destructor called on exit
+  \end{cppcode*}
+  \pause
+  \begin{cppcode*}{firstnumber=4}
+    functPtr(&a); // no copy, but we pass a pointer
+    functRef(a);  // no copy, and standard syntax
+  \end{cppcode*}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitlegb{Pointers vs References}
+  \begin{block}{Specificities of reference}
+    \begin{itemize}
+    \item natural syntax
+    \item will never be NULL
+    \item cannot reference temporary object
+    \end{itemize}
+  \end{block}
+  \begin{block}{Advantages of pointers}
+    \begin{itemize}
+    \item can be NULL
+    \item clearly indicates that argument may be modified
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{Good practice}
+    \begin{itemize}
+      \item Always use references when you can
+      \item Consider that a reference will be modified
+      \item Use const when it's not the case
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\subsection[const]{Constness}
+
+\begin{frame}[fragile]
+  \frametitlegb{Constness}
+  \begin{block}{The {\it const} keyword}
+    \begin{itemize}
+    \item indicate that the element to the left is constant
+    \item this element won't be modifiable in the future
+    \item this is all checked at compile time
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    // standard syntax
+    int const i = 6;
+
+    // error : i is constant
+    i = 5;
+
+    // also ok, when nothing on the left,
+    // const applies to element on the right
+    const int j = 6;
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Constness and pointers}
+  \begin{cppcode}
+    // pointer to a constant integer
+    int a = 1, b = 2;
+    int const *i = &a;
+    *i = 5; // error, int is const
+    i = &b; // ok, pointer is not const
+
+    // constant pointer to an integer
+    int * const j = &a;
+    *j = 5; // ok, value can be changed
+    j = &b; // error, pointer is const
+
+    // constant pointer to a constant integer
+    int const * const k = &a;
+    *k = 5; // error, value is const
+    k = &b; // error, pointer is const
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Function constness}
+  \begin{block}{The {\it const} keyword for class functions}
+    \begin{itemize}
+    \item indicate that the function does not modify the object
+    \item in other words, {\it this} is a pointer to constant object
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    struct Exemple {
+      void foo() const  {
+        m_member = 0; // Error : function is constant
+      }
+      int m_member;
+    };
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Function constness}
+  \begin{block}{Constness is part of the type}
+    \begin{itemize}
+    \item const T and T are different type
+    \item however, T is automatically casted in const T when needed
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    void func(int *a);
+    void funcConst(const int *a);
+
+    int *a = 0;
+    const int *b = 0;
+
+    func(a);      // ok
+    func(b);      // error : no cannot cast int* to const
+    funcConst(a); // ok
+    funcConst(b); // ok
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{constness}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/constness
+    \item open test.cpp
+    \item try pointer to constant
+    \item try constant pointer
+    \item try constant pointer to constant
+    \item try constant arguments of functions
+    \item try constant method in a class
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\subsection[mv]{Move semantic}
+
+\begin{frame}[fragile]
+  \frametitleii{Move semantics : the problem}
+  \begin{exampleblock}{Non efficient code}
+    \begin{cppcode*}{}
+      template <class T>
+      void swap(T &a, T &b) {
+        T c = a;
+        a = b;
+        b = c;
+      }
+      std::vector<int> v, w;
+      for (int i = 0; i < 10000; i++) v.push_back(i);
+      for (int i = 0; i < 10000; i++) w.push_back(i);
+      swap(v, w);
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{alertblock}{What really happens during swap}
+    \begin{itemize}
+    \item 10k allocations + 10k releases
+    \item 30k copies
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Move semantics : the problem}
+  \begin{exampleblock}{Dedicated efficient code}
+    \begin{cppcode*}{}
+      std::vector<int> v, w;
+      for (int i = 0; i < 10000; i++) v.push_back(i);
+      for (int i = 0; i < 10000; i++) w.push_back(i);
+      v.swap(w);
+      \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{block}{What probably happens during swap}
+    \begin{itemize}
+    \item 1 allocations + 1 releases
+    \item 3 copies
+    \end{itemize}
+    only the pointers to underlying arrays were swapped
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Move semantics : the problem}
+  \begin{exampleblock}{Another non efficient code}
+    \begin{cppcode*}{}
+      std::vector<int> vrandom(unsigned int n) {
+        std::vector<int> result;
+        for (int i = 0; i < n; i++) {
+          result.push_back(rand());
+        }
+        return result;
+      }
+      std::vector<int> v = vrandom(10000);
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{alertblock}{What really happens during assignment}
+    \begin{itemize}
+    \item 10k allocations + 10k releases
+    \item 10k copies
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Move semantics : the problem}
+  \begin{exampleblock}{Dedicated efficient way}
+    \begin{cppcode*}{}
+      void vrandom(unsigned int n, std::vector<int> &v) {
+        for (int i = 0; i < n; i++) {
+          v.push_back(rand());
+        }
+      }
+      std::vector<int> v;
+      vrandom(10000, v);
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{block}{The ideal situation}
+    Have a way to express that we move the vector's content
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Move semantics}
+  \begin{block}{The idea}
+    \begin{itemize}
+      \item a new type of reference : rvalue references
+      \begin{itemize}
+      \item used for move semantic
+      \item denoted by \&\&
+      \end{itemize}
+      \item 2 new members in every class, with move semantic :
+      \begin{description}
+      \item[a move constructor] similar to copy constructor
+      \item[a move assignment operator] similar to assignment operator (now called copy assignment operator)
+      \end{description}
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Practically}
+    \begin{cppcode*}{}
+      T(const T&  other); // copy construction
+      T(      T&& other); // move construction
+      T& operator=(const T&  other); // copy assignment
+      T& operator=(      T&& other); // move assignment
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Move semantics}
+  \begin{block}{A few important points concerning move semantic}
+    \begin{itemize}
+    \item the whole STL can understand the move semantic
+    \item move assignment operator is allowed to destroy source
+      \begin{itemize}
+      \item so do not reuse source afterward
+      \item still, I advice to never leave inconsistent objects
+      \end{itemize}
+    \item if not implemented, move falls back to copy version
+    \item move is called by the compiler whenever possible
+      \begin{itemize}
+      \item e.g. when passing temporary
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Practically}
+    \begin{cppcode*}{}
+      T a;
+      T b = a;      // 1. Copy assign
+      T c = T(2);   // 2. Move assign
+      T d = func(); // 3. Move assign
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Move semantics}
+  \begin{block}{In some cases, you want to force a move}
+    \begin{cppcode*}{}
+      template <class T> void swap(T &a, T &b) {
+        T c = a;  // copy
+        a = b;    // copy
+        b = c;    // copy
+      }
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{There are mainly two ways}
+    \begin{itemize}
+    \item casting to an rvalue reference
+    \item using the std::move function
+    \end{itemize}
+    \begin{cppcode*}{}
+      T a;
+      T b = a;                   // Copy assign
+      T c = static_cast<T&&>(a); // Move assign
+      T d = std::move(a);        // Move assign
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Move semantics : the easy way}
+  \begin{block}{Use copy and swap idiom}
+    \begin{itemize}
+    \item implement an efficient swap method to your class
+      \begin{itemize}
+      \item preferably outside the class so that it is symetric
+      \end{itemize}
+    \item use swap for move constructor
+      \begin{itemize}
+      \item create empty object with constructor delegation
+      \item swap it with source
+      \end{itemize}
+    \item use swap in move assignment
+      \begin{itemize}
+      \item pass parameter by value
+      \item this should force creation of a local replica of source
+      \item as we are in the move assignment \\
+        our move constructor will be called \\
+        and source will be filled with an empty object
+      \item swap local object with *this
+      \item let local object be destructed when exiting the method \\
+        this will actually destroy the original content of the target
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Move semantics : the easy way}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode*}{}
+      class Movable {
+        Movable();
+        Movable(Movable &&other) :
+          Movable() {         // constructor delegation
+          swap(*this, other);
+        }
+        Movable& operator=(Movable other) { // by value
+          swap(*this, other);
+          return *this;
+        }
+        friend void swap(Movable &a, Movable &b);
+      };
+      void swap(Movable &a, Movable &b);
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Move Semantic}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/move
+    \item look at the code and run it with callgrind
+    \item understand how inefficient it is
+    \item implement move semantic the easy way in NVector
+    \item run with callgrind and see no improvement
+    \item understand why and fix test.cpp
+    \item see efficiency improvements
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\subsection[copy]{Copy elision}
+
+\begin{frame}[fragile]
+  \frametitleit{Guaranteed copy elision}
+  \begin{block}{What is copy elision}
+    \begin{cppcode*}{}
+      struct Foo { ... };
+      Foo f() {
+        return Foo();
+      }
+      int main() {
+        // compiler was authorised to elude the copy
+        Foo foo = f();
+      }
+    \end{cppcode*}
+  \end{block}
+  \begin{exampleblock}{From \cpp17 on}
+    The elision is guaranteed.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleit{Guaranteed copy elision}
+  Allows to write code not allowed with \cpp14 (would not compile)
+  \begin{block}{One case where the guarantee is needed}
+    \begin{cppcode*}{}
+      struct Foo {
+        Foo() { ... }
+        Foo(const Foo &) = delete;
+        Foo(const Foo &&) = delete;
+      };
+      Foo f() {
+        return Foo();
+      }
+      int main() {
+        Foo foo = f();
+      }
+    \end{cppcode*}
+  \end{block}
+\end{frame}

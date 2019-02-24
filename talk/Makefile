@@ -1,10 +1,10 @@
 all: clean compile2
 fast: clean compile 
 
-compile: C++Course.tex basicconcepts.tex objectorientation.tex advanced.tex c++11.tex
+compile: *.tex
 	pdflatex -shell-escape C++Course.tex
 
-compile2: C++Course.tex basicconcepts.tex objectorientation.tex advanced.tex c++11.tex
+compile2: *.tex
 	pdflatex -shell-escape C++Course.tex
 	pdflatex -shell-escape C++Course.tex
 
