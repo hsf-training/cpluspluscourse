@@ -566,7 +566,10 @@
     \item special constructor called for replicating an object
     \item takes a single parameter of type const ref to class
     \item will be implemented by the compiler if not provided
-    \item in order to forbid copy, declare a private copy constructor without implementing it
+    \item in order to forbid copy, use {\texttt delete} (coming in 2 slides)
+      \begin{itemize}
+      \item or private copy constructor with no implementation in \cpp98
+      \end{itemize}
     \end{itemize}
   \end{block}
   \pause
@@ -579,7 +582,7 @@
   \pause
   \begin{exampleblock}{The rule of 3/5 (\cpp98/\cpp11)}
     \begin{itemize}
-    \item if a class has a destructor, a copy/move constructor or a (move) assignment operator, it should have all five
+    \item if a class has a destructor, a copy/move constructor or a (move) assignment operator, it should have all three/five
     \end{itemize}
   \end{exampleblock}
 \end{frame}
@@ -673,7 +676,7 @@
   \frametitleii{Member initialization}
   \begin{block}{Idea}
     \begin{itemize}
-    \item avoid redefining same default value for members in all constructors
+    \item avoid redefining same default value for members n times
     \item by defining it once at member declaration time
     \end{itemize}
   \end{block}
@@ -682,7 +685,7 @@
       struct BaseClass {
         int a{5};
         BaseClass() = default;
-        BaseClass(int \_a) : a(\_a) {};
+        BaseClass(int _a) : a(_a) {};
       };
       struct DerivedClass : BaseClass {
         int b{6};
@@ -691,31 +694,6 @@
       DerivedClass a{7}; // a = 7, b = 6
     \end{cppcode}
   \end{exampleblock}
-\end{frame}
-
-\subsection[Static]{Static members}
-
-\begin{frame}[fragile]
-  \frametitlegb{Static members}
-  \begin{block}{Concept}
-    \begin{itemize}
-    \item members attached to a class rather than to an object
-    \item usable with or without an instance of the class
-    \item identified by the {\it static} keyword
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-    class Text {
-    public:
-      static std::string upper(std::string) {...};
-    private:
-      static int s_nbCallsToUpper;
-    };
-    int Text::s_nbCallsToUpper = 0;
-    std::string s = "my text";
-    std::string uppers = Text::upper("my text");
-    // now Text::s_nbCallsToUpper is 1
-  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -782,6 +760,31 @@
   \end{block}
 \end{frame}
 
+\subsection[Static]{Static members}
+
+\begin{frame}[fragile]
+  \frametitlegb{Static members}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item members attached to a class rather than to an object
+    \item usable with or without an instance of the class
+    \item identified by the {\it static} keyword
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    class Text {
+    public:
+      static std::string upper(std::string) {...};
+    private:
+      static int s_nbCallsToUpper;
+    };
+    int Text::s_nbCallsToUpper = 0;
+    std::string s = "my text";
+    std::string uppers = Text::upper("my text");
+    // now Text::s_nbCallsToUpper is 1
+  \end{cppcode}
+\end{frame}
+
 \subsection[New]{Allocating objects}
 
 \begin{frame}[fragile]
@@ -832,7 +835,7 @@
   \end{block}
   \begin{cppcode}
     int f() {
-      MyFirstClass a(3); // constructor called
+      MyFirstClass a{3}; // constructor called
       ...
     } // destructor called
 

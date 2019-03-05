@@ -461,13 +461,13 @@
       void printBS(BigStruct p) {
         ...
       }
-      printBS(s); // replication
+      printBS(s); // data replication
       
       // parameter by pointer
       void printBSp(BigStruct *q) {
         ...
       }
-      printBSp(&s); // not replication
+      printBSp(&s); // no data replication
     \end{cppcode*}
     \columnbreak
     \null \vfill
@@ -864,7 +864,7 @@
   \begin{block}{Use only in very restricted cases}
     \begin{itemize}
     \item include of headers
-    \item hardcoded constants {\scriptsize (should this happen at all ?)}
+    \item hardcoded constants before \cpp11
     \item portability necessity
     \end{itemize}
   \end{block}

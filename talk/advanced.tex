@@ -12,14 +12,14 @@
   \end{block}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
-      Polygon *p = new Polygon();
+      Polygon p;
 
-      int f(Drawable *d) {...};
+      int f(Drawable & d) {...};
       f(p);  //ok
 
       try {
-        throw *p;
-      } catch (Shape e) {
+        throw p;
+      } catch (Shape & e) {
         // will be caught
       }
     \end{cppcode*}
@@ -46,14 +46,14 @@
   \end{block}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
-      Polygon *p = new Polygon();
+      Polygon p;
 
-      int f(Drawable *d) {...};
+      int f(Drawable & d) {...};
       f(p);  // Not ok anymore
 
       try {
-        throw *p;
-      } catch (Shape e) {
+        throw p;
+      } catch (Shape & e) {
         // ok, will be caught
       }
     \end{cppcode*}
@@ -70,80 +70,20 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Method overriding}
-  \begin{block}{Principle}
-    \begin{itemize}
-    \item a given method of the parent can be overriden in a child
-    \item so that the behavior is adapted
-    \item the \mintinline{cpp}|override| keyword needs to be used
-    \end{itemize}
-  \end{block}
-  \begin{exampleblock}{Practically}
-    \begin{cppcode}
-      struct Base {
-        void some_func(float);
-      };
-      struct Derived : Base {
-        void some_func(float) override;
-      };
-    \end{cppcode}
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitleii{Why was {\texttt override} keyword introduced ?}
-  To detect mistakes in the following code :
-  \begin{block}{Without {\texttt override} (\cpp98)}
-    \begin{cppcode}
-      struct Base {
-        void some_func(float);
-      };
-      struct Derived : Base {
-        void some_func(double); // oups !
-      };
-    \end{cppcode}
-  \end{block}
-  \begin{itemize}
-  \item with \mintinline{cpp}|override|, you get a compiler error
-  \item if you forget \mintinline{cpp}|override| when you should have it, you get a compiler warning
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitleii{{\texttt final} keyword}
-  \begin{block}{Idea}
-    \begin{itemize}
-    \item make sure you cannot override a given method
-    \item by declaring it final
-    \end{itemize}
-  \end{block}
-  \begin{exampleblock}{Practically}
-    \begin{cppcode}
-      struct Base {
-        void some_func(float) final;
-      };
-      struct Derived : Base {
-        void some_func(float) override; // error
-      };
-    \end{cppcode}
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Method overriding : which version is called ?}
+  \frametitlegb{Method overriding}
   \begin{block}{the problem}
     \begin{itemize}
     \item a given method of the parent can be overriden in a child
-    \item if you use polymorphism and see the child as a parent, which one is called ?
+    \item but which one is called ?
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
-      Polygon *p = new Polygon();
-      p->draw(); // ?
+      Polygon p;
+      p.draw(); // ?
       
-      Shape* s = p;
-      s->draw(); // ?
+      Shape & s = p;
+      s.draw(); // ?
     \end{cppcode*}
     \columnbreak
     \center
@@ -173,11 +113,11 @@
   \pause
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
-      Polygon *p = new Polygon();
-      p->draw(); // Polygon.draw
+      Polygon p;
+      p.draw(); // Polygon.draw
       
-      Shape* s = p;
-      s->draw(); // Drawable.draw
+      Shape & s = p;
+      s.draw(); // Drawable.draw
     \end{cppcode*}
     \columnbreak
     \center
@@ -206,11 +146,11 @@
   \end{block}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
-      Polygon *p = new Polygon();
-      p->draw(); // Polygon.draw
+      Polygon p;
+      p.draw(); // Polygon.draw
       
-      Shape* s = p;
-      s->draw();  // Polygon.draw
+      Shape & s = p;
+      s.draw(); // Polygon.draw
     \end{cppcode*}
     \columnbreak
     \center
@@ -229,11 +169,73 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitleii{{\texttt override} keyword}
+  \begin{block}{Principle}
+    \begin{itemize}
+    \item when overriding a virtual method
+    \item the \mintinline{cpp}|override| keyword needs to be used
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct Base {
+        virtual void some_func(float);
+      };
+      struct Derived : Base {
+        void some_func(float) override;
+      };
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Why was {\texttt override} keyword introduced ?}
+  To detect the mistake in the following code :
+  \begin{block}{Without {\texttt override} (\cpp98)}
+    \begin{cppcode}
+      struct Base {
+        virtual void some_func(float);
+      };
+      struct Derived : Base {
+        void some_func(double); // oups !
+      };
+    \end{cppcode}
+  \end{block}
+  \begin{itemize}
+  \item with \mintinline{cpp}|override|, you would get a compiler error
+  \item if you forget \mintinline{cpp}|override| when you should have it, you get a compiler warning
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{{\texttt final} keyword}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item make sure you cannot override further a given virtual method
+    \item by declaring it final
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct Base {
+        virtual void some_func(float);
+      };
+      struct Intermediate : Base {
+        void some_func(float) final;
+      };
+      struct Derived : Intermediate {
+        void some_func(float) override; // error
+      };
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlegb{Pure Virtual methods}
   \begin{block}{Concept}
     \begin{itemize}
     \item methods that exist but are not implemented
-      \item marked by an ``{\it = 0}'' in the declaration
+      \item marked by an ``{\it = 0} '' in the declaration
     \item makes their class abstract
     \item an object can only be instantiated for a non abstract class
     \end{itemize}
@@ -242,14 +244,14 @@
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       // Error : abstract class
-      Shape *s = new Shape();
+      Shape s;
 
       // ok, draw has been implemented
-      Polygon *p = new Polygon();
+      Polygon p;
       
       // Shape type still usable
-      Shape* s = p;
-      s->draw();
+      Shape & s = p;
+      s.draw();
     \end{cppcode*}
     \columnbreak
     \center
@@ -737,25 +739,22 @@
   \end{alertblock}
 \end{frame}
 
-
 \begin{frame}[fragile,label=STLcode]
-  \frametitlegb{STL in practice}
+  \frametitleii{STL in practice}
   \begin{cppcode*}{}
     #include <vector>
     #include <algorithm>
 
-    std::vector<int> vi, vr(3);
-    vi.push_back(5); vi.push_back(3); vi.push_back(4);
+    std::vector<int> vi{5, 3, 4}; // initializer list
+    std::vector<int> vr(3); // constructor taking int
 
     std::transform(vi.begin(), vi.end(),      // range1
                    vi.begin(),          // start range2
                    vr.begin(),          // start result
                    std::multiplies<int>()); // function
 
-    for(std::vector<int>::iterator it = vr.begin();
-        it != vr.end();
-        it++) {
-      std::cout << *it << " ";
+    for(auto n : vr) {
+      std::cout << n << " ";
     };
   \end{cppcode*}
 \end{frame}
@@ -855,6 +854,28 @@
 
 \againframe{STLcode}
 
+\begin{frame}[fragile]
+  \frametitlegb{STL in practice using \cpp98}
+  \begin{cppcode*}{}
+    #include <vector>
+    #include <algorithm>
+
+    std::vector<int> vi, vr(3);
+    vi.push_back(5); vi.push_back(3); vi.push_back(4);
+
+    std::transform(vi.begin(), vi.end(),      // range1
+                   vi.begin(),          // start range2
+                   vr.begin(),          // start result
+                   std::multiplies<int>()); // function
+
+    for(std::vector<int>::iterator it = vr.begin();
+        it != vr.end();
+        it++) {
+      std::cout << *it << " ";
+    };
+  \end{cppcode*}
+\end{frame}
+
 \subsection[Functors]{Functors}
 
 \begin{frame}[fragile]
@@ -885,7 +906,7 @@
   \begin{block}{Typical usage}
     \begin{itemize}
     \item pass a function to another one
-    \item or to an STL algorithm (see later)
+    \item or to an STL algorithm
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -1021,24 +1042,30 @@
 
 \begin{frame}[fragile]
   \frametitleii{non-member begin and end}
-  \begin{alertblock}{The problem}
+  \begin{alertblock}{The problem in \cpp98}
     STL containers and arrays have different syntax for loop
+    \vspace{-1mm}
     \begin{cppcode}
       std::vector<int> v;
-      for(it = v.begin(); it != v.end(); it++) {...}
       int a[] = {1,2,3};
-      for(i = 0; i < 3; i++) {...}
+      for(auto it = v.begin(); it != v.end(); it++) {...}
+      for(int i = 0; i < 3; i++) {...}
     \end{cppcode}
   \end{alertblock}
   \pause
-  \begin{block}{The new syntax}
+  \begin{block}{A new syntax}
     \begin{cppcode}
-      std::vector<int> v;
       for(auto it = begin(v); it != end(v); it++) {...}
-      int a[] = {1,2,3};
-      for(int* i = begin(a); i != end(a); i++) {...}
+      for(int i = begin(a); i != end(a); i++) {...}
     \end{cppcode}
   \end{block}
+  \pause
+  \begin{exampleblock}{Allowing the best syntax}
+    \begin{cppcode}
+      for(auto & element : v) {...}
+      for(auto & element : a) {...}
+    \end{cppcode}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1058,7 +1085,7 @@
   \begin{exampleblock}{\cpp17}
     \begin{cppcode*}{}
       void foo(std::tuple<int, double, long> tuple) {
-        auto [ a, b, c ] = tuple;
+      auto [ a, b, c ] = tuple;
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -1280,7 +1307,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{\cpp11 makes the STL usable}
+  \frametitleii{{\texttt lambda}s makes the STL usable}
   \begin{block}{Before lambdas}
     \begin{cppcode*}{}
       struct Incrementer {
@@ -1290,26 +1317,22 @@
           return value + m_inc;
         };
       };
-      std::vector<int> v;
-      v.push_back(1); v.push_back(2); v.push_back(3);
+      std::vector<int> v{1, 2, 3};
       std::transform(begin(v), end(v), begin(v),
                      Incrementer(1));
-      for (std::vector<int>::iterator it = begin(v);
-           it != end(v);
-           it++) std::cout << *it << " ";
+      for (auto a : v) std::cout << a << " ";
       \end{cppcode*}
     \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{\cpp11 makes the STL usable}
+  \frametitleii{{\texttt lambda}s makes the STL usable}
   \begin{exampleblock}{With lambdas}
     \begin{cppcode*}{}
-      std::vector<int> v = {1, 2, 3};
-      int inc = 1;
+      std::vector<int> v{1, 2, 3};
       std::transform(begin(v), end(v), begin(v),
-                     [inc](int value) {
-                       return value + inc;
+                     [](int value) {
+                       return value + 1;
                      });
       for (auto a : v) std::cout << a << " ";
     \end{cppcode*}
