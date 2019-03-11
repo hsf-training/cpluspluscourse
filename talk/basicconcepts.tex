@@ -158,28 +158,6 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Dynamic Arrays}
-  \begin{cppcode}
-    #include <cstdlib>
-    #include <cstring>
-
-    int *bad;    // pointer to random address
-    int *ai = 0; // better. Can be tested. C++98
-
-    // allocate array of 10 ints (not initialized)
-    ai = (int*) malloc(10*sizeof(int));
-    // and set them to 0
-    memset(ai, 0, 10*sizeof(int));
-
-    // Both in one go
-    ai = (int*) calloc(10, sizeof(int));
-    
-    // liberate memory
-    free(ai);
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile]
   \frametitleii{nullptr}
   \begin{block}{Finally a \cpp~NULL pointer}
     \begin{itemize}
@@ -196,6 +174,28 @@
       int i = nullptr;   // ERROR
     \end{cppcode*}
   \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Dynamic Arrays}
+  \begin{cppcode}
+    #include <cstdlib>
+    #include <cstring>
+
+    int *bad;          // pointer to random address
+    int *ai = nullptr; // better. Can be tested
+
+    // allocate array of 10 ints (not initialized)
+    ai = (int*) malloc(10*sizeof(int));
+    // and set them to 0
+    memset(ai, 0, 10*sizeof(int));
+
+    // Both in one go
+    ai = (int*) calloc(10, sizeof(int));
+    
+    // liberate memory
+    free(ai);
+  \end{cppcode}
 \end{frame}
 
 \subsection{Operators}
@@ -461,13 +461,13 @@
       void printBS(BigStruct p) {
         ...
       }
-      printBS(s); // data replication
+      printBS(s); // copy
       
       // parameter by pointer
       void printBSp(BigStruct *q) {
         ...
       }
-      printBSp(&s); // no data replication
+      printBSp(&s); // no copy
     \end{cppcode*}
     \columnbreak
     \null \vfill
