@@ -396,6 +396,7 @@
     \item {\it virtual} inheritance will ``share'' parents
     \item standard inheritance will replicate them
     \end{itemize}
+    \mintinline{cpp}{class TextBox : public virtual Rectangle, Text}
   \end{block}
   \begin{multicols}{2}
     \begin{tikzpicture}[]
@@ -472,7 +473,7 @@
     struct Complex {
       float m_real, m_imaginary;
       Complex(float real, float imaginary);
-      Complex operator+(Complex& other) {
+      Complex operator+(const Complex& other) {
         return Complex(m_real + other.m_real,
                        m_imaginary + other.m_imaginary);
       }
@@ -550,6 +551,54 @@
       std::cout << c1 << std::endl;
     \end{cppcode}
   \end{block}
+\end{frame}
+
+\subsection[Functors]{Functors}
+
+\begin{frame}[fragile]
+  \frametitlegb{Functors}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item a class that implements the () operator
+    \item allows to use objects in place of functions
+    \item and as objects have constructors, allow to construct functions
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    struct Adder {
+      int m_increment;
+      Adder(int increment) : m_increment(increment) {}
+      int operator()(int a) { return a + m_increment; }
+    };
+
+    Adder inc1(1), inc10(10);
+    int i = 3;
+    int j = inc1(i);  // 4
+    int k = inc10(i); // 13
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Functors}
+  \begin{block}{Typical usage}
+    \begin{itemize}
+    \item pass a function to another one
+    \item or to an STL algorithm
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    struct BinaryFunction {
+      virtual double operator() (double a, double b) = 0;
+    };
+    struct Add : public BinaryFunction {
+      double operator() (double a, double b) { return a+b; }
+    };
+    double binary_op(double a, double b, BinaryFunction &func) {
+      return func(a, b);
+    }
+    Add addfunc;
+    double c = binary_op(a, b, addfunc);
+  \end{cppcode}
 \end{frame}
 
 \subsection[\textless{}T\textgreater]{Templates}
@@ -644,8 +693,8 @@
   \begin{cppcode*}{}
     template<class KeyType=int, class ValueType=KeyType>
     struct Map {
-      void set(KeyType &key, ValueType value);
-      ValueType get(KeyType &key);
+      void set(const KeyType &key, ValueType value);
+      ValueType get(const KeyType &key);
     }
 
     Map<std::string, int> m1;
@@ -659,18 +708,19 @@
   \begin{cppcode*}{}
     template<class KeyType=int, class ValueType=KeyType>
     struct Map {
-      void set(KeyType &key, ValueType value);
-      ValueType get(KeyType &key);
+      void set(const KeyType &key, ValueType value);
+      ValueType get(const KeyType &key);
     }
 
     template<class KeyType, class ValueType>
     void Map<KeyType, ValueType>::set
-       (KeyType &key, ValueType value) {
+       (const KeyType &key, ValueType value) {
       ...
     }
 
     template<class KeyType, class ValueType>
-    ValueType Map<KeyType, ValueType>::get(KeyType &key) {
+    ValueType Map<KeyType, ValueType>::get
+       (const KeyType &key) {
       ...
     }
   \end{cppcode*}
@@ -874,54 +924,6 @@
       std::cout << *it << " ";
     };
   \end{cppcode*}
-\end{frame}
-
-\subsection[Functors]{Functors}
-
-\begin{frame}[fragile]
-  \frametitlegb{Functors}
-  \begin{block}{Concept}
-    \begin{itemize}
-    \item a class that implements the () operator
-    \item allows to use objects in place of functions
-    \item and as objects have constructors, allow to construct functions
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-    struct Adder {
-      int m_increment;
-      Adder(int increment) : m_increment(increment) {}
-      int operator()(int a) { return a + m_increment; }
-    };
-    
-    Adder inc1(1), inc10(10);
-    int i = 3;
-    int j = inc1(i);  // 4
-    int k = inc10(i); // 13
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Functors}
-  \begin{block}{Typical usage}
-    \begin{itemize}
-    \item pass a function to another one
-    \item or to an STL algorithm
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-    struct BinaryFunction {
-      virtual double operator() (double a, double b) = 0;
-    };
-    struct Add : public BinaryFunction {
-      double operator() (double a, double b) { return a+b; }
-    };
-    double binary_op(double a, double b, BinaryFunction &func) {
-      return func(a, b);
-    }
-    Add addfunc;
-    double c = binary_op(a, b, addfunc);
-  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1176,16 +1178,16 @@
     \begin{cppcode}
       int increment = 4;
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
-      for_each(begin(data), end(data),
-               [](int x) { std::cout << x+increment; });
-      std::cout << std::endl;
+      transform(begin(data), end(data), begin(data),
+                [](int x) { return x+increment; });
+      for (auto n : data) std::cout << n << "\n";
     \end{cppcode}
   \end{block}
   \pause
   \begin{alertblock}{Error}
     \begin{minted}[gobble=6]{text}
         error: 'increment' is not captured
-          [](int x) { std::cout << x+increment; });
+          [](int x) { return x+increment; });
                                      ^
     \end{minted}
   \end{alertblock}
@@ -1204,11 +1206,11 @@
     \begin{cppcode*}{}
       int increment = 4;
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
-      for_each(begin(data), end(data),
-               [increment](int x) {
-                 std::cout << x+increment;
-               });
-      std::cout << std::endl;
+      transform(begin(data), end(data), begin(data),
+                [increment](int x) {
+                  std::cout << x+increment;
+                });
+      for (auto n : data) std::cout << n << "\n";
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
