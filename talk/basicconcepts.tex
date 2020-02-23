@@ -671,9 +671,9 @@
     \begin{cppcode}
       switch (c) {
         case 'a':
-          f();; // Warning emitted
+          f(); // Warning emitted
         case 'c':
-          h();;
+          h();
       }
     \end{cppcode}
   \end{alertblock}
@@ -681,10 +681,10 @@
     \begin{cppcode*}{}
       switch (c) {
         case 'a':
-          f();;
-          [[fallthrough]];; // Warning suppressed
+          f();
+          [[fallthrough]]; // Warning suppressed
         case 'c':
-          h();;
+          h();
       }
     \end{cppcode*}
   \end{exampleblock}
