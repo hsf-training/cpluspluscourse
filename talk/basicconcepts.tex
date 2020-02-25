@@ -289,9 +289,14 @@
         .weight=67
       };
     \end{cppcode*}
-    \pause
     \columnbreak
-    \null \vfill
+    \begin{cppcode*}{gobble=2,firstnumber=14}
+      Individual *studentPtr =
+        &student;
+      studentPtr->age = 25;
+    \end{cppcode*}
+    \pause
+    \vfill
     \hspace{-1.5cm}
     \begin{tikzpicture}
       \memorystack[nb blocks=5]
@@ -348,7 +353,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Enums and typedefs}
+  \frametitlegb{Enums}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       enum VehicleType {
@@ -357,9 +362,6 @@
         BUS,   // 2
       };
       VehicleType t = CAR;
-      
-      typedef uint64_t myint;
-      myint toto = 17;
     \end{cppcode*}
     \columnbreak
     \begin{cppcode*}{gobble=2}
@@ -372,7 +374,6 @@
     \end{cppcode*}
   \end{multicols}
 \end{frame}
-
 
 \begin{frame}[fragile]
   \frametitlegb{More sensible example}
@@ -416,6 +417,26 @@
       t.rect.height = 4;
     \end{cppcode*}
   \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{typedef and using \hfill \cpp98 / \cpp11}
+  Ways to create type aliases
+  \begin{alertblock}{\cpp98}
+    \begin{cppcode*}{gobble=2}
+      typedef uint64_t myint;
+      myint toto = 17;
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp11}
+    \begin{cppcode*}{gobble=2}
+      using myint = uint64_t;
+      myint toto = 17;
+
+      template <typename T> using myvec = std::vector<T>;
+      myvec<int> titi;
+    \end{cppcode*}
+  \end{exampleblock}
 \end{frame}
 
 \subsection[$f()$]{Functions}
@@ -510,7 +531,7 @@
       // s.a = 1
       
       void changeSS2(SmallStruct *q) {
-        q->a = 2;  // i.e. (*q).a
+        q->a = 2;
       }
       changeSS2(s);
       // s.a = 2

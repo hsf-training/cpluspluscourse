@@ -1149,7 +1149,7 @@
         code;
       }
     \end{cppcode*}
-    The type specification is optionnal
+    The type specification is optional
   \end{block}
   \begin{exampleblock}{Usage example}
     \begin{cppcode*}{gobble=2}
@@ -1176,11 +1176,10 @@
   \pause
   \begin{block}{First attempt in \cpp}
     \begin{cppcode}
-      int increment = 4;
+      int increment = 3;
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
       transform(begin(data), end(data), begin(data),
                 [](int x) { return x+increment; });
-      for (auto n : data) std::cout << n << "\n";
     \end{cppcode}
   \end{block}
   \pause
@@ -1204,13 +1203,12 @@
   \pause
   \begin{exampleblock}{Example}
     \begin{cppcode*}{}
-      int increment = 4;
+      int increment = 3;
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
       transform(begin(data), end(data), begin(data),
                 [increment](int x) {
                   std::cout << x+increment;
                 });
-      for (auto n : data) std::cout << n << "\n";
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}

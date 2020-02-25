@@ -83,27 +83,36 @@
   \begin{block}{status}
     \begin{itemize}
     \item A new \cpp specification every 3 years
+      \begin{itemize}
+      \item \cpp20 will be official in May
+      \end{itemize}
     \item Bringing each time a lot of goodies
     \end{itemize}
   \end{block}
   \pause
-  \begin{block}{How to use \cpp11 features}
-    \begin{itemize}
-    \item Use a compatible compiler gcc $\geq$ 4.8, clang $\geq$ 3.3
-    \item add -std=c++11 to compilation flags
-    \end{itemize}
-  \end{block}
-  \begin{block}{How to use \cpp14 features}
-    \begin{itemize}
-    \item Use a compatible compiler gcc $\geq$ 4.9, clang $\geq$ 3.4
-    \item add -std=c++14 to compilation flags
-    \end{itemize}
-  \end{block}
-  \begin{block}{How to use \cpp17 features}
-    \begin{itemize}
-    \item Use a compatible compiler gcc $\geq$ 7.3, clang $\geq$ 5
-    \item add -std=c++17 to compilation flags
-    \end{itemize}
+  \begin{block}{How to use \cpp XX features}
+    \begin{multicols}{2}
+      \begin{itemize}
+      \item Use a compatible compiler
+      \item add -std=c++xx to compilation flags
+      \item e.g. -std=c++17
+      \end{itemize}
+      \vfill
+      \columnbreak
+      \begin{table}[h!]
+        \begin{center}
+          \begin{tabular}{c|c|c}
+            \textbf{\cpp} & \textbf{gcc} & \textbf{clang}\\
+            \hline
+            11 & $\geq$4.8 & $\geq$3.3\\
+            14 & $\geq$4.9 & $\geq$3.4\\
+            17 & $\geq$7.3 & $\geq$5\\
+            2a & $\geq$10  & $\geq$10 \\
+          \end{tabular}
+          \caption{Minimum versions of gcc and clang for a given \cpp version}
+        \end{center}
+      \end{table}
+    \end{multicols}
   \end{block}
 \end{frame}
 
