@@ -1,0 +1,15 @@
+Day 1 :
+  pause after 1:40 before static members in OO
+  stopped at end of More C++ features (after move and copy elision)
+
+Day 2 :
+  repeated move semantic and started tools up to debugging. Did advanced OO up to pure virtual methods then pause
+  end of advanced OO, operators, templates (and exercise), STL, functors
+
+Day 3 :
+  repeated functors and templates quickly, finished advanced C++
+  valgrind and cppcheck exercise (minus helgrind), python and concurrency (minus condition varaibles)
+
+Corrections :
+  slide 188
+ 
