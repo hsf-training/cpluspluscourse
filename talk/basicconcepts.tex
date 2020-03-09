@@ -565,6 +565,77 @@
   \end{multicols}
 \end{frame}
 
+\subsection[Refs]{References}
+
+\begin{frame}[fragile]
+  \frametitlegb{Value, pointers and references}
+  \begin{block}{Different ways to pass arguments to a function}
+    \begin{itemize}
+    \item by default arguments are passed by value
+    \item but pointers can be used
+    \item and references are also available
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    struct T {...};
+    void func   (T value);  // by value
+    void funcPtr(T *value); // pointer
+    void funcRef(T &value); // reference
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Value versus pointers/reference}
+  \begin{block}{Identical to C}
+    \begin{itemize}
+    \item by value, a copy is created
+      \begin{itemize}
+        \item calling the copy constructor for objects
+      \end{itemize}
+    \item using pointers, the memory address of value is passed
+    \item using reference, a reference to value is passed
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    T a;      // constructor called
+  \end{cppcode}
+  \pause
+  \begin{cppcode*}{firstnumber=2}
+    funct(a); // copy constructor called on enter
+              // destructor called on exit
+  \end{cppcode*}
+  \pause
+  \begin{cppcode*}{firstnumber=4}
+    functPtr(&a); // no copy, but we pass a pointer
+    functRef(a);  // no copy, and standard syntax
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Pointers vs References}
+  \begin{block}{Specificities of reference}
+    \begin{itemize}
+    \item natural syntax
+    \item will never be NULL
+    \item cannot reference temporary object
+    \end{itemize}
+  \end{block}
+  \begin{block}{Advantages of pointers}
+    \begin{itemize}
+    \item can be NULL
+    \item clearly indicates that argument may be modified
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{Good practice}
+    \begin{itemize}
+      \item Always use references when you can
+      \item Consider that a reference will be modified
+      \item Use const when it's not the case
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
 \subsection[Control]{Control instructions}
 
 \begin{frame}[fragile]
@@ -579,7 +650,6 @@
         Instructions3;
       } 
     \end{cppcode*}
-    \vspace{-0.5cm}
     \begin{itemize}
       \item {\it else} and {\it else if} part are optional
       \item {\it else if} part can be repeated
@@ -647,7 +717,6 @@
         default : instructiond; break;
       }
     \end{cppcode*}
-    \vspace{-0.5cm}
     \begin{itemize}
       \item {\it break} is not mandatory but...
       \item cases are entry points, not independant pieces
@@ -732,7 +801,7 @@
         // on false...
       }
     \end{cppcode*}
-    \vspace{-.3cm}
+    \vspace{-.1cm}
     val is visible only inside the if and else statements
   \end{exampleblock}  
 \end{frame}
@@ -745,7 +814,7 @@
         instructions;
       }
     \end{cppcode*}
-    \vspace{-0.5cm}
+    \vspace{-0.2cm}
     \begin{itemize}
       \item initializations and increments are comma separated
       \item initializations can contain declarations
@@ -852,7 +921,7 @@
     \item no implementation defined
     \end{itemize}
   \end{block}
-  \begin{block}{Header : Hello.hpp}
+  \begin{block}{Header : hello.hpp}
     \begin{cppcode*}{linenos=false}
       void printHello();
     \end{cppcode*}

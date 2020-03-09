@@ -760,6 +760,25 @@
   \end{block}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitleii{Calling constructors for arrays and vectors}
+  \begin{exampleblock}{list of items given within \{\}}
+    \begin{cppcode*}{firstnumber=10}
+     int ip[3]{1,2,3};
+     int* ip = new int[3]{1,2,3};
+     std::vector<int> v{1,2,3};
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{block}{\cpp98 nightmare}
+    \begin{cppcode*}{firstnumber=10}
+     int ip[3]{1,2,3};            // OK
+     int* ip = new int[3]{1,2,3}; // not allowed
+     std::vector<int> v{1,2,3};   // not allowed
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
 \subsection[Static]{Static members}
 
 \begin{frame}[fragile]
@@ -902,25 +921,6 @@
       delete[] a; // destructor called 10 times
     }
   \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitleii{Back to calling constructors - arrays and vectors}
-  \begin{exampleblock}{list of items given within \{\}}
-    \begin{cppcode*}{firstnumber=10}
-     int ip[3]{1,2,3};
-     int* ip = new int[3]{1,2,3};
-     std::vector<int> v{1,2,3};
-    \end{cppcode*}
-  \end{exampleblock}
-  \pause
-  \begin{block}{\cpp98 nightmare}
-    \begin{cppcode*}{firstnumber=10}
-     int ip[3]{1,2,3};            // OK
-     int* ip = new int[3]{1,2,3}; // not allowed
-     std::vector<int> v{1,2,3};   // not allowed
-    \end{cppcode*}
-  \end{block}
 \end{frame}
 
 \subsection[Exceptions]{Exceptions}
