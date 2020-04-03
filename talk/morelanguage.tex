@@ -1,6 +1,33 @@
 \section[More]{More \cpp features}
 
-\subsection[const]{Constant Expressions}
+\subsection[auto]{Auto keyword}
+
+\begin{frame}[fragile]
+  \frametitleii{Auto keyword}
+  \begin{block}{Reason of being}
+    \begin{itemize}
+    \item many type declarations are redundant
+    \item and lead to compiler error if you mess up
+    \end{itemize}
+    \begin{cppcode*}{}
+      std::vector<int> v;
+      int a = v[3];
+      int b = v.size();  // bug ? unsigned to signed
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{Practical usage}
+    \begin{cppcode*}{}
+      std::vector<int> v;
+      auto a = v[3];
+      auto b = v.size();
+      int sum{0};
+      for (auto n : v) { sum += n; }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\subsection[constexpr]{Constant Expressions}
 
 \begin{frame}[fragile]
   \frametitleii{Generalized Constant Expressions}
@@ -12,7 +39,7 @@
   \end{block}
   \pause
   \begin{exampleblock}{Example}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       constexpr int f(int x) {
         return x > 1 ? x * f(x - 1) : 1;
       }
@@ -43,7 +70,7 @@
 
 \begin{frame}[fragile]
   \frametitleii{Real life example}
-  \begin{cppcode*}{linenos=true}
+  \begin{cppcode*}{}
     constexpr float toSI(const float v, const char unit) {
       switch (unit) {
       case 'k': return 1000*v;
@@ -65,7 +92,7 @@
 
 \begin{frame}[fragile]
   \frametitleii{Real life example(2)}
-  \begin{cppcode*}{linenos=true}
+  \begin{cppcode*}{}
     class DimLength {
       const float m_value;
     public:
@@ -84,33 +111,6 @@
   \end{cppcode*}
 \end{frame}
 
-
-\subsection[auto]{Auto keyword}
-
-\begin{frame}[fragile]
-  \frametitleii{Auto keyword}
-  \begin{block}{Reason of being}
-    \begin{itemize}
-    \item many type declarations are redundant
-    \item and lead to compiler error if you mess up
-    \end{itemize}
-    \begin{cppcode*}{linenos=false}
-      std::vector<int> v;
-      int a = v[3];
-      int b = v.size();  // bug ? unsigned to signed
-    \end{cppcode*}
-  \end{block}
-  \pause
-  \begin{block}{Practical usage}
-    \begin{cppcode*}{linenos=false}
-      std::vector<int> v;
-      auto a = v[3];
-      auto b = v.size();
-      int sum{0};
-      for (auto n : v) { sum += n; }
-    \end{cppcode*}
-  \end{block}
-\end{frame}
 
 \subsection[const]{Constness}
 
@@ -158,7 +158,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Function constness}
+  \frametitlegb{Method constness}
   \begin{block}{The {\it const} keyword for class functions}
     \begin{itemize}
     \item indicate that the function does not modify the object
@@ -176,7 +176,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Function constness}
+  \frametitlegb{Method constness}
   \begin{block}{Constness is part of the type}
     \begin{itemize}
     \item const T and T are different type
@@ -184,14 +184,14 @@
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    void func(int *a);
-    void funcConst(const int *a);
+    void func(int &a);
+    void funcConst(const int &a);
 
-    int *a = 0;
-    const int *b = 0;
+    int a = 0;
+    const int b = 0;
 
     func(a);      // ok
-    func(b);      // error : no cannot cast int* to const
+    func(b);      // error
     funcConst(a); // ok
     funcConst(b); // ok
   \end{cppcode}
@@ -360,7 +360,7 @@
   \frametitleii{Move semantics}
   \begin{block}{In some cases, you want to force a move}
     \begin{cppcode*}{}
-      template <class T> void swap(T &a, T &b) {
+      void swap(T &a, T &b) {
         T c = a;  // copy
         a = b;    // copy
         b = c;    // copy
@@ -476,7 +476,7 @@
       struct Foo {
         Foo() { ... }
         Foo(const Foo &) = delete;
-        Foo(const Foo &&) = delete;
+        Foo(Foo &&) = delete;
       };
       Foo f() {
         return Foo();

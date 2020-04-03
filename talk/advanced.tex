@@ -261,7 +261,7 @@
       }
       \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
-        void draw();
+        void draw() override;
       }
       \draw[very thick,->] (Polygon) -- (Shape);
       \draw[very thick,->] (Shape) -- (Drawable);
@@ -644,7 +644,7 @@
   \newsavebox{\codepiece}
   \begin{lrbox}{\codepiece}
     \begin{minipage}{.35\linewidth}
-      \begin{cppcode*}{gobble=4,linenos=false}
+      \begin{cppcode*}{gobble=4}
         template<class T>
         T func(T a) {
           return a;
@@ -655,7 +655,7 @@
   \newsavebox{\codepiecea}
   \begin{lrbox}{\codepiecea}
     \begin{minipage}{.4\linewidth}
-      \begin{cppcode*}{gobble=4,linenos=false}
+      \begin{cppcode*}{gobble=4}
         int func(int a) {
           return a;
         }
@@ -665,7 +665,7 @@
   \newsavebox{\codepieceb}
   \begin{lrbox}{\codepieceb}
     \begin{minipage}{.4\linewidth}
-      \begin{cppcode*}{gobble=4,linenos=false}
+      \begin{cppcode*}{gobble=4}
         double func(double a) {
           return a;
         }
@@ -980,7 +980,6 @@
     \begin{itemize}
     \item template syntax is simply awful
     \item it is hard to debug (compilers spit out mostly garbage)
-    \item the standard is not well defined (SGI vs \cpp98 vs \cpp11)
     \end{itemize}
     However, this has improved a lot with \cpp11
   \end{alertblock}
@@ -1058,7 +1057,7 @@
   \begin{block}{A new syntax}
     \begin{cppcode}
       for(auto it = begin(v); it != end(v); it++) {...}
-      for(int i = begin(a); i != end(a); i++) {...}
+      for(auto i = begin(a); i != end(a); i++) {...}
     \end{cppcode}
   \end{block}
   \pause
@@ -1106,9 +1105,9 @@
   \begin{block}{Advantages}
     \begin{itemize}
     \item Allows to simplify inner type definition
-      \begin{cppcode*}{linenos=false,gobble=4}
+      \begin{cppcode*}{gobble=4}
         class TheClass {
-          typedef int inner_type;
+          using inner_type = int;
           inner_type func();
         }
         TheClass::inner_type TheClass::func() {...}
@@ -1360,7 +1359,7 @@
   \frametitlegb{Pointers : why they are error prone ?}
   \begin{exampleblock}{They need initialization
       \hfill \onslide<2->{\textcolor{orange}{\bf Seg Fault}}}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{xleftmargin=20pt}
       char *s;
       try {
         foo();
@@ -1375,7 +1374,7 @@
   \vspace{-2cm}
   \begin{exampleblock}{They need to be released
       \hfill \onslide<4->{\textcolor{orange}{\bf Memory leak}}}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{xleftmargin=20pt}
       char *s = (char*) malloc(...);
       strncpy(s, ...);
       if (0 != strncmp(s, ...)) return;
@@ -1388,7 +1387,7 @@
   \vspace{-2cm}
   \begin{exampleblock}{They need clear ownership
       \hfill \onslide<6->{\textcolor{orange}{\bf Who should release ?}}}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{xleftmargin=20pt}
       char *s = (char*) malloc(...);
       strncpy(s, ...);
       someVector.push_back(s);

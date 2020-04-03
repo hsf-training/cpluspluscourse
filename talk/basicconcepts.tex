@@ -203,7 +203,7 @@
 \begin{frame}[fragile]
   \frametitlegb{Operators(1)}
   \begin{block}{Binary \& Assignment Operators}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       int i = 1 + 4 - 2;  // 3
       i *= 3;             // 9
       i /= 2;             // 4
@@ -212,7 +212,7 @@
   \end{block}
   \pause
   \begin{block}{Increment / Decrement \uncover<3->{\hfill \alert{\bf Use wisely}}}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       int i = 0; i++; // i = 1
       int j = ++i;    // i = 2, j = 2
       int k = i++;    // i = 3, k = 2
@@ -225,7 +225,7 @@
 \begin{frame}[fragile]
   \frametitlegb{Operators(2)}
   \begin{block}{Bitwise and Assignment Operators}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       int i = 0xee & 0x55;  // 0x44
       i |= 0xee;            // 0xee
       i ^= 0x55;            // 0xbb
@@ -236,7 +236,7 @@
   \end{block}
   \pause
   \begin{block}{Boolean Operators}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       bool a = true;
       bool b = false;
       bool c = a && b;    // false
@@ -249,7 +249,7 @@
 \begin{frame}[fragile]
   \frametitlegb{Operators(3)}
   \begin{block}{Comparison Operators}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       bool a = (3 == 3);  // true
       bool b = (3 != 3);  // false
       bool c = (4 < 4);   // false
@@ -533,7 +533,7 @@
       void changeSS2(SmallStruct *q) {
         q->a = 2;
       }
-      changeSS2(s);
+      changeSS2(&s);
       // s.a = 2
     \end{cppcode*}
     \columnbreak
@@ -641,7 +641,7 @@
 \begin{frame}[fragile]
   \frametitlegb{Control instructions : if}
   \begin{block}{if syntax}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       if (condition1) {
         Instructions1;
       } else if (condition2) {
@@ -661,7 +661,7 @@
 \begin{frame}[fragile]
   \frametitlegb{Control instructions : if}
   \begin{exampleblock}{Practical example}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       int collatz(int a) {
         if (a <= 0) {
           std::cout << "not supported";
@@ -692,7 +692,7 @@
   \end{block}
   \pause
   \begin{exampleblock}{Practical example}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       int collatz(int a) {
         return a==1 ? 1 : collatz(a%2 ? 3*a+1 : a/2);
       }
@@ -708,7 +708,7 @@
 \begin{frame}[fragile]
   \frametitlegb{Control instructions : switch}
   \begin{block}{Syntax}
-    \begin{cppcode*}{gobble=2,linenos=false}
+    \begin{cppcode*}{gobble=2}
       switch(identifier) {
         case c1 : instructions1; break;
         case c2 : instructions2; break;
@@ -733,7 +733,7 @@
 \begin{frame}[fragile]
   \frametitlegb{Control instructions : switch}
   \begin{exampleblock}{Practical example}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       enum Lang { FRENCH, GERMAN, ENGLISH, OTHER };
       ...
       switch (language) {
@@ -785,7 +785,7 @@
   Allows to simplify if and switch statements
   \begin{alertblock}{\cpp14}
     \begin{cppcode*}{}
-      auto val = GetValue();
+      Value val = GetValue();
       if (condition(val)) {
         // on success
       } else {
@@ -795,7 +795,7 @@
   \end{alertblock}
   \begin{exampleblock}{\cpp17}
     \begin{cppcode*}{}
-      if (auto val = GetValue(); condition(val)) {
+      if (Value val = GetValue(); condition(val)) {
         // on success
       } else {
         // on false...
@@ -809,7 +809,7 @@
 \begin{frame}[fragile]
   \frametitlegb{Control instructions : for loop}
   \begin{block}{for loop syntax}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       for(initializations; condition; increments) {
         instructions;
       }
@@ -823,7 +823,7 @@
   \end{block}
   \pause
   \begin{exampleblock}{Practical example}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       for(int i = 0, j = 0 ; i < 10 ; i++, j = i*i) {
         std::cout << i << "^2 is " << j << "\n";
       }
@@ -844,14 +844,14 @@
     \end{itemize}
   \end{block}
   \begin{block}{Syntax}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       for ( type iteration_variable : container ) {
         // body using iteration_variable
       }
     \end{cppcode*}
   \end{block}
   \begin{exampleblock}{Example code}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       int v[4] = {1,2,3,4};
       int sum = 0;
       for (int a : v) { sum += a; }
@@ -862,7 +862,7 @@
 \begin{frame}[fragile]
   \frametitlegb{Control instructions : while loop}
   \begin{block}{while loop syntax}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       while(condition) {
         instructions;
       }
@@ -877,7 +877,7 @@
   \end{block}
   \pause
   \begin{exampleblock}{Practical example}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       while (n != 1)
         if (0 == n%2) n /= 2; 
         else n = 3 * n + 1;
@@ -896,7 +896,7 @@
   \end{block}
   \pause
   \begin{exampleblock}{Practical example}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       while (1) {
         if (n == 1) break;
         if (0 == n%2) {
@@ -927,7 +927,7 @@
     \end{cppcode*}
   \end{block}
   \begin{block}{Usage : myfile.cpp}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       #include "hello.hpp"
       int main() {
         printHello();

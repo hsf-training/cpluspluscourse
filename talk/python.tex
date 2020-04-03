@@ -53,7 +53,7 @@
 \begin{frame}[fragile]
   \frametitle{Basic Module(3) : use it}
   \begin{block}{mandel.py}
-    \begin{minted}[gobble=4,linenos]{python}
+    \begin{minted}[gobble=4]{python}
       from mandel import mandel
       v = mandel(0.7, 1.2)
     \end{minted}
@@ -172,7 +172,7 @@
     \end{cppcode*}
   \end{block}
   \begin{exampleblock}{calling the mandel library}
-    \begin{minted}[gobble=4,linenos]{python}
+    \begin{minted}[gobble=4]{python}
       from ctypes import *
       libmandel = CDLL('libmandelc.so')
       v = libmandel.mandel(c_float(0.3), c_float(1.2))

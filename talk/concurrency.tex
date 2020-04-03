@@ -170,7 +170,7 @@
   \begin{alertblock}{Is ++ operator atomic ?}
     \pause
     Usually not. It behaves like :
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       eax = a       // memory to register copy
       increase eax  // increase (atomic CPU instruction)
       a = eax       // copy back to memory
@@ -181,7 +181,7 @@
 \begin{frame}[fragile]
   \frametitleii{Timing}
   \begin{exampleblock}{Code}
-    \begin{cppcode*}{linenos=false}
+    \begin{cppcode*}{}
       eax = a       // memory to register copy
       increase eax  // increase (atomic CPU instruction)
       a = eax       // copy back to memory
