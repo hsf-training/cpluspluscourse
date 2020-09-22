@@ -376,12 +376,41 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitleii{Scoped enumeration, aka enum class}
+  \begin{block}{Same syntax as enum, with scope}
+    \begin{cppcode*}{}
+      enum class VehicleType { Bus, Car };
+      VehicleType t = VehicleType::Car;
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Only advantages}
+    \begin{itemize}
+    \item scoping avoids name clashes
+    \item strong typing, no automatic conversion to int
+    \end{itemize}
+    \small
+    \begin{cppcode*}{}
+      enum VType { Bus, Car }; enum Color { Red, Blue };
+      VType t = Bus;
+      if (t == Red) {  // We do enter !  }
+      int a = 5 * Car; // Ok, a = 5
+      
+      enum class VT { Bus, Car }; enum class Col { Red, Blue };
+      VT t = VT::Bus;
+      if (t == Col::Red) { // Compiler error }
+      int a = t * 5;       // Compiler error
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlegb{More sensible example}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
-      enum ShapeType {
-        CIRCLE,
-        RECTANGLE
+      enum class ShapeType {
+        Circle,
+        Rectangle
       };
       
       struct Rectangle {
@@ -405,14 +434,16 @@
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2,firstnumber=17}
       Shape s;
-      s.type = CIRCLE;
+      s.type =
+        ShapeType::Circle;
       s.radius = 3.4;
       
     \end{cppcode*}
     \columnbreak
     \begin{cppcode*}{gobble=2,firstnumber=20}
       Shape t;
-      t.type = RECTANGLE;
+      t.type =
+        Shapetype::Rectangle;
       t.rect.width = 3;
       t.rect.height = 4;
     \end{cppcode*}
@@ -572,43 +603,37 @@
   \begin{block}{Different ways to pass arguments to a function}
     \begin{itemize}
     \item by default arguments are passed by value
-    \item but pointers can be used
-    \item and references are also available
+    \item pointers can be used to avoid copies
+    \item references are also available and are preferred
     \end{itemize}
   \end{block}
-  \begin{cppcode}
-    struct T {...};
-    void func   (T value);  // by value
-    void funcPtr(T *value); // pointer
-    void funcRef(T &value); // reference
-  \end{cppcode}
+  \pause
+  \begin{block}{Syntax}
+    \begin{cppcode}
+      struct T {...}; T a;
+      void func   (T value); f(a);   // by value
+      void funcPtr(T *value); f(&a); // pointer
+      void funcRef(T &value); f(a);  // by reference
+    \end{cppcode}
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlegb{Value versus pointers/reference}
-  \begin{block}{Identical to C}
+  \begin{block}{When passing by value}
     \begin{itemize}
-    \item by value, a copy is created
-      \begin{itemize}
-        \item calling the copy constructor for objects
-      \end{itemize}
-    \item using pointers, the memory address of value is passed
-    \item using reference, a reference to value is passed
+    \item a copy is created
+    \item making the original argument unmodifiable (aka const)
+    \item efficient for small types, e.g. numbers
     \end{itemize}
   \end{block}
-  \begin{cppcode}
-    T a;      // constructor called
-  \end{cppcode}
-  \pause
-  \begin{cppcode*}{firstnumber=2}
-    funct(a); // copy constructor called on enter
-              // destructor called on exit
-  \end{cppcode*}
-  \pause
-  \begin{cppcode*}{firstnumber=4}
-    functPtr(&a); // no copy, but we pass a pointer
-    functRef(a);  // no copy, and standard syntax
-  \end{cppcode*}
+  \begin{block}{When passing by pointer/reference}
+    \begin{itemize}
+    \item no copy of your argument
+    \item in the back only a memory address is copied
+    \item argument can be modified (unless you use constness, see later)
+    \end{itemize}
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -617,7 +642,7 @@
     \begin{itemize}
     \item natural syntax
     \item will never be NULL
-    \item cannot reference temporary object
+    \item thus cannot reference temporary object
     \end{itemize}
   \end{block}
   \begin{block}{Advantages of pointers}
@@ -631,7 +656,7 @@
     \begin{itemize}
       \item Always use references when you can
       \item Consider that a reference will be modified
-      \item Use const when it's not the case
+      \item Use constness when it's not the case
     \end{itemize}
   \end{alertblock}
 \end{frame}
@@ -959,3 +984,30 @@
     \end{itemize}
   \end{block}
 \end{frame}
+\subsection[auto]{Auto keyword}
+
+\begin{frame}[fragile]
+  \frametitleii{Auto keyword}
+  \begin{block}{Reason of being}
+    \begin{itemize}
+    \item many type declarations are redundant
+    \item and lead to compiler error if you mess up
+    \end{itemize}
+    \begin{cppcode*}{}
+      std::vector<int> v;
+      int a = v[3];
+      int b = v.size();  // bug ? unsigned to signed
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{Practical usage}
+    \begin{cppcode*}{}
+      std::vector<int> v;
+      auto a = v[3];
+      auto b = v.size();
+      int sum{0};
+      for (auto n : v) { sum += n; }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+

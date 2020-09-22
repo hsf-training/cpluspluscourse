@@ -49,6 +49,8 @@
       \node[new] (C11) [below of=C99] {C11}
       edge[direct] (C99)
       edge[transverse] (C++98);
+      \node[new] (C18) [below of=C11,node distance=1.8cm] {C18}
+      edge[direct] (C11);
       \node[new] (C++14) [below of=C++11] {\cpp14}
       edge[direct] (C++11);
       \node[left of=C++14,node distance=1.5cm] {2014};
@@ -84,7 +86,7 @@
     \begin{itemize}
     \item A new \cpp specification every 3 years
       \begin{itemize}
-      \item \cpp20 will be official in May
+      \item \cpp20 is ready, supposed to be official in May
       \end{itemize}
     \item Bringing each time a lot of goodies
     \end{itemize}
@@ -107,7 +109,7 @@
             11 & $\geq$4.8 & $\geq$3.3\\
             14 & $\geq$4.9 & $\geq$3.4\\
             17 & $\geq$7.3 & $\geq$5\\
-            2a & $\geq$10  & $\geq$10 \\
+            20 & $>$10  & $>$10 \\
           \end{tabular}
           \caption{Minimum versions of gcc and clang for a given \cpp version}
         \end{center}
