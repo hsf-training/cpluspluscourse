@@ -1,0 +1,147 @@
+\documentclass[compress]{beamer}
+\usetheme{Warsaw}
+\useoutertheme{split}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Improvement on the default split theme : added line numbers %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamercolor{frametitle}{fg=white}
+\setbeamercolor{frametitle right}{fg=white}
+
+\defbeamertemplate*{footline}{mysplit theme}
+{%
+  \leavevmode%
+  \hbox{\begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fill,rightskip=.3cm]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}}%
+    \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.1cm plus1fill,rightskip=.1cm]{date in head/foot}
+      \usebeamerfont{date in head/foot} \insertframenumber{} / \inserttotalframenumber 
+    \end{beamercolorbox}
+  \vskip0pt%
+}
+
+\defbeamertemplate*{headline}{mysplit theme}
+{%
+  \leavevmode%
+  \begin{beamercolorbox}[wd=.45\paperwidth,ht=2.5ex,dp=1.125ex]{section in head/foot}%
+    \insertsectionnavigationhorizontal{.4\paperwidth}{\hskip0pt plus1filll}{}%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.55\paperwidth,ht=2.5ex,dp=1.125ex]{subsection in head/foot}%
+    \insertsubsectionnavigationhorizontal{.6\paperwidth}{}{\hskip0pt plus1filll}%
+  \end{beamercolorbox}%
+}
+
+\newcommand{\cpp}{C$^{++}$} 
+
+\title{Exercises HowTo}
+\author[S. Ponce]{S\'ebastien Ponce  \texttt{sebastien.ponce@cern.ch}}
+\institute{CERN}
+\date{October 2020}
+\pgfdeclareimage[height=0.5cm]{cernlogo}{CERN-logo.jpg}
+\logo{\pgfuseimage{cernlogo}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+  \frametitle{Setup requirements}
+  \begin{exampleblock}{Required}
+    \begin{itemize}
+    \item decent \cpp editor
+    \item any \cpp compiler supporting \cpp17
+    \end{itemize}
+  \end{exampleblock}
+  \begin{alertblock}{Good to have}
+    \begin{itemize}
+    \item \texttt{git} for getting/managing your code
+    \item \texttt{gdb} to debug your problems
+    \end{itemize}
+  \end{alertblock}
+  \begin{block}{Dedicated tools for associated exercises}
+    \begin{itemize}
+    \item valgrind, kcachegrind, cppcheck
+    \end{itemize}
+  \end{block}
+  All are very standard packages available in any Linux distribution
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{How to get exercises' code}
+  \begin{exampleblock}{Best way}
+    \begin{verbatim}
+  
+git clone https://gitlab.cern.ch/sponce/cpluspluscourse
+cd cpluspluscourse/code
+    \end{verbatim}
+  \end{exampleblock}
+  \begin{alertblock}{Alternative}
+    \begin{verbatim}
+  
+wget http://cern.ch/sponce/C++Course/code.tgz
+tar xzf code.tgz
+cd code
+    \end{verbatim}    
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Anatomy of an exercise}
+  Each exercise is in a subdirectory with mainly 3 sets of files
+  \begin{exampleblock}{*.hpp and *.cpp files}
+    \begin{itemize}
+    \item the code to understand and fix/complete
+    \item you never start from scratch
+    \end{itemize}
+  \end{exampleblock}
+  \begin{block}{Makefile}
+    \begin{itemize}
+    \item prepared Makefile for easy compilation
+    \item ``make'' and ``make clean'' are available
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{*.sol.cpp and *.sol.hpp}
+    \begin{itemize}
+    \item the solution to the exercise
+    \item please do not use before trying !
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Just follow the instructions}
+  \begin{itemize}
+  \item Each exercise comes with a set of instructions in the course
+  \item See for example exercise on polymorphism
+  \end{itemize}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/polymorphism
+    \item look at the code
+    \item open test.cpp
+    \item create a Pentagon, call its perimeter method
+    \item create an Hexagon, call its perimeter method
+    \item create an Hexagon, call its parent's perimeter method
+    \item retry with virtual methods
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{How to get help}
+  \Large Several channels available
+  \begin{itemize}
+  \item Training Notebook
+  \item Mattermost channel
+  \item Zoom rooms with mentors
+  \end{itemize}
+  All links and details on the indico page of the event
+\end{frame}
+
+\end{document}
