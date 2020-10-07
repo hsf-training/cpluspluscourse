@@ -5,6 +5,7 @@ class Complex_t {
 public:
     Complex_t(T r, T i);
     Complex_t();
+    Complex_t(const Complex_t& c) = default;
 
     T real() const {return m_r;};
     T imaginary() const {return m_i;};
