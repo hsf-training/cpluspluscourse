@@ -1,3 +1,7 @@
+
+---
+# Gdb
+
 When playing with gdb, there is a disturbing warning, to be understood :
 
 ```
@@ -13,3 +17,15 @@ For more information about this security protection see the
 "Auto-loading safe path" section in the GDB manual.  E.g., run from the shell:
         info "(gdb)Auto-loading safe path"
 ```
+
+
+---
+# Marrying C++ and Python
+
+Should we install something for the C++/Python connection ?
+
+Also, the python example mandel.py (and perhaps others) needs an X11 display... and:
+* pylab
+* ...
+
+Grosse galère avec "functools_lru_cache"...
