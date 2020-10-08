@@ -15,7 +15,9 @@ ENV TZ=Europe/Paris
 # Installations apt-get
 RUN apt-get update \
 && apt-get install -y apt-utils  \
-&& apt-get install -y make  \
+&& apt-get install -y build-essential  \
+&& apt-get install -y cppcheck  \
+&& apt-get install -y libc6-dbg gdb valgrind \
 && rm -rf /var/lib/apt/lists/*
 
 # update libraries cache
