@@ -1,7 +1,10 @@
-all: hello
+all: libhello.so hello
 
 clean:
-	rm -f *o hello *~
+	rm -f *o *so hello *~
 
-hello : hello.cpp
-	${CXX} -Wall -Wextra -L. -o $@ $<
+libhello.so: hello.cpp hello.hpp
+	$(CXX) -g -Wall -Wextra -shared -fPIC -o $@ $<
+
+hello : test.cpp libhello.so
+	$(CXX) -g -Wall -Wextra -o $@ $^
