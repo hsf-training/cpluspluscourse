@@ -15,6 +15,7 @@ sol:
 	@echo && cd memcheck && cp -f Polygons.hpp Polygons.hpp.bak && cp Polygons.sol.hpp Polygons.hpp
 	@-cd memcheck && make test && valgrind ./test
 	@cd memcheck && mv -f Polygons.hpp.bak Polygons.hpp && echo
+	@echo && cd helgrind && make test.sol && ./test.sol && echo
 
 clean:
 	rm -f *.aux *.log *.nav *.out *.pyg *.snm *.vrb *.toc
@@ -30,6 +31,7 @@ clean:
 	cd valgrind && make clean
 	cd memcheck && make clean
 	cd callgrind && make clean
+	cd helgrind && make clean
 
 clobber: clean
 	rm -f *.pdf
