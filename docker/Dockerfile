@@ -12,7 +12,7 @@ ENV TZ=Europe/Paris
 #RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 #ARG DEBIAN_FRONTEND=noninteractive
 
-# Installations apt-get
+# apt-get
 RUN apt-get update \
 && apt-get install -y apt-utils  \
 && apt-get install -y build-essential  \
@@ -20,8 +20,9 @@ RUN apt-get update \
 && apt-get install -y libc6-dbg gdb valgrind \
 && rm -rf /var/lib/apt/lists/*
 
-# update libraries cache
-#RUN ldconfig
+# other
+ENV PATH=${PATH}:.
+ENV LD_LIBRARY_PATH=.
 
 # start a shell by default
 CMD bash
