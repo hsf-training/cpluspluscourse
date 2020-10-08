@@ -2,7 +2,7 @@ compile: *.tex
 	pdflatex -shell-escape $<
 	pdflatex -shell-escape $<
 
-tests:
+solutions:
 	@echo && cd hello && make && ./hello && echo
 	@echo && cd polymorphism && make test.sol && ./test.sol && echo
 
