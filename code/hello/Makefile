@@ -4,7 +4,7 @@ clean:
 	rm -f *o *so hello *~
 
 libhello.so: hello.cpp hello.hpp
-	$(CXX) -g -Wall -Wextra -shared -fPIC -o $@ $<
+	$(CXX) --std=c++17 -g -Wall -Wextra -shared -fPIC -o $@ $<
 
 hello : test.cpp libhello.so
-	$(CXX) -g -Wall -Wextra -o $@ $^
+	$(CXX) --std=c++17 -g -Wall -Wextra -o $@ $^
