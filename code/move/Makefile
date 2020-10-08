@@ -1,7 +1,7 @@
 all: test
 
 clean:
-	rm -f *o test test.sol *~
+	rm -f *o test test.sol *~ callgrind.out.*
 
 test : test.cpp NVector.hpp
 	${CXX} -g -std=c++11 -O0 -Wall -Wextra -L. -o $@ $<

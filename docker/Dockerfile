@@ -17,7 +17,9 @@ RUN apt-get update \
 && apt-get install -y apt-utils  \
 && apt-get install -y build-essential  \
 && apt-get install -y cppcheck  \
-&& apt-get install -y libc6-dbg gdb valgrind \
+&& apt-get install -y libc6-dbg gdb \
+&& apt-get install -y binutils graphviz \
+&& apt-get install -y valgrind kcachegrind \
 && rm -rf /var/lib/apt/lists/*
 
 # other
