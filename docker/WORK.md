@@ -18,14 +18,3 @@ For more information about this security protection see the
         info "(gdb)Auto-loading safe path"
 ```
 
-
----
-# Marrying C++ and Python
-
-Should we install something for the C++/Python connection ?
-
-Also, the python example mandel.py (and perhaps others) needs an X11 display... and:
-* pylab
-* ...
-
-Grosse galère avec "functools_lru_cache"...
