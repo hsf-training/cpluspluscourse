@@ -3,7 +3,7 @@
 \subsection[module]{Writing a module}
 
 \begin{frame}[fragile]
-  \frametitle{How to build a python module around \cpp code}
+  \frametitle{How to build a python 3 module around \cpp code}
   \begin{block}{\cpp code : mandel.hpp}
     \begin{cppcode*}{}
       int mandel(const Complex &a);
@@ -13,7 +13,7 @@
   
 \begin{frame}[fragile]
   \frametitle{Basic Module(1) : wrap your method}
-  \begin{block}{mandelModule.cpp}
+  \begin{block}{mandelModule.cpp - see code/python exercise}
     \begin{cppcode*}{}
       #include <Python.h>
       #include "mandel.hpp"
@@ -26,7 +26,7 @@
         // Call C++ function
         int result = mandel(Complex(r, i));
         // Build returned objects
-        return Py_BuildValue("i", result);
+        return PyLong_FromLong(result);
       }
     \end{cppcode*}
   \end{block}
@@ -34,17 +34,21 @@
 
 \begin{frame}[fragile]
   \frametitle{Basic Module(2) : create the python module}
-  \begin{block}{mandelModule.cpp}
+  \begin{block}{mandelModule.cpp - see code/python exercise}
     \begin{cppcode*}{}
       // declare the modules' methods
-      static PyMethodDef MandelMethods[] = {
+      static PyMethodDef mandelMethods[] = {
           {"mandel", mandel_wrapper, METH_VARARGS,
           "computes nb of iterations for mandelbrot set"},
           {NULL, NULL, 0, NULL}
       };
-      // initialize the module
-      PyMODINIT_FUNC initmandel(void) {
-        (void) Py_InitModule("mandel", MandelMethods);
+      // declare the module
+      static struct PyModuleDef mandelModule = {
+        PyModuleDef_HEAD_INIT,
+        "mandel", NULL, -1, mandelMethods
+      };
+      PyMODINIT_FUNC PyInit_mandel(void) {
+        return PyModule_Create(&mandelModule);
       }
     \end{cppcode*}
   \end{block}
@@ -52,7 +56,13 @@
 
 \begin{frame}[fragile]
   \frametitle{Basic Module(3) : use it}
-  \begin{block}{mandel.py}
+  \begin{block}{First compile the module}
+    \begin{itemize}
+    \item as a regular shared library
+    \item with '-I \$(PYTHON\_INCLUDE)'
+    \end{itemize}
+  \end{block}
+  \begin{block}{mandel.py - see code/python exercise}
     \begin{minted}[gobble=4]{python}
       from mandel import mandel
       v = mandel(0.7, 1.2)
@@ -186,7 +196,7 @@
     \begin{itemize}
     \item go to code/python
     \item look at the original python code mandel.py
-    \item time it
+    \item time it (`time python3 mandel.py`)
     \item look at the code in mandel.hpp/cpp
     \item look at the python module mandel\_module.cpp
     \item compile and modify mandel.py to use it
@@ -195,4 +205,5 @@
     \item modify mandel.py to use libmandelc directly with ctypes
     \end{itemize}
   \end{alertblock}
+  \tiny Note : you may have to add '.' to LD\_LIBRARY\_PATH and PYTHONPATH
 \end{frame}
