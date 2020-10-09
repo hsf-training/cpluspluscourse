@@ -137,6 +137,7 @@
       \item if the constructor of their class is
       \end{itemize}
     \item a constexpr function can also be used normally
+    \item but a constexpr variable has to be evaluated at compile time
     \end{itemize}
   \end{block}
 \end{frame}
@@ -435,6 +436,7 @@
     \item 10k allocations + 10k releases
     \item 10k copies
     \end{itemize}
+    Note that in this case, the compiler may optimize the copy away.
   \end{alertblock}
 \end{frame}
 
@@ -794,7 +796,7 @@
   \frametitlegb{The full power of templates}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
-    \item go to code/template
+    \item go to code/templates
     \item look at the OrderedVector code
     \item compile and run test.cpp. See the ordering
     \item modify test.cpp and reuse OrderedVector with Complex
@@ -1327,7 +1329,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Closures}
+  \frametitleii{Lambdas rather than functors}
   \begin{exampleblock}{Example}
     \begin{cppcode*}{}
       auto build_incrementer = [](int inc) {
@@ -1466,7 +1468,7 @@
     \item wrap the resource inside an object
     \item acquire resource via object constructor
     \item release resource in destructor
-    \item create this object on the stack so that it is automatically destructed when leaving the scope
+    \item create this object on the stack so that it is automatically destructed when leaving the scope, including in case of exception
     \end{itemize}
   \end{block}
 \end{frame}

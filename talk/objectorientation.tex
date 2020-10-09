@@ -1092,6 +1092,30 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitleii{Virtual methods - implications}
+  \begin{block}{Mechanics}
+    \begin{itemize}
+    \item virtual methods are deduced at run time
+      \begin{itemize}
+      \item while non virtual methods are deduced at compile time
+      \end{itemize}
+    \item they also imply extra storage and an extra indirection
+      \begin{itemize}
+      \item pratically the object stores a pointer to the correct method
+      \item in a so called ``virtual table''
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{Consequences}
+    \begin{itemize}
+    \item virtual methods are ``slower'' than standard ones
+    \item and they cannot be inlined
+    \item templates are an alternative for performance critical cases
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitleii{{\texttt override} keyword}
   \begin{block}{Principle}
     \begin{itemize}

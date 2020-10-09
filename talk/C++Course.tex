@@ -175,6 +175,17 @@
   \draw node at (stack#1-#2) {#3};
 }
 
+\newcommand\memorypushwidevalue[1]{
+  \memorystackset{
+    size x/.get=\stacksizex,
+    size y/.get=\stacksizey,
+  }
+  \draw node (content) at (\stacksizex/2,\value{memorystackindex}*\stacksizey-\stacksizey/2) {#1};
+  \draw[\stackcolor!80,->] (content) -- (.2cm,\value{memorystackindex}*\stacksizey-\stacksizey/2);
+  \draw[\stackcolor!80,->] (content) -- (\stacksizex-.2cm,\value{memorystackindex}*\stacksizey-\stacksizey/2);
+  \addtocounter{memorystackindex}{1}
+}
+
 \newcounter{localcount}
 \newcommand\memorypush[1]{
   \memorystackset{
