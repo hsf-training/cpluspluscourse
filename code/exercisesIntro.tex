@@ -2,6 +2,8 @@
 \usetheme{Warsaw}
 \useoutertheme{split}
 
+\usepackage{minted}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Improvement on the default split theme : added line numbers %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -133,21 +135,33 @@ cd code
   \end{alertblock}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{How to test your setup}
-  \begin{exampleblock}{Basic setup}
+  \begin{exampleblock}{Just use hello exercise}
     \begin{itemize}
     \item go to code/hello
-    \item try make; ./hello; make clean
-    \item it should compile and run
+    \item follow the README
     \end{itemize}
   \end{exampleblock}
-  \begin{alertblock}{More tools}
+  \begin{block}{Practically}
+    \begin{minted}{shell}
+      cd code/hello
+    \end{minted}
     \begin{itemize}
-    \item commands that you want to try :\\ gdb, valgrind, kcachegrind, cppcheck
-    \item just type each command in a terminal and see that it either starts or give some help message
+    \item g++ and make
+      \begin{minted}[gobble=6]{shell}
+        make ./hello
+      \end{minted}
+    \item valgrind, callgrind and X11
+      \begin{minted}[gobble=6]{shell}
+        valgrind --tool=callgrind ./hello kcachegrind
+      \end{minted}
+    \item cppcheck
+      \begin{minted}[gobble=6]{shell}
+        cppcheck .
+      \end{minted}
     \end{itemize}
-  \end{alertblock}
+  \end{block}
 \end{frame}
 
 \begin{frame}
