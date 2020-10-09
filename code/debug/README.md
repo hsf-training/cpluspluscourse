@@ -1,4 +1,3 @@
-
 ## Instructions for the "debug" exercise
 
 * compile, run, see the crash
@@ -9,7 +8,7 @@
 * use -Wall -Wextra and see warning
 
 
-## Instructions for the "valgrind" exercise
+### Go back to the "valgrind" exercise
 
 * check it with valgrind
 * analyze the issue, see that the variance was biaised
