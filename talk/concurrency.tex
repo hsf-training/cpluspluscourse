@@ -327,14 +327,14 @@
     \begin{cppcode*}{}
       int value = -1;
       std::mutex mutex;
-      std::condition cond;
-      auto t = std::thread([] () {
+      std::condition_variable cond;
+      auto t1 = std::thread([&cond] () {
         value = ... long process ...;
         cond.notify_all();
       });
-      auto t = std::thread([] () {
+      auto t2 = std::thread([&cond,&mutex,&value] () {
         std::unique_lock<std::mutex> lock{mutex};
-        cond.wait(lock, [] { return value > 0; });
+        cond.wait(lock, [&value] { return value > 0; });
         ... use value ...
       });
       { std::unique_lock<std::mutex> lock{mutex};

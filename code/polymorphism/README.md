@@ -13,8 +13,11 @@
 
 * preprocess `Polygons.cpp` (`cpp` or `gcc -E -o output`)
 * compile `Polygons.o` and `test.o` (`g++ -c -o output`)
-* use `nm` to check symbols
-* see link statement using `g++ -v`
-* see library dependencies with `ldd`
+* use `nm` to check symbols in '.o' files
 * look at the `Makefile`
 * try `make clean; make`
+* see linking stage using `g++ -v`
+  * just add a -v in the Makefile command for trypoly
+  * run make clean; make
+  * look at the collect 2 line, from the end up to '-o trypoly'
+* see library dependencies with `ldd`
