@@ -1,7 +1,11 @@
-all: test
+all: fibocrunch
+solution : fibocrunch.sol
 
 clean:
-	rm -f *o test *~ test.sol test.nostl core callgrind.out.*
+	rm -f *o fibocrunch *~ fibocrunch.sol fibocrunch.nostl core callgrind.out.*
 
-test : test.cpp
+fibocrunch : fibocrunch.cpp
 	${CXX} -g -O0 -Wall -Wextra -L. -o $@ $<
+
+fibocrunch.sol : solution/fibocrunch.sol.cpp
+	${CXX} -Wall -Wextra -L. -o $@ $<

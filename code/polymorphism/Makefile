@@ -1,13 +1,14 @@
-all: test
+all: trypoly
+solution: trypoly.sol
 
 clean:
-	rm -f *o *so test *~ test.sol output
+	rm -f *o *so trypoly *~ trypoly.sol
 
 libpoly.so: Polygons.cpp Polygons.hpp
 	$(CXX) -g -Wall -Wextra -shared -fPIC -o $@ $<
 
-test : test.cpp libpoly.so
+trypoly : trypoly.cpp libpoly.so
 	$(CXX) -g -Wall -Wextra -o $@ $^
 
-test.sol : test.sol.cpp libpoly.so
-	$(CXX) -g -Wall -Wextra -o $@ $^
+trypoly.sol : solution/trypoly.sol.cpp libpoly.so
+	$(CXX) -g -Wall -Wextra -I. -o $@ $^

@@ -1,10 +1,11 @@
-all: test
+all: randomize
+solution: randomize.sol
 
 clean:
-	rm -f *o test *~ test.sol test.nostl core
+	rm -f *o randomize *~ randomize.sol core
 
-test : test.cpp
+randomize : randomize.cpp
 	${CXX} -g -O0 -Wall -Wextra -L. -o $@ $<
 
-test.sol : test.sol.cpp
+randomize.sol : solution/randomize.sol.cpp
 	${CXX} -g -O0 -Wall -Wextra -L. -o $@ $<

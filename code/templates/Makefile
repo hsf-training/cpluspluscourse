@@ -1,10 +1,11 @@
-all: test
+all: playwithsort
+solution: playwithsort.sol
 
 clean:
-	rm -f *o *so test *~ test.sol
+	rm -f *o *so playwithsort *~ playwithsort.sol
 
-test : test.cpp OrderedVector.hpp Complex.hpp
+playwithsort : playwithsort.cpp OrderedVector.hpp Complex.hpp
 	$(CXX) -g -O0 -Wall -Wextra -o $@ $<
 
-test.sol : test.sol.cpp OrderedVector.hpp Complex.hpp
-	$(CXX) -g -O0 -Wall -Wextra -o $@ $<
+playwithsort.sol : solution/playwithsort.sol.cpp solution/OrderedVector.sol.hpp Complex.hpp
+	$(CXX) -g -O0 -Wall -Wextra -I. -o $@ $<

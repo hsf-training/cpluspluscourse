@@ -5,7 +5,7 @@ int identity(int a) {
     return a;
 };
 
-const int identityConst(const int a) {
+int identityConst(const int a) {
     return a;
 };
 

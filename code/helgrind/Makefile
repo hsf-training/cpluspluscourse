@@ -1,10 +1,11 @@
-all: test
+all: fiboMT
+solution: fiboMT.sol
 
 clean:
-	rm -f *o test *~ test.sol test.nostl core
+	rm -f *o fiboMT *~ fiboMT.sol core
 
-test : test.cpp
+fiboMT : fiboMT.cpp
 	${CXX} -g -O0 -Wall -Wextra -pthread -o $@ $<
 
-test.sol : test.sol.cpp
+fiboMT.sol : solution/fiboMT.sol.cpp
 	${CXX} -g -O0 -Wall -Wextra -pthread -o $@ $<

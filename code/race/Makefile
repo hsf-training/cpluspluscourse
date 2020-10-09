@@ -1,11 +1,12 @@
-all: test
+all: racing
+solution: racing.sol
 
 clean:
-	rm -f *o test *~ core test.sol
+	rm -f *o racing *~ core racing.sol
 
-test : test.cpp
+racing : racing.cpp
 	${CXX} -g -std=c++11 -O0 -pthread -Wall -Wextra -L. -o $@ $<
 
-test.sol : test.sol.cpp
+racing.sol : solution/racing.sol.cpp
 	${CXX} -g -std=c++11 -O0 -pthread -Wall -Wextra -L. -o $@ $<
 

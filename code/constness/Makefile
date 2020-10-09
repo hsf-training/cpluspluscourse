@@ -1,10 +1,11 @@
-all: test
+all: constplay
+solution: constplay.sol
 
 clean:
-	rm -f *o test *~ test.sol
+	rm -f *o constplay *~ constplay.sol
 
-test : test.cpp
+constplay : constplay.cpp
 	${CXX} -Wall -Wextra -L. -o $@ $<
 
-test.sol : test.sol.cpp
+constplay.sol : solution/constplay.sol.cpp
 	${CXX} -Wall -Wextra -L. -o $@ $<

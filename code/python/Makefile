@@ -1,4 +1,5 @@
 all: mandel.so libmandelc.so
+solution: mandel.so libmandelc.so
 
 mandel.so:mandel_module.o libmandel.so
 	g++ -shared $^ -o $@
