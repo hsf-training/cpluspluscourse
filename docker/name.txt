@@ -1,1 +1,1 @@
-gitlab-registry.cern.ch/sponce/cpluspluscourse:v1
+gitlab-registry.cern.ch/sponce/cpluspluscourse:v2

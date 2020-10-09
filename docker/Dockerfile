@@ -1,5 +1,5 @@
 
-# Version 1
+# Version 2, en Python3
 
 FROM gcc:9.3.0
 
@@ -7,18 +7,18 @@ FROM gcc:9.3.0
 
 SHELL ["/bin/bash","-c"]
 
-# timezone
+# Timezone
 
 ENV TZ=Europe/Paris
 
-# apt-get general preparation
+# Apt-get General Preparation
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
 && apt-get install -y apt-utils
 
-# c++ tools
+# C++ Tools
 
 RUN apt-get install -y build-essential  \
 && apt-get install -y cppcheck  \
@@ -28,22 +28,24 @@ RUN apt-get install -y build-essential  \
 
 RUN echo "set auto-load safe-path /" > /root/.gdbinit
 
-# python
+# Python
+# It seems I MUST say 3.7 for dev :s
 
-RUN apt-get install -y python-backports.functools-lru-cache \
-&& apt-get install -y python-tk \
-&& apt-get install -y python-pip
+RUN apt-get install -y python3.7 \
+&& apt-get install -y python3.7-dev \
+&& apt-get install -y python3-pip \
+&& apt-get install -y python3-tk
 
-RUN pip install numpy
-RUN pip install matplotlib
+RUN pip3 install numpy
+RUN pip3 install matplotlib
 
-# other
+# Other
 
 RUN rm -rf /var/lib/apt/lists/*
 ENV PATH=${PATH}:.
 ENV LD_LIBRARY_PATH=.
 
-# start a shell by default
+# Start a shell by default
 
 CMD bash
 
