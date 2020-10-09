@@ -9,14 +9,23 @@ static PyObject * mandel_wrapper(PyObject * self,
   // Call C function
   int result = mandel(Complex(r, i));
   // Build returned objects
-  return Py_BuildValue("i", result);
+  return PyLong_FromLong(result);
 }
 
-static PyMethodDef MendelMethods[] = {
+static PyMethodDef mandelMethods[] = {
     {"mandel", mandel_wrapper, METH_VARARGS, "computes nb of iterations for mandelbrot set for a given complex number"},
     {NULL, NULL, 0, NULL}
 };
 
-PyMODINIT_FUNC initmandel(void) {
-  (void) Py_InitModule("mandel", MendelMethods);
+static struct PyModuleDef mandelModule = {
+    PyModuleDef_HEAD_INIT,
+    "mandel", /* name of module */
+    NULL,     /* module documentation */
+    -1,       /* size of per-interpreter state of the module,
+                 or -1 if the module keeps state in global variables. */
+    mandelMethods
+};
+
+PyMODINIT_FUNC PyInit_mandel(void) {
+  return PyModule_Create(&mandelModule);
 }

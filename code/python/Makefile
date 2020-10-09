@@ -5,7 +5,7 @@ mandel.so:mandel_module.o libmandel.so
 	g++ -shared $^ -o $@
 
 mandel_module.o:mandel_module.cpp
-	g++ -pthread -O3 -Wall -std=c++14 -fPIC -I. -I/usr/include/python2.7 -c $< -o $@
+	g++ -pthread -O3 -Wall -std=c++14 -fPIC -I. -I/usr/include/python3.8 -c $< -o $@
 
 libmandelc.so:mandel_cwrapper.o libmandel.so
 	g++ -shared $^ -o $@
