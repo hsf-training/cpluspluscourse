@@ -1,7 +1,7 @@
 all: test
 
 clean:
-	rm -f *o *so test *~ test.sol
+	rm -f *o *so test *~ test.sol output
 
 libpoly.so: Polygons.cpp Polygons.hpp
 	$(CXX) -g -Wall -Wextra -shared -fPIC -o $@ $<

@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <math.h>
 
-#define NBITERATIONS 100
+#define NBITERATIONS 20
 #define MAX 40
 
 unsigned int add(unsigned int a, unsigned int b) {

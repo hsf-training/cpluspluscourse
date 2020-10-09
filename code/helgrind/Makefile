@@ -5,3 +5,6 @@ clean:
 
 test : test.cpp
 	${CXX} -g -O0 -Wall -Wextra -pthread -o $@ $<
+
+test.sol : test.sol.cpp
+	${CXX} -g -O0 -Wall -Wextra -pthread -o $@ $<
