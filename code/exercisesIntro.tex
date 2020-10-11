@@ -103,10 +103,11 @@ cd code
     \item you never start from scratch
     \end{itemize}
   \end{exampleblock}
-  \begin{block}{Makefile}
+  \begin{block}{Makefile / cmake}
     \begin{itemize}
     \item prepared Makefile for easy compilation
     \item ``make'' and ``make clean'' are available
+    \item cmake is also supported
     \end{itemize}
   \end{block}
   \begin{alertblock}{solution subdirectory}
@@ -122,6 +123,7 @@ cd code
   \begin{itemize}
   \item Each exercise comes with a set of instructions in the course
   \item See for example exercise on polymorphism
+  \item Also present in exercise subdir in markdown format
   \end{itemize}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
@@ -151,11 +153,11 @@ cd code
     \begin{itemize}
     \item g++ and make
       \begin{minted}[gobble=6]{shell}
-        make ./hello
+        make; ./hello
       \end{minted}
     \item valgrind, callgrind and X11
       \begin{minted}[gobble=6]{shell}
-        valgrind --tool=callgrind ./hello kcachegrind
+        valgrind --tool=callgrind ./hello; kcachegrind
       \end{minted}
     \item cppcheck
       \begin{minted}[gobble=6]{shell}
