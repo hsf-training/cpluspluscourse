@@ -26,6 +26,11 @@ RUN apt-get install -y build-essential  \
 && apt-get install -y binutils graphviz \
 && apt-get install -y valgrind kcachegrind
 
+# Adding CMake
+
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.18.4/cmake-3.18.4-Linux-x86_64.sh \
+&& sh ./cmake-3.18.4-Linux-x86_64.sh --skip-license --prefix=/usr/local
+
 RUN echo "set auto-load safe-path /" > /root/.gdbinit
 
 # Python
