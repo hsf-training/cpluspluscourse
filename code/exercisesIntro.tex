@@ -153,7 +153,9 @@ cd code
     \begin{itemize}
     \item g++ and make
       \begin{minted}[gobble=6]{shell}
-        make; ./hello
+        make;
+        export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
+        ./hello
       \end{minted}
     \item valgrind, callgrind and X11
       \begin{minted}[gobble=6]{shell}

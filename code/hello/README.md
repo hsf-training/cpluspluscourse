@@ -8,6 +8,7 @@ This example should help to check that your machine is well installed.
 Try:
 ```
 make
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
 ./hello
 ```
 
