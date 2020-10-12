@@ -21,15 +21,13 @@ RUN apt-get update \
 # C++ Tools
 
 RUN apt-get install -y build-essential  \
+&& apt-get install -y cmake  \
 && apt-get install -y cppcheck  \
 && apt-get install -y libc6-dbg gdb \
 && apt-get install -y binutils graphviz \
 && apt-get install -y valgrind kcachegrind
 
-# Adding CMake
-
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.18.4/cmake-3.18.4-Linux-x86_64.sh \
-&& sh ./cmake-3.18.4-Linux-x86_64.sh --skip-license --prefix=/usr/local
+# For GDB not to complain 
 
 RUN echo "set auto-load safe-path /" > /root/.gdbinit
 
