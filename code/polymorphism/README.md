@@ -1,11 +1,17 @@
-
 ## Instructions for the "polymorphism" exercise
 
 * look at the code
 * open `trypoly.cpp`
 * create a Pentagon, call its `perimeter` method
+* Compile via `make`, execute via `./trypoly`
+  * you may have to add current directory to your LD_LIBRARY_PATH :
+```shell
+  export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:. 
+```
 * create an Hexagon, call its `perimeter` method
+* recompile and check what happens
 * create an Hexagon, call its parent’s `perimeter` method
+* recompile and check again
 * retry with virtual methods
 
 
