@@ -12,7 +12,7 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
 ./hello
 ```
 
-## valgrind & callgrind & X11
+## valgrind & callgrind & graphical tools
 
 Try:
 ```

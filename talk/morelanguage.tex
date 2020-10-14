@@ -171,10 +171,10 @@
       const float m_value;
     public:
       constexpr DimLength(const float v, const char unit):
-        m_value(convertToSI(v, unit)) {
+        m_value(toSI(v, unit)) {
       }
       constexpr float get(const char unit) const {
-        return convertFromSI(m_value, unit);
+        return fromSI(m_value, unit);
       }
     };
     constexpr DimLength km(1, 'k');
@@ -377,7 +377,7 @@
     \begin{cppcode*}{}
       void swap(std::vector<int> &a,
                 std::vector<int> &b) {
-        T c = a;
+        auto c = a;
         a = b;
         b = c;
       }
@@ -1159,6 +1159,7 @@
         TheClass::inner_type TheClass::func() {...}
         auto TheClass::func() -> inner_type {...}
       \end{cppcode*}
+    \item ReturnType is not mandatory, compiler can deduce it
     \item will be used for lambdas
     \end{itemize}
   \end{block}

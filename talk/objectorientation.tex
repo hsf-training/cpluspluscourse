@@ -1,6 +1,6 @@
 \section[OO]{Object orientation (OO)}
 
-\subsection[Objects]{Objects and Classes}
+\subsection[OO]{Objects and Classes}
 
 \begin{frame}[fragile]
   \frametitlegb{What are classes and objects}
@@ -197,7 +197,7 @@
   \end{cppcode}
 \end{frame}
 
-\subsection{Inheritance}
+\subsection{inherit}
 
 \begin{frame}[fragile]
   \frametitlegb{First inheritance}
@@ -478,7 +478,7 @@
   \end{exampleblock}
 \end{frame}
 
-\subsection[Constructors]{Constructors/destructors}
+\subsection[Construct]{Constructors/destructors}
 
 \begin{frame}[fragile]
   \frametitlegb{Class Constructors and Destructors}
@@ -798,7 +798,6 @@
       static int s_nbCallsToUpper;
     };
     int Text::s_nbCallsToUpper = 0;
-    std::string s = "my text";
     std::string uppers = Text::upper("my text");
     // now Text::s_nbCallsToUpper is 1
   \end{cppcode}
@@ -923,7 +922,7 @@
   \end{cppcode}
 \end{frame}
 
-\subsection[OO]{Advanced OO}
+\subsection[advOO]{Advanced OO}
 
 \begin{frame}[fragile]
   \frametitlegb{Polymorphism}
@@ -1524,6 +1523,7 @@
     int i = 3;
     int j = inc1(i);  // 4
     int k = inc10(i); // 13
+    int l = Adder(25)(i); // 28
   \end{cppcode}
 \end{frame}
 
