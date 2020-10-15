@@ -9,5 +9,5 @@
 * understand how inefficient it is
 * implement move semantic the easy way in NVector
 * run with callgrind and see no improvement
-* understand why and fix test.cpp
+* understand why and fix trymove.cpp
 * see efficiency improvements

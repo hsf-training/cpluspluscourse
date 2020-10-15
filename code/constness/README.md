@@ -1,7 +1,7 @@
 
 ## Instructions
 
-* open `test.cpp`
+* open `constplay.cpp`
 * try pointer to constant
 * try constant pointer
 * try constant pointer to constant

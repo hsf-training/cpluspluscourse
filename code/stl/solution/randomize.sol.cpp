@@ -2,7 +2,7 @@
 #include <math.h>
 #include <algorithm>
 #include <vector>
-#include <ext/numeric>
+//#include <ext/numeric>
 #include "Complex.hpp"
 
 using namespace std;
