@@ -17,8 +17,8 @@
     \begin{cppcode*}{}
       #include <Python.h>
       #include "mandel.hpp"
-      static PyObject * mandel_wrapper(PyObject * self,
-                                       PyObject * args) {
+      PyObject * mandel_wrapper(PyObject * self,
+                                PyObject * args) {
         // Parse Input
         float r, i;
         if (!PyArg_ParseTuple(args, "ff", &r, &i))
@@ -37,13 +37,13 @@
   \begin{block}{mandelModule.cpp - see code/python exercise}
     \begin{cppcode*}{}
       // declare the modules' methods
-      static PyMethodDef mandelMethods[] = {
+      PyMethodDef mandelMethods[] = {
           {"mandel", mandel_wrapper, METH_VARARGS,
           "computes nb of iterations for mandelbrot set"},
           {NULL, NULL, 0, NULL}
       };
       // declare the module
-      static struct PyModuleDef mandelModule = {
+      struct PyModuleDef mandelModule = {
         PyModuleDef_HEAD_INIT,
         "mandel", NULL, -1, mandelMethods
       };

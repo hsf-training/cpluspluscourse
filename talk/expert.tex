@@ -201,7 +201,7 @@
   \item if an lvalue of type U is given, T is deduced to U\&
   \item if an rvalue, T is deduced to U
   \end{itemize}
-  \begin{cppcode*}{}
+  \begin{cppcode*}{firstnumber=3}
     func(4);        // rvalue -> T is int
     double d = 3.14;
     func(d);        // lvalue -> T is double&
@@ -219,15 +219,15 @@
   \begin{cppcode*}{}
     template< class T >
     struct remove_reference
-    {typedef T type;};
+    {using type = T;};
 
     template< class T >
     struct remove_reference<T&>
-    {typedef T type;};
+    {using type = T;};
 
     template< class T >
     struct remove_reference<T&&>
-    {typedef T type;};
+    {using type = T;};
   \end{cppcode*}
   If T is a reference type, T::type is the type referred to by T.\\
   Otherwise T::type is T.
@@ -247,6 +247,7 @@
     \begin{itemize}
     \item if T is int, if returns int \&\&
     \item if T is int\&, it returns int\& \&\& ie int\&
+    \item if T is int\&\&, it returns int\&\& \&\& ie int\&\&
     \end{itemize}
   \end{block}
 \end{frame}
@@ -271,6 +272,12 @@
       \begin{itemize}
       \item arg will be of type U\&
       \item func will be called with a U\&
+      \end{itemize}
+    \item if we pass a plain T (U)
+      \begin{itemize}
+      \item arg will be of type U\&\& (no copy in wrapper)
+      \item func will be called with a U\&\&
+      \item but func takes a U, so copy happens there, as expected
       \end{itemize}
     \end{itemize}
   \end{block}  
@@ -303,7 +310,7 @@
       template <typename T>
       void f(const T& t,
              typename T::iterator* it = nullptr) { }
-      void f(...) { }   // ``sink'' function
+      void f(int a) { }   // ``sink'' function
 
       f(1); // Calls void f(...)
     \end{cppcode*}

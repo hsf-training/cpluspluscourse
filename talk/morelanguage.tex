@@ -207,7 +207,7 @@
         throw std::string("Expected non empty name");
       }
       printf("%s\n", name);
-    } catch (std::string e) {
+    } catch (std::string& e) {
       printf("empty name found\n");      
     }
   \end{cppcode}
@@ -246,7 +246,7 @@
             throw string("Bad Value");
           }
           divide(100, l);
-        } catch (string e) {
+        } catch (string& e) {
           printf("%s\n", e.c_str());
         } catch (ZeroDivide e2) {
           printf("Division error\n");
@@ -362,7 +362,7 @@
       \end{cppcode*}
     \item as an operator to know whether a function launches exceptions
       \begin{cppcode*}{gobble=2, linenos=false}
-        template <class T> void foo()
+        template <typename T> void foo()
              noexcept(noexcept(T())) {};
       \end{cppcode*}
    \end{itemize}
@@ -531,7 +531,7 @@
     \item casting to an rvalue reference
     \item using the std::move function
     \end{itemize}
-    \begin{cppcode*}{}
+    \begin{cppcode*}{firstnumber=6}
       T a;
       T b = a;                   // Copy assign
       T c = static_cast<T&&>(a); // Move assign
@@ -660,12 +660,12 @@
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    template<class T>
-    const T & Max(const T &A, const T &B) {
+    template<typename T>
+    const T & max(const T &A, const T &B) {
       return A > B ? A : B;
     }
 
-    template<class T>
+    template<typename T>
     struct Vector {
       int m_len;
       T* m_data;
@@ -689,8 +689,9 @@
   \newsavebox{\codepiece}
   \begin{lrbox}{\codepiece}
     \begin{minipage}{.35\linewidth}
+      \small
       \begin{cppcode*}{gobble=4}
-        template<class T>
+        template<typename T>
         T func(T a) {
           return a;
         }
@@ -700,7 +701,8 @@
   \newsavebox{\codepiecea}
   \begin{lrbox}{\codepiecea}
     \begin{minipage}{.4\linewidth}
-      \begin{cppcode*}{gobble=4}
+      \small
+      \begin{cppcode*}{gobble=4,linenos=false}
         int func(int a) {
           return a;
         }
@@ -710,7 +712,8 @@
   \newsavebox{\codepieceb}
   \begin{lrbox}{\codepieceb}
     \begin{minipage}{.4\linewidth}
-      \begin{cppcode*}{gobble=4}
+      \small
+      \begin{cppcode*}{gobble=4,linenos=false}
         double func(double a) {
           return a;
         }
@@ -721,8 +724,8 @@
     \draw node (template) [draw] {\usebox{\codepiece}}
           node (templatea) [draw] at (6cm,+1cm) {\usebox{\codepiecea}}
           node (templateb) [draw] at (6cm,-1cm) {\usebox{\codepieceb}};
-    \draw[->,thick] (template) -- (templatea) node [above,midway,sloped] {func(3)};
-    \draw[->,thick] (template) -- (templateb) node [below,midway,sloped] {func(5.2)};
+    \draw[->,thick] (template) -- (templatea) node [above,midway,sloped] {\small func(3)};
+    \draw[->,thick] (template) -- (templateb) node [below,midway,sloped] {\small func(5.2)};
   \end{tikzpicture}
 \end{frame}
 
@@ -736,7 +739,7 @@
     \end{itemize}
   \end{block}
   \begin{cppcode*}{}
-    template<class KeyType=int, class ValueType=KeyType>
+    template<typename KeyType=int, typename ValueType=KeyType>
     struct Map {
       void set(const KeyType &key, ValueType value);
       ValueType get(const KeyType &key);
@@ -751,23 +754,41 @@
 \begin{frame}[fragile]
   \frametitlegb{Templates implementation}
   \begin{cppcode*}{}
-    template<class KeyType=int, class ValueType=KeyType>
+    template<typename KeyType=int, typename ValueType=KeyType>
     struct Map {
       void set(const KeyType &key, ValueType value);
       ValueType get(const KeyType &key);
     }
 
-    template<class KeyType, class ValueType>
+    template<typename KeyType, typename ValueType>
     void Map<KeyType, ValueType>::set
        (const KeyType &key, ValueType value) {
       ...
     }
 
-    template<class KeyType, class ValueType>
+    template<typename KeyType, typename ValueType>
     ValueType Map<KeyType, ValueType>::get
        (const KeyType &key) {
       ...
     }
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Non-type template parameter \hfill \cpp98 / \cpp17 / \cpp20}
+  \begin{block}{template parameters can also be a value}
+    \begin{itemize}
+    \item integral types, pointer, enums in \cpp98
+    \item auto in \cpp17
+    \item floats and literals in \cpp20
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    template<unsigned int N> struct Polygon {
+      Polygon(float radius);
+      float perimeter() {return 2*N*sin(PI/N)*m_radius;}
+      float m_radius;
+    };
   \end{cppcode*}
 \end{frame}
 
@@ -777,17 +798,17 @@
     templates can be specialized for given values of their parameter
   \end{block}
   \begin{cppcode*}{}
-    template<unsigned int N> struct Polygon {
-      Polygon(float radius);
-      float perimeter();
-      float m_radius;
+    template<typename F, unsigned int N> struct Polygon {
+      Polygon(F radius) : m_radius(radius) {}
+      F perimeter() {return 2*N*sin(PI/N)*m_radius;}
+      F m_radius;
     };
     
-    template<>
-    struct Polygon<6> {
-      Polygon(float radius);
-      float perimeter() {return 6*m_radius;};
-      float m_radius;
+    template<typename F>
+    struct Polygon<F, 6> {
+      Polygon(F radius) : m_radius(radius) {}
+      F perimeter() {return 6*m_radius;}
+      F m_radius;
     };
   \end{cppcode*}
 \end{frame}
