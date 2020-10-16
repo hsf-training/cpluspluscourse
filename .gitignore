@@ -1,1 +1,40 @@
-code/toto*
+# latex related, Course
+talk/*aux
+C++Course.log
+C++Course.nav
+C++Course.out
+C++Course.snm
+C++Course.toc
+C++Course.vrb
+C++Course.pdf
+_minted*
+
+# latex related, exercise intro
+exercisesIntro.log
+exercisesIntro.nav
+exercisesIntro.out
+exercisesIntro.snm
+exercisesIntro.toc
+exercisesIntro.vrb
+exercisesIntro.pdf
+
+# exercises
+*.o
+*.so
+*.sol
+code/*aux
+code/callgrind/fibocrunch
+code/constness/constplay
+code/cppcheck/randomize
+code/debug/randomize
+code/helgrind/fiboMT
+code/hello/hello
+code/lambdas/randomize
+code/memcheck/memleak
+code/move/trymove
+code/polymorphism/trypoly
+code/race/racing
+code/stl/randomize.nostl
+code/templates/playwithsort
+code/valgrind/randomize
+code/virtual_inheritance/trymultiherit
