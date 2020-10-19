@@ -98,7 +98,7 @@
     \end{cppcode}
 \end{frame}
 
-\subsection[Pointers]{Arrays and Pointers}
+\subsection[Ptr]{Arrays and Pointers}
 
 \begin{frame}[fragile]
   \frametitlegb{Static arrays}
@@ -198,7 +198,7 @@
   \end{cppcode}
 \end{frame}
 
-\subsection{Operators}
+\subsection[Op]{Operators}
 
 \begin{frame}[fragile]
   \frametitlegb{Operators(1)}
@@ -264,6 +264,121 @@
       c &= 1+(++b)|(a--)*4%5^7; // ???
     \end{cppcode*}
   \end{block}
+\end{frame}
+
+\subsection[NS]{Scopes / namespaces}
+
+\begin{frame}[fragile]
+  \frametitlegb{Scope}
+  \begin{block}{Definition}
+    Portion of the source code where a given name is valid \\
+    Typically :
+    \begin{itemize}
+    \item simple block of code, within \mintinline{cpp}{{}}
+    \item function, class, namespace
+    \item source file for global declarations
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      { int a;
+        { int b;
+        } // end of b scope
+      } // end of a scope
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Namespaces}
+  \begin{itemize}
+  \item Namespaces allow to segment your code to avoid name clashes
+  \item They can be embedded to create hierarchies (separator is '::')
+  \end{itemize}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2}
+      int a;
+      namespace n {
+        int a;   // no clash
+      }
+      namespace p {
+        int a;   // no clash
+        namespace inner {
+          int a; // no clash
+        }
+      }
+      int f() {
+        n::a = 2;
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=2,firstnumber=14}
+      namespace p {
+        int f() {
+          p::a = 2;
+          a = 2;  //same as above
+          p::inner::a = 4;
+          inner::a = 4;
+          n::a = 5;
+        }
+      }
+      using namespace p::inner;
+      int g() {
+        a = 3; // using p::inner
+      }
+  \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleit{Nested namespaces}
+  Easier way to declare nested namespaces
+  \begin{alertblock}{\cpp14}
+    \begin{cppcode*}{}
+      namespace A {
+        namespace B {
+          namespace C {
+            //...
+          }
+        }
+      }
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp17}
+    \begin{cppcode*}{}
+      namespace A::B::C {
+        //...
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Anonymous namespaces}
+  \begin{exampleblock}{A namespace without a name !}
+    \begin{cppcode*}{}
+      namespace {
+        int localVar;
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{block}{Purpose}
+    \begin{itemize}
+    \item groups a number of declarations
+    \item visible in the current translation unit
+    \item but not reusable outside
+    \item allows much better compiler optimizations and checking
+      \begin{itemize}
+      \item e.g. unused function warning
+      \item context dependent optimizations
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{Deprecates static}
+    \begin{cppcode*}{gobble=2}
+      static int localVar; // equivalent C code
+    \end{cppcode*}
+  \end{alertblock}
 \end{frame}
 
 \subsection[Compound]{Compound data types}
@@ -935,7 +1050,7 @@
   \end{exampleblock}
 \end{frame}
 
-\subsection[Headers]{Headers and interfaces}
+\subsection[.h]{Headers and interfaces}
 
 \begin{frame}[fragile]
   \frametitlegb{Headers and interfaces}
