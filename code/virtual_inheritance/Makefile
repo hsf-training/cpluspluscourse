@@ -10,5 +10,8 @@ libtextbox.so: TextBox.cpp TextBox.hpp
 trymultiherit : trymultiherit.cpp libtextbox.so
 	$(CXX) -Wall -Wextra -L. -l textbox -o $@ $^
 
-trymultiherit.sol : solution/trymultiherit.sol.cpp libtextbox.so
+libtextboxsol.so: solution/TextBox.cpp solution/TextBox.hpp
+	$(CXX) -Wall -Wextra -shared -fPIC -o $@ $<
+
+trymultiherit.sol : solution/trymultiherit.sol.cpp libtextboxsol.so
 	$(CXX) -Wall -Wextra -I. -L. -l textbox -o $@ $^
