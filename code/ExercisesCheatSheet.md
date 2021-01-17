@@ -81,6 +81,14 @@ Simple example of a memory leak and how valgrind helps a lot with this.
 Not so simple solution here. And the use of gdb with steping at the level of the destructor call is recommended. Give it as a hint to people.
 The solution is that the wrong destructor is called when calling "delete hexa" because the constructor is not virtual while it should be.
 
+### smartPointer
+
+Here we have four code snippets that will benefit from using smart pointers.
+ * `problem1` is a simple case of usage of `make_unique` with an observer pattern where the raw pointer shoule be used.
+ * `problem2` is an example of a collection of pointers. Move semantic has to be used to transfer ownership of newly created objects to the container.
+ * `problem3` is an example of shared ownership where `std::shared_pointer` should be used.
+ * `problem4()` is the most difficult. Skip if not enough time. It has the same flow as the memcheck problem, that destructor should be virtual in the Base class
+
 ### callgrind
 
 The goal is again to play. With the optimized version, it's interesting to see how much the startup time dominates the few computations done.

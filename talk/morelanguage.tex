@@ -1669,3 +1669,19 @@ of 'std::unique_ptr<Foo>'
     \end{cppcode*}
   \end{block}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{smart pointers}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/smartPointers
+    \item compile and run the program. It doesn't generate any output.
+    \item Run with valgrind to check for leaks
+      \begin{minted}{shell-session}
+        $ valgrind --leak-check=full --track-origins=yes ./smartPointers
+      \end{minted}
+    \item Go through {\ttfamily problem1()} to {\ttfamily problem3()} and fix the leaks using smart pointers.
+    \item {\ttfamily problem4()} is the most difficult. Skip if not enough time.
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
