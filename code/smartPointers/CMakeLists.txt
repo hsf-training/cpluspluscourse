@@ -12,6 +12,5 @@ add_executable( smartPointers smartPointers.cpp )
 # Create the "solution executable".
 add_executable( smartPointers.sol EXCLUDE_FROM_ALL
    solution/smartPointers.sol.cpp )
-if( TARGET solution )
-   add_dependencies( solution trymove.sol )
-endif()
+
+set_property(TARGET smartPointers smartPointers.sol PROPERTY CXX_STANDARD 17)

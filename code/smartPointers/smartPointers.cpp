@@ -1,6 +1,9 @@
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
+#include <functional>
+#include <stdexcept>
+#include <iostream>
 #include <numeric>
 #include <vector>
 
@@ -17,28 +20,41 @@
 
 
 /* --------------------------------------------------------------------------------------------
- * 1: Fix the leak using a smart pointer.
+ * 1: Always use smart pointers when you use new.
  *
- * Note that the arguments of sumEntries() don't need to change, as it has only read access.
+ * A frequent source of leaks is a function that terminates earlier than the programmer thought.
+ *
+ * - Fix the leak using a smart pointer.
+ * - The arguments of sumEntries() don't need to change, as it has only read access.
  * --------------------------------------------------------------------------------------------
  */
 
 // Declare a function to do something with the data. No need to change it.
 double sumEntries(const double* data, std::size_t size) {
+    if (size > 200)
+        throw std::invalid_argument("I only want to sum 200 numbers or less.");
+
     return std::accumulate(data, data + size, 0);
 }
 
 // Often, data are owned by one entity, and only used by others. Fix the leak.
-void problem1() {
+void doStuffWithData() {
     constexpr std::size_t arraySize = 10000;
     auto data = new double[arraySize];
 
-    // Fill array with random stuff.
-    for (std::size_t i = 0; i < arraySize; ++i) {
-        data[i] = static_cast<double>(rand()) / RAND_MAX;
-    }
-
     sumEntries(data, arraySize);
+
+    delete[] data;
+}
+
+
+void problem1() {
+   try {
+       doStuffWithData();
+   } catch (std::exception& e) {
+       std::cerr << "problem1(): Do stuff with data terminated with exception:\n" << e.what()
+               << "\n We may have a memory leak now." << std::endl;
+   }
 }
 
 
@@ -47,9 +63,10 @@ void problem1() {
  * 2: Storing unique_ptr in collections.
  *
  * Often, one has to store pointers to objects in collections. Fix the memory leaks using unique_ptr.
+ *
  * Notes:
- * - Factory functions should return objects either directly or using smart pointers, so users are forced to
- *   sort out object ownership properly. Fix the return type of the factory function.
+ * - Factory functions should return objects either directly or using smart pointers.
+ *   This is good practice, because it clearly shows who owns an object. Fix the return type of the factory function.
  * - The vector should own the objects, so try to store them using smart pointers.
  * - Since the visitor function doesn't accept smart pointers, find a solution to pass the objects.
  *   Note that this works without shared_ptr!
@@ -63,10 +80,15 @@ struct LargeObject {
 
 // A factory function to create large objects.
 LargeObject* createLargeObject() {
-    return new LargeObject();
+    auto object = new LargeObject();
+    // Do more setting up of object here
+    // ...
+
+    return object;
 }
 
 // A function to do something with the objects.
+// Note that since we don't own the object, we don't need a smart pointer as argument.
 void visitLargeObject(LargeObject* object) {
     object->fData[0] = 1.;
 }
@@ -79,7 +101,7 @@ void problem2() {
         largeObjects.push_back(newObj);
     }
 
-    for (auto obj : largeObjects) {
+    for (const auto& obj : largeObjects) {
         visitLargeObject(obj);
     }
 }
@@ -95,7 +117,7 @@ void problem2() {
  * Here is an example of a completely messed up ownership model. It leaks about 1/10 of the times
  * it is invoked.
  * - Verify this by running it in a loop using a command like:
- * CONT=true; while $CONT; do valgrind --leak-check=full --track-origins=yes ./smartPointers 2>&1 | grep -B 5 -A 5 problem3 && CONT=false; done
+ * while true; do valgrind --leak-check=full --track-origins=yes ./smartPointers 2>&1 | grep -B 5 -A 5 problem3 && exit 1; done
  * - Fix the ownership model using shared_ptr!
  *   - Convert the vectors to holding shared_ptr.
  *   - Fix the arguments of the functions.
@@ -168,70 +190,126 @@ void problem3() {
 
 
 /* --------------------------------------------------------------------------------------------
- * 4: Smart pointers to solve ownership problems in class members.
- * *** This one is difficult. ***
+ * 4: Smart pointers as class members.
  *
- * Class members that are pointers can become a problem.
+ * Class members that are pointers can quickly become a problem.
  * Firstly, if only raw pointers are used, the intended ownerships are unclear.
- * Secondly, it's easy to overlook that a member has to be deleted. Here, we have an example where
- * the leak may not be obvious.
+ * Secondly, it's easy to overlook that a member has to be deleted.
+ * Thirdly, pointer members usually require to implement copy or move constructors or assignment
+ * operators.
+ * Since C++-11, one can solve those problems using smart pointers.
+ *
+ * 4.1:
+ * The class "Owner" owns some data, but it is broken. If you copy it like in
+ * problem4_1(), you have two pointers pointing to the same data, but both think
+ * that they own the data.
+ * - Comment in problem4_1() in main().
+ * - Verify that it crashes. Try running valgrind ./smartPointers, it should give you some hints as to
+ *   what's happening.
+ * - Fix the Owner class by using a shared_ptr for its _largeObj, which we can copy as much as we want.
+ * - Note: Now you even don't need a destructor.
+ *
+ * 4.2: **BONUS**
+ * We go beyond the scope of the lecture now, and use a weak pointer.
+ * These are used to observe a shared_ptr, but unlike the shared_ptr, they don't prevent the deletion
+ * of the underlying object if all shared_ptr go out of scope.
+ * To *use* the observed data, one has to create a shared_ptr from the weak_ptr, so that it is guaranteed that
+ * the underlying object is alive.
+ *
+ * In our case, the observer class wants to observe the data of the owner, but it doesn't need to own it.
+ * To do this, we use a weak pointer.
  *
  * Tasks:
- * - Why do we have a memory leak?
- *   Hint: Use valgrind to track down what exactly leaks here, and where it was allocated.
- *   Hint 2: The author made a mistake when inheriting from Base.
- * - Clarify the ownership using unique_ptr.
- * - Fix the mistake that was made when using inheritance.
+ * - Comment in the line in problem4_2() that crashes the program.
+ * - Rewrite the interface of Owner::getData() such that the observer can see the shared_ptr to the large object.
+ * - Set up the Observer such that it stores a weak pointer that observes the large object.
+ * - In Observer::processData(), access the weak pointer, and use the data *only* if the memory is still alive.
+ *   Note: What you need is weak_ptr::lock(). Check out the documentation and the example at the bottom:
+ *   https://en.cppreference.com/w/cpp/memory/weak_ptr/lock
  * --------------------------------------------------------------------------------------------
  */
 
-// This class doesn't have a leak.
-class Base {
+class Owner {
 public:
-    Base(std::size_t size) :
-        fData(new double[size]) { }
+    Owner() :
+        _largeObj(new LargeObject()) { }
 
-    ~Base() {
-        delete[] fData;
+    ~Owner() {
+        std::cout << "problem4(): I think I'm the owner. I'm deallocating " << _largeObj << " now." << std::endl;
+        delete _largeObj;
+    }
+
+    const LargeObject* getData() const {
+        return _largeObj;
     }
 
 private:
-    double* fData; // Do we own this or not? You have to check the destructor.
+    LargeObject* _largeObj;
 };
 
 
-// At first sight, this also doesn't leak.
-class Derived : public Base {
-public:
-    Derived(std::size_t size) :
-        Base(size),
-        _moreData(new LargeObject()) { }
+void problem4_1() {
+    std::vector<Owner> owners;
 
-    ~Derived() {
-        delete _moreData;
+    for (unsigned int i=0; i < 5; ++i) {
+        Owner owner;
+        owners.push_back(owner);
     }
 
-private:
-    LargeObject* _moreData;
-};
-
-
-// Let's trigger a leak.
-void problem4() {
-    Base baseObject(10000);
-    Derived derivedObject(10000);
-    Base* whyDoesThisLeak = new Derived(10000);
-
-    delete whyDoesThisLeak;
+    /* Starting from here, we have a problem:
+     * We created all these data owners, but the ones in the vector are copies of the owner objects in the loop.
+     * When those originals are destroyed, the memory is deallocated. The copies now
+     * point to the deallocated memory!
+     * We can fix this using copy constructors (but we don't want to copy the data),
+     * using move semantics or using shared_ptr.
+     */
 }
 
 
+class Observer {
+public:
+    Observer(const Owner& owner) :
+        _largeObj(owner.getData()) { }
 
+    double processData() const {
+        if (_largeObj) {
+            return _largeObj->fData[0];
+        }
+
+        return -1.;
+    }
+
+private:
+    const LargeObject* _largeObj; // We don't own this.
+};
+
+
+
+void problem4_2() {
+    // We directly construct 5 owners inside the vector to get around problem4_1:
+    std::vector<Owner> owners(5);
+    std::vector<Observer> observers;
+
+    observers.reserve(owners.size());
+    for (const auto& owner : owners) {
+        observers.emplace_back(owner);
+    }
+
+    // Now let's destroy the owners:
+    owners.clear();
+
+    for (const auto& observer : observers) {
+        // Problem: We don't know if the data is alive ...
+        // TODO: Fix Observer!
+        // observer.processData();
+    }
+}
 
 
 int main() {
     problem1();
     problem2();
     problem3();
-    problem4();
+//    problem4_1();
+    problem4_2();
 }
