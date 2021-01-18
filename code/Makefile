@@ -2,7 +2,7 @@ compile: *.tex
 	pdflatex -shell-escape $<
 	pdflatex -shell-escape $<
 
-TESTDIRS = callgrind cppcheck hello move python templates virtual_inheritance \
+TESTDIRS = callgrind cppcheck hello move python smartPointers templates virtual_inheritance \
 	   debug helgrind lambdas memcheck polymorphism race stl valgrind
 NOCOMPILETESTDIRS = constness
 
