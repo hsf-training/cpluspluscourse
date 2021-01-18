@@ -81,14 +81,6 @@ Simple example of a memory leak and how valgrind helps a lot with this.
 Not so simple solution here. And the use of gdb with steping at the level of the destructor call is recommended. Give it as a hint to people.
 The solution is that the wrong destructor is called when calling "delete hexa" because the constructor is not virtual while it should be.
 
-### smartPointer
-
-Here we have four code snippets that will benefit from using smart pointers.
- * `problem1` is a simple case of usage of `make_unique` with an observer pattern where the raw pointer shoule be used.
- * `problem2` is an example of a collection of pointers. Move semantic has to be used to transfer ownership of newly created objects to the container.
- * `problem3` is an example of shared ownership where `std::shared_pointer` should be used.
- * `problem4()` is the most difficult. Skip if not enough time. It has the same flow as the memcheck problem, that destructor should be virtual in the Base class
-
 ### callgrind
 
 The goal is again to play. With the optimized version, it's interesting to see how much the startup time dominates the few computations done.
@@ -123,6 +115,14 @@ It can then be tried with e.g. reverse ordering of strings or an order of Comple
 
 Level 3 : use the genericity of the Complex class and play with Complex of integers or Complex of Complex
 
+### smartPointer
+
+Here we have four code snippets that will benefit from using smart pointers.
+ * `problem1` is a simple case of usage of `make_unique` with an observer pattern where the raw pointer shoule be used.
+ * `problem2` is an example of a collection of pointers. Move semantic has to be used to transfer ownership of newly created objects to the container.
+ * `problem3` is an example of shared ownership where `std::shared_pointer` should be used.
+ * `problem4()` is the most difficult. Skip if not enough time. It has the same flow as the memcheck problem, that destructor should be virtual in the Base class
+
 ### stl
 The goal is to use STL algorithms. I would advise to start in this order :
   - random_shuffle
@@ -137,7 +137,7 @@ One may want to only do the first 3 and go to next exercise to directly use lamb
 
 Can be merged into previous exercise as the easy (and modern) solution to step 4 and 5 where functors were needed in the STL exercises.
 The accumulate lambda is a simple one, the one for generate involves a state to be captured by reference.
-    
+
 ### move semantic
 See with valgrind the number of copies and memory allocations in the problem, due to lack of move semantic.
 Implement the move semantic based on swap (copy paste from the slides).
