@@ -11,7 +11,7 @@ No actual exercise, only setup of the environment, using the "hello" exercise.
 
 Day 2
 -----
-### polymorphim
+### polymorphism
 First create a Pentagon and an Hexagon and call computePerimeter. Can be used to break the ice.
 Second step is to call parent's computePerimeter methods meaning :
 ```cpp
