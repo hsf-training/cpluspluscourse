@@ -11,7 +11,7 @@ No actual exercise, only setup of the environment, using the "hello" exercise.
 
 Day 2
 -----
-### polymorphim
+### polymorphism
 First create a Pentagon and an Hexagon and call computePerimeter. Can be used to break the ice.
 Second step is to call parent's computePerimeter methods meaning :
 ```cpp
@@ -118,10 +118,10 @@ Level 3 : use the genericity of the Complex class and play with Complex of integ
 ### smartPointer
 
 Here we have four code snippets that will benefit from using smart pointers.
- * `problem1` is a simple case of usage of `make_unique` with an observer pattern where the raw pointer shoule be used.
- * `problem2` is an example of a collection of pointers. Move semantic has to be used to transfer ownership of newly created objects to the container.
+ * `problem1` is a simple case of usage of `make_unique` with an observer pattern where the raw pointer should be used.
+ * `problem2` is an example of a collection of pointers. Move semantic has to be used to transfer ownership of newly created objects to the container (alternatively, `emplace_back`).
  * `problem3` is an example of shared ownership where `std::shared_pointer` should be used.
- * `problem4()` is the most difficult. Skip if not enough time. It has the same flow as the memcheck problem, that destructor should be virtual in the Base class
+ * `problem4` demonstrates the usage of `shared_ptr` as class members. It has a second part where a `weak_ptr` can be used, but can be skipped if not enough time.
 
 ### stl
 The goal is to use STL algorithms. I would advise to start in this order :
