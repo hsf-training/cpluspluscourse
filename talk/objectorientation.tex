@@ -1297,17 +1297,19 @@
     \item {\it virtual} inheritance will ``share'' parents
     \item standard inheritance will replicate them
     \end{itemize}
-    \mintinline{cpp}{class TextBox : public virtual Rectangle, Text}
+    \begin{cppcode}
+      class Text : public virtual Drawable {...};
+      class Rectangle : public virtual Drawable {...};
+    \end{cppcode}
   \end{block}
   \begin{multicols}{2}
     \begin{tikzpicture}[]
-      \draw node (title) [rectangle] {virtual};
       \classbox[below of=title]{Drawable}{}
       \classbox[below left of=Drawable,node distance=2cm]{Rectangle}{}
       \classbox[right of=Rectangle,node distance=3cm]{Text}{}
       \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{}
-      \draw[very thick,->] (Drawable) -- (Rectangle);
-      \draw[very thick,->] (Drawable) -- (Text);
+      \draw[very thick,->] (Drawable) -- node[below,pos=0.35,sloped] {\scriptsize virtual} (Rectangle);
+      \draw[very thick,->] (Drawable) -- node[below,pos=0.45,sloped] {\scriptsize virtual} (Text);
       \draw[very thick,->] (Rectangle) -- (TextBox);
       \draw[very thick,->] (Text) -- (TextBox);
     \end{tikzpicture}
@@ -1322,7 +1324,6 @@
       \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{}
       \draw[very thick,->] (Rectangle) -- (TextBox);
       \draw[very thick,->] (Text) -- (TextBox);
-      \draw node at (1.5cm,1cm) [rectangle] {standard};
     \end{tikzpicture}
   \end{multicols}
 \end{frame}
