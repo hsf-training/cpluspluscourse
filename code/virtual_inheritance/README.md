@@ -3,7 +3,7 @@
 
 Step 1
 * look at the code
-* open `test.cpp`
+* open `trymultiherit.cpp`
 * create a `TextBox` and call `draw`
 * Fix the code to call both draws by using types
 

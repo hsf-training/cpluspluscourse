@@ -83,6 +83,7 @@ That second part can be skipped.
 
 Simple example of a memory leak and how valgrind helps a lot with this.
 Not so simple solution here. And the use of gdb with steping at the level of the destructor call is recommended. Give it as a hint to people.
+
 The solution is that the wrong destructor is called when calling "delete hexa" because the constructor is not virtual while it should be.
 
 ### callgrind
