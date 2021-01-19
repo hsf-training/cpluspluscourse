@@ -186,6 +186,17 @@
   \addtocounter{memorystackindex}{1}
 }
 
+\newcommand\memorypushhalfvalue[1]{
+  \memorystackset{
+    size x/.get=\stacksizex,
+    size y/.get=\stacksizey,
+  }
+  \draw node (content) at (\stacksizex/4,\value{memorystackindex}*\stacksizey-\stacksizey/2) {#1};
+  \draw[\stackcolor!80,->] (content) -- (.2cm,\value{memorystackindex}*\stacksizey-\stacksizey/2);
+  \draw[\stackcolor!80,->] (content) -- (\stacksizex/2-.2cm,\value{memorystackindex}*\stacksizey-\stacksizey/2);
+  \addtocounter{memorystackindex}{1}
+}
+
 \newcounter{localcount}
 \newcommand\memorypush[1]{
   \memorystackset{
@@ -279,7 +290,7 @@
     \item It is not complete at all (would need 3 weeks...)
       \begin{itemize}
       \item although is it already too long for the time we have
-      \item \inserttotalframenumber{} slides, \insertpresentationendpage{} pages, 16 exercises...
+      \item \inserttotalframenumber{} slides, \insertpresentationendpage{} pages, 17 exercises...
       \end{itemize}
     \end{itemize}
   \end{block}

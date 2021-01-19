@@ -101,10 +101,27 @@
     };
 
     int MyFirstClass::sum(int b) {
-      int a = 0; // do not do that !
-      a += this->a;
-      a += b;
-      return a;
+      return a + b;
+    };
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{{\ttfamily this} keyword}
+  \begin{block}{}
+    \begin{itemize}
+    \item {\ttfamily this} is a hidden parameter to all class methods
+    \item it points to the current object
+    \item so is of type {\ttfamily T*} in methods of class {\ttfamily T}
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    void ext_func(MyFirstClass& c) {
+      ... do something with c ...
+    }
+    
+    int MyFirstClass::some_method(...) {
+      ext_sum(*this);
     };
   \end{cppcode}
 \end{frame}
@@ -582,7 +599,7 @@
         int m_i;
         Delegate() { ... complex initialization ...};
         Delegate(int i) : Delegate(), m_i(i) {};
-      }
+      };
     \end{cppcode}
   \end{exampleblock}
 \end{frame}
@@ -627,7 +644,7 @@
         int b{6};
         using BaseClass::BaseClass;
       };
-      DerivedClass a{7}; // a = 7, b = 6
+      DerivedClass d{7}; // a = 7, b = 6
     \end{cppcode}
   \end{exampleblock}
 \end{frame}
@@ -1361,7 +1378,7 @@
         return Complex(m_real + other.m_real,
                        m_imaginary + other.m_imaginary);
       }
-    }
+    };
 
     Complex c1(2, 3), c2 (4, 5);
     Complex c3 = c1 + c2; // (6, 8)
@@ -1455,11 +1472,11 @@
       int operator()(int a) { return a + m_increment; }
     };
 
-    Adder inc1(1), inc10(10);
+    Adder inc1{1}, inc10{10};
     int i = 3;
     int j = inc1(i);  // 4
     int k = inc10(i); // 13
-    int l = Adder(25)(i); // 28
+    int l = Adder{25}(i); // 28
   \end{cppcode}
 \end{frame}
 

@@ -452,16 +452,17 @@
     \pause
     \columnbreak
     \null \vfill
-    \onslide<2->{
-      \begin{tikzpicture}
-        \memorystack[word size=1,nb blocks=4]
-        \visible<3-5>{\memorypush{d1.seconds=259200}}
-        \onslide<4->{\memorypush{d2.hours=72}}
-        \onslide<5->{\memorypush{d3.days=3}}
-        \memorygoto{1}
-        \onslide<6->{\memorypush{d1.days=3}}
-      \end{tikzpicture}
-    }
+    \begin{tikzpicture}
+      \clip (0,0) rectangle (6cm, 3cm);
+      \memorystack[word size=4,nb blocks=4]
+      \visible<3-5>{\memorypushwidevalue{d1 259200}}
+      \onslide<4->{\memorypushhalfvalue{d2 72}}
+      \memorygoto{2}
+      \onslide<4->{\memorypush{,,?,?}}
+      \onslide<5->{\memorypush{d3 3,?,?,?}}
+      \memorygoto{1}
+      \onslide<6->{\memorypush{d1 3,?,?,?}}
+    \end{tikzpicture}
     \vfill \null
   \end{multicols}
 \end{frame}
@@ -603,14 +604,14 @@
     \end{cppcode*}
     \columnbreak
     \begin{cppcode*}{gobble=2,firstnumber=11}
-      // no parameter
-      void hello() {
-        printf("Hello World");
-      }
-
       // no return
       void log(char* msg) {
         printf("%s", msg);
+      }
+
+      // no parameter
+      void hello() {
+        printf("Hello World");
       }
     \end{cppcode*}
   \end{multicols}
@@ -667,7 +668,7 @@
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       struct SmallStruct {int a};
-      SmallStruct s = {.a = 1};
+      SmallStruct s = {1};
       
       void changeSS(SmallStruct p) {
         p.a = 2;
@@ -755,13 +756,13 @@
   \begin{block}{Specificities of reference}
     \begin{itemize}
     \item natural syntax
-    \item will never be NULL
+    \item will never be {\ttfamily nullptr}
     \item thus cannot reference temporary object
     \end{itemize}
   \end{block}
   \begin{block}{Advantages of pointers}
     \begin{itemize}
-    \item can be NULL
+    \item can be {\ttfamily nullptr}
     \item clearly indicates that argument may be modified
     \end{itemize}
   \end{block}
