@@ -1,5 +1,6 @@
 ## Instructions for the "polymorphism" exercise
 
+Step 1
 * look at the code
 * open `trypoly.cpp`
 * create a Pentagon, call its `perimeter` method
@@ -10,6 +11,8 @@
 ```
 * create an Hexagon, call its `perimeter` method
 * recompile and check what happens
+
+Step 2
 * create an Hexagon, call its parent’s `perimeter` method
 * recompile and check again
 * retry with virtual methods

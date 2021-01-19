@@ -20,6 +20,10 @@ poly->computePerimeter();
 ```
 and check what is called, in regular and virtual method case
 
+### modern_oo
+
+Insert one `= delete`, one `= default` and one `override`.
+
 ### virtual_inheritance
 First create a TextBox and try to call draw.
 There will be an error that the member is ambiguous, due to multiple inheritance.
