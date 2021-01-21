@@ -190,7 +190,7 @@
   \end{exampleblock}
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}
   \frametitle{Marrying \cpp and python}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
@@ -206,4 +206,32 @@
     \end{itemize}
   \end{alertblock}
   \tiny Note : you may have to add '.' to LD\_LIBRARY\_PATH and PYTHONPATH
+\end{frame}
+
+\subsection[cppyy]{The cppyy project}
+
+\begin{frame}
+  \frametitle{Automatic Python-C++ bindings}
+  \begin{block}{The {\color{blue!50!white} \href{https://cppyy.readthedocs.io}{cppyy}} project}
+    \begin{itemize}
+    \item originated from the ROOT project
+    \item still young, version 1.0 from Mid 2018
+    \item extremely powerful for interfacing \cpp and python
+    \end{itemize}
+  \end{block}
+  \begin{block}{How it works}
+    \begin{itemize}
+    \item uses Just in Time compilation through {\color{blue!50!black} \href{https://github.com/vgvassilev/cling}{cling}}
+      \begin{itemize}
+      \item an interactive \cpp interpreter
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{cppyy crash course}
+  Shamelessly copied from the cppyy documentation
+  \includegraphics{cppyy2.png}
+  \includegraphics{cppyy.png}
 \end{frame}
