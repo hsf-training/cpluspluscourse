@@ -15,13 +15,13 @@
   \end{block}
   \begin{exampleblock}{Practically}
     \begin{cppcode*}{}
-      template<typename T, typename... Args>
-      T adder(T first, Args... args) {
-        return first + adder(args...);
-      }
       template<typename T>
       T adder(T v) {
         return v;
+      }
+      template<typename T, typename... Args>
+      T adder(T first, Args... args) {
+        return first + adder(args...);
       }
       long sum = adder(1, 2, 3, 8, 7);
     \end{cppcode*}
@@ -59,7 +59,7 @@
         T m_tail;
       };
 
-      template <> struct tuple{};
+      template <> struct tuple<>{};
       
       tuple<double, uint64_t, const char*>
         t1(12.2, 42, "big");
@@ -196,7 +196,7 @@
     void func(T&& t) {}
   \end{cppcode*}
   In this context, \&\& is not an rvalue\\
-  It means that the T type depends on the arguments passed to func
+  T\&\& actual type depends on the arguments passed to func
   \begin{itemize}
   \item if an lvalue of type U is given, T is deduced to U\&
   \item if an rvalue, T is deduced to U
@@ -386,7 +386,10 @@
   \frametitleii{Using SFINAE for instrospection}
   \begin{block}{The main idea}
     \begin{itemize}
-    \item use a template specialization that may or may not create valid code
+    \item use a template specialization
+      \begin{itemize}
+      \item that may or may not create valid code
+      \end{itemize}
     \item use SFINAE to choose between them
     \item inherit from true/false\_type
     \end{itemize}
@@ -454,6 +457,9 @@
   \frametitleii{Back to variadic templated class}
   \begin{block}{The tuple get method}
     \begin{cppcode*}{}
+      template <size_t k, typename TUPLE>
+      struct elem_type_holder;
+
       template <class T, class... Ts>
       struct elem_type_holder<0, tuple<T, Ts...>> {
         typedef T type;
@@ -473,14 +479,14 @@
   \begin{block}{The tuple get method}
     \begin{cppcode*}{}
       template <size_t k, class... Ts>
-      typename std::enable_if_v<k == 0,
+      typename std::enable_if_t<k == 0,
         typename elem_type_holder
           <0, tuple<Ts...>>::type&>
       get(tuple<Ts...>& t) {
         return t.m_tail;
       }      
       template <size_t k, class T, class... Ts>
-      typename std::enable_if_v<k != 0,
+      typename std::enable_if_t<k != 0,
         typename elem_type_holder
            <k-1, tuple<Ts...>>::type&>
       get(tuple<T, Ts...>& t) {
