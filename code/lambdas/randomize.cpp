@@ -20,7 +20,7 @@ struct Generator {
 
 template<class T>
 struct sumsquare {
-    T operator()(T& s, T& a) { return s + a * a; };
+    T operator()(const T& s, const T& a) { return s + a * a; };
 };
     
 template<class T>
