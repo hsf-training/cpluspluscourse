@@ -7,6 +7,8 @@ Credits
     * [Attila Krasznahorkay](https://gitlab.cern.ch/akraszna) [CERN](http://cern.ch)/[Atlas](https://atlas.cern/)
     * [Ben Couturier](https://gitlab.cern.ch/bcouturi) [CERN](http://cern.ch)/[LHCb](http://lhcb.cern.ch)
     * [Stephan Hageboeck](https://gitlab.cern.ch/shageboe) [CERN](http://cern.ch)/[Atlas](https://atlas.cern/)
-  
+    * [Bernhard Manfred Gruber](https://gitlab.cern.ch/bgruber) [CERN](http://cern.ch)/BE department
+    
+
   - Original content (2015-2020)
     * [Sebastien Ponce](https://github.com/sponce) [CERN](http://cern.ch)/[LHCb](http://lhcb.cern.ch)
