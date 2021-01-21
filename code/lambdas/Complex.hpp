@@ -17,7 +17,7 @@ public:
     Complex_t& operator+=(const Complex_t& other);
     bool operator<(const Complex_t& a) const;
 private:
-    T m_r, m_i;
+  T m_r{}, m_i{};
 };
 
 typedef Complex_t<> Complex;
