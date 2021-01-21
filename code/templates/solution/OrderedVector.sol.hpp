@@ -11,6 +11,8 @@ class OrderedVector {
 public:
     OrderedVector(unsigned int maxLen);
     ~OrderedVector();
+    OrderedVector(const OrderedVector&) = delete;
+    OrderedVector& operator=(const OrderedVector&) = delete;
     bool add(ElementType value);
     ElementType& get(unsigned int n);
     ElementType& operator[](unsigned int n);

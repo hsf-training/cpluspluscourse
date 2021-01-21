@@ -11,6 +11,8 @@ protected:
 class Hexagon : public Polygon {
 public:
     Hexagon(char* name, float radius);
+    Hexagon(const Hexagon&) = delete;
+    Hexagon& operator=(const Hexagon&) = delete;
     ~Hexagon();
     char* name() const {return m_name;};
 private:
