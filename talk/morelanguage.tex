@@ -92,12 +92,12 @@
     \item go to code/constness
     \item open constplay.cpp
     \item try to find out which lines won't compile
-    \item check your guesses by comiling for real
+    \item check your guesses by compiling for real
     \end{itemize}
   \end{alertblock}
 \end{frame}
 
-\subsection[constexpr]{Constant Expressions}
+\subsection[cstexpr]{Constant Expressions}
 
 \begin{frame}[fragile]
   \frametitleii{Generalized Constant Expressions}
@@ -182,7 +182,7 @@
   \end{cppcode*}
 \end{frame}
 
-\subsection[Exceptions]{Exceptions}
+\subsection[except]{Exceptions}
 
 \begin{frame}[fragile]
   \frametitlegb{Exceptions}
@@ -374,7 +374,7 @@
     \begin{cppcode*}{}
       void swap(std::vector<int> &a,
                 std::vector<int> &b) {
-        auto c = a;
+        std::vector<int> c = a;
         a = b;
         b = c;
       }
@@ -666,7 +666,7 @@
     struct Vector {
       int m_len;
       T* m_data;
-    }
+    };
  \end{cppcode}
 \end{frame}
 
@@ -1063,7 +1063,7 @@
   \end{block}
   \pause
   \begin{block}{New way}
-    \begin{cppcode*}{}
+    \begin{cppcode*}{firstnumber=7}
       std::vector<int> v = ...;
       int sum = 0;
       for (auto a : v) { sum += a; }
@@ -1071,7 +1071,7 @@
   \end{block}
   \pause
   \begin{exampleblock}{STL way}
-    \begin{cppcode*}{}
+    \begin{cppcode*}{firstnumber=10}
       std::vector<int> v = ...;
       int sum = std::accumulate(v.begin(), v.end(), 0);
     \end{cppcode*}
@@ -1110,26 +1110,26 @@
   \begin{alertblock}{The problem in \cpp98}
     STL containers and arrays have different syntax for loop
     \vspace{-1mm}
-    \begin{cppcode}
+    \begin{cppcode*}{}
       std::vector<int> v;
       int a[] = {1,2,3};
       for(auto it = v.begin(); it != v.end(); it++) {...}
       for(int i = 0; i < 3; i++) {...}
-    \end{cppcode}
+    \end{cppcode*}
   \end{alertblock}
   \pause
   \begin{block}{A new syntax}
-    \begin{cppcode}
+    \begin{cppcode*}{firstnumber=5}
       for(auto it = begin(v); it != end(v); it++) {...}
       for(auto i = begin(a); i != end(a); i++) {...}
-    \end{cppcode}
+    \end{cppcode*}
   \end{block}
   \pause
   \begin{exampleblock}{Allowing the best syntax}
-    \begin{cppcode}
+    \begin{cppcode*}{firstnumber=7}
       for(auto & element : v) {...}
       for(auto & element : a) {...}
-    \end{cppcode}
+    \end{cppcode*}
   \end{exampleblock}
 \end{frame}
 
@@ -1148,7 +1148,7 @@
     \end{cppcode*}
   \end{alertblock}
   \begin{exampleblock}{\cpp17}
-    \begin{cppcode*}{}
+    \begin{cppcode*}{firstnumber=7}
       void foo(std::tuple<int, double, long> tuple) {
       auto [ a, b, c ] = tuple;
     \end{cppcode*}
@@ -1216,7 +1216,7 @@
     The type specification is optional
   \end{block}
   \begin{exampleblock}{Usage example}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{firstnumber=4,gobble=2}
       std::vector<int> data{1,2,3,4,5};
       for_each(begin(data), end(data),
                [](int i) {
@@ -1239,12 +1239,12 @@
   \end{block}
   \pause
   \begin{block}{First attempt in \cpp}
-    \begin{cppcode}
+    \begin{cppcode*}{firstnumber=4}
       int increment = 3;
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
       transform(begin(data), end(data), begin(data),
                 [](int x) { return x+increment; });
-    \end{cppcode}
+    \end{cppcode*}
   \end{block}
   \pause
   \begin{alertblock}{Error}
@@ -1304,24 +1304,24 @@
   \frametitleii{Capture by reference}
   \begin{exampleblock}{Simple example}
     In order to capture by reference, add '\&' before the variable
-    \begin{cppcode}
+    \begin{cppcode*}{}
       int sum = 0;
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
       for_each(begin(data), end(data),
               [&sum](int x) { sum += x; });
-    \end{cppcode}
+    \end{cppcode*}
   \end{exampleblock}
   \pause
   \begin{exampleblock}{Mixed case}
     One can of course mix values and references
-    \begin{cppcode}
+    \begin{cppcode*}{firstnumber=5}
       int sum = 0, offset = 1;
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
       for_each(begin(data), end(data),
               [&sum, offset](int x) {
                 sum += x + offset;
               });
-    \end{cppcode}
+    \end{cppcode*}
   \end{exampleblock}
 \end{frame}
 
@@ -1626,11 +1626,12 @@ of 'std::unique_ptr<Foo>'
   \begin{exampleblock}{A question of ownership}
     \begin{cppcode*}{}
       unique_ptr<T> producer();
-      void observer(T*);
+      void observer(const T&);
+      void modifier(T&);
       void consumer(unique_ptr<T>);
-
       unique_ptr<T> pt{producer()};
-      observer(pt.get());       // Keep ownership
+      observer(*pt.get());      // Keep ownership
+      modifier(*pt.get());      // Keep ownership
       consumer(std::move(pt));  // Transfer ownership
     \end{cppcode*}
   \end{exampleblock}
