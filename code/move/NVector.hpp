@@ -1,6 +1,7 @@
 #include <ostream>
 #include <assert.h>
 #include <algorithm>
+#include <numeric>
 
 template <int N, class T=float>
 class NVector {
@@ -114,10 +115,7 @@ NVector<N,T>& NVector<N,T>::operator+=(const NVector<N,T> other) {
 
 template <int N, class T>
 T NVector<N,T>::sqnorm() const {
-    T norm;
-    std::for_each(m_data, m_data+N,
-                  [&norm](T a) { norm += a*a; });
-    return norm;
+    return std::inner_product(m_data, m_data + N, m_data, T());
 }
 
 template <int N, class T>

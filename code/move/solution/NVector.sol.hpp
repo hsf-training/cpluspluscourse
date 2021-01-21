@@ -1,6 +1,7 @@
 #include <ostream>
 #include <assert.h>
 #include <algorithm>
+#include <numeric>
 
 template <int N, class T=float>
 class NVector {
@@ -14,15 +15,15 @@ public:
     ~NVector();
 
     NVector& operator-() const;
-    NVector& operator+(const NVector other) const;
-    NVector& operator-(const NVector other) const;
-    NVector& operator*(const NVector other) const;
+    NVector& operator+(const NVector& other) const;
+    NVector& operator-(const NVector& other) const;
+    NVector& operator*(const NVector& other) const;
     NVector& operator*(const T factor) const;
     NVector& operator/(const T dividend) const;
     NVector& operator=(NVector other);
-    NVector& operator+=(const NVector other);
+    NVector& operator+=(const NVector& other);
     T sqnorm() const;
-    bool operator<(const NVector a) const;
+    bool operator<(const NVector& a) const;
 
     void print(std::ostream& os) const;
     template<int M,class R> friend void swap(NVector<M,R> &a, NVector<M,R> &b);
@@ -71,7 +72,7 @@ NVector<N,T>& NVector<N,T>::operator-() const {
 }
 
 template <int N, class T>
-NVector<N,T>& NVector<N,T>::operator+(const NVector<N,T> other) const {
+NVector<N,T>& NVector<N,T>::operator+(const NVector<N,T>& other) const {
     NVector res;
     std::transform(m_data, m_data+N,
                    other.m_data, res.m_data,
@@ -80,7 +81,7 @@ NVector<N,T>& NVector<N,T>::operator+(const NVector<N,T> other) const {
 }
 
 template <int N, class T>
-NVector<N,T>& NVector<N,T>::operator-(const NVector<N,T> other) const {
+NVector<N,T>& NVector<N,T>::operator-(const NVector<N,T>& other) const {
     NVector res;
     std::transform(m_data, m_data+N,
                    other.m_data, res.m_data,
@@ -111,7 +112,7 @@ NVector<N,T>& NVector<N,T>::operator=(NVector<N,T> other) {
 }
 
 template <int N, class T>
-NVector<N,T>& NVector<N,T>::operator+=(const NVector<N,T> other) {
+NVector<N,T>& NVector<N,T>::operator+=(const NVector<N,T>& other) {
     std::transform(m_data, m_data+N,
                    other.m_data, m_data,
                    [](T a, T b) {return a + b;});
@@ -120,14 +121,11 @@ NVector<N,T>& NVector<N,T>::operator+=(const NVector<N,T> other) {
 
 template <int N, class T>
 T NVector<N,T>::sqnorm() const {
-    T norm;
-    std::for_each(m_data, m_data+N,
-                  [&norm](T a) { norm += a*a; });
-    return norm;
+    return std::inner_product(m_data, m_data+N, m_data, T());
 }
 
 template <int N, class T>
-bool NVector<N,T>::operator<(const NVector<N,T> other) const {
+bool NVector<N,T>::operator<(const NVector<N,T>& other) const {
     return this->sqnorm() < other.sqnorm();
 }
 
