@@ -229,8 +229,8 @@
     struct remove_reference<T&&>
     {using type = T;};
   \end{cppcode*}
-  If T is a reference type, T::type is the type referred to by T.\\
-  Otherwise T::type is T.
+  If {\ttfamily T} is a reference type, {\ttfamily remove\_reference<T>::type} is the type referred to by T,
+  otherwise it is T.
 \end{frame}
 
 \begin{frame}[fragile]
