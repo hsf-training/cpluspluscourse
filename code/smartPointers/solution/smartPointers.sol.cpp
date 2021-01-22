@@ -50,8 +50,7 @@ void problem1() {
    try {
        doStuffWithData();
    } catch (std::exception& e) {
-       std::cerr << "problem1(): Do stuff with data terminated with exception:\n" << e.what()
-               << "\n We may have a memory leak now." << std::endl;
+       std::cerr << "problem1(): Do stuff with data terminated with exception:\n" << e.what() << std::endl;
    }
 }
 
@@ -155,9 +154,10 @@ void processElement(const LargeObject* /*element*/) { }
 // model, this becomes a mess.
 void problem3() {
     // Let's generate a vector with 10 pointers to LargeObject
-    std::vector<std::shared_ptr<LargeObject>> objVector(10);
-    for (auto& ptr : objVector) {
-        ptr.reset(new LargeObject());
+    std::vector<std::shared_ptr<LargeObject>> objVector;
+    objVector.reserve(10);
+    for (unsigned int i = 0; i < 10; i++) {
+        objVector.emplace_back(new LargeObject());
     }
 
     // Let's copy it
