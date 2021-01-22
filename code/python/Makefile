@@ -1,8 +1,9 @@
-
-PYTHON_VERSION ::= $(word 2,$(shell python3 --version))
-PYTHON_MAJOR ::= $(word 1,$(subst ., ,$(PYTHON_VERSION)))
-PYTHON_MINOR ::= $(word 2,$(subst ., ,$(PYTHON_VERSION)))
-PYTHON_INCLUDE ::= /usr/include/python$(PYTHON_MAJOR).$(PYTHON_MINOR)
+PYTHON_VERSION=$(word 2, $(shell python3 --version))
+PYTHON_LOCATION=$(dir $(shell which python3))
+PYTHON_MAJOR=$(word 1,$(subst ., ,$(PYTHON_VERSION)))
+PYTHON_MINOR=$(word 2,$(subst ., ,$(PYTHON_VERSION)))
+PYTHON_INCLUDE_BASE=$(PYTHON_LOCATION)../include/python$(PYTHON_MAJOR).$(PYTHON_MINOR)
+PYTHON_INCLUDE=$(if $(wildcard $(PYTHON_INCLUDE_BASE)m/Python.h),$(PYTHON_INCLUDE_BASE)m, $(PYTHON_INCLUDE_BASE))
 
 all: mandel.so libmandelc.so
 solution: mandel.so libmandelc.so
