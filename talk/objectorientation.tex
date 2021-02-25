@@ -121,7 +121,7 @@
     }
     
     int MyFirstClass::some_method(...) {
-      ext_sum(*this);
+      ext_func(*this);
     };
   \end{cppcode}
 \end{frame}
@@ -207,7 +207,7 @@
     \begin{cppcode*}{gobble=2}
       class MyFirstClass {
       public:
-        void setA(int a);
+        void setA(int x);
         int getA();
         void squareA();
       private:
@@ -495,16 +495,16 @@
   \frametitlegb{Constructor and inheritance}
   \begin{cppcode}
     struct MyFirstClass {
+      int a;
       MyFirstClass();
       MyFirstClass(int a);
-    }
-
+    };
     struct MySecondClass : MyFirstClass {
+      int b;
       MySecondClass();
       MySecondClass(int b);
       MySecondClass(int a, int b);
-    }
-
+    };
     MySecondClass() : MyFirstClass(), b(0) {};
     MySecondClass(int b_) : MyFirstClass(), b(b_) {};
     MySecondClass(int a_,
