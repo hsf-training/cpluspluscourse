@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdexcept>
 
-template<class ElementType>
+template<typename ElementType>
 class OrderedVector {
 public:
     OrderedVector(unsigned int maxLen);
@@ -17,18 +17,18 @@ private:
     ElementType* m_data;
 };
     
-template<class ElementType>
+template<typename ElementType>
 OrderedVector<ElementType>::~OrderedVector() {
     delete[](m_data);
 }
 
-template<class ElementType>
+template<typename ElementType>
 OrderedVector<ElementType>::OrderedVector(unsigned int maxLen) :
 m_len(0), m_maxLen(maxLen) {
     m_data = new ElementType[m_maxLen];
 }
 
-template<class ElementType>
+template<typename ElementType>
 bool OrderedVector<ElementType>::add(ElementType value) {
     if (m_len >= m_maxLen) {
         return false;
@@ -49,7 +49,7 @@ bool OrderedVector<ElementType>::add(ElementType value) {
     return true;
 }
 
-template<class ElementType>
+template<typename ElementType>
 ElementType& OrderedVector<ElementType>::get(unsigned int n) {
     if (n >= m_len) {
         throw std::out_of_range("too big");
@@ -57,7 +57,7 @@ ElementType& OrderedVector<ElementType>::get(unsigned int n) {
     return m_data[n];
 }
 
-template<class ElementType>
+template<typename ElementType>
 ElementType& OrderedVector<ElementType>::operator[](unsigned int n) {
     return get(n);
 }

@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <numeric>
 
-template <int N, class T=float>
+template <int N, typename T=float>
 class NVector {
 public:
     typedef T BaseType;
@@ -32,12 +32,12 @@ private:
 };
 
 
-template <int N, class T>
+template <int N, typename T>
 NVector<N,T>::NVector() {
     m_data = new T[N];
 }
 
-template <int N, class T>
+template <int N, typename T>
 NVector<N,T>::NVector(T initialValue, T inc) :
     NVector() {
     T curValue = initialValue;
@@ -47,23 +47,23 @@ NVector<N,T>::NVector(T initialValue, T inc) :
                                        return cur;});
 }
 
-template <int N, class T>
+template <int N, typename T>
 NVector<N,T>::NVector(const NVector<N,T>& other) {
     m_data = new T[N];
     std::copy(other.m_data, other.m_data+N, m_data);
 }
 
-template <int N, class T>
+template <int N, typename T>
 NVector<N,T>::NVector(NVector<N,T>&& other) : NVector<N,T>() {
     swap(*this, other);
 }
 
-template <int N, class T>
+template <int N, typename T>
 NVector<N,T>::~NVector() {
     if (m_data) delete[](m_data);
 }
 
-template <int N, class T>
+template <int N, typename T>
 NVector<N,T>& NVector<N,T>::operator-() const {
     NVector res;
     std::transform(m_data, m_data+N, res.m_data,
@@ -71,7 +71,7 @@ NVector<N,T>& NVector<N,T>::operator-() const {
     return res;
 }
 
-template <int N, class T>
+template <int N, typename T>
 NVector<N,T>& NVector<N,T>::operator+(const NVector<N,T>& other) const {
     NVector res;
     std::transform(m_data, m_data+N,
@@ -80,7 +80,7 @@ NVector<N,T>& NVector<N,T>::operator+(const NVector<N,T>& other) const {
     return res;
 }
 
-template <int N, class T>
+template <int N, typename T>
 NVector<N,T>& NVector<N,T>::operator-(const NVector<N,T>& other) const {
     NVector res;
     std::transform(m_data, m_data+N,
@@ -89,7 +89,7 @@ NVector<N,T>& NVector<N,T>::operator-(const NVector<N,T>& other) const {
     return res;
 }
 
-template <int N, class T>
+template <int N, typename T>
 NVector<N,T>& NVector<N,T>::operator*(const T factor) const {
     NVector res;
     std::transform(m_data, m_data+N, res.m_dat,
@@ -97,7 +97,7 @@ NVector<N,T>& NVector<N,T>::operator*(const T factor) const {
     return res;
 }
 
-template <int N, class T>
+template <int N, typename T>
 NVector<N,T>& NVector<N,T>::operator/(const T dividend) const {
     NVector res;
     std::transform(m_data, m_data+N, res.m_data,
@@ -105,13 +105,13 @@ NVector<N,T>& NVector<N,T>::operator/(const T dividend) const {
     return res;
 }
 
-template <int N, class T>
+template <int N, typename T>
 NVector<N,T>& NVector<N,T>::operator=(NVector<N,T> other) {
     swap(*this, other);
     return *this;
 }
 
-template <int N, class T>
+template <int N, typename T>
 NVector<N,T>& NVector<N,T>::operator+=(const NVector<N,T>& other) {
     std::transform(m_data, m_data+N,
                    other.m_data, m_data,
@@ -119,22 +119,22 @@ NVector<N,T>& NVector<N,T>::operator+=(const NVector<N,T>& other) {
     return *this;
 }
 
-template <int N, class T>
+template <int N, typename T>
 T NVector<N,T>::sqnorm() const {
     return std::inner_product(m_data, m_data+N, m_data, T());
 }
 
-template <int N, class T>
+template <int N, typename T>
 bool NVector<N,T>::operator<(const NVector<N,T>& other) const {
     return this->sqnorm() < other.sqnorm();
 }
 
-template <int N, class T>
+template <int N, typename T>
 void NVector<N,T>::print(std::ostream& os) const {
     std::for_each(m_data, m_data+N, [&os](T a) { os << a << ", ";});
 }
 
-template <int N, class T>
+template <int N, typename T>
 std::ostream& operator<<(std::ostream& os,
                          const NVector<N,T>& c) {
     os << "(";
@@ -143,7 +143,7 @@ std::ostream& operator<<(std::ostream& os,
     return os;
 }
 
-template <int N, class T>
+template <int N, typename T>
 void swap(NVector<N,T> &a, NVector<N,T> &b) {
     T* tmp_data = a.m_data;
     a.m_data = b.m_data;

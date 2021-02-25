@@ -7,7 +7,7 @@
 
 using namespace std;
 
-template<class T>
+template<typename T>
 void compute(int len, T initial, T step) {
     // allocate vectors
     std::vector<T> v(len+1), diffs(len+1);

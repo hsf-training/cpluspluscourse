@@ -8,12 +8,12 @@
 using namespace std;
 using namespace __gnu_cxx;
 
-template<class T>
+template<typename T>
 struct Generator {
     ...
 };
 
-template<class T>
+template<typename T>
 void compute(int len, T initial, T step) {
     // allocate vectors
     std::vector<T> v(len+1), diffs(len+1);

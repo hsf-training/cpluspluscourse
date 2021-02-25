@@ -1,12 +1,12 @@
 #include <stdlib.h>
 #include <stdexcept>
 
-template <class T>
+template <typename T>
 struct less {
   bool operator() (const T& x, const T& y) const {return x<y;}
 };
 
-template<class ElementType, class Compare=less<ElementType> >
+template<typename ElementType, typename Compare=less<ElementType> >
 class OrderedVector {
 public:
     OrderedVector(unsigned int maxLen);
@@ -23,18 +23,18 @@ private:
     ElementType* m_data;
 };
     
-template<class ElementType, class Compare>
+template<typename ElementType, typename Compare>
 OrderedVector<ElementType,Compare>::~OrderedVector() {
     delete[](m_data);
 }
 
-template<class ElementType, class Compare>
+template<typename ElementType, typename Compare>
 OrderedVector<ElementType,Compare>::OrderedVector(unsigned int maxLen) :
 m_len(0), m_maxLen(maxLen), m_compare() {
     m_data = new ElementType[m_maxLen];
 }
 
-template<class ElementType, class Compare>
+template<typename ElementType, typename Compare>
 bool OrderedVector<ElementType,Compare>::add(ElementType value) {
     if (m_len >= m_maxLen) {
         return false;
@@ -55,7 +55,7 @@ bool OrderedVector<ElementType,Compare>::add(ElementType value) {
     return true;
 }
 
-template<class ElementType, class Compare>
+template<typename ElementType, typename Compare>
 ElementType& OrderedVector<ElementType,Compare>::get(unsigned int n) {
     if (n >= m_len) {
         throw std::out_of_range("too big");
@@ -63,7 +63,7 @@ ElementType& OrderedVector<ElementType,Compare>::get(unsigned int n) {
     return m_data[n];
 }
 
-template<class ElementType, class Compare>
+template<typename ElementType, typename Compare>
 ElementType& OrderedVector<ElementType,Compare>::operator[](unsigned int n) {
     return get(n);
 }
