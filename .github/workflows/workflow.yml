@@ -1,0 +1,22 @@
+name: Build LaTeX document
+on: [push, pull_request]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: C++Course.tex
+          latexmk_use_xelatex: true
+          args: -f -pdf -interaction=nonstopmode -shell-escape
+          working_directory: talk
+          extra_system_packages: "py-pygments"
+      - name: Upload PDF as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: PDF
+          path: |
+            talk/C++Course.pdf
