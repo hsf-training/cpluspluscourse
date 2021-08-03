@@ -193,11 +193,11 @@ void problem3() {
  * 4: Smart pointers as class members.
  *
  * Class members that are pointers can quickly become a problem.
- * Firstly, if only raw pointers are used, the intended ownerships are unclear.
+ * Firstly, if only raw pointers are used, the intended ownership is unclear.
  * Secondly, it's easy to overlook that a member has to be deleted.
- * Thirdly, pointer members usually require to implement copy or move constructors or assignment
- * operators.
- * Since C++-11, one can solve those problems using smart pointers.
+ * Thirdly, pointer members usually require you to implement copy or move constructors and assignment
+ * operators (--> rule of 3, rule of 5).
+ * Since C++-11, one can solve a few of those problems using smart pointers.
  *
  * 4.1:
  * The class "Owner" owns some data, but it is broken. If you copy it like in
@@ -220,7 +220,8 @@ void problem3() {
  * To do this, we use a weak pointer.
  *
  * Tasks:
- * - Comment in the line in problem4_2() that crashes the program.
+ * - Comment in problem4_2() in main().
+ * - Investigate the crash. Use a debugger, run in valgrind, compile with -fsanitize=address ...
  * - Rewrite the interface of Owner::getData() such that the observer can see the shared_ptr to the large object.
  * - Set up the Observer such that it stores a weak pointer that observes the large object.
  * - In Observer::processData(), access the weak pointer, and use the data *only* if the memory is still alive.
