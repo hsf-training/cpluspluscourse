@@ -488,98 +488,144 @@
   \end{multicols}
 \end{frame}
 
+\Scontents*[store-cmd=code_bigStruct]{
+struct BigStruct {...};
+BigStruct s;
+
+// parameter by value
+void printBS(BigStruct p) {
+  ...
+}
+printBS(s); // copy
+
+// parameter by reference
+void printBSp(BigStruct &q) {
+  ...
+}
+printBSp(s); // no copy
+}
 \begin{frame}[fragile]
-  \frametitlegb{Parameter are passed by value}
+  \frametitlegb{Functions: parameters are passed by value}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
-      struct BigStruct {...};
-      BigStruct s;
-      
-      // parameter by value
-      void printBS(BigStruct p) {
-        ...
-      }
-      printBS(s); // copy
-      
-      // parameter by pointer
-      void printBSp(BigStruct *q) {
-        ...
-      }
-      printBSp(&s); // no copy
-    \end{cppcode*}
+    \begin{overprint}[\columnwidth]
+      \onslide<1-2>
+      \highlightCppCode{2}{code_bigStruct}
+      \onslide<3>
+      \highlightCppCode{5,8}{code_bigStruct}
+      \onslide<4->
+      \highlightCppCode{11,14}{code_bigStruct}
+    \end{overprint}
     \columnbreak
     \null \vfill
-    \onslide<2->{
-      \begin{tikzpicture}
-        \memorystack[word size=1, nb blocks=7, size x=3cm]
-        \onslide<3-> {
-          \memorypush{s1}
-          \memorypush{...}
-          \memorypush{sn}
-          \memorystruct{1}{3}{s}
-        }
-        \onslide<4> {
-          \memorypush{p1 = s1}
-          \memorypush{...}
-          \memorypush{pn = sn}
-          \memorystruct{4}{6}{p}
-        }
-        \memorygoto{4}
-        \onslide<6> {
-          \memorypushpointer[q =]{1}
-        }
+    \begin{tikzpicture}
+      \memorystack[word size=1, nb blocks=7, size x=3cm]
+      \onslide<2-> {
+        \memorypush{s1}
+        \memorypush{...}
+        \memorypush{sn}
+        \memorystruct{1}{3}{s}
+      }
+      \onslide<3> {
+        \memorypush{p1 = s1}
+        \memorypush{...}
+        \memorypush{pn = sn}
+        \memorystruct{4}{6}{p}
+      }
+      \memorygoto{4}
+      \onslide<4> {
+        \memorypushpointer[q =]{1}
+      }
+    \end{tikzpicture}
+    \vfill \null
+  \end{multicols}
+\end{frame}
+
+\Scontents*[store-cmd=code_smallStruct]{
+struct SmallStruct {int a};
+SmallStruct s = {1};
+
+void changeSS(SmallStruct p) {
+  p.a = 2;
+}
+changeSS(s);
+// s.a = 1
+
+void changeSS2(SmallStruct &q) {
+  q.a = 2;
+}
+changeSS2(s);
+// s.a = 2
+}
+\begin{frame}[fragile]
+  \frametitlegb{Functions: pass by value or reference?}
+  \begin{multicols}{2}
+    \begin{overprint}[\columnwidth]
+      \onslide<1>
+      \highlightCppCode{}{code_smallStruct}
+      \onslide<2>
+      \highlightCppCode{2}{code_smallStruct}
+      \onslide<3>
+      \highlightCppCode{4,7}{code_smallStruct}
+      \onslide<4>
+      \highlightCppCode{5}{code_smallStruct}
+      \onslide<5>
+      \highlightCppCode{8}{code_smallStruct}
+      \onslide<6>
+      \highlightCppCode{10,13}{code_smallStruct}
+      \onslide<7>
+      \highlightCppCode{11}{code_smallStruct}
+      \onslide<8>
+      \highlightCppCode{14}{code_smallStruct}
+    \end{overprint}
+    \columnbreak
+    \null \vfill
+    \begin{tikzpicture}
+      \memorystack[word size=1, nb blocks=3, size x=3cm]
+      \onslide<2-6> {
+        \memorypush{s.a = 1}
+      }
+      \memorygoto{1}
+      \onslide<7-> {
+        \memorypush{s.a = 2}
+      }
+
+      \memorygoto{2}
+      \onslide<3> {
+        \memorypush{p.a = 1}
+      }
+      \memorygoto{2}
+      \onslide<4> {
+        \memorypush{p.a = 2}
+      }
+      \memorygoto{2}
+      \onslide<6-7> {
+        \memorypushpointer[q =]{1}
+      }
       \end{tikzpicture}
-    }
     \vfill \null
   \end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Parameter are passed by value}
-  \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
-      struct SmallStruct {int a};
-      SmallStruct s = {1};
-      
-      void changeSS(SmallStruct p) {
-        p.a = 2;
-      }
-      changeSS(s);
-      // s.a = 1
-      
-      void changeSS2(SmallStruct *q) {
-        q->a = 2;
-      }
-      changeSS2(&s);
-      // s.a = 2
+  \frametitlegb{Value vs. pointers and references}
+  \begin{block}{Different ways to pass arguments to a function}
+    \begin{itemize}
+    \item by default arguments are passed by value (= copy, good for small types, e.g.\ numbers)
+    \item references are preferred to avoid copies
+    \item same for pointers, but less favoured
+    \item use \mintinline{cpp}{const} for safety
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Syntax}
+    \begin{cppcode*}{escapeinside=||}
+struct T {...}; T a;
+void f(T value);           f(a);      // by value
+void fRef(const T &value); fRef(a);   // by reference
+void fPtr(const T *value); fPtr(|{\setlength{\fboxsep}{0pt}\color{gray}\colorbox{yellow}{\textsc{&}}}|a);  // by pointer
+void fWrite(T &value);     fWrite(a); // non-const ref
     \end{cppcode*}
-    \columnbreak
-    \null \vfill
-    \onslide<2->{
-      \begin{tikzpicture}
-        \memorystack[word size=1, nb blocks=3, size x=3cm]
-        \onslide<3-7> {
-          \memorypush{s.a = 1}
-        }
-        \onslide<4> {
-          \memorypush{p.a = 1}
-        }
-        \memorygoto{2}
-        \onslide<5> {
-          \memorypush{p.a = 2}
-        }
-        \memorygoto{2}
-        \onslide<7-> {
-          \memorypushpointer[q =]{1}
-        }
-        \memorygoto{1}
-        \onslide<8> {
-          \memorypush{s.a = 2}
-        }
-      \end{tikzpicture}
-    }
-    \vfill \null
-  \end{multicols}
+  \end{block}
 \end{frame}
 
 
