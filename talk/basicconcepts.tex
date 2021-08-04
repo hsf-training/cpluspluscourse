@@ -456,6 +456,133 @@
 \end{frame}
 
 
+\subsection[$f()$]{Functions}
+
+\begin{frame}[fragile]
+  \frametitlegb{Functions}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2}
+      // with return type
+      int square(int a) {
+        return a * a;
+      }
+
+      // multiple parameters
+      int mult(int a,
+               int b) {
+        return a*b;
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=2,firstnumber=11}
+      // no return
+      void log(char* msg) {
+        printf("%s", msg);
+      }
+
+      // no parameter
+      void hello() {
+        printf("Hello World");
+      }
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Parameter are passed by value}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2}
+      struct BigStruct {...};
+      BigStruct s;
+      
+      // parameter by value
+      void printBS(BigStruct p) {
+        ...
+      }
+      printBS(s); // copy
+      
+      // parameter by pointer
+      void printBSp(BigStruct *q) {
+        ...
+      }
+      printBSp(&s); // no copy
+    \end{cppcode*}
+    \columnbreak
+    \null \vfill
+    \onslide<2->{
+      \begin{tikzpicture}
+        \memorystack[word size=1, nb blocks=7, size x=3cm]
+        \onslide<3-> {
+          \memorypush{s1}
+          \memorypush{...}
+          \memorypush{sn}
+          \memorystruct{1}{3}{s}
+        }
+        \onslide<4> {
+          \memorypush{p1 = s1}
+          \memorypush{...}
+          \memorypush{pn = sn}
+          \memorystruct{4}{6}{p}
+        }
+        \memorygoto{4}
+        \onslide<6> {
+          \memorypushpointer[q =]{1}
+        }
+      \end{tikzpicture}
+    }
+    \vfill \null
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Parameter are passed by value}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2}
+      struct SmallStruct {int a};
+      SmallStruct s = {1};
+      
+      void changeSS(SmallStruct p) {
+        p.a = 2;
+      }
+      changeSS(s);
+      // s.a = 1
+      
+      void changeSS2(SmallStruct *q) {
+        q->a = 2;
+      }
+      changeSS2(&s);
+      // s.a = 2
+    \end{cppcode*}
+    \columnbreak
+    \null \vfill
+    \onslide<2->{
+      \begin{tikzpicture}
+        \memorystack[word size=1, nb blocks=3, size x=3cm]
+        \onslide<3-7> {
+          \memorypush{s.a = 1}
+        }
+        \onslide<4> {
+          \memorypush{p.a = 1}
+        }
+        \memorygoto{2}
+        \onslide<5> {
+          \memorypush{p.a = 2}
+        }
+        \memorygoto{2}
+        \onslide<7-> {
+          \memorypushpointer[q =]{1}
+        }
+        \memorygoto{1}
+        \onslide<8> {
+          \memorypush{s.a = 2}
+        }
+      \end{tikzpicture}
+    }
+    \vfill \null
+  \end{multicols}
+\end{frame}
+
+
 \subsection[Op]{Operators}
 
 \begin{frame}[fragile]
@@ -637,133 +764,6 @@
       static int localVar; // equivalent C code
     \end{cppcode*}
   \end{alertblock}
-\end{frame}
-
-
-\subsection[$f()$]{Functions}
-
-\begin{frame}[fragile]
-  \frametitlegb{Functions}
-  \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
-      // with return type
-      int square(int a) {
-        return a * a;
-      }
-
-      // multiple parameters
-      int mult(int a,
-               int b) {
-        return a*b;
-      }
-    \end{cppcode*}
-    \columnbreak
-    \begin{cppcode*}{gobble=2,firstnumber=11}
-      // no return
-      void log(char* msg) {
-        printf("%s", msg);
-      }
-
-      // no parameter
-      void hello() {
-        printf("Hello World");
-      }
-    \end{cppcode*}
-  \end{multicols}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Parameter are passed by value}
-  \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
-      struct BigStruct {...};
-      BigStruct s;
-      
-      // parameter by value
-      void printBS(BigStruct p) {
-        ...
-      }
-      printBS(s); // copy
-      
-      // parameter by pointer
-      void printBSp(BigStruct *q) {
-        ...
-      }
-      printBSp(&s); // no copy
-    \end{cppcode*}
-    \columnbreak
-    \null \vfill
-    \onslide<2->{
-      \begin{tikzpicture}
-        \memorystack[word size=1, nb blocks=7, size x=3cm]
-        \onslide<3-> {
-          \memorypush{s1}
-          \memorypush{...}
-          \memorypush{sn}
-          \memorystruct{1}{3}{s}
-        }
-        \onslide<4> {
-          \memorypush{p1 = s1}
-          \memorypush{...}
-          \memorypush{pn = sn}
-          \memorystruct{4}{6}{p}
-        }
-        \memorygoto{4}
-        \onslide<6> {
-          \memorypushpointer[q =]{1}
-        }
-      \end{tikzpicture}
-    }
-    \vfill \null
-  \end{multicols}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Parameter are passed by value}
-  \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
-      struct SmallStruct {int a};
-      SmallStruct s = {1};
-      
-      void changeSS(SmallStruct p) {
-        p.a = 2;
-      }
-      changeSS(s);
-      // s.a = 1
-      
-      void changeSS2(SmallStruct *q) {
-        q->a = 2;
-      }
-      changeSS2(&s);
-      // s.a = 2
-    \end{cppcode*}
-    \columnbreak
-    \null \vfill
-    \onslide<2->{
-      \begin{tikzpicture}
-        \memorystack[word size=1, nb blocks=3, size x=3cm]
-        \onslide<3-7> {
-          \memorypush{s.a = 1}
-        }
-        \onslide<4> {
-          \memorypush{p.a = 1}
-        }
-        \memorygoto{2}
-        \onslide<5> {
-          \memorypush{p.a = 2}
-        }
-        \memorygoto{2}
-        \onslide<7-> {
-          \memorypushpointer[q =]{1}
-        }
-        \memorygoto{1}
-        \onslide<8> {
-          \memorypush{s.a = 2}
-        }
-      \end{tikzpicture}
-    }
-    \vfill \null
-  \end{multicols}
 \end{frame}
 
 
