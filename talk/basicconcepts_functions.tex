@@ -1,0 +1,233 @@
+\subsection[$f()$]{Functions}
+
+\begin{frame}[fragile]
+  \frametitlegb{Functions}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2}
+      // with return type
+      int square(int a) {
+        return a * a;
+      }
+
+      // multiple parameters
+      int mult(int a,
+               int b) {
+        return a*b;
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=2,firstnumber=11}
+      // no return
+      void log(char* msg) {
+        printf("%s", msg);
+      }
+
+      // no parameter
+      void hello() {
+        printf("Hello World");
+      }
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitlegb{Functions: parameters are passed by value}
+  \begin{multicols}{2}
+    \begin{overprint}[\columnwidth]
+      \onslide<1-2>
+      \inputminted[linenos,highlightlines={2}]{cpp}{codeSnippets/functions_bigStruct.cpp}
+      \onslide<3>
+      \inputminted[linenos,highlightlines={5,8}]{cpp}{codeSnippets/functions_bigStruct.cpp}
+      \onslide<4->
+      \inputminted[linenos,highlightlines={11,14}]{cpp}{codeSnippets/functions_bigStruct.cpp}
+    \end{overprint}
+    \columnbreak
+    \null \vfill
+    \begin{tikzpicture}
+      \memorystack[word size=1, nb blocks=7, size x=3cm]
+      \onslide<2-> {
+        \memorypush{s1}
+        \memorypush{...}
+        \memorypush{sn}
+        \memorystruct{1}{3}{s}
+      }
+      \onslide<3> {
+        \memorypush{p1 = s1}
+        \memorypush{...}
+        \memorypush{pn = sn}
+        \memorystruct{4}{6}{p}
+      }
+      \memorygoto{4}
+      \onslide<4> {
+        \memorypushpointer[q =]{1}
+      }
+    \end{tikzpicture}
+    \vfill \null
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Functions: pass by value or reference?}
+  \begin{multicols}{2}
+    \begin{overprint}[\columnwidth]
+      \onslide<1>
+      \inputminted{cpp}{codeSnippets/functions_smallStruct.cpp}
+      \onslide<2>
+      \inputminted[linenos,highlightlines={2}]{cpp}{codeSnippets/functions_smallStruct.cpp}
+      \onslide<3>
+      \inputminted[linenos,highlightlines={4,7}]{cpp}{codeSnippets/functions_smallStruct.cpp}
+      \onslide<4>
+      \inputminted[linenos,highlightlines={5}]{cpp}{codeSnippets/functions_smallStruct.cpp}
+      \onslide<5>
+      \inputminted[linenos,highlightlines={8}]{cpp}{codeSnippets/functions_smallStruct.cpp}
+      \onslide<6>
+      \inputminted[linenos,highlightlines={10,13}]{cpp}{codeSnippets/functions_smallStruct.cpp}
+      \onslide<7>
+      \inputminted[linenos,highlightlines={11}]{cpp}{codeSnippets/functions_smallStruct.cpp}
+      \onslide<8>
+      \inputminted[linenos,highlightlines={14}]{cpp}{codeSnippets/functions_smallStruct.cpp}
+    \end{overprint}
+    \columnbreak
+    \null \vfill
+    \begin{tikzpicture}
+      \memorystack[word size=1, nb blocks=3, size x=3cm]
+      \onslide<2-6> {
+        \memorypush{s.a = 1}
+      }
+      \memorygoto{1}
+      \onslide<7-> {
+        \memorypush{s.a = 2}
+      }
+
+      \memorygoto{2}
+      \onslide<3> {
+        \memorypush{p.a = 1}
+      }
+      \memorygoto{2}
+      \onslide<4> {
+        \memorypush{p.a = 2}
+      }
+      \memorygoto{2}
+      \onslide<6-7> {
+        \memorypushpointer[q =]{1}
+      }
+      \end{tikzpicture}
+    \vfill \null
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Value vs. pointers and references}
+  \begin{block}{Different ways to pass arguments to a function}
+    \begin{itemize}
+    \item by default arguments are passed by value (= copy, good for small types, e.g.\ numbers)
+    \item references are preferred to avoid copies
+    \item same for pointers, but less favoured
+    \item use \mintinline{cpp}{const} for safety
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Syntax}
+    \begin{cppcode*}{escapeinside=||}
+struct T {...}; T a;
+void f(T value);           f(a);      // by value
+void fRef(const T &value); fRef(a);   // by reference
+void fPtr(const T *value); fPtr(|{\setlength{\fboxsep}{0pt}\color{gray}\colorbox{yellow}{\textsc{&}}}|a);  // by pointer
+void fWrite(T &value);     fWrite(a); // non-const ref
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitlegb{Pointers vs References}
+  \begin{block}{Specificities of reference}
+    \begin{itemize}
+    \item natural syntax
+    \item will never be \mintinline{cpp}{nullptr}
+    \item thus cannot reference temporary object
+    \end{itemize}
+  \end{block}
+  \begin{block}{Advantages of pointers}
+    \begin{itemize}
+    \item can be \mintinline{cpp}{nullptr}
+    \item clearly indicates that argument may be modified
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{Good practice}
+    \begin{itemize}
+      \item Always use references when you can
+      \item Consider that a reference will be modified
+      \item Use constness when it's not the case
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Functions: more good practices}
+  \begin{onlyenv}<1>
+    \begin{block}{Good practices with functions}
+      \begin{itemize}
+        \item Keep functions short
+        \item Do one logical thing
+        \item Use expressive names
+        \item Document the functions
+      \end{itemize}
+    \end{block}
+    \begin{exampleblock}{Example: Good}
+      \begin{cppcode*}{gobble=2}
+        /// Count number of dilepton events in data.
+        /// \param d Dataset to search.
+        unsigned int countDileptons(Data d) {
+          selectEventsWithMuons(d);
+          selectEventsWithElectrons(d);
+
+          return d.size();
+        }
+      \end{cppcode*}
+    \end{exampleblock}
+  \end{onlyenv}
+  \begin{onlyenv}<2->
+    \begin{alertblock}{Example: don't! Everything in one long function}
+      \begin{multicols}{2}
+        \begin{cppcode*}{gobble=6}
+          unsigned int foo() {
+            // Step 1: data
+            Data data;
+            data.resize(123456);
+            data.fill(...);
+
+            // Step 2: muons
+            for (....) {
+              if (...) {
+                data.delete(...);
+              }
+            }
+            // Step 3: electrons
+            for (....) {
+        \end{cppcode*}
+        \columnbreak
+        \begin{cppcode*}{gobble=6,firstnumber=last}
+              if (...) {
+                data.delete(...);
+              }
+            }
+
+            // Step 4: dileptons
+            int counter = 0;
+            for (....) {
+              if (...) {
+                counter++;
+              }
+            }
+
+            return counter;
+          }
+        \end{cppcode*}
+      \end{multicols}
+    \end{alertblock}
+  \end{onlyenv}
+\end{frame}
