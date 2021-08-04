@@ -19,24 +19,18 @@
 \begin{frame}[fragile]
   \frametitlegb{Pointers}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
-      int i = 4;
-      int *pi = &i;
-      int j = *pi + 1;
-      
-      int ai[] = {1,2,3};
-      int *pai = ai;
-      int *paj = pai + 1;
-      int k = *paj + 1;
-      
-      // not compiling
-      int *pak = k;
-      
-      // seg fault !
-      int *pak = (int*)k;
-      int l = *pak;
-    \end{cppcode*}
-    \onslide<2->{
+  \begin{overprint}[\columnwidth]
+    \onslide<1-2> \inputminted[linenos]{cpp}{codeSnippets/arraysAndPointers.cxx}
+    \onslide<3> \inputminted[linenos,highlightlines={1}]{cpp}{codeSnippets/arraysAndPointers.cxx}
+    \onslide<4> \inputminted[linenos,highlightlines={2}]{cpp}{codeSnippets/arraysAndPointers.cxx}
+    \onslide<5> \inputminted[linenos,highlightlines={3}]{cpp}{codeSnippets/arraysAndPointers.cxx}
+    \onslide<6> \inputminted[linenos,highlightlines={5}]{cpp}{codeSnippets/arraysAndPointers.cxx}
+    \onslide<7> \inputminted[linenos,highlightlines={6}]{cpp}{codeSnippets/arraysAndPointers.cxx}
+    \onslide<8> \inputminted[linenos,highlightlines={7}]{cpp}{codeSnippets/arraysAndPointers.cxx}
+    \onslide<9> \inputminted[linenos,highlightlines={8}]{cpp}{codeSnippets/arraysAndPointers.cxx}
+    \onslide<10> \inputminted[linenos,highlightlines={11}]{cpp}{codeSnippets/arraysAndPointers.cxx}
+  \end{overprint}
+    \onslide<3->{
       \begin{tikzpicture}
         \memorystack[size x=3cm,word size=1,nb blocks=11]
         \onslide<3-> {\memorypush{$i = 4$}}
@@ -45,12 +39,12 @@
         \onslide<6-> {\memorypush{$1$}}
         \onslide<6-> {\memorypush{$2$}}
         \onslide<6-> {\memorypush{$3$}}
-        \onslide<6-> {\memorypushpointer[ai =]{4}}
+%        \onslide<6-> {\memorypushpointer[ai =]{4}}
         \onslide<7-> {\memorypushpointer[pai =]{4}}
         \onslide<8-> {\memorypushpointer[paj =]{5}}
         \onslide<9-> {\memorypush{$k = 3$}}
         \onslide<10-> {\memorypush{$pak = 3$}}
-        \onslide<10-> {\draw[\stackcolor!80,->] (stack11-1.west) -- +(-0.5cm,0)
+        \onslide<10-> {\draw[\stackcolor!80,->] (stack10-1.west) -- +(-0.5cm,0)
           node [anchor=east] {??};}
       \end{tikzpicture}
     }
