@@ -810,6 +810,70 @@ void fWrite(T &value);     fWrite(a); // non-const ref
   \end{exampleblock}
 \end{frame}
 
+\Scontents*[store-cmd=code_scopes]{
+int a = 1;
+{
+  int b[4];
+  b[0] = a;
+}
+// Doesn't compile:
+// b[1] = a + 1;
+}
+\begin{frame}[fragile]
+  \frametitlegb{Scope and lifetime of resources}
+  \begin{block}{Resource life time}
+    \begin{itemize}
+      \item Resources are allocated when declared
+      \item Resources are freed at the end of a scope
+      \item Good practice: initialise resources when allocating!
+    \end{itemize}
+  \end{block}
+  \begin{multicols}{2}
+    \begin{overprint}[\columnwidth]
+    \onslide<1>
+    \highlightCppCode{1}{code_scopes}
+    \onslide<2>
+    \highlightCppCode{3}{code_scopes}
+    \onslide<3>
+    \highlightCppCode{4}{code_scopes}
+    \onslide<4>
+    \highlightCppCode{7}{code_scopes}
+    \end{overprint}
+
+    \columnbreak
+
+    \begin{tikzpicture}
+      \memorystack[word size=1, nb blocks=5, size x = 0.5\columnwidth]
+      \onslide<1-> {
+        \memorypush{a = 1}
+      }
+      \onslide<2>{
+        \memorypush{b[0] = ?}
+      }
+      \memorygoto{2}
+      \onslide<3>{
+        \memorypush{b[0] = 1}
+      }
+      \memorygoto{3}
+      \onslide<2-3>{
+        \memorypush{b[1] = ?}
+        \memorypush{b[2] = ?}
+        \memorypush{b[3] = ?}
+      }
+
+      \memorygoto{2}
+      \onslide<4>{
+        \memorypush{\color{gray} 1}
+        \memorypush{\color{gray} ?}
+        \memorypush{\color{gray} ?}
+        \memorypush{\color{gray} ?}
+        }
+
+    \end{tikzpicture}
+
+  \end{multicols}
+\end{frame}
+
 \begin{frame}[fragile]
   \frametitlegb{Namespaces}
   \begin{itemize}
