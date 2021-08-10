@@ -1413,9 +1413,9 @@
           return Complex(m_real + other, m_imaginary);
         }
       }
-      Complex c1(2, 3);
-      Complex c2 = c1 + 4;  // ok
-      Complex c3 = 4 + c1;  // not ok !!
+      Complex c1(2.f, 3.f);
+      Complex c2 = c1 + 4.f;  // ok
+      Complex c3 = 4.f + c1;  // not ok !!
     \end{cppcode}
     \pause
     \begin{cppcode*}{firstnumber=10}
@@ -1441,8 +1441,8 @@
                   << obj.m_imaginary << ")";
         return os;
       }
-      Complex c1(2, 3);
-      std::cout << c1 << std::endl;
+      Complex c1(2.f, 3.f);
+      std::cout << c1 << std::endl; // Prints '(2, 3)'
     \end{cppcode}
   \end{block}
 \end{frame}
