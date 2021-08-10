@@ -980,12 +980,13 @@
   \frametitlegb{Virtual methods}
   \begin{block}{the concept}
     \begin{itemize}
-    \item methods can be declared {\it virtual}
-    \item for these, the most precise object is always considered
+    \item methods can be declared \mintinline{cpp}{virtual}
+    \item for these, the most derived object is always considered
     \item for others, the type of the variable decides
     \end{itemize}
   \end{block}
-  \pause
+  \begin{overprint}
+  \onslide<2>
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       Polygon p;
@@ -998,29 +999,20 @@
     \center
     \begin{tikzpicture}[node distance=1.5cm]
       \classbox{Drawable}{
-        void draw();
+        \mintinline{cpp}{void draw();}
       }
       \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
-        void draw();
+        \mintinline{cpp}{void draw();}
       }
       \draw[very thick,->] (Polygon) -- (Shape);
       \draw[very thick,->] (Shape) -- (Drawable);
     \end{tikzpicture}
-  \end{multicols}    
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Virtual methods}
-  \begin{block}{the concept}
-    \begin{itemize}
-    \item methods can be declared {\it virtual}
-    \item for these, the most precise object is always considered
-    \item for others, the type of the variable decides
-    \end{itemize}
-  \end{block}
-  \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+  \end{multicols}
+  
+  \onslide<3>
+    \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2,highlightlines=5}
       Polygon p;
       p.draw(); // Polygon.draw
       
@@ -1031,16 +1023,17 @@
     \center
     \begin{tikzpicture}[node distance=1.5cm]
       \classbox{Drawable}{
-        virtual void draw();
+        \mintinline{cpp}{virtual void draw();}
       }
       \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
-        void draw();
+        \mintinline{cpp}{void draw();}
       }
       \draw[very thick,->] (Polygon) -- (Shape);
       \draw[very thick,->] (Shape) -- (Drawable);
     \end{tikzpicture}
-  \end{multicols}    
+  \end{multicols}
+  \end{overprint}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1153,14 +1146,13 @@
       s.draw();
     \end{cppcode*}
     \columnbreak
-    \center
     \begin{tikzpicture}[node distance=1.5cm]
       \classbox{Drawable}{
-        virtual void draw() = 0;
+        \mintinline{cpp}{virtual void draw() = 0;}
       }
       \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
-        void draw() override;
+        \mintinline{cpp}{void draw() override;}
       }
       \draw[very thick,->] (Polygon) -- (Shape);
       \draw[very thick,->] (Shape) -- (Drawable);
@@ -1201,7 +1193,7 @@
   \begin{block}{Concept}
     \begin{itemize}
     \item overriding an overloaded method will hide the others
-    \item unless you inherit them using {\it using}
+    \item unless you inherit them using \mintinline{cpp}{using}
     \end{itemize}
   \end{block}
   \begin{cppcode*}{gobble=0}
@@ -1555,10 +1547,11 @@
   \frametitlegb{ADL consequences (1)}
   \begin{block}{Use standalone/non-member functions}
     When a method is not accessing the private part of a class
-    \vspace{.2cm}
-    \begin{columns}
+    \vspace{-1mm}
+    \begin{columns}[T]
       \begin{column}{.35\textwidth}
         Don't write :
+        \vspace{-1mm}
         \begin{cppcode*}{gobble=6}
           namespace MyNS {
             struct A {
@@ -1569,13 +1562,13 @@
       \end{column}
       \begin{column}{.35\textwidth}
         Prefer :
+        \vspace{-1mm}
         \begin{cppcode*}{gobble=6,firstnumber=6}
           namespace MyNS {
             struct A { ... };
             T func(A&, ...);
           }
         \end{cppcode*}
-        \vfill
       \end{column}
     \end{columns}
     \vspace{.2cm}
@@ -1613,7 +1606,7 @@
 \begin{frame}[fragile]
   \frametitlegb{ADL consequences (3)}
   \begin{block}{Customization points and \texttt{using}}
-    \begin{columns}
+    \begin{columns}[t]
       \begin{column}{.35\textwidth}
         Don't write :
         \begin{cppcode*}{gobble=6}
