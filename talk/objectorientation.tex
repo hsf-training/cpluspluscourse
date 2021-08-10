@@ -132,7 +132,7 @@
     \begin{itemize}
     \item overloading is authorized and welcome
     \item signature is part of the method identity
-    \item but not the return code
+    \item but not the return type
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -150,7 +150,7 @@
   \end{cppcode}
 \end{frame}
 
-\subsection{inherit}
+\subsection[inherit]{Inheritance}
 
 \begin{frame}[fragile]
   \frametitlegb{First inheritance}
@@ -608,7 +608,7 @@
   \frametitleii{Constructor inheritance}
   \begin{block}{Idea}
     \begin{itemize}
-    \item avoid declaring empty constructors inheriting parent's ones
+    \item avoid having to re-declare parent's constructors
     \item by stating that we inherit all parent constructors
     \end{itemize}
   \end{block}
@@ -881,7 +881,7 @@
   \frametitlegb{Polymorphism}
   \begin{block}{the concept}
     \begin{itemize}
-    \item objects actually have multiple types concurrently
+    \item objects actually have multiple types simultaneously
     \item and can be used as any of them
     \end{itemize}
   \end{block}
