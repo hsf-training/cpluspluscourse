@@ -439,7 +439,7 @@
     \begin{itemize}
     \item special functions building/destroying an object
     \item a class can have several constructors
-    \item the constructors have the name of the class
+    \item the constructors have the name as the class
     \item same for the destructor with a leading $\sim$
     \end{itemize}
   \end{block}
@@ -565,7 +565,7 @@
   \frametitleii{Default Constructor}
   \begin{block}{Idea}
     \begin{itemize}
-    \item avoid writing explicitely default constructors
+    \item avoid writing explicitly default constructors
     \item by declaring them as default
     \end{itemize}
   \end{block}
@@ -573,7 +573,7 @@
     \begin{itemize}
     \item when no user defined constructor, a default is provided
     \item any user defined constructor disables default ones
-    \item but they can be enforced.
+    \item but they can be enforced
     \item rule can be more subtle depending on members
     \end{itemize}
   \end{block}
@@ -650,7 +650,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Calling contructors}
+  \frametitleii{Calling constructors}
   \begin{block}{After object declaration, arguments within \{\}}
     \begin{multicols}{2}
       \begin{cppcode*}{gobble=4}
@@ -1049,12 +1049,12 @@
     \begin{itemize}
     \item virtual methods are deduced at run time
       \begin{itemize}
-      \item while non virtual methods are deduced at compile time
+      \item while non-virtual methods are deduced at compile time
       \end{itemize}
     \item they also imply extra storage and an extra indirection
       \begin{itemize}
       \item pratically the object stores a pointer to the correct method
-      \item in a so called ``virtual table''
+      \item in a so-called ``virtual table'' (``vtable'')
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -1062,7 +1062,7 @@
     \begin{itemize}
     \item virtual methods are ``slower'' than standard ones
     \item and they cannot be inlined
-    \item templates are an alternative for performance critical cases
+    \item templates are an alternative for performance-critical cases
     \end{itemize}
   \end{alertblock}
 \end{frame}
@@ -1134,9 +1134,9 @@
   \begin{block}{Concept}
     \begin{itemize}
     \item methods that exist but are not implemented
-      \item marked by an ``{\it = 0} '' in the declaration
+      \item marked by ``{\tt = 0} '' in the declaration
     \item makes their class abstract
-    \item an object can only be instantiated for a non abstract class
+    \item an object can only be instantiated for a non-abstract class
     \end{itemize}
   \end{block}
   \pause
@@ -1169,7 +1169,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Pure Abtract Class aka Interface}
+  \frametitlegb{Pure Abstract Class aka Interface}
   \begin{block}{Definition of pure abstract class}
     \begin{itemize}
     \item a class that has
@@ -1226,8 +1226,8 @@
     \item look at the code
     \item open trypoly.cpp
     \item create a Pentagon, call its perimeter method
-    \item create an Hexagon, call its perimeter method
-    \item create an Hexagon, call its parent's perimeter method
+    \item create a Hexagon, call its perimeter method
+    \item create a Hexagon, call its parent's perimeter method
     \item retry with virtual methods
     \end{itemize}
   \end{alertblock}
@@ -1413,7 +1413,7 @@
 
 \begin{frame}[fragile]
   \frametitlegb{Why to have non-member operators ?}
-  \begin{block}{Symetry}
+  \begin{block}{Symmetry}
     \begin{cppcode}
       struct Complex {
         float m_real, m_imaginary;
@@ -1516,7 +1516,7 @@
   \begin{block}{How to find the declaration of a name ?}
     Mainly 2 cases :
     \begin{itemize}
-    \item qualified lookup, for names prededed by '::'
+    \item qualified lookup, for names preceded by '::'
       \begin{itemize}
       \item here \mintinline{cpp}{cout} and \mintinline{cpp}{endl}
       \item name is only looked for in given class/namespace/enum class
