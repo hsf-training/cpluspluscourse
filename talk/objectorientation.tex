@@ -132,7 +132,7 @@
     \begin{itemize}
     \item overloading is authorized and welcome
     \item signature is part of the method identity
-    \item but not the return code
+    \item but not the return type
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -150,7 +150,7 @@
   \end{cppcode}
 \end{frame}
 
-\subsection{inherit}
+\subsection[inherit]{Inheritance}
 
 \begin{frame}[fragile]
   \frametitlegb{First inheritance}
@@ -439,7 +439,7 @@
     \begin{itemize}
     \item special functions building/destroying an object
     \item a class can have several constructors
-    \item the constructors have the name of the class
+    \item the constructors have the name as the class
     \item same for the destructor with a leading $\sim$
     \end{itemize}
   \end{block}
@@ -565,7 +565,7 @@
   \frametitleii{Default Constructor}
   \begin{block}{Idea}
     \begin{itemize}
-    \item avoid writing explicitely default constructors
+    \item avoid writing explicitly default constructors
     \item by declaring them as default
     \end{itemize}
   \end{block}
@@ -573,7 +573,7 @@
     \begin{itemize}
     \item when no user defined constructor, a default is provided
     \item any user defined constructor disables default ones
-    \item but they can be enforced.
+    \item but they can be enforced
     \item rule can be more subtle depending on members
     \end{itemize}
   \end{block}
@@ -608,7 +608,7 @@
   \frametitleii{Constructor inheritance}
   \begin{block}{Idea}
     \begin{itemize}
-    \item avoid declaring empty constructors inheriting parent's ones
+    \item avoid having to re-declare parent's constructors
     \item by stating that we inherit all parent constructors
     \end{itemize}
   \end{block}
@@ -650,7 +650,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Calling contructors}
+  \frametitleii{Calling constructors}
   \begin{block}{After object declaration, arguments within \{\}}
     \begin{multicols}{2}
       \begin{cppcode*}{gobble=4}
@@ -881,7 +881,7 @@
   \frametitlegb{Polymorphism}
   \begin{block}{the concept}
     \begin{itemize}
-    \item objects actually have multiple types concurrently
+    \item objects actually have multiple types simultaneously
     \item and can be used as any of them
     \end{itemize}
   \end{block}
@@ -980,12 +980,13 @@
   \frametitlegb{Virtual methods}
   \begin{block}{the concept}
     \begin{itemize}
-    \item methods can be declared {\it virtual}
-    \item for these, the most precise object is always considered
+    \item methods can be declared \mintinline{cpp}{virtual}
+    \item for these, the most derived object is always considered
     \item for others, the type of the variable decides
     \end{itemize}
   \end{block}
-  \pause
+  \begin{overprint}
+  \onslide<2>
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       Polygon p;
@@ -998,29 +999,20 @@
     \center
     \begin{tikzpicture}[node distance=1.5cm]
       \classbox{Drawable}{
-        void draw();
+        \mintinline{cpp}{void draw();}
       }
       \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
-        void draw();
+        \mintinline{cpp}{void draw();}
       }
       \draw[very thick,->] (Polygon) -- (Shape);
       \draw[very thick,->] (Shape) -- (Drawable);
     \end{tikzpicture}
-  \end{multicols}    
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Virtual methods}
-  \begin{block}{the concept}
-    \begin{itemize}
-    \item methods can be declared {\it virtual}
-    \item for these, the most precise object is always considered
-    \item for others, the type of the variable decides
-    \end{itemize}
-  \end{block}
-  \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+  \end{multicols}
+  
+  \onslide<3>
+    \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2,highlightlines=5}
       Polygon p;
       p.draw(); // Polygon.draw
       
@@ -1031,16 +1023,17 @@
     \center
     \begin{tikzpicture}[node distance=1.5cm]
       \classbox{Drawable}{
-        virtual void draw();
+        \mintinline{cpp}{virtual void draw();}
       }
       \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
-        void draw();
+        \mintinline{cpp}{void draw();}
       }
       \draw[very thick,->] (Polygon) -- (Shape);
       \draw[very thick,->] (Shape) -- (Drawable);
     \end{tikzpicture}
-  \end{multicols}    
+  \end{multicols}
+  \end{overprint}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1049,12 +1042,12 @@
     \begin{itemize}
     \item virtual methods are deduced at run time
       \begin{itemize}
-      \item while non virtual methods are deduced at compile time
+      \item while non-virtual methods are deduced at compile time
       \end{itemize}
     \item they also imply extra storage and an extra indirection
       \begin{itemize}
       \item pratically the object stores a pointer to the correct method
-      \item in a so called ``virtual table''
+      \item in a so-called ``virtual table'' (``vtable'')
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -1062,7 +1055,7 @@
     \begin{itemize}
     \item virtual methods are ``slower'' than standard ones
     \item and they cannot be inlined
-    \item templates are an alternative for performance critical cases
+    \item templates are an alternative for performance-critical cases
     \end{itemize}
   \end{alertblock}
 \end{frame}
@@ -1134,9 +1127,9 @@
   \begin{block}{Concept}
     \begin{itemize}
     \item methods that exist but are not implemented
-      \item marked by an ``{\it = 0} '' in the declaration
+      \item marked by ``{\tt = 0} '' in the declaration
     \item makes their class abstract
-    \item an object can only be instantiated for a non abstract class
+    \item an object can only be instantiated for a non-abstract class
     \end{itemize}
   \end{block}
   \pause
@@ -1153,14 +1146,13 @@
       s.draw();
     \end{cppcode*}
     \columnbreak
-    \center
     \begin{tikzpicture}[node distance=1.5cm]
       \classbox{Drawable}{
-        virtual void draw() = 0;
+        \mintinline{cpp}{virtual void draw() = 0;}
       }
       \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
-        void draw() override;
+        \mintinline{cpp}{void draw() override;}
       }
       \draw[very thick,->] (Polygon) -- (Shape);
       \draw[very thick,->] (Shape) -- (Drawable);
@@ -1169,7 +1161,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Pure Abtract Class aka Interface}
+  \frametitlegb{Pure Abstract Class aka Interface}
   \begin{block}{Definition of pure abstract class}
     \begin{itemize}
     \item a class that has
@@ -1201,7 +1193,7 @@
   \begin{block}{Concept}
     \begin{itemize}
     \item overriding an overloaded method will hide the others
-    \item unless you inherit them using {\it using}
+    \item unless you inherit them using \mintinline{cpp}{using}
     \end{itemize}
   \end{block}
   \begin{cppcode*}{gobble=0}
@@ -1226,8 +1218,8 @@
     \item look at the code
     \item open trypoly.cpp
     \item create a Pentagon, call its perimeter method
-    \item create an Hexagon, call its perimeter method
-    \item create an Hexagon, call its parent's perimeter method
+    \item create a Hexagon, call its perimeter method
+    \item create a Hexagon, call its parent's perimeter method
     \item retry with virtual methods
     \end{itemize}
   \end{alertblock}
@@ -1413,7 +1405,7 @@
 
 \begin{frame}[fragile]
   \frametitlegb{Why to have non-member operators ?}
-  \begin{block}{Symetry}
+  \begin{block}{Symmetry}
     \begin{cppcode}
       struct Complex {
         float m_real, m_imaginary;
@@ -1421,9 +1413,9 @@
           return Complex(m_real + other, m_imaginary);
         }
       }
-      Complex c1(2, 3);
-      Complex c2 = c1 + 4;  // ok
-      Complex c3 = 4 + c1;  // not ok !!
+      Complex c1(2.f, 3.f);
+      Complex c2 = c1 + 4.f;  // ok
+      Complex c3 = 4.f + c1;  // not ok !!
     \end{cppcode}
     \pause
     \begin{cppcode*}{firstnumber=10}
@@ -1449,8 +1441,8 @@
                   << obj.m_imaginary << ")";
         return os;
       }
-      Complex c1(2, 3);
-      std::cout << c1 << std::endl;
+      Complex c1(2.f, 3.f);
+      std::cout << c1 << std::endl; // Prints '(2, 3)'
     \end{cppcode}
   \end{block}
 \end{frame}
@@ -1494,7 +1486,8 @@
       virtual double operator() (double a, double b) = 0;
     };
     struct Add : public BinaryFunction {
-      double operator() (double a, double b) { return a+b; }
+      double operator() (double a, double b) override
+      { return a+b; }
     };
     double binary_op(double a, double b, BinaryFunction &func) {
       return func(a, b);
@@ -1516,7 +1509,7 @@
   \begin{block}{How to find the declaration of a name ?}
     Mainly 2 cases :
     \begin{itemize}
-    \item qualified lookup, for names prededed by '::'
+    \item qualified lookup, for names preceded by '::'
       \begin{itemize}
       \item here \mintinline{cpp}{cout} and \mintinline{cpp}{endl}
       \item name is only looked for in given class/namespace/enum class
@@ -1554,11 +1547,12 @@
 \begin{frame}[fragile]
   \frametitlegb{ADL consequences (1)}
   \begin{block}{Use standalone/non-member functions}
-    When a method is not accessing the private part of a class
-    \vspace{.2cm}
-    \begin{columns}
+    When a method is not accessing the private part of a class, make it a function in the same namespace
+    \vspace{-1mm}
+    \begin{columns}[T]
       \begin{column}{.35\textwidth}
         Don't write :
+        \vspace{-1mm}
         \begin{cppcode*}{gobble=6}
           namespace MyNS {
             struct A {
@@ -1569,13 +1563,13 @@
       \end{column}
       \begin{column}{.35\textwidth}
         Prefer :
+        \vspace{-1mm}
         \begin{cppcode*}{gobble=6,firstnumber=6}
           namespace MyNS {
             struct A { ... };
             T func(A&, ...);
           }
         \end{cppcode*}
-        \vfill
       \end{column}
     \end{columns}
     \vspace{.2cm}
@@ -1613,7 +1607,7 @@
 \begin{frame}[fragile]
   \frametitlegb{ADL consequences (3)}
   \begin{block}{Customization points and \texttt{using}}
-    \begin{columns}
+    \begin{columns}[t]
       \begin{column}{.35\textwidth}
         Don't write :
         \begin{cppcode*}{gobble=6}
