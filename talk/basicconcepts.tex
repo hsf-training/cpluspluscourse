@@ -629,6 +629,73 @@ void fWrite(T &value);     fWrite(a); // non-const ref
 \end{frame}
 
 
+\begin{frame}[fragile]
+  \frametitlegb{Functions: good practices}
+  \begin{onlyenv}<1>
+    \begin{block}{Good practices with functions}
+      \begin{itemize}
+        \item Keep functions short
+        \item Do one logical thing
+        \item Use expressive names
+        \item Document the functions
+      \end{itemize}
+    \end{block}
+    \begin{exampleblock}{Example: Good}
+      \begin{cppcode*}{gobble=2}
+        /// Count number of dilepton events in data.
+        /// \param d Dataset to search.
+        unsigned int countDileptons(Data d) {
+          selectEventsWithMuons(d);
+          selectEventsWithElectrons(d);
+
+          return d.size();
+        }
+      \end{cppcode*}
+    \end{exampleblock}
+  \end{onlyenv}
+  \begin{onlyenv}<2->
+    \begin{alertblock}{Example: don't! Everything in one long function}
+      \begin{multicols}{2}
+        \begin{cppcode*}{gobble=6}
+          unsigned int foo() {
+            // Step 1: data
+            Data data;
+            data.resize(123456);
+            data.fill(...);
+
+            // Step 2: muons
+            for (....) {
+              if (...) {
+                data.delete(...);
+              }
+            }
+            // Step 3: electrons
+            for (....) {
+        \end{cppcode*}
+        \columnbreak
+        \begin{cppcode*}{gobble=6,firstnumber=last}
+              if (...) {
+                data.delete(...);
+              }
+            }
+
+            // Step 4: dileptons
+            int counter = 0;
+            for (....) {
+              if (...) {
+                counter++;
+              }
+            }
+
+            return counter;
+          }
+        \end{cppcode*}
+      \end{multicols}
+    \end{alertblock}
+  \end{onlyenv}
+\end{frame}
+
+
 \subsection[Op]{Operators}
 
 \begin{frame}[fragile]
