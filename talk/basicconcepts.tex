@@ -172,6 +172,7 @@ int l = *pak;
   \frametitleii{nullptr}
   \begin{block}{Finally a \cpp~NULL pointer}
     \begin{itemize}
+    \item if a pointer doesn't point to anything, set it to \mintinline{cpp}{nullptr}
     \item works like 0 or NULL in standard cases
     \item triggers compilation error when mapped to integer
     \end{itemize}
@@ -208,6 +209,7 @@ int l = *pak;
     free(ai);
   \end{cppcode}
 \end{frame}
+
 
 \subsection[Compound]{Compound data types}
 
@@ -773,9 +775,9 @@ void fWrite(T &value);     fWrite(a); // non-const ref
     \begin{cppcode*}{}
       bool a = (3 == 3);  // true
       bool b = (3 != 3);  // false
-      bool c = (4 < 4);   // false
+      bool c = (4 <  4);  // false
       bool d = (4 <= 4);  // true
-      bool e = (4 > 4);   // false
+      bool e = (4 >  4);  // false
       bool f = (4 >= 4);  // true
     \end{cppcode*}
   \end{block}
