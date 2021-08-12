@@ -403,6 +403,59 @@
 \end{frame}
 
 
+\subsection[Refs]{References}
+
+\begin{frame}[fragile]
+  \frametitlegb{References}
+  \begin{block}{References}
+    \begin{itemize}
+      \item References allow for direct access to another object
+      \item They can be used as shortcuts / better readability
+      \item They can be declared \mintinline{cpp}{const} to allow only read access
+      \item They can be used as function arguments
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Example:}
+    \begin{cppcode*}{gobble=2}
+      int i = 2;
+      int &iref = i; // access to i
+      iref = 3;      // i is now 3
+
+      // const reference to a member:
+      struct A { int x; int y; } a;
+      const int &x = a.x; // direct read access to A's x
+      x = 4;              // doesn't compile
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Pointers vs References}
+  \begin{block}{Specificities of reference}
+    \begin{itemize}
+    \item natural syntax
+    \item will never be \mintinline{cpp}{nullptr}
+    \item thus cannot reference temporary object
+    \end{itemize}
+  \end{block}
+  \begin{block}{Advantages of pointers}
+    \begin{itemize}
+    \item can be \mintinline{cpp}{nullptr}
+    \item clearly indicates that argument may be modified
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{Good practice}
+    \begin{itemize}
+      \item Always use references when you can
+      \item Consider that a reference will be modified
+      \item Use constness when it's not the case
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+
 \subsection[Op]{Operators}
 
 \begin{frame}[fragile]
@@ -713,70 +766,6 @@
   \end{multicols}
 \end{frame}
 
-\subsection[Refs]{References}
-
-\begin{frame}[fragile]
-  \frametitlegb{Value, pointers and references}
-  \begin{block}{Different ways to pass arguments to a function}
-    \begin{itemize}
-    \item by default arguments are passed by value
-    \item pointers can be used to avoid copies
-    \item references are also available and are preferred
-    \end{itemize}
-  \end{block}
-  \pause
-  \begin{block}{Syntax}
-    \begin{cppcode}
-      struct T {...}; T a;
-      void func   (T value); f(a);   // by value
-      void funcPtr(T *value); f(&a); // pointer
-      void funcRef(T &value); f(a);  // by reference
-    \end{cppcode}
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Value versus pointers/reference}
-  \begin{block}{When passing by value}
-    \begin{itemize}
-    \item a copy is created
-    \item making the original argument unmodifiable (aka const)
-    \item efficient for small types, e.g. numbers
-    \end{itemize}
-  \end{block}
-  \begin{block}{When passing by pointer/reference}
-    \begin{itemize}
-    \item no copy of your argument
-    \item in the back only a memory address is copied
-    \item argument can be modified (unless you use constness, see later)
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Pointers vs References}
-  \begin{block}{Specificities of reference}
-    \begin{itemize}
-    \item natural syntax
-    \item will never be {\ttfamily nullptr}
-    \item thus cannot reference temporary object
-    \end{itemize}
-  \end{block}
-  \begin{block}{Advantages of pointers}
-    \begin{itemize}
-    \item can be {\ttfamily nullptr}
-    \item clearly indicates that argument may be modified
-    \end{itemize}
-  \end{block}
-  \pause
-  \begin{alertblock}{Good practice}
-    \begin{itemize}
-      \item Always use references when you can
-      \item Consider that a reference will be modified
-      \item Use constness when it's not the case
-    \end{itemize}
-  \end{alertblock}
-\end{frame}
 
 \subsection[Control]{Control instructions}
 
