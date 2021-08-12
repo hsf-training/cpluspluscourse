@@ -198,189 +198,6 @@
   \end{cppcode}
 \end{frame}
 
-\subsection[Op]{Operators}
-
-\begin{frame}[fragile]
-  \frametitlegb{Operators(1)}
-  \begin{block}{Binary \& Assignment Operators}
-    \begin{cppcode*}{}
-      int i = 1 + 4 - 2;  // 3
-      i *= 3;             // 9
-      i /= 2;             // 4
-      i = 23 % i;         // modulo => 3
-    \end{cppcode*}
-  \end{block}
-  \pause
-  \begin{block}{Increment / Decrement \uncover<3->{\hfill \alert{\bf Use wisely}}}
-    \begin{cppcode*}{}
-      int i = 0; i++; // i = 1
-      int j = ++i;    // i = 2, j = 2
-      int k = i++;    // i = 3, k = 2
-      int l = --i;    // i = 2, l = 2
-      int m = i--;    // i = 1, m = 2
-    \end{cppcode*}
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Operators(2)}
-  \begin{block}{Bitwise and Assignment Operators}
-    \begin{cppcode*}{}
-      int i = 0xee & 0x55;  // 0x44
-      i |= 0xee;            // 0xee
-      i ^= 0x55;            // 0xbb
-      int j = ~0xee;        // 0xffffff11
-      int k = 0x1f << 3;    // 0x78
-      int l = 0x1f >> 2;    // 0x7
-    \end{cppcode*}
-  \end{block}
-  \pause
-  \begin{block}{Boolean Operators}
-    \begin{cppcode*}{}
-      bool a = true;
-      bool b = false;
-      bool c = a && b;    // false
-      bool d = a || b;    // true
-      bool e = !d;        // false
-    \end{cppcode*}
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Operators(3)}
-  \begin{block}{Comparison Operators}
-    \begin{cppcode*}{}
-      bool a = (3 == 3);  // true
-      bool b = (3 != 3);  // false
-      bool c = (4 < 4);   // false
-      bool d = (4 <= 4);  // true
-      bool e = (4 > 4);   // false
-      bool f = (4 >= 4);  // true
-    \end{cppcode*}
-  \end{block}
-  \pause
-  \begin{block}{Precedences \uncover<3->{\hfill \alert{\bf Don't use}\uncover<4->{\color{green} \bf\ - use parenthesis}}}
-    \begin{cppcode*}{linenos=false}
-      c &= 1+(++b)|(a--)*4%5^7; // ???
-    \end{cppcode*}
-  \end{block}
-\end{frame}
-
-\subsection[NS]{Scopes / namespaces}
-
-\begin{frame}[fragile]
-  \frametitlegb{Scope}
-  \begin{block}{Definition}
-    Portion of the source code where a given name is valid \\
-    Typically :
-    \begin{itemize}
-    \item simple block of code, within \mintinline{cpp}{{}}
-    \item function, class, namespace
-    \item source file for global declarations
-    \end{itemize}
-  \end{block}
-  \begin{exampleblock}{Example}
-    \begin{cppcode*}{}
-      { int a;
-        { int b;
-        } // end of b scope
-      } // end of a scope
-    \end{cppcode*}
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Namespaces}
-  \begin{itemize}
-  \item Namespaces allow to segment your code to avoid name clashes
-  \item They can be embedded to create hierarchies (separator is '::')
-  \end{itemize}
-  \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
-      int a;
-      namespace n {
-        int a;   // no clash
-      }
-      namespace p {
-        int a;   // no clash
-        namespace inner {
-          int a; // no clash
-        }
-      }
-      int f() {
-        n::a = 2;
-      }
-    \end{cppcode*}
-    \columnbreak
-    \begin{cppcode*}{gobble=2,firstnumber=14}
-      namespace p {
-        int f() {
-          p::a = 2;
-          a = 2;  //same as above
-          p::inner::a = 4;
-          inner::a = 4;
-          n::a = 5;
-        }
-      }
-      using namespace p::inner;
-      int g() {
-        a = 3; // using p::inner
-      }
-  \end{cppcode*}
-  \end{multicols}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitleit{Nested namespaces}
-  Easier way to declare nested namespaces
-  \begin{alertblock}{\cpp14}
-    \begin{cppcode*}{}
-      namespace A {
-        namespace B {
-          namespace C {
-            //...
-          }
-        }
-      }
-    \end{cppcode*}
-  \end{alertblock}
-  \begin{exampleblock}{\cpp17}
-    \begin{cppcode*}{}
-      namespace A::B::C {
-        //...
-      }
-    \end{cppcode*}
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Anonymous namespaces}
-  \begin{exampleblock}{A namespace without a name !}
-    \begin{cppcode*}{}
-      namespace {
-        int localVar;
-      }
-    \end{cppcode*}
-  \end{exampleblock}
-  \begin{block}{Purpose}
-    \begin{itemize}
-    \item groups a number of declarations
-    \item visible in the current translation unit
-    \item but not reusable outside
-    \item allows much better compiler optimizations and checking
-      \begin{itemize}
-      \item e.g. unused function warning
-      \item context dependent optimizations
-      \end{itemize}
-    \end{itemize}
-  \end{block}
-  \begin{alertblock}{Deprecates static}
-    \begin{cppcode*}{gobble=2}
-      static int localVar; // equivalent C code
-    \end{cppcode*}
-  \end{alertblock}
-\end{frame}
-
 \subsection[Compound]{Compound data types}
 
 \begin{frame}[fragile]
@@ -584,6 +401,191 @@
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
+
+
+\subsection[Op]{Operators}
+
+\begin{frame}[fragile]
+  \frametitlegb{Operators(1)}
+  \begin{block}{Binary \& Assignment Operators}
+    \begin{cppcode*}{}
+      int i = 1 + 4 - 2;  // 3
+      i *= 3;             // 9
+      i /= 2;             // 4
+      i = 23 % i;         // modulo => 3
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{Increment / Decrement \uncover<3->{\hfill \alert{\bf Use wisely}}}
+    \begin{cppcode*}{}
+      int i = 0; i++; // i = 1
+      int j = ++i;    // i = 2, j = 2
+      int k = i++;    // i = 3, k = 2
+      int l = --i;    // i = 2, l = 2
+      int m = i--;    // i = 1, m = 2
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Operators(2)}
+  \begin{block}{Bitwise and Assignment Operators}
+    \begin{cppcode*}{}
+      int i = 0xee & 0x55;  // 0x44
+      i |= 0xee;            // 0xee
+      i ^= 0x55;            // 0xbb
+      int j = ~0xee;        // 0xffffff11
+      int k = 0x1f << 3;    // 0x78
+      int l = 0x1f >> 2;    // 0x7
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{Boolean Operators}
+    \begin{cppcode*}{}
+      bool a = true;
+      bool b = false;
+      bool c = a && b;    // false
+      bool d = a || b;    // true
+      bool e = !d;        // false
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Operators(3)}
+  \begin{block}{Comparison Operators}
+    \begin{cppcode*}{}
+      bool a = (3 == 3);  // true
+      bool b = (3 != 3);  // false
+      bool c = (4 < 4);   // false
+      bool d = (4 <= 4);  // true
+      bool e = (4 > 4);   // false
+      bool f = (4 >= 4);  // true
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{Precedences \uncover<3->{\hfill \alert{\bf Don't use}\uncover<4->{\color{green} \bf\ - use parenthesis}}}
+    \begin{cppcode*}{linenos=false}
+      c &= 1+(++b)|(a--)*4%5^7; // ???
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\subsection[NS]{Scopes / namespaces}
+
+\begin{frame}[fragile]
+  \frametitlegb{Scope}
+  \begin{block}{Definition}
+    Portion of the source code where a given name is valid \\
+    Typically :
+    \begin{itemize}
+    \item simple block of code, within \mintinline{cpp}{{}}
+    \item function, class, namespace
+    \item source file for global declarations
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      { int a;
+        { int b;
+        } // end of b scope
+      } // end of a scope
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Namespaces}
+  \begin{itemize}
+  \item Namespaces allow to segment your code to avoid name clashes
+  \item They can be embedded to create hierarchies (separator is '::')
+  \end{itemize}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2}
+      int a;
+      namespace n {
+        int a;   // no clash
+      }
+      namespace p {
+        int a;   // no clash
+        namespace inner {
+          int a; // no clash
+        }
+      }
+      int f() {
+        n::a = 2;
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=2,firstnumber=14}
+      namespace p {
+        int f() {
+          p::a = 2;
+          a = 2;  //same as above
+          p::inner::a = 4;
+          inner::a = 4;
+          n::a = 5;
+        }
+      }
+      using namespace p::inner;
+      int g() {
+        a = 3; // using p::inner
+      }
+  \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleit{Nested namespaces}
+  Easier way to declare nested namespaces
+  \begin{alertblock}{\cpp14}
+    \begin{cppcode*}{}
+      namespace A {
+        namespace B {
+          namespace C {
+            //...
+          }
+        }
+      }
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp17}
+    \begin{cppcode*}{}
+      namespace A::B::C {
+        //...
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Anonymous namespaces}
+  \begin{exampleblock}{A namespace without a name !}
+    \begin{cppcode*}{}
+      namespace {
+        int localVar;
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{block}{Purpose}
+    \begin{itemize}
+    \item groups a number of declarations
+    \item visible in the current translation unit
+    \item but not reusable outside
+    \item allows much better compiler optimizations and checking
+      \begin{itemize}
+      \item e.g. unused function warning
+      \item context dependent optimizations
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{Deprecates static}
+    \begin{cppcode*}{gobble=2}
+      static int localVar; // equivalent C code
+    \end{cppcode*}
+  \end{alertblock}
+\end{frame}
+
 
 \subsection[$f()$]{Functions}
 
