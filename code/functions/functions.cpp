@@ -25,7 +25,7 @@ int main() {
     FastToCopy fast = {"abcdef"};
     printFiveCharacters(fast);
 
-    SlowToCopy slow;
+    SlowToCopy slow = {"ghijk"};
     // print it here
 
 

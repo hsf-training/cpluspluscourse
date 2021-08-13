@@ -10,6 +10,7 @@ struct SlowToCopy {
     // Functions to create and copy this struct.
     // We go into details on the next days.
     SlowToCopy();
+    SlowToCopy(const char* string);
     SlowToCopy(const SlowToCopy& other);
 };
 
