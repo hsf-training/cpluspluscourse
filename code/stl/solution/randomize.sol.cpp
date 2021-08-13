@@ -8,7 +8,7 @@
 using namespace std;
 using namespace __gnu_cxx;
 
-template<class T>
+template<typename T>
 struct Generator {
     T m_value, m_step;
     Generator(T initial, T step):m_value(initial), m_step(step){};
@@ -19,12 +19,12 @@ struct Generator {
     }
 };
 
-template<class T>
+template<typename T>
 struct sumsquare {
     T operator()(const T& s, const T& a) { return s + a * a; };
 };
     
-template<class T>
+template<typename T>
 void compute(int len, T initial, T step) {
     // allocate vectors
     std::vector<T> v(len+1), diffs(len+1);

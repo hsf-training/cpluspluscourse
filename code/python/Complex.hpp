@@ -1,4 +1,4 @@
-template <class T=float>
+template <typename T=float>
 class Complex_t {
 public:
     Complex_t(T r, T i);
@@ -21,49 +21,49 @@ private:
 
 typedef Complex_t<> Complex;
 
-template <class T>
+template <typename T>
 Complex_t<T>::Complex_t() {}
 
-template <class T>
+template <typename T>
 Complex_t<T>::Complex_t(T r) : m_r(r), m_i(0) {}
 
-template <class T>
+template <typename T>
 Complex_t<T>::Complex_t(T r, T i) : m_r(r), m_i(i) {}
 
-template <class T>
+template <typename T>
 Complex_t<T> Complex_t<T>::operator+(const Complex_t<T>& other) const {
     return Complex_t(m_r + other.m_r, m_i + other.m_i);
 }
 
-template <class T>
+template <typename T>
 Complex_t<T> Complex_t<T>::operator-(const Complex_t<T>& other) const {
     return Complex_t(m_r - other.m_r, m_i - other.m_i);
 }
 
-template <class T>
+template <typename T>
 Complex_t<T> Complex_t<T>::operator*(const Complex_t<T>& other) const {
     return Complex_t(m_r*other.m_r - m_i*other.m_i,
                      m_r*other.m_i + m_i*other.m_r);
 }
 
-template <class T>
+template <typename T>
 Complex_t<T> Complex_t<T>::operator*(const T factor) const {
     return Complex_t(m_r*factor, m_i*factor);
 }
 
-template <class T>
+template <typename T>
 Complex_t<T> Complex_t<T>::operator/(const T dividend) const {
     return Complex_t(m_r/dividend, m_i/dividend);
 }
 
-template <class T>
+template <typename T>
 Complex_t<T>& Complex_t<T>::operator+=(const Complex_t<T>& other) {
     m_r += other.m_r;
     m_i += other.m_i;
     return *this;
 }
 
-template <class T>
+template <typename T>
 bool Complex_t<T>::operator<(const Complex_t<T>& other) const {
     return (m_r*m_r+m_i*m_i) < (other.m_r*other.m_r+other.m_i*other.m_i);
 }
