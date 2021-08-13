@@ -20,6 +20,8 @@ add_custom_target( solution )
 add_subdirectory( hello )
 
 # Include the exercises that (should) work on all platforms.
+add_subdirectory( functions )
+add_subdirectory( loopsRefsAuto )
 add_subdirectory( callgrind )
 add_subdirectory( constness )
 add_subdirectory( cppcheck )
