@@ -39,7 +39,24 @@
 % packages %
 %%%%%%%%%%%%
 
+\usepackage{scontents}
+\makeatletter
+\let\verbatimsc\@undefined
+\let\endverbatimsc\@undefined
+\makeatother
 \usepackage{minted}
+\newminted{tex}{linenos}
+\newenvironment{verbatimsc}
+               {\VerbatimEnvironment
+                 \begin{minted}[linenos,escapeinside=||]{cpp}}
+               {\end{minted}}
+\newcommand\highlightCppCode[2]{
+  \renewenvironment{verbatimsc}
+                   {\VerbatimEnvironment
+                     \begin{minted}[linenos,highlightlines={#1},escapeinside=||]{cpp}}
+                   {\end{minted}}
+  \typestored{#2}
+}
 \newminted{cpp}{gobble=4,linenos}
 \newminted{shell-session}{gobble=4}
 \newminted[makefile]{shell-session}{gobble=4}
@@ -57,6 +74,8 @@
 
 \usepackage{multicol}
 \usepackage{tikz-uml}
+
+\usepackage{booktabs}
 
 %%%%%%%%%%%%%%%%%%%
 % useful commands %

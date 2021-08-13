@@ -116,41 +116,52 @@
   \end{cppcode}
 \end{frame}
 
+\Scontents*[store-cmd=code_arrays]{
+int i = 4;
+int *pi = &i;
+int j = *pi + 1;
+
+int ai[] = {1,2,3};
+int *pai = ai;
+int *paj = pai + 1;
+int k = *paj + 1;
+
+// not compiling
+int *pak = k;
+
+// seg fault !
+int *pak = (int*)k;
+int l = *pak;
+}
 \begin{frame}[fragile]
   \frametitlegb{Pointers}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
-      int i = 4;
-      int *pi = &i;
-      int j = *pi + 1;
-      
-      int ai[] = {1,2,3};
-      int *pai = ai;
-      int *paj = pai + 1;
-      int k = *paj + 1;
-      
-      // not compiling
-      int *pak = k;
-      
-      // seg fault !
-      int *pak = (int*)k;
-      int l = *pak;
-    \end{cppcode*}
+  \begin{overprint}[\columnwidth]
+    \onslide<1> \highlightCppCode{}{code_arrays}
+    \onslide<2> \highlightCppCode{1}{code_arrays}
+    \onslide<3> \highlightCppCode{2}{code_arrays}
+    \onslide<4> \highlightCppCode{3}{code_arrays}
+    \onslide<5> \highlightCppCode{5}{code_arrays}
+    \onslide<6> \highlightCppCode{6}{code_arrays}
+    \onslide<7> \highlightCppCode{7}{code_arrays}
+    \onslide<8> \highlightCppCode{8}{code_arrays}
+    \onslide<9> \highlightCppCode{11}{code_arrays}
+  \end{overprint}
+  \columnbreak
     \onslide<2->{
       \begin{tikzpicture}
         \memorystack[size x=3cm,word size=1,nb blocks=11]
-        \onslide<3-> {\memorypush{$i = 4$}}
-        \onslide<4-> {\memorypushpointer[pi =]{1}}
-        \onslide<5-> {\memorypush{$j = 5$}}
-        \onslide<6-> {\memorypush{$1$}}
-        \onslide<6-> {\memorypush{$2$}}
-        \onslide<6-> {\memorypush{$3$}}
-        \onslide<6-> {\memorypushpointer[ai =]{4}}
-        \onslide<7-> {\memorypushpointer[pai =]{4}}
-        \onslide<8-> {\memorypushpointer[paj =]{5}}
-        \onslide<9-> {\memorypush{$k = 3$}}
-        \onslide<10-> {\memorypush{$pak = 3$}}
-        \onslide<10-> {\draw[\stackcolor!80,->] (stack11-1.west) -- +(-0.5cm,0)
+        \onslide<2-> {\memorypush{$i = 4$}}
+        \onslide<3-> {\memorypushpointer[pi =]{1}}
+        \onslide<4-> {\memorypush{$j = 5$}}
+        \onslide<5-> {\memorypush{$1$}}
+        \onslide<5-> {\memorypush{$2$}}
+        \onslide<5-> {\memorypush{$3$}}
+        \onslide<6-> {\memorypushpointer[pai =]{4}}
+        \onslide<7-> {\memorypushpointer[paj =]{5}}
+        \onslide<8-> {\memorypush{$k = 3$}}
+        \onslide<9-> {\memorypush{$pak = 3$}}
+        \onslide<9-> {\draw[\stackcolor!80,->] (stack10-1.west) -- +(-0.5cm,0)
           node [anchor=east] {??};}
       \end{tikzpicture}
     }
@@ -161,6 +172,7 @@
   \frametitleii{nullptr}
   \begin{block}{Finally a \cpp~NULL pointer}
     \begin{itemize}
+    \item if a pointer doesn't point to anything, set it to \mintinline{cpp}{nullptr}
     \item works like 0 or NULL in standard cases
     \item triggers compilation error when mapped to integer
     \end{itemize}
@@ -198,188 +210,6 @@
   \end{cppcode}
 \end{frame}
 
-\subsection[Op]{Operators}
-
-\begin{frame}[fragile]
-  \frametitlegb{Operators(1)}
-  \begin{block}{Binary \& Assignment Operators}
-    \begin{cppcode*}{}
-      int i = 1 + 4 - 2;  // 3
-      i *= 3;             // 9
-      i /= 2;             // 4
-      i = 23 % i;         // modulo => 3
-    \end{cppcode*}
-  \end{block}
-  \pause
-  \begin{block}{Increment / Decrement \uncover<3->{\hfill \alert{\bf Use wisely}}}
-    \begin{cppcode*}{}
-      int i = 0; i++; // i = 1
-      int j = ++i;    // i = 2, j = 2
-      int k = i++;    // i = 3, k = 2
-      int l = --i;    // i = 2, l = 2
-      int m = i--;    // i = 1, m = 2
-    \end{cppcode*}
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Operators(2)}
-  \begin{block}{Bitwise and Assignment Operators}
-    \begin{cppcode*}{}
-      int i = 0xee & 0x55;  // 0x44
-      i |= 0xee;            // 0xee
-      i ^= 0x55;            // 0xbb
-      int j = ~0xee;        // 0xffffff11
-      int k = 0x1f << 3;    // 0x78
-      int l = 0x1f >> 2;    // 0x7
-    \end{cppcode*}
-  \end{block}
-  \pause
-  \begin{block}{Boolean Operators}
-    \begin{cppcode*}{}
-      bool a = true;
-      bool b = false;
-      bool c = a && b;    // false
-      bool d = a || b;    // true
-      bool e = !d;        // false
-    \end{cppcode*}
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Operators(3)}
-  \begin{block}{Comparison Operators}
-    \begin{cppcode*}{}
-      bool a = (3 == 3);  // true
-      bool b = (3 != 3);  // false
-      bool c = (4 < 4);   // false
-      bool d = (4 <= 4);  // true
-      bool e = (4 > 4);   // false
-      bool f = (4 >= 4);  // true
-    \end{cppcode*}
-  \end{block}
-  \pause
-  \begin{block}{Precedences \uncover<3->{\hfill \alert{\bf Don't use}\uncover<4->{\color{green} \bf\ - use parenthesis}}}
-    \begin{cppcode*}{linenos=false}
-      c &= 1+(++b)|(a--)*4%5^7; // ???
-    \end{cppcode*}
-  \end{block}
-\end{frame}
-
-\subsection[NS]{Scopes / namespaces}
-
-\begin{frame}[fragile]
-  \frametitlegb{Scope}
-  \begin{block}{Definition}
-    Portion of the source code where a given name is valid \\
-    Typically :
-    \begin{itemize}
-    \item simple block of code, within \mintinline{cpp}{{}}
-    \item function, class, namespace
-    \item source file for global declarations
-    \end{itemize}
-  \end{block}
-  \begin{exampleblock}{Example}
-    \begin{cppcode*}{}
-      { int a;
-        { int b;
-        } // end of b scope
-      } // end of a scope
-    \end{cppcode*}
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Namespaces}
-  \begin{itemize}
-  \item Namespaces allow to segment your code to avoid name clashes
-  \item They can be embedded to create hierarchies (separator is '::')
-  \end{itemize}
-  \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
-      int a;
-      namespace n {
-        int a;   // no clash
-      }
-      namespace p {
-        int a;   // no clash
-        namespace inner {
-          int a; // no clash
-        }
-      }
-      int f() {
-        n::a = 2;
-      }
-    \end{cppcode*}
-    \columnbreak
-    \begin{cppcode*}{gobble=2,firstnumber=14}
-      namespace p {
-        int f() {
-          p::a = 2;
-          a = 2;  //same as above
-          p::inner::a = 4;
-          inner::a = 4;
-          n::a = 5;
-        }
-      }
-      using namespace p::inner;
-      int g() {
-        a = 3; // using p::inner
-      }
-  \end{cppcode*}
-  \end{multicols}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitleit{Nested namespaces}
-  Easier way to declare nested namespaces
-  \begin{alertblock}{\cpp14}
-    \begin{cppcode*}{}
-      namespace A {
-        namespace B {
-          namespace C {
-            //...
-          }
-        }
-      }
-    \end{cppcode*}
-  \end{alertblock}
-  \begin{exampleblock}{\cpp17}
-    \begin{cppcode*}{}
-      namespace A::B::C {
-        //...
-      }
-    \end{cppcode*}
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Anonymous namespaces}
-  \begin{exampleblock}{A namespace without a name !}
-    \begin{cppcode*}{}
-      namespace {
-        int localVar;
-      }
-    \end{cppcode*}
-  \end{exampleblock}
-  \begin{block}{Purpose}
-    \begin{itemize}
-    \item groups a number of declarations
-    \item visible in the current translation unit
-    \item but not reusable outside
-    \item allows much better compiler optimizations and checking
-      \begin{itemize}
-      \item e.g. unused function warning
-      \item context dependent optimizations
-      \end{itemize}
-    \end{itemize}
-  \end{block}
-  \begin{alertblock}{Deprecates static}
-    \begin{cppcode*}{gobble=2}
-      static int localVar; // equivalent C code
-    \end{cppcode*}
-  \end{alertblock}
-\end{frame}
 
 \subsection[Compound]{Compound data types}
 
@@ -585,6 +415,60 @@
   \end{exampleblock}
 \end{frame}
 
+
+\subsection[Refs]{References}
+
+\begin{frame}[fragile]
+  \frametitlegb{References}
+  \begin{block}{References}
+    \begin{itemize}
+      \item References allow for direct access to another object
+      \item They can be used as shortcuts / better readability
+      \item They can be declared \mintinline{cpp}{const} to allow only read access
+      \item They can be used as function arguments
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Example:}
+    \begin{cppcode*}{gobble=2}
+      int i = 2;
+      int &iref = i; // access to i
+      iref = 3;      // i is now 3
+
+      // const reference to a member:
+      struct A { int x; int y; } a;
+      const int &x = a.x; // direct read access to A's x
+      x = 4;              // doesn't compile
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Pointers vs References}
+  \begin{block}{Specificities of reference}
+    \begin{itemize}
+    \item natural syntax
+    \item will never be \mintinline{cpp}{nullptr}
+    \item thus cannot reference temporary object
+    \end{itemize}
+  \end{block}
+  \begin{block}{Advantages of pointers}
+    \begin{itemize}
+    \item can be \mintinline{cpp}{nullptr}
+    \item clearly indicates that argument may be modified
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{Good practice}
+    \begin{itemize}
+      \item Always use references when you can
+      \item Consider that a reference will be modified
+      \item Use constness when it's not the case
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+
 \subsection[$f()$]{Functions}
 
 \begin{frame}[fragile]
@@ -617,164 +501,472 @@
   \end{multicols}
 \end{frame}
 
+\Scontents*[store-cmd=code_bigStruct]{
+struct BigStruct {...};
+BigStruct s;
+
+// parameter by value
+void printBS(BigStruct p) {
+  ...
+}
+printBS(s); // copy
+
+// parameter by reference
+void printBSp(BigStruct &q) {
+  ...
+}
+printBSp(s); // no copy
+}
 \begin{frame}[fragile]
-  \frametitlegb{Parameter are passed by value}
+  \frametitlegb{Functions: parameters are passed by value}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
-      struct BigStruct {...};
-      BigStruct s;
-      
-      // parameter by value
-      void printBS(BigStruct p) {
-        ...
-      }
-      printBS(s); // copy
-      
-      // parameter by pointer
-      void printBSp(BigStruct *q) {
-        ...
-      }
-      printBSp(&s); // no copy
-    \end{cppcode*}
+    \begin{overprint}[\columnwidth]
+      \onslide<1-2>
+      \highlightCppCode{2}{code_bigStruct}
+      \onslide<3>
+      \highlightCppCode{5,8}{code_bigStruct}
+      \onslide<4->
+      \highlightCppCode{11,14}{code_bigStruct}
+    \end{overprint}
     \columnbreak
     \null \vfill
-    \onslide<2->{
-      \begin{tikzpicture}
-        \memorystack[word size=1, nb blocks=7, size x=3cm]
-        \onslide<3-> {
-          \memorypush{s1}
-          \memorypush{...}
-          \memorypush{sn}
-          \memorystruct{1}{3}{s}
-        }
-        \onslide<4> {
-          \memorypush{p1 = s1}
-          \memorypush{...}
-          \memorypush{pn = sn}
-          \memorystruct{4}{6}{p}
-        }
-        \memorygoto{4}
-        \onslide<6> {
-          \memorypushpointer[q =]{1}
-        }
+    \begin{tikzpicture}
+      \memorystack[word size=1, nb blocks=7, size x=3cm]
+      \onslide<2-> {
+        \memorypush{s1}
+        \memorypush{...}
+        \memorypush{sn}
+        \memorystruct{1}{3}{s}
+      }
+      \onslide<3> {
+        \memorypush{p1 = s1}
+        \memorypush{...}
+        \memorypush{pn = sn}
+        \memorystruct{4}{6}{p}
+      }
+      \memorygoto{4}
+      \onslide<4> {
+        \memorypushpointer[q =]{1}
+      }
+    \end{tikzpicture}
+    \vfill \null
+  \end{multicols}
+\end{frame}
+
+\Scontents*[store-cmd=code_smallStruct]{
+struct SmallStruct {int a};
+SmallStruct s = {1};
+
+void changeSS(SmallStruct p) {
+  p.a = 2;
+}
+changeSS(s);
+// s.a = 1
+
+void changeSS2(SmallStruct &q) {
+  q.a = 2;
+}
+changeSS2(s);
+// s.a = 2
+}
+\begin{frame}[fragile]
+  \frametitlegb{Functions: pass by value or reference?}
+  \begin{multicols}{2}
+    \begin{overprint}[\columnwidth]
+      \onslide<1>
+      \highlightCppCode{}{code_smallStruct}
+      \onslide<2>
+      \highlightCppCode{2}{code_smallStruct}
+      \onslide<3>
+      \highlightCppCode{4,7}{code_smallStruct}
+      \onslide<4>
+      \highlightCppCode{5}{code_smallStruct}
+      \onslide<5>
+      \highlightCppCode{8}{code_smallStruct}
+      \onslide<6>
+      \highlightCppCode{10,13}{code_smallStruct}
+      \onslide<7>
+      \highlightCppCode{11}{code_smallStruct}
+      \onslide<8>
+      \highlightCppCode{14}{code_smallStruct}
+    \end{overprint}
+    \columnbreak
+    \null \vfill
+    \begin{tikzpicture}
+      \memorystack[word size=1, nb blocks=3, size x=3cm]
+      \onslide<2-6> {
+        \memorypush{s.a = 1}
+      }
+      \memorygoto{1}
+      \onslide<7-> {
+        \memorypush{s.a = 2}
+      }
+
+      \memorygoto{2}
+      \onslide<3> {
+        \memorypush{p.a = 1}
+      }
+      \memorygoto{2}
+      \onslide<4> {
+        \memorypush{p.a = 2}
+      }
+      \memorygoto{2}
+      \onslide<6-7> {
+        \memorypushpointer[q =]{1}
+      }
       \end{tikzpicture}
-    }
     \vfill \null
   \end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Parameter are passed by value}
-  \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
-      struct SmallStruct {int a};
-      SmallStruct s = {1};
-      
-      void changeSS(SmallStruct p) {
-        p.a = 2;
-      }
-      changeSS(s);
-      // s.a = 1
-      
-      void changeSS2(SmallStruct *q) {
-        q->a = 2;
-      }
-      changeSS2(&s);
-      // s.a = 2
-    \end{cppcode*}
-    \columnbreak
-    \null \vfill
-    \onslide<2->{
-      \begin{tikzpicture}
-        \memorystack[word size=1, nb blocks=3, size x=3cm]
-        \onslide<3-7> {
-          \memorypush{s.a = 1}
-        }
-        \onslide<4> {
-          \memorypush{p.a = 1}
-        }
-        \memorygoto{2}
-        \onslide<5> {
-          \memorypush{p.a = 2}
-        }
-        \memorygoto{2}
-        \onslide<7-> {
-          \memorypushpointer[q =]{1}
-        }
-        \memorygoto{1}
-        \onslide<8> {
-          \memorypush{s.a = 2}
-        }
-      \end{tikzpicture}
-    }
-    \vfill \null
-  \end{multicols}
-\end{frame}
-
-\subsection[Refs]{References}
-
-\begin{frame}[fragile]
-  \frametitlegb{Value, pointers and references}
+  \frametitlegb{Value vs. pointers and references}
   \begin{block}{Different ways to pass arguments to a function}
     \begin{itemize}
-    \item by default arguments are passed by value
-    \item pointers can be used to avoid copies
-    \item references are also available and are preferred
+    \item by default arguments are passed by value (= copy, good for small types, e.g.\ numbers)
+    \item references are preferred to avoid copies
+    \item same for pointers, but less favoured
+    \item use \mintinline{cpp}{const} for safety
     \end{itemize}
   \end{block}
   \pause
   \begin{block}{Syntax}
-    \begin{cppcode}
-      struct T {...}; T a;
-      void func   (T value); f(a);   // by value
-      void funcPtr(T *value); f(&a); // pointer
-      void funcRef(T &value); f(a);  // by reference
-    \end{cppcode}
+    \begin{cppcode*}{escapeinside=||}
+struct T {...}; T a;
+void f(T value);           f(a);      // by value
+void fRef(const T &value); fRef(a);   // by reference
+void fPtr(const T *value); fPtr(|{\setlength{\fboxsep}{0pt}\color{gray}\colorbox{yellow}{\textsc{&}}}|a);  // by pointer
+void fWrite(T &value);     fWrite(a); // non-const ref
+    \end{cppcode*}
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Value versus pointers/reference}
-  \begin{block}{When passing by value}
+  \frametitlegb{Functions}
+  \begin{alertblock}{Exercise}
+    Familiarise yourself with pass by copy / pass by reference.
     \begin{itemize}
-    \item a copy is created
-    \item making the original argument unmodifiable (aka const)
-    \item efficient for small types, e.g. numbers
-    \end{itemize}
-  \end{block}
-  \begin{block}{When passing by pointer/reference}
-    \begin{itemize}
-    \item no copy of your argument
-    \item in the back only a memory address is copied
-    \item argument can be modified (unless you use constness, see later)
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlegb{Pointers vs References}
-  \begin{block}{Specificities of reference}
-    \begin{itemize}
-    \item natural syntax
-    \item will never be {\ttfamily nullptr}
-    \item thus cannot reference temporary object
-    \end{itemize}
-  \end{block}
-  \begin{block}{Advantages of pointers}
-    \begin{itemize}
-    \item can be {\ttfamily nullptr}
-    \item clearly indicates that argument may be modified
-    \end{itemize}
-  \end{block}
-  \pause
-  \begin{alertblock}{Good practice}
-    \begin{itemize}
-      \item Always use references when you can
-      \item Consider that a reference will be modified
-      \item Use constness when it's not the case
+      \item go to \texttt{code/functions}
+      \item Look at \texttt{functions.cpp}
+      \item Compile it (\texttt{make}) and run the program (\texttt{./functions})
+      \item Work on the tasks that you find in \texttt{functions.cpp}
     \end{itemize}
   \end{alertblock}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Functions: good practices}
+  \begin{onlyenv}<1>
+    \begin{block}{Good practices with functions}
+      \begin{itemize}
+        \item Keep functions short
+        \item Do one logical thing
+        \item Use expressive names
+        \item Document the functions
+      \end{itemize}
+    \end{block}
+    \begin{exampleblock}{Example: Good}
+      \begin{cppcode*}{gobble=2}
+        /// Count number of dilepton events in data.
+        /// \param d Dataset to search.
+        unsigned int countDileptons(Data d) {
+          selectEventsWithMuons(d);
+          selectEventsWithElectrons(d);
+          return d.size();
+        }
+      \end{cppcode*}
+    \end{exampleblock}
+  \end{onlyenv}
+  \begin{onlyenv}<2->
+    \begin{alertblock}{Example: don't! Everything in one long function}
+      \begin{multicols}{2}
+        \begin{cppcode*}{gobble=6}
+          unsigned int foo() {
+            // Step 1: data
+            Data data;
+            data.resize(123456);
+            data.fill(...);
+
+            // Step 2: muons
+            for (....) {
+              if (...) {
+                data.delete(...);
+              }
+            }
+            // Step 3: electrons
+            for (....) {
+        \end{cppcode*}
+        \columnbreak
+        \begin{cppcode*}{gobble=6,firstnumber=last}
+              if (...) {
+                data.delete(...);
+              }
+            }
+
+            // Step 4: dileptons
+            int counter = 0;
+            for (....) {
+              if (...) {
+                counter++;
+              }
+            }
+
+            return counter;
+          }
+        \end{cppcode*}
+      \end{multicols}
+    \end{alertblock}
+  \end{onlyenv}
+\end{frame}
+
+
+\subsection[Op]{Operators}
+
+\begin{frame}[fragile]
+  \frametitlegb{Operators(1)}
+  \begin{block}{Binary \& Assignment Operators}
+    \begin{cppcode*}{}
+      int i = 1 + 4 - 2;  // 3
+      i *= 3;             // 9
+      i /= 2;             // 4
+      i = 23 % i;         // modulo => 3
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{Increment / Decrement \uncover<3->{\hfill \alert{\bf Use wisely}}}
+    \begin{cppcode*}{}
+      int i = 0; i++; // i = 1
+      int j = ++i;    // i = 2, j = 2
+      int k = i++;    // i = 3, k = 2
+      int l = --i;    // i = 2, l = 2
+      int m = i--;    // i = 1, m = 2
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Operators(2)}
+  \begin{block}{Bitwise and Assignment Operators}
+    \begin{cppcode*}{}
+      int i = 0xee & 0x55;  // 0x44
+      i |= 0xee;            // 0xee
+      i ^= 0x55;            // 0xbb
+      int j = ~0xee;        // 0xffffff11
+      int k = 0x1f << 3;    // 0x78
+      int l = 0x1f >> 2;    // 0x7
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{Boolean Operators}
+    \begin{cppcode*}{}
+      bool a = true;
+      bool b = false;
+      bool c = a && b;    // false
+      bool d = a || b;    // true
+      bool e = !d;        // false
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Operators(3)}
+  \begin{block}{Comparison Operators}
+    \begin{cppcode*}{}
+      bool a = (3 == 3);  // true
+      bool b = (3 != 3);  // false
+      bool c = (4 <  4);  // false
+      bool d = (4 <= 4);  // true
+      bool e = (4 >  4);  // false
+      bool f = (4 >= 4);  // true
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{Precedences \uncover<3->{\hfill \alert{\bf Don't use}\uncover<4->{\color{green} \bf\ - use parenthesis}}}
+    \begin{cppcode*}{linenos=false}
+      c &= 1+(++b)|(a--)*4%5^7; // ???
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\subsection[NS]{Scopes / namespaces}
+
+\begin{frame}[fragile]
+  \frametitlegb{Scope}
+  \begin{block}{Definition}
+    Portion of the source code where a given name is valid \\
+    Typically :
+    \begin{itemize}
+    \item simple block of code, within \mintinline{cpp}{{}}
+    \item function, class, namespace
+    \item source file for global declarations
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      { int a;
+        { int b;
+        } // end of b scope
+      } // end of a scope
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\Scontents*[store-cmd=code_scopes]{
+int a = 1;
+{
+  int b[4];
+  b[0] = a;
+}
+// Doesn't compile:
+// b[1] = a + 1;
+}
+\begin{frame}[fragile]
+  \frametitlegb{Scope and lifetime of resources}
+  \begin{block}{Resource life time}
+    \begin{itemize}
+      \item Resources are allocated when declared
+      \item Resources are freed at the end of a scope
+      \item Good practice: initialise resources when allocating!
+    \end{itemize}
+  \end{block}
+  \begin{multicols}{2}
+    \begin{overprint}[\columnwidth]
+    \onslide<1>
+    \highlightCppCode{1}{code_scopes}
+    \onslide<2>
+    \highlightCppCode{3}{code_scopes}
+    \onslide<3>
+    \highlightCppCode{4}{code_scopes}
+    \onslide<4>
+    \highlightCppCode{7}{code_scopes}
+    \end{overprint}
+
+    \columnbreak
+
+    \begin{tikzpicture}
+      \memorystack[word size=1, nb blocks=5, size x = 0.5\columnwidth]
+      \onslide<1-> {
+        \memorypush{a = 1}
+      }
+      \onslide<2>{
+        \memorypush{b[0] = ?}
+      }
+      \memorygoto{2}
+      \onslide<3>{
+        \memorypush{b[0] = 1}
+      }
+      \memorygoto{3}
+      \onslide<2-3>{
+        \memorypush{b[1] = ?}
+        \memorypush{b[2] = ?}
+        \memorypush{b[3] = ?}
+      }
+
+      \memorygoto{2}
+      \onslide<4>{
+        \memorypush{\color{gray} 1}
+        \memorypush{\color{gray} ?}
+        \memorypush{\color{gray} ?}
+        \memorypush{\color{gray} ?}
+        }
+
+    \end{tikzpicture}
+
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Namespaces}
+  \begin{itemize}
+  \item Namespaces allow to segment your code to avoid name clashes
+  \item They can be embedded to create hierarchies (separator is '::')
+  \end{itemize}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2}
+      int a;
+      namespace n {
+        int a;   // no clash
+      }
+      namespace p {
+        int a;   // no clash
+        namespace inner {
+          int a; // no clash
+        }
+      }
+      int f() {
+        n::a = 2;
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=2,firstnumber=14}
+      namespace p {
+        int f() {
+          p::a = 2;
+          a = 2;  //same as above
+          p::inner::a = 4;
+          inner::a = 4;
+          n::a = 5;
+        }
+      }
+      using namespace p::inner;
+      int g() {
+        a = 3; // using p::inner
+      }
+  \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleit{Nested namespaces}
+  Easier way to declare nested namespaces
+  \begin{alertblock}{\cpp14}
+    \begin{cppcode*}{}
+      namespace A {
+        namespace B {
+          namespace C {
+            //...
+          }
+        }
+      }
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp17}
+    \begin{cppcode*}{}
+      namespace A::B::C {
+        //...
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Anonymous namespaces}
+  \begin{exampleblock}{A namespace without a name !}
+    \begin{cppcode*}{}
+      namespace {
+        int localVar;
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{block}{Purpose}
+    \begin{itemize}
+    \item groups a number of declarations
+    \item visible in the current translation unit
+    \item but not reusable outside
+    \item allows much better compiler optimizations and checking
+      \begin{itemize}
+      \item e.g. unused function warning
+      \item context dependent optimizations
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{Deprecates static}
+    \begin{cppcode*}{gobble=2}
+      static int localVar; // equivalent C code
+    \end{cppcode*}
+  \end{alertblock}
+\end{frame}
+
 
 \subsection[Control]{Control instructions}
 
@@ -1124,5 +1316,18 @@
       for (auto n : v) { sum += n; }
     \end{cppcode*}
   \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlegb{Loops, references, auto}
+  \begin{alertblock}{Exercise}
+    Familiarise yourself with range-based for loops and references
+    \begin{itemize}
+      \item go to \texttt{code/loopsRefsAuto}
+      \item Look at \texttt{loopsRefsAuto.cpp}
+      \item Compile it (\texttt{make}) and run the program (\texttt{./loopsRefsAuto})
+      \item Work on the tasks that you find in \texttt{loopsRefsAuto.cpp}
+    \end{itemize}
+  \end{alertblock}
 \end{frame}
 
