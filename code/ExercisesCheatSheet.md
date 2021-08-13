@@ -7,7 +7,20 @@ For each day, the exercises are given in order in which they should be done.
 
 Day 1
 -----
-No actual exercise, only setup of the environment, using the "hello" exercise.
+### `hello`
+Just try to compile and run `./hello` to make sure that everything is set up correctly.
+
+### `functions`: pass by copy / pass by reference
+- Write a `printFiveCharacters(SlowToCopy)` function using the existing function as a model. Change its name
+  if overloading isn't desired.
+- Call it in `main()`.
+- Make sure that the signature is `(SlowToCopy const & a)` to avoid copies.
+- Try to modify the data in the structs. Compare what happens for each of `(SlowToCopy a), (SlowToCopy & a), (SlowToCopyy const & a)`.
+
+### loopsRefsAuto
+- Write an indexed for loop to initialise the members of the structs. The program should not print garbage numbers.
+- Use `auto const &` to prevent copies in the second loop.
+- Understand the difference to `auto &`, get in the habit of using const references.
 
 Day 2
 -----
