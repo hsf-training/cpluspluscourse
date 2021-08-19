@@ -73,6 +73,15 @@ The goal there is really to play, look around and try things. Tutors may have a 
 
 The solution of the crash is simply an inversion of 2 lines in the code where definition of v and it's randomization are inverted.
 
+### Address sanitizer
+
+The goal is to play with asan, and learn to read the very detailed hints it gives when it detects an error.
+
+There's two bugs and one memory leak:
+- `stackOverflow()` overflows the stack by writing past the end of an array in the for loop.
+- `useAfterFree()` returns a reference to a temporary. One should return a copy.
+- `memoryLeak()` lets a string leak.
+
 ### valgrind
 
 Again the point is to play with the tool.
