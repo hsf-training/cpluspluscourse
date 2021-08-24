@@ -561,13 +561,13 @@ void changeSS(SmallStruct p) {
   p.a = 2;
 }
 changeSS(s);
-// s.a = 1
+// s.a == 1
 
 void changeSS2(SmallStruct &q) {
   q.a = 2;
 }
 changeSS2(s);
-// s.a = 2
+// s.a == 2
 }
 \begin{frame}[fragile]
   \frametitlegb{Functions: pass by value or reference?}
