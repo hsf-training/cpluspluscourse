@@ -449,7 +449,7 @@ int l = *pak;
     \begin{itemize}
     \item natural syntax
     \item will never be \mintinline{cpp}{nullptr}
-    \item thus cannot reference temporary object
+    \item non-const references to temporary objects are not allowed
     \end{itemize}
   \end{block}
   \begin{block}{Advantages of pointers}
