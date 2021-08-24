@@ -1311,7 +1311,7 @@ int a = 1;
     \begin{cppcode*}{}
       std::vector<int> v;
       auto a = v[3];
-      auto b = v.size();
+      const auto b = v.size();
       int sum{0};
       for (auto n : v) { sum += n; }
     \end{cppcode*}
