@@ -37,10 +37,10 @@
         int a;
         void squareA() {
           a *= a;
-        };
+        }
         int sum(int b) {
           return a + b;
-        };
+        }
       };
 
       MyFirstClass myObj;
@@ -80,10 +80,10 @@
       #include "MyFirstClass.hpp"
       void MyFirstClass::squareA() {
         a *= a;
-      };
+      }
       void MyFirstClass::sum(int b) {
         return a + b;
-      };
+      }
     \end{cppcode*}
   \end{block}
 \end{frame}
@@ -100,11 +100,11 @@
   \begin{cppcode}
     void MyFirstClass::squareA() {
       a *= a;
-    };
+    }
 
     int MyFirstClass::sum(int b) {
       return a + b;
-    };
+    }
   \end{cppcode}
 \end{frame}
 
@@ -124,7 +124,7 @@
     
     int MyFirstClass::some_method(...) {
       ext_func(*this);
-    };
+    }
   \end{cppcode}
 \end{frame}
 
@@ -144,11 +144,11 @@
       int sum(int b, int c);
     }
 
-    int MyFirstClass::sum(int b) { return a + b; };
+    int MyFirstClass::sum(int b) { return a + b; }
 
     int MyFirstClass::sum(int b, int c) {
       return a + b + c;
-    };
+    }
   \end{cppcode}
 \end{frame}
 
@@ -160,12 +160,12 @@
     \begin{cppcode*}{gobble=2}
       struct MyFirstClass {
         int a;
-        void squareA() { a *= a; };
+        void squareA() { a *= a; }
       };
       struct MySecondClass :
         MyFirstClass {
         int b;
-        int sum() { return a + b; };
+        int sum() { return a + b; }
       };
 
       MySecondClass myObj2;
@@ -254,7 +254,7 @@
       public:
         int sum() {
           return a + b;
-        };
+        }
       private:
         int b;
       }
@@ -465,7 +465,7 @@
       
       MyFirstClass(int a_):a(a_) {}
 
-      ~MyFirstClass(){};
+      ~MyFirstClass() {}
     \end{cppcode*}
   \end{multicols}
 \end{frame}
@@ -507,10 +507,10 @@
       MySecondClass(int b);
       MySecondClass(int a, int b);
     };
-    MySecondClass() : MyFirstClass(), b(0) {};
-    MySecondClass(int b_) : MyFirstClass(), b(b_) {};
+    MySecondClass() : MyFirstClass(), b(0) {}
+    MySecondClass(int b_) : MyFirstClass(), b(b_) {}
     MySecondClass(int a_,
-                  int b_) : MyFirstClass(a_), b(b_) {};
+                  int b_) : MyFirstClass(a_), b(b_) {}
   \end{cppcode}
 \end{frame}
 
@@ -599,8 +599,8 @@
     \begin{cppcode}
       struct Delegate {
         int m_i;
-        Delegate() { ... complex initialization ...};
-        Delegate(int i) : Delegate(), m_i(i) {};
+        Delegate() { ... complex initialization ...}
+        Delegate(int i) : Delegate(), m_i(i) {}
       };
     \end{cppcode}
   \end{exampleblock}
@@ -640,7 +640,7 @@
       struct BaseClass {
         int a{5};
         BaseClass() = default;
-        BaseClass(int _a) : a(_a) {};
+        BaseClass(int _a) : a(_a) {}
       };
       struct DerivedClass : BaseClass {
         int b{6};
@@ -748,7 +748,7 @@
   \begin{cppcode}
     class Text {
     public:
-      static std::string upper(std::string) {...};
+      static std::string upper(std::string) {...}
     private:
       static int s_nbCallsToUpper;
     };
@@ -891,7 +891,7 @@
     \begin{cppcode*}{gobble=2}
       Polygon p;
 
-      int f(Drawable & d) {...};
+      int f(Drawable & d) {...}
       f(p);  //ok
 
       try {
@@ -925,7 +925,7 @@
     \begin{cppcode*}{gobble=2}
       Polygon p;
 
-      int f(Drawable & d) {...};
+      int f(Drawable & d) {...}
       f(p);  // Not ok anymore
 
       try {
