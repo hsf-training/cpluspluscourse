@@ -1157,7 +1157,7 @@ int a = 1;
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{}
       for(int i = 0, j = 0 ; i < 10 ; i++, j = i*i) {
-        std::cout << i << "^2 is " << j << "\n";
+        std::cout << i << "^2 is " << j << '\n';
       }
     \end{cppcode*}
   \end{exampleblock}
@@ -1232,7 +1232,7 @@ int a = 1;
       while (1) {
         if (n == 1) break;
         if (0 == n%2) {
-          std::cout << n << "\n";
+          std::cout << n << '\n';
           n /= 2;
           continue;
         }
