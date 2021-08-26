@@ -33,6 +33,7 @@ add_subdirectory( smartPointers )
 add_subdirectory( templates )
 add_subdirectory( valgrind )
 add_subdirectory( virtual_inheritance )
+add_subdirectory( asan )
 
 # Include the non-Windows-native exercises.
 if( NOT MSVC )

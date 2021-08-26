@@ -283,6 +283,220 @@
   \end{alertblock}
 \end{frame}
 
+\subsection[asan]{Address Sanitizer}
+
+\begin{frame}[fragile]
+  \frametitle{Address Sanitizer (asan)}
+  \begin{block}{asan introduction}
+    \begin{itemize}
+    \item Compiler instrumentation supported by gcc and clang
+    \item Program stops on invalid memory access, e.g.\
+      \begin{itemize}
+        \item Invalid read/write on heap and stack
+        \item Double free/delete, use after free
+        \item Buffer overflow on stack (few tools can do this)
+        \item Only linux: memory leaks
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Usage}
+    \begin{itemize}
+    \item Compile with \mintinline{bash}{-fsanitize=address -fno-omit-frame-pointer -g}
+    \item With clang, add optionally: \texttt{-fsanitize-address-use-after-return=always -fsanitize-address-use-after-scope}
+    \item Link with \mintinline{bash}{-fsanitize=address}
+    \item Run the program
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Address Sanitizer (asan)}
+  \begin{block}{How it works}
+    \begin{itemize}
+      \item Compiler adds run-time checks ($\sim$2x slow down)
+      \item \mintinline{cpp}{IsPoisoned(address)} looks up state of address in asan's ``shadow memory''
+      \item Shadow memory: memory where 1 shadow byte tracks state of 8 application bytes (state = accessible, poisoned, \ldots)
+      \item Functions that deal with memory (\mintinline{cpp}{new() / delete()} / strings / ...) update entries in shadow memory when called
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{asan instrumentation (mock code)}
+    \begin{overprint}
+      \onslide<1>
+      \vfill
+      \begin{cppcode*}{gobble=4}
+        int i = *address;
+      \end{cppcode*}
+      \onslide<2->
+      \vfill
+      \begin{cppcode*}{gobble=4}
+        if (IsPoisoned(address)) {
+          ReportError(address, kAccessSize, kIsWrite);
+        }
+        int i = *address;
+      \end{cppcode*}
+    \end{overprint}
+  \end{exampleblock}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{asan red zones}
+    \begin{itemize}
+      \item If adjacent data blocks are owned by the process, the operating system will allow an access
+      \item<2> asan surrounds blocks of memory by poisoned red zones
+      \item<2> Program stops when accessing a red zone
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Illegal access (not detected without asan)}
+    \begin{multicols}{2}
+      \begin{overprint}
+        \onslide<1>
+        \begin{minted}{cpp}
+ void foo() {
+   char a[8];
+   char b[8];
+   a[8] = '1';
+ }
+        \end{minted}
+        \onslide<2>
+        \begin{minted}{diff}
+ void foo() {
++  char redzone1[32];
+   char a[8];
++  char redzone2[24];
+   char b[8];
++  char redzone3[24];
++  // <poison redzones>
+   a[8] = '1';
++  // <unpoison redzones>
+ }
+        \end{minted}
+      \end{overprint}
+      \columnbreak
+      \begin{tikzpicture}
+        \clip (0,0) rectangle (6cm, 3cm);
+        \memorystack[word size=4,nb blocks=4]
+        \onslide<1>{
+          \draw[fill=green!70,opacity=0.5] (0.,0.*\stacksizey) rectangle (\stacksizex/4.,1.*\stacksizey) node[midway]{\footnotesize a[0-7]};
+          \draw[fill=orange,opacity=0.5] (\stacksizex/4.,0.*\stacksizey) rectangle (\stacksizex/2.,1.*\stacksizey) node[midway]{\footnotesize b[0-7]};
+        }
+        \memorygoto{2}
+        \onslide<2->{
+          \draw[fill=red!70,opacity=0.5] (0.,0.*\stacksizey) rectangle (\stacksizex,1.*\stacksizey) node[midway]{redzone1};
+          \memorypush{a[0-7]}
+          \draw[fill=red!70,opacity=0.5] (0.+\stacksizex/4.,1.*\stacksizey) rectangle (\stacksizex,2.*\stacksizey) node[midway]{redzone2};
+          \memorypush{b[0-7]}
+          \draw[fill=red!70,opacity=0.5] (0.+\stacksizex/4.,2.*\stacksizey) rectangle (\stacksizex,3.*\stacksizey) node[midway]{redzone3};
+        }
+      \end{tikzpicture}
+    \end{multicols}
+    \vspace{1mm}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \vspace{-1\baselineskip}
+  \begin{columns}
+    \column{\textwidth+1cm}
+    \scriptsize
+    \begin{Verbatim}[commandchars=\\\{\}]
+    \ttfamily
+\textcolor{green}{==34015==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x7ffee93ed968 at pc 0x000106812df4 bp 0x7ffee93ed930 sp 0x7ffee93ed928}
+\textcolor{blue}{WRITE of size 1 at 0x7ffee93ed968 thread T0}
+    #0 0x106812df3 in foo() asan.cpp:4
+    #1 0x106812ed8 in main asan.cpp:9
+    #2 0x7fff6d3923d4 in start (libdyld.dylib:x86_64+0x163d4)
+
+\textcolor{green}{Address 0x7ffee93ed968 is located in stack of thread T0 at offset 40 in frame}
+    #0 0x106812cdf in foo() asan.cpp:1
+
+  This frame has 2 object(s):
+    [32, 40) 'a' (line 2) \textcolor{green}{<== Memory access at offset 40 overflows this variable}
+    [64, 72) 'b' (line 3)
+Shadow bytes around the buggy address:
+=>0x1fffdd27db20: 00 00 00 00 00 00 00 00 \textcolor{red}{f1 f1 f1 f1} 00[\textcolor{red}{f2}]\textcolor{red}{f2 f2}
+  0x1fffdd27db30: 00 \textcolor{red}{f3 f3 f3} 00 00 00 00 00 00 00 00 00 00 00 00
+  0x1fffdd27db40: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x1fffdd27db50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07
+  Heap left redzone:       \textcolor{red}{fa}
+  Freed heap region:       \textcolor{pink}{fd}
+  Stack left redzone:      \textcolor{red}{f1}
+  Stack mid redzone:       \textcolor{red}{f2}
+  Stack right redzone:     \textcolor{red}{f3}
+  Stack after return:      \textcolor{pink}{f5}
+    \end{Verbatim}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{columns}
+    \column{\textwidth+1cm}
+    \begin{block}{Finding memory leaks with asan}
+      \begin{itemize}
+        \item On linux, asan can display memory leaks
+        \item Start executable with \mintinline{bash}{ASAN_OPTIONS=detect_leaks=1 ./myProgram}
+      \end{itemize}
+    \end{block}
+    \scriptsize
+    \begin{Verbatim}[commandchars=\\\{\}]
+    \ttfamily
+\textcolor{red}{==113262==ERROR: LeakSanitizer: detected memory leaks}
+
+\textcolor{blue}{Direct leak of 32 byte(s) in 1 object(s) allocated from:}
+  #0 0x7f2671201647 in operator new(unsigned long) /build/dkonst/WORK/build/contrib/gcc-10.1.0/src/gcc/10.1.0/libsanitizer/asan/asan_new_delete.cpp:99
+  #1 0x4033c7 in memoryLeak[abi:cxx11]() /afs/cern.ch/user/s/shageboe/asan.cpp:33
+  #2 0x403633 in main /afs/cern.ch/user/s/shageboe/asan.cpp:40
+  #3 0x7f2670a15492 in __libc_start_main (/lib64/libc.so.6+0x23492)
+
+\textcolor{blue}{Indirect leak of 22 byte(s) in 1 object(s) allocated from:}
+  #0 0x7f2671201647 in operator new(unsigned long) /build/dkonst/WORK/build/contrib/gcc-10.1.0/src/gcc/10.1.0/libsanitizer/asan/asan_new_delete.cpp:99
+  #1 0x403846 in void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*, std::forward_iterator_tag) /cvmfs/sft.cern.ch/lcg/releases/gcc/10.1.0.c82-6f386/x86_64-centos8/include/c++/10.1.0/bits/basic_string.tcc:219
+  #2 0x4033f4 in std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string<std::allocator<char> >(char const*, std::allocator<char> const&) /cvmfs/sft.cern.ch/lcg/releases/gcc/10.1.0.c82-6f386/x86_64-centos8/include/c++/10.1.0/bits/basic_string.h:247
+  #3 0x4033f4 in memoryLeak[abi:cxx11]() /afs/cern.ch/user/s/shageboe/asan.cpp:33
+  #4 0x403633 in main /afs/cern.ch/user/s/shageboe/asan.cpp:40
+  #5 0x7f2670a15492 in __libc_start_main (/lib64/libc.so.6+0x23492)
+
+SUMMARY: AddressSanitizer: 54 byte(s) leaked in 2 allocation(s).
+    \end{Verbatim}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Address sanitizer (asan)}
+  \begin{block}{Wrap up}
+    \begin{itemize}
+      \item If a program crashes, run it with asan
+      \item Asan should be part of every \cpp{} CI
+      \item It will also find bugs that by luck didn't crash the program
+      \item It doesn't generate false positives
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{More info}
+    \begin{itemize}
+      \item \url{https://github.com/google/sanitizers/wiki/AddressSanitizer}
+      \item Compile with asan, and start executable using \mintinline{bash}{ASAN_OPTIONS=help=1 <executable>}
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Address sanitizer (asan)}
+  \begin{alertblock}{Hands on}
+    \begin{itemize}
+      \item Go to \texttt{code/asan}
+      \item Compile and run the program \texttt{./asan}
+      \item There are two bugs and one memory leak. Use asan to trace them down.
+    \end{itemize}
+  \end{alertblock}
+
+\end{frame}
+
+
 \subsection[valgrind]{The Valgrind family}
 
 \begin{frame}[fragile]
