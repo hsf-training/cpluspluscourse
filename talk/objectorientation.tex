@@ -200,8 +200,8 @@
       \item[public] allows access from anywhere
     \end{description}
     \begin{itemize}
-      \item Default is {\it private}
-      \item A {\it struct} is a {\it class} where all members are public
+       \item The default for \texttt{class} is {\it private}
+       \item A \texttt{struct} is just a \texttt{class} that defaults to {\it public} access
     \end{itemize}
   \end{block}
   \pause
@@ -271,7 +271,7 @@
     \item[public] privacy of inherited members remains unchanged
     \item[protected] inherited public members are seen as protected
     \item[private] all inherited members are seen as private \\
-      this is the default if nothing is specified
+      this is the default for \texttt{class} if nothing is specified
     \end{description}
   \end{block}
   \pause
