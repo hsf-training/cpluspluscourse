@@ -449,7 +449,7 @@ int l = *pak;
     \begin{itemize}
     \item natural syntax
     \item will never be \mintinline{cpp}{nullptr}
-    \item thus cannot reference temporary object
+    \item non-const references to temporary objects are not allowed
     \end{itemize}
   \end{block}
   \begin{block}{Advantages of pointers}
@@ -483,7 +483,7 @@ int l = *pak;
       // multiple parameters
       int mult(int a,
                int b) {
-        return a*b;
+        return a * b;
       }
     \end{cppcode*}
     \columnbreak
@@ -561,13 +561,13 @@ void changeSS(SmallStruct p) {
   p.a = 2;
 }
 changeSS(s);
-// s.a = 1
+// s.a == 1
 
 void changeSS2(SmallStruct &q) {
   q.a = 2;
 }
 changeSS2(s);
-// s.a = 2
+// s.a == 2
 }
 \begin{frame}[fragile]
   \frametitlegb{Functions: pass by value or reference?}
@@ -798,7 +798,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
     \begin{itemize}
     \item simple block of code, within \mintinline{cpp}{{}}
     \item function, class, namespace
-    \item source file for global declarations
+    \item translation unit for global declarations
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
@@ -1157,7 +1157,7 @@ int a = 1;
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{}
       for(int i = 0, j = 0 ; i < 10 ; i++, j = i*i) {
-        std::cout << i << "^2 is " << j << "\n";
+        std::cout << i << "^2 is " << j << '\n';
       }
     \end{cppcode*}
   \end{exampleblock}
@@ -1232,7 +1232,7 @@ int a = 1;
       while (1) {
         if (n == 1) break;
         if (0 == n%2) {
-          std::cout << n << "\n";
+          std::cout << n << '\n';
           n /= 2;
           continue;
         }
@@ -1311,7 +1311,7 @@ int a = 1;
     \begin{cppcode*}{}
       std::vector<int> v;
       auto a = v[3];
-      auto b = v.size();
+      const auto b = v.size();
       int sum{0};
       for (auto n : v) { sum += n; }
     \end{cppcode*}
