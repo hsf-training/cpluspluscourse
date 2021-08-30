@@ -113,7 +113,7 @@
       constexpr int f(int x) {
         return x > 1 ? x * f(x - 1) : 1;
       }
-      int a = f(5); // now computed at compile time
+      constexpr int a = f(5); // computed at compile time
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
