@@ -1,4 +1,4 @@
-\section[base]{Langage basics}
+\section[base]{Language basics}
 
 \subsection[Core]{Core syntax and types}
 
@@ -554,7 +554,7 @@ printBSp(s); // no copy
 \end{frame}
 
 \Scontents*[store-cmd=code_smallStruct]{
-struct SmallStruct {int a;}
+struct SmallStruct {int a;};
 SmallStruct s = {1};
 
 void changeSS(SmallStruct p) {
@@ -1066,16 +1066,16 @@ int a = 1;
   \frametitlegb{Control instructions : switch}
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{}
-      enum Lang { FRENCH, GERMAN, ENGLISH, OTHER };
+      enum class Lang { FRENCH, GERMAN, ENGLISH, OTHER };
       ...
       switch (language) {
-      case FRENCH:
+      case Lang::FRENCH:
         printf("Bonjour");
         break;
-      case GERMAN:
+      case Lang::GERMAN:
         printf("Guten tag");
         break;
-      case ENGLISH:
+      case Lang::ENGLISH:
         printf("Good morning");
         break;
       default:
@@ -1208,13 +1208,13 @@ int a = 1;
     \end{itemize}
   \end{block}
   \pause
-  \begin{exampleblock}{Practical example}
+  \begin{alertblock}{Practical example}
     \begin{cppcode*}{}
       while (n != 1)
         if (0 == n%2) n /= 2; 
         else n = 3 * n + 1;
     \end{cppcode*}
-  \end{exampleblock}
+  \end{alertblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1227,7 +1227,7 @@ int a = 1;
     \end{description}
   \end{block}
   \pause
-  \begin{exampleblock}{Practical example}
+  \begin{alertblock}{Practical example}
     \begin{cppcode*}{}
       while (1) {
         if (n == 1) break;
@@ -1239,7 +1239,7 @@ int a = 1;
         n = 3 * n + 1;
       }
     \end{cppcode*}
-  \end{exampleblock}
+  \end{alertblock}
 \end{frame}
 
 \subsection[.h]{Headers and interfaces}
@@ -1247,7 +1247,7 @@ int a = 1;
 \begin{frame}[fragile]
   \frametitlegb{Headers and interfaces}
   \begin{block}{Interface}
-    Set of declarations defining some functionnality
+    Set of declarations defining some functionality
     \begin{itemize}
     \item defined in a ``header file''
     \item no implementation defined
