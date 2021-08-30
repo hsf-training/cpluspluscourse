@@ -1,8 +1,9 @@
 #include "Structs.h"
 
+#include <cstring>
+#include <cstdio>
 #include <chrono>
 #include <thread>
-#include <cstdio>
 
 /// Construct a new instance of SlowToCopy.
 SlowToCopy::SlowToCopy() {
