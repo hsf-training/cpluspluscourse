@@ -1066,16 +1066,16 @@ int a = 1;
   \frametitlegb{Control instructions : switch}
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{}
-      enum Lang { FRENCH, GERMAN, ENGLISH, OTHER };
+      enum class Lang { FRENCH, GERMAN, ENGLISH, OTHER };
       ...
       switch (language) {
-      case FRENCH:
+      case Lang::FRENCH:
         printf("Bonjour");
         break;
-      case GERMAN:
+      case Lang::GERMAN:
         printf("Guten tag");
         break;
-      case ENGLISH:
+      case Lang::ENGLISH:
         printf("Good morning");
         break;
       default:
