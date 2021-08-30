@@ -112,7 +112,7 @@
     \begin{itemize}
     \item {\ttfamily this} is a hidden parameter to all class methods
     \item it points to the current object
-    \item so is of type {\ttfamily T*} in methods of class {\ttfamily T}
+    \item so it is of type {\ttfamily T*} in the methods of class {\ttfamily T}
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -439,7 +439,7 @@
     \begin{itemize}
     \item special functions building/destroying an object
     \item a class can have several constructors
-    \item the constructors have the name as the class
+    \item the constructors have the same name as the class
     \item same for the destructor with a leading $\sim$
     \end{itemize}
   \end{block}
@@ -800,8 +800,8 @@
   \frametitlegb{Object allocation on the stack}
   \begin{block}{On the stack}
     \begin{itemize}
-    \item object are created when declared (constructor called)
-    \item object are destructed when out of scope (destructor is called)
+    \item objects are created when declared (constructor called)
+    \item objects are destructed when out of scope (destructor is called)
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -1200,11 +1200,11 @@
     struct BaseClass {
       int foo(std::string);
       int foo(int);
-    }
+    };
     struct DerivedClass : BaseClass {
       using BaseClass::foo;
       int foo(std::string);
-    }
+    };
     DerivedClass dc;
     dc.foo(4);      // error if no using
     \end{cppcode*}
@@ -1325,7 +1325,7 @@
   \begin{block}{Do not use multiple inheritance}
     \begin{itemize}
     \item Except for inheriting from interfaces
-    \item and for very seldom special cases
+    \item and for rare special cases
     \end{itemize}
   \end{block}
   \pause
@@ -1354,7 +1354,7 @@
 \begin{frame}[fragile]
   \frametitlegb{Virtual inheritance}
   \begin{alertblock}{Warning}
-    in case of virtual inheritance it is the most derived class that calls the virtual base class' constructor
+    in case of virtual inheritance it is the most derived class that calls the virtual base class's constructor
   \end{alertblock}
 \end{frame}
 
@@ -1412,7 +1412,7 @@
         Complex operator+(float other) {
           return Complex(m_real + other, m_imaginary);
         }
-      }
+      };
       Complex c1(2.f, 3.f);
       Complex c2 = c1 + 4.f;  // ok
       Complex c3 = 4.f + c1;  // not ok !!
@@ -1433,7 +1433,7 @@
       struct Complex {
         float m_real, m_imaginary;
         Complex(float real, float imaginary);
-      }
+      };
 
       std::ostream& operator<<(std::ostream& os,
                                const Complex& obj) {
@@ -1509,7 +1509,7 @@
   \begin{block}{How to find the declaration of a name ?}
     Mainly 2 cases :
     \begin{itemize}
-    \item qualified lookup, for names preceded by '::'
+    \item qualified lookup, for names preceded by `::'
       \begin{itemize}
       \item here \mintinline{cpp}{cout} and \mintinline{cpp}{endl}
       \item name is only looked for in given class/namespace/enum class
