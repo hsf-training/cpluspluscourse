@@ -202,10 +202,10 @@ int l = *pak;
     // and set them to 0
     memset(ai, 0, 10*sizeof(int));
 
-    // Both in one go
+    // both in one go
     ai = (int*) calloc(10, sizeof(int));
     
-    // liberate memory
+    // release memory
     free(ai);
   \end{cppcode}
 \end{frame}
@@ -752,7 +752,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
       i |= 0xee;            // 0xee
       i ^= 0x55;            // 0xbb
       int j = ~0xee;        // 0xffffff11
-      int k = 0x1f << 3;    // 0x78
+      int k = 0x1f << 3;    // 0xf8
       int l = 0x1f >> 2;    // 0x7
     \end{cppcode*}
   \end{block}
@@ -781,7 +781,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
     \end{cppcode*}
   \end{block}
   \pause
-  \begin{block}{Precedences \uncover<3->{\hfill \alert{\bf Don't use}\uncover<4->{\color{green} \bf\ - use parenthesis}}}
+  \begin{block}{Precedences \uncover<3->{\hfill \alert{\bf Don't use}\uncover<4->{\color{green} \bf\ - use parentheses}}}
     \begin{cppcode*}{linenos=false}
       c &= 1+(++b)|(a--)*4%5^7; // ???
     \end{cppcode*}
@@ -1051,7 +1051,7 @@ int a = 1;
     \end{cppcode*}
     \begin{itemize}
       \item {\it break} is not mandatory but...
-      \item cases are entry points, not independant pieces
+      \item cases are entry points, not independent pieces
       \item execution carries on with the next case if no {\it break} is present !
       \item {\it default} may be omitted
     \end{itemize}
@@ -1072,14 +1072,14 @@ int a = 1;
       case Lang::FRENCH:
         printf("Bonjour");
         break;
-      case Lang::GERMAN:
-        printf("Guten tag");
+       case Lang::GERMAN:
+        printf("Guten Tag");
         break;
       case Lang::ENGLISH:
         printf("Good morning");
         break;
       default:
-        printf("I do not talk your langage");
+        printf("I do not speak your language");
       }
     \end{cppcode*}
   \end{exampleblock}
@@ -1298,7 +1298,7 @@ int a = 1;
   \begin{block}{Reason of being}
     \begin{itemize}
     \item many type declarations are redundant
-    \item and lead to compiler error if you mess up
+    \item and lead to compiler errors if you mess up
     \end{itemize}
     \begin{cppcode*}{}
       std::vector<int> v;
