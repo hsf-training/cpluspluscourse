@@ -312,7 +312,7 @@
              typename T::iterator* it = nullptr) { }
       void f(int a) { }   // ``sink'' function
 
-      f(1); // Calls void f(...)
+      f(1); // Calls void f(int)
     \end{cppcode*}
   \end{exampleblock}
   Note : SFINAE will be largely superseeded by concepts in \cpp20
