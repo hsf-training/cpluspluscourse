@@ -1631,8 +1631,8 @@ of 'std::unique_ptr<Foo>'
       void modifier(T&);
       void consumer(unique_ptr<T>);
       unique_ptr<T> pt{producer()};
-      observer(*pt.get());      // Keep ownership
-      modifier(*pt.get());      // Keep ownership
+      observer(*pt);            // Keep ownership
+      modifier(*pt);            // Keep ownership
       consumer(std::move(pt));  // Transfer ownership
     \end{cppcode*}
   \end{exampleblock}
