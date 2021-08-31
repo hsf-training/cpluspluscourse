@@ -378,9 +378,9 @@
         a = b;
         b = c;
       }
-      std::vector<int> v, w;
-      for (int i = 0; i < 10000; i++) v.push_back(i);
-      for (int i = 0; i < 10000; i++) w.push_back(i);
+      std::vector<int> v(10000), w(10000);
+      for (int i = 0; i < 10000; i++) v[i] = i;
+      for (int i = 0; i < 10000; i++) w[i] = i*i;
       swap(v, w);
     \end{cppcode*}
   \end{exampleblock}
@@ -397,9 +397,9 @@
   \frametitleii{Move semantics : the problem}
   \begin{exampleblock}{Dedicated efficient code}
     \begin{cppcode*}{}
-      std::vector<int> v, w;
-      for (int i = 0; i < 10000; i++) v.push_back(i);
-      for (int i = 0; i < 10000; i++) w.push_back(i);
+      std::vector<int> v(10000), w(10000);
+      for (int i = 0; i < 10000; i++) v[i] = i;
+      for (int i = 0; i < 10000; i++) w[i] = i*i;
       v.swap(w);
       \end{cppcode*}
   \end{exampleblock}
@@ -418,9 +418,9 @@
   \begin{exampleblock}{Another non efficient code}
     \begin{cppcode*}{}
       std::vector<int> vrandom(unsigned int n) {
-        std::vector<int> result;
+        std::vector<int> result(n);
         for (int i = 0; i < n; i++) {
-          result.push_back(rand());
+          result[i] = rand();
         }
         return result;
       }
@@ -442,8 +442,9 @@
   \begin{exampleblock}{Dedicated efficient way}
     \begin{cppcode*}{}
       void vrandom(unsigned int n, std::vector<int> &v) {
+        v.resize(n);
         for (int i = 0; i < n; i++) {
-          v.push_back(rand());
+          v[i] = rand();
         }
       }
       std::vector<int> v;
