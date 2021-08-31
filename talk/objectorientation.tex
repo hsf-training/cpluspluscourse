@@ -1375,7 +1375,7 @@
       }
     };
 
-    Complex c1{2, 3}, c2 {4, 5};
+    Complex c1{2, 3}, c2{4, 5};
     Complex c3 = c1 + c2; // (6, 8)
   \end{cppcode}
 \end{frame}
@@ -1415,7 +1415,7 @@
           return Complex(m_real + other, m_imaginary);
         }
       };
-      Complex c1(2.f, 3.f);
+      Complex c1{2.f, 3.f};
       Complex c2 = c1 + 4.f;  // ok
       Complex c3 = 4.f + c1;  // not ok !!
     \end{cppcode}
@@ -1443,7 +1443,7 @@
                   << obj.m_imaginary << ")";
         return os;
       }
-      Complex c1(2.f, 3.f);
+      Complex c1{2.f, 3.f};
       std::cout << c1 << std::endl; // Prints '(2, 3)'
     \end{cppcode}
   \end{block}
