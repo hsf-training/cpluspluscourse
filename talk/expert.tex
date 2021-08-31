@@ -383,7 +383,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Using SFINAE for instrospection}
+  \frametitleii{Using SFINAE for introspection}
   \begin{block}{The main idea}
     \begin{itemize}
     \item use a template specialization
@@ -403,9 +403,43 @@
       struct hasFoo<T, decltype(std::declval<T>().foo())>
         : std::true_type {};
 
-      std::cout << hasFoo<MyType>::value << std::endl;
+      struct A{}; struct B{void foo();}; struct C{int foo();};
+      static_assert(!hasFoo<A>::value, "A has no Foo()");
+      static_assert(hasFoo<B>::value, "B has Foo()");
+      // static_assert(hasFoo<C>::value, "C has Foo()"); fails assertion!
     \end{cppcode*}
   \end{exampleblock}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Using \texttt{void\_t} to simplify SFINAE expressions \hfill \cpp17}
+  \begin{block}{Concept}
+    \begin{cppcode*}{gobble=2}
+      template <typename... >
+      using void_t = void;
+    \end{cppcode*}
+
+    \begin{itemize}
+    \item Maps a sequence of given types to void
+    \item Introduced in \cpp17 though trivial to copy to \cpp11
+    \item Can thus be used in specialization to check the validity of an expression
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      template <typename T, typename = void>
+      struct hasFoo : std::false_type {};
+
+      template <typename T>
+      struct hasFoo<T, std::void_t<decltype(std::declval<T>().foo())>>
+      : std::true_type {};
+
+      struct A{}; struct B{void foo()}; struct C{int foo();};
+      static_assert(!hasFoo<A>::value, "A has no Foo()");
+      static_assert(hasFoo<B>::value, "B has Foo()");
+      static_assert(hasFoo<C>::value, "C has Foo()");
+    \end{cppcode*}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
