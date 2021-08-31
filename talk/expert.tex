@@ -32,9 +32,9 @@
   \frametitleii{A couple of remarks}
   \begin{block}{About performance}
     \begin{itemize}
-    \item do not be afraid by recursivity
+    \item do not be afraid of recursion
     \item everything is at compile time !
-    \item unlike C style variadic functions
+    \item unlike C-style variadic functions
     \end{itemize}
   \end{block}
   \begin{block}{Why is it better than variadic functions}
@@ -87,7 +87,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Why is is not so simple ?}
+  \frametitleii{Why is it not so simple?}
   \begin{cppcode*}{}
     template <typename T>
     void wrapper(T arg) {
@@ -263,17 +263,17 @@
   \end{cppcode*}
   \begin{block}{How it works}
     \begin{itemize}
-    \item if we pass an rvalue to T (U\&\&)
+    \item if we pass an rvalue to wrapper (U\&\&)
       \begin{itemize}
       \item arg will be of type U\&\&
       \item func will be called with a U\&\&
       \end{itemize}
-    \item if we pass an lvalue to T (U\&)
+    \item if we pass an lvalue to wrapper (U\&)
       \begin{itemize}
       \item arg will be of type U\&
       \item func will be called with a U\&
       \end{itemize}
-    \item if we pass a plain T (U)
+    \item if we pass a plain value (U)
       \begin{itemize}
       \item arg will be of type U\&\& (no copy in wrapper)
       \item func will be called with a U\&\&
@@ -294,7 +294,7 @@
   \end{cppcode*}  
 \end{frame}
 
-\subsection[snifae]{SFINAE}
+\subsection[sfinae]{SFINAE}
 
 %https://jguegant.github.io/blogs/tech/sfinae-introduction.html
 \begin{frame}[fragile]
@@ -315,7 +315,7 @@
       f(1); // Calls void f(...)
     \end{cppcode*}
   \end{exampleblock}
-  Note : SFINAE will be largely superseeded by concepts in \cpp20
+  Note : SFINAE will be largely superseded by concepts in \cpp20
 \end{frame}
 
 \begin{frame}[fragile]
@@ -344,7 +344,7 @@
   \frametitleii{declval}
   \begin{block}{The main idea}
     \begin{itemize}
-    \item gives you a "fake reference" to an object at compile time
+    \item gives you a ``fake reference'' to an object at compile time
     \item useful for types that cannot be easily constructed
     \end{itemize}
   \end{block}
