@@ -23,8 +23,8 @@
       \item status, properties
       \item possible interactions
       \item construction and destruction
-      \end{itemize}    
-    \end{itemize}    
+      \end{itemize}
+    \end{itemize}
   \end{block}
 \end{frame}
 
@@ -121,7 +121,7 @@
     void ext_func(MyFirstClass& c) {
       ... do something with c ...
     }
-    
+
     int MyFirstClass::some_method(...) {
       ext_func(*this);
     }
@@ -462,7 +462,7 @@
       // note special notation for
       // initialization of members
       MyFirstClass() : a(0) {}
-      
+
       MyFirstClass(int a_):a(a_) {}
 
       ~MyFirstClass() {}
@@ -532,7 +532,7 @@
     struct MySecondClass : MyFirstClass {
       MySecondClass();
       MySecondClass(const MySecondClass &other);
-    }    
+    }
   \end{cppcode}
   \pause
   \begin{exampleblock}{The rule of 3/5 (\cpp98/\cpp11 and newer)}
@@ -958,7 +958,7 @@
     \begin{cppcode*}{gobble=2}
       Polygon p;
       p.draw(); // ?
-      
+
       Shape & s = p;
       s.draw(); // ?
     \end{cppcode*}
@@ -993,7 +993,7 @@
     \begin{cppcode*}{gobble=2}
       Polygon p;
       p.draw(); // Polygon.draw
-      
+
       Shape & s = p;
       s.draw(); // Drawable.draw
     \end{cppcode*}
@@ -1011,13 +1011,13 @@
       \draw[very thick,->] (Shape) -- (Drawable);
     \end{tikzpicture}
   \end{multicols}
-  
+
   \onslide<3>
     \begin{multicols}{2}
     \begin{cppcode*}{gobble=2,highlightlines=5}
       Polygon p;
       p.draw(); // Polygon.draw
-      
+
       Shape & s = p;
       s.draw(); // Polygon.draw
     \end{cppcode*}
@@ -1142,7 +1142,7 @@
 
       // ok, draw has been implemented
       Polygon p;
-      
+
       // Shape type still usable
       Shape & s = p;
       s.draw();
@@ -1375,7 +1375,7 @@
       }
     };
 
-    Complex c1(2, 3), c2 (4, 5);
+    Complex c1{2, 3}, c2 {4, 5};
     Complex c3 = c1 + c2; // (6, 8)
   \end{cppcode}
 \end{frame}
