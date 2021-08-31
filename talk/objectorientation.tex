@@ -483,12 +483,12 @@
     private:
       int len;
       int* data;
-    }
+    };
     Vector::Vector(int n) : len(n) {
-      data = (int*)malloc(n*sizeof(int));
+      data = new int[n];
     }
     Vector::~Vector() {
-      free(data);
+      delete[] data;
     }
   \end{cppcode}
 \end{frame}
@@ -551,15 +551,15 @@
       Vector(const Vector &other);
       ~Vector();
       ...
-    }
+    };
     Vector::Vector(int n) : len(n) {
-      data = (int*)calloc(n, sizeof(int));
+      data = new int[n];
     }
     Vector::Vector(const Vector &other) : len(other.len) {
-      data = (int*)malloc(len*sizeof(int));
+      data = new int[len];
       memcpy(data, other.data, len);
     }
-    Vector::~Vector() { free(data); }
+    Vector::~Vector() { delete[] data; }
   \end{cppcode}
 \end{frame}
 
