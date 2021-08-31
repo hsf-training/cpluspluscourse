@@ -49,7 +49,7 @@
       THE mainstream choice. Fast, light, easy to use
     \item[\href{http://mercurial.selenic.com/}{\beamergotobutton{mercurial}}]
       the alternative to git
-    \item[\href{http://bazaar.canonical.com/en/}{\beamergotobutton{Bazzar}}]
+    \item[\href{http://bazaar.canonical.com/en/}{\beamergotobutton{Bazaar}}]
       another alternative
     \item[svn]
       historical, not distributed - DO NOT USE
@@ -67,8 +67,8 @@
 
     # vim file.cpp; vim file2.cpp
     # git add file.cpp file2.cpp
-    # git commit -m "commiting first 2 files"
-    [master (root-commit) c481716] commiting first 2 files
+    # git commit -m "Committing first 2 files"
+    [master (root-commit) c481716] Committing first 2 files
     ...
 
     # git log --oneline
@@ -529,9 +529,9 @@ SUMMARY: AddressSanitizer: 54 byte(s) leaked in 2 allocation(s).
   \begin{block}{}
     \begin{itemize}
       \item keeps track of all memory allocations and deallocations
-      \item is able to detect accesses to non allocated memory
+      \item is able to detect accesses to unallocated memory
       \item and even tell you when it was deallocated if it was
-      \item or what it the closest array in case of overflow
+      \item or what is the closest array in case of overflow
       \item is able to list still allocated memory when program exits\\
         (memory leaks detection)
     \end{itemize}
