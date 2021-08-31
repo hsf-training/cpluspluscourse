@@ -1428,7 +1428,7 @@
     \begin{cppcode*}{xleftmargin=20pt}
       char *s;
       try {
-        foo();
+        callThatThrows();
         s = (char*) malloc(...);
         strncpy(s, ...);
       } catch (...) { ... }
