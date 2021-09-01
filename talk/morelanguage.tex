@@ -19,7 +19,7 @@
     i = 5;
 
     // also ok, when nothing on the left,
-    // const applies to element on the right
+    // const applies to the element on the right
     const int j = 6;
   \end{cppcode}
 \end{frame}
@@ -54,7 +54,7 @@
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    struct Exemple {
+    struct Example {
       void foo() const  {
         m_member = 0; // Error : function is constant
       }
@@ -67,8 +67,8 @@
   \frametitlegb{Method constness}
   \begin{block}{Constness is part of the type}
     \begin{itemize}
-    \item const T and T are different type
-    \item however, T is automatically casted into const T when needed
+    \item const T and T are different types
+    \item however, T is automatically cast to const T when needed
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -282,7 +282,7 @@
   \frametitlegb{Controlling exceptions \hfill \deprecated}
   \begin{block}{Good to know}
     \begin{itemize}
-    \item The check in done at runtime, not at compile time
+    \item The check is done at runtime, not at compile time
       \begin{itemize}
       \item unlike Java
       \end{itemize}
@@ -360,13 +360,13 @@
     \item as an operator to know whether a function launches exceptions
       \begin{cppcode*}{gobble=2, linenos=false}
         template <typename T> void foo()
-             noexcept(noexcept(T())) {};
+             noexcept(noexcept(T())) {}
       \end{cppcode*}
    \end{itemize}
   \end{block}
 \end{frame}
 
-\subsection[mv]{Move semantic}
+\subsection[mv]{Move semantics}
 
 \begin{frame}[fragile]
   \frametitleii{Move semantics : the problem}
@@ -487,7 +487,7 @@
   \frametitleii{Move semantics}
   \begin{block}{A few important points concerning move semantic}
     \begin{itemize}
-    \item the whole STL can understand the move semantic
+    \item the whole STL understands move semantics
     \item move assignment operator is allowed to destroy source
       \begin{itemize}
       \item so do not reuse source afterward
@@ -541,9 +541,9 @@
   \frametitleii{Move semantics : the easy way}
   \begin{block}{Use copy and swap idiom}
     \begin{itemize}
-    \item implement an efficient swap method to your class
+    \item implement an efficient swap method for your class
       \begin{itemize}
-      \item preferably outside the class so that it is symetric
+      \item preferably outside the class so that it is symmetric
       \end{itemize}
     \item use swap for move constructor
       \begin{itemize}
@@ -613,7 +613,7 @@
         return Foo();
       }
       int main() {
-        // compiler was authorised to elude the copy
+        // compiler was authorised to elide the copy
         Foo foo = f();
       }
     \end{cppcode*}
@@ -867,8 +867,8 @@
                    std::multiplies<int>()); // function
 
     for(auto n : vr) {
-      std::cout << n << " ";
-    };
+      std::cout << n << ' ';
+    }
   \end{cppcode*}
 \end{frame}
 
@@ -984,7 +984,7 @@
     for(std::vector<int>::iterator it = vr.begin();
         it != vr.end();
         it++) {
-      std::cout << *it << " ";
+      std::cout << *it << ' ';
     };
   \end{cppcode*}
 \end{frame}
@@ -1561,7 +1561,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Quizz}
+  \frametitleii{Quiz}
   \begin{exampleblock}{}
     \begin{cppcode*}{}
       Foo *p = new Foo{};  // allocation
