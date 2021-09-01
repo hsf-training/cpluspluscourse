@@ -1,8 +1,8 @@
 HSF C++ Course cheat sheet
 ==========================
 
-List of exercises per day, with prefered order and solution overview.
-Each exercise is in its own directory and refered to in the following by the name of the directory
+List of exercises per day, with preferred order and solution overview.
+Each exercise is in its own directory and referred to in the following by the name of the directory
 For each day, the exercises are given in order in which they should be done.
 
 Day 1
@@ -36,7 +36,7 @@ Fix code by calling it on both parents using types :
 See the output and check the ids printed, 2 different ones.
 
 Retry with virtual inheritance.
-See and solve the compilation issue about missing Drawable constructor. Understand that it's now called directly from TextBox constructor and call it explicitely from there with a new id.
+See and solve the compilation issue about missing Drawable constructor. Understand that it's now called directly from TextBox constructor and call it explicitly from there with a new id.
 See the new id being printed twice.
 
 Day 3
