@@ -113,14 +113,14 @@
       constexpr int f(int x) {
         return x > 1 ? x * f(x - 1) : 1;
       }
-      int a = f(5); // now computed at compile time
+      constexpr int a = f(5); // computed at compile time
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitleii{Generalized Constant Expressions(2)}
-  \begin{alertblock}{Few limitations}
+   \begin{alertblock}{Few limitations in C++14 (more in C++11)}
     \begin{itemize}
     \item function's body cannot contain try-catch or static variables
     \item arguments should be constexpr or literals in order to benefit from compile time computation
@@ -378,9 +378,9 @@
         a = b;
         b = c;
       }
-      std::vector<int> v, w;
-      for (int i = 0; i < 10000; i++) v.push_back(i);
-      for (int i = 0; i < 10000; i++) w.push_back(i);
+      std::vector<int> v(10000), w(10000);
+      for (int i = 0; i < 10000; i++) v[i] = i;
+      for (int i = 0; i < 10000; i++) w[i] = i*i;
       swap(v, w);
     \end{cppcode*}
   \end{exampleblock}
@@ -397,9 +397,9 @@
   \frametitleii{Move semantics : the problem}
   \begin{exampleblock}{Dedicated efficient code}
     \begin{cppcode*}{}
-      std::vector<int> v, w;
-      for (int i = 0; i < 10000; i++) v.push_back(i);
-      for (int i = 0; i < 10000; i++) w.push_back(i);
+      std::vector<int> v(10000), w(10000);
+      for (int i = 0; i < 10000; i++) v[i] = i;
+      for (int i = 0; i < 10000; i++) w[i] = i*i;
       v.swap(w);
       \end{cppcode*}
   \end{exampleblock}
@@ -418,9 +418,9 @@
   \begin{exampleblock}{Another non efficient code}
     \begin{cppcode*}{}
       std::vector<int> vrandom(unsigned int n) {
-        std::vector<int> result;
+        std::vector<int> result(n);
         for (int i = 0; i < n; i++) {
-          result.push_back(rand());
+          result[i] = rand();
         }
         return result;
       }
@@ -442,8 +442,9 @@
   \begin{exampleblock}{Dedicated efficient way}
     \begin{cppcode*}{}
       void vrandom(unsigned int n, std::vector<int> &v) {
+        v.resize(n);
         for (int i = 0; i < n; i++) {
-          v.push_back(rand());
+          v[i] = rand();
         }
       }
       std::vector<int> v;
@@ -1177,7 +1178,7 @@
         TheClass::inner_type TheClass::func() {...}
         auto TheClass::func() -> inner_type {...}
       \end{cppcode*}
-    \item ReturnType is not mandatory, compiler can deduce it
+    \item C++14: ReturnType is not mandatory, compiler can deduce it
     \item will be used for lambdas
     \end{itemize}
   \end{block}
@@ -1197,10 +1198,10 @@
       # without lambdas
       def isOdd(n):
         return n%2 == 1
-      print filter(isOdd, data)
+      print(filter(isOdd, data))
 
       # with lambdas
-      print filter(lambda n:n%2==1, data)
+      print(filter(lambda n:n%2==1, data))
     \end{pythoncode*}
   \end{exampleblock}
 \end{frame}
@@ -1427,7 +1428,7 @@
     \begin{cppcode*}{xleftmargin=20pt}
       char *s;
       try {
-        foo();
+        callThatThrows();
         s = (char*) malloc(...);
         strncpy(s, ...);
       } catch (...) { ... }
@@ -1480,7 +1481,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitlegb{Resource Acquisition Is Initialization}
+  \frametitlegb{Resource Acquisition Is Initialization (RAII)}
   \begin{block}{Practically}
     Use object semantic to acquire/release resources
     \begin{itemize}
@@ -1587,7 +1588,7 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{std::make\_unique}
+  \frametitleia{std::make\_unique}
   \begin{block}{}
     \begin{itemize}
     \item allocates directly a unique\_ptr
@@ -1630,8 +1631,8 @@ of 'std::unique_ptr<Foo>'
       void modifier(T&);
       void consumer(unique_ptr<T>);
       unique_ptr<T> pt{producer()};
-      observer(*pt.get());      // Keep ownership
-      modifier(*pt.get());      // Keep ownership
+      observer(*pt);            // Keep ownership
+      modifier(*pt);            // Keep ownership
       consumer(std::move(pt));  // Transfer ownership
     \end{cppcode*}
   \end{exampleblock}
@@ -1648,8 +1649,8 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleia{shared\_ptr, make\_shared}
-  \begin{block}{shared\_ptr : a reference counting pointers}
+  \frametitleii{shared\_ptr, make\_shared}
+  \begin{block}{shared\_ptr : a reference counting pointer}
     \begin{itemize}
     \item wraps a regular pointer like unique\_ptr
     \item has move and copy semantic
@@ -1657,7 +1658,7 @@ of 'std::unique_ptr<Foo>'
       \begin{itemize}
       \item "Would the last person out, please turn off the lights ?"
       \end{itemize}
-    \item is thread safe, thus the reference counting is costly
+    \item reference counting is thread-safe, therefore costly
     \end{itemize}
   \end{block}
   \begin{block}{make\_shared : creates a shared\_ptr}
