@@ -7,7 +7,7 @@ public:
 
     T real() const {return m_r;};
     T imaginary() const {return m_i;};
-    
+
     Complex_t operator+(const Complex_t& other) const;
     Complex_t operator-(const Complex_t& other) const;
     Complex_t operator*(const Complex_t& other) const;

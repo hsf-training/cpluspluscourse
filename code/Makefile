@@ -23,4 +23,3 @@ clean:
 
 clobber: clean
 	rm -f *.pdf
-

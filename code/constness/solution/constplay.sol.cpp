@@ -25,7 +25,7 @@ struct ConstTest {
         std::cout << "Hello " << s << std::endl;
     }
 };
-    
+
 int main() {
     // try pointer to constant
     int a = 1, b = 2;
@@ -50,7 +50,7 @@ int main() {
     identity(l);
     identity(m);
     identityConst(l);
-    identityConst(m);    
+    identityConst(m);
 
     // try constant arguments of functions with pointers
     int *p = 0;
@@ -58,7 +58,7 @@ int main() {
     identityp(p);
     identityp(r);  // error due to constness
     identitypConst(p);
-    identitypConst(r);    
+    identitypConst(r);
 
     // try constant method in a class
     ConstTest t;
@@ -67,5 +67,5 @@ int main() {
     t.hello(s);
     tc.hello(s);      // error due to constness
     t.helloConst(s);
-    tc.helloConst(s);    
+    tc.helloConst(s);
 }

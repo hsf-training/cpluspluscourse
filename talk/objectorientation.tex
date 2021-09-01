@@ -22,8 +22,8 @@
       \item status, properties
       \item possible interactions
       \item construction and destruction
-      \end{itemize}    
-    \end{itemize}    
+      \end{itemize}
+    \end{itemize}
   \end{block}
 \end{frame}
 
@@ -119,7 +119,7 @@
     void ext_func(MyFirstClass& c) {
       ... do something with c ...
     }
-    
+
     int MyFirstClass::some_method(...) {
       ext_sum(*this);
     };
@@ -460,7 +460,7 @@
       // note special notation for
       // initialization of members
       MyFirstClass() : a(0) {}
-      
+
       MyFirstClass(int a_):a(a_) {}
 
       ~MyFirstClass(){};
@@ -530,7 +530,7 @@
     struct MySecondClass : MyFirstClass {
       MySecondClass();
       MySecondClass(const MySecondClass &other);
-    }    
+    }
   \end{cppcode}
   \pause
   \begin{exampleblock}{The rule of 3/5 (\cpp98/\cpp11 and newer)}
@@ -956,7 +956,7 @@
     \begin{cppcode*}{gobble=2}
       Polygon p;
       p.draw(); // ?
-      
+
       Shape & s = p;
       s.draw(); // ?
     \end{cppcode*}
@@ -990,7 +990,7 @@
     \begin{cppcode*}{gobble=2}
       Polygon p;
       p.draw(); // Polygon.draw
-      
+
       Shape & s = p;
       s.draw(); // Drawable.draw
     \end{cppcode*}
@@ -1007,7 +1007,7 @@
       \draw[very thick,->] (Polygon) -- (Shape);
       \draw[very thick,->] (Shape) -- (Drawable);
     \end{tikzpicture}
-  \end{multicols}    
+  \end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1023,7 +1023,7 @@
     \begin{cppcode*}{gobble=2}
       Polygon p;
       p.draw(); // Polygon.draw
-      
+
       Shape & s = p;
       s.draw(); // Polygon.draw
     \end{cppcode*}
@@ -1040,7 +1040,7 @@
       \draw[very thick,->] (Polygon) -- (Shape);
       \draw[very thick,->] (Shape) -- (Drawable);
     \end{tikzpicture}
-  \end{multicols}    
+  \end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1147,7 +1147,7 @@
 
       // ok, draw has been implemented
       Polygon p;
-      
+
       // Shape type still usable
       Shape & s = p;
       s.draw();

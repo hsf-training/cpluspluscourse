@@ -42,16 +42,16 @@
     \item it's more performant
     \item type safety is included
     \item it applies to everything, including objects
-    \end{itemize}    
+    \end{itemize}
   \end{block}
 \end{frame}
-  
+
 \begin{frame}[fragile]
   \frametitleii{Variadic templated class}
   \begin{block}{The tuple example, simplified}
     \begin{cppcode*}{}
       template <class... Ts> struct tuple {};
-      
+
       template <class T, class... Ts>
       struct tuple<T, Ts...> : tuple<Ts...> {
         tuple(T t, Ts... ts) :
@@ -60,7 +60,7 @@
       };
 
       template <> struct tuple<>{};
-      
+
       tuple<double, uint64_t, const char*>
         t1(12.2, 42, "big");
     \end{cppcode*}
@@ -142,7 +142,7 @@
     template <typename T1, typename T2>
     void wrapper(const T1& arg1, T2& arg2)
     { func(arg1, arg2); }
-    
+
     template <typename T1, typename T2>
     void wrapper(T1& arg1, const T2& arg2)
     { func(arg1, arg2); }
@@ -280,7 +280,7 @@
       \item but func takes a U, so copy happens there, as expected
       \end{itemize}
     \end{itemize}
-  \end{block}  
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -291,7 +291,7 @@
       return unique_ptr<T>
         (new T(std::forward<Args>(args)...));
     }
-  \end{cppcode*}  
+  \end{cppcode*}
 \end{frame}
 
 \subsection[snifae]{SFINAE}
@@ -332,12 +332,12 @@
       A a;
       decltype(a.x) y;       // double
       decltype((a.x)) z = y; // double& (lvalue)
- 
+
       template<typename T, typename U>
       auto add(T t, U u) -> decltype(t + u);
       // return type depends on template parameters
     \end{cppcode*}
-  \end{exampleblock}  
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -356,12 +356,12 @@
       struct NonDefault {
         NonDefault(int i) { }
         int foo() const { return 1; }
-      }; 
+      };
       decltype(Default().foo()) n1 = 1;     // int
       decltype(NonDefault().foo()) n2 = n1; // error
       decltype(std::declval<NonDefault>().foo()) n2 = n1;
     \end{cppcode*}
-  \end{exampleblock}  
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -379,7 +379,7 @@
       constexpr bool testVar = testStruct();
       bool test = testStruct::value; // true
     \end{cppcode*}
-  \end{exampleblock}  
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -405,7 +405,7 @@
 
       std::cout << hasFoo<MyType>::value << std::endl;
     \end{cppcode*}
-  \end{exampleblock}  
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -448,8 +448,8 @@
         }
       } deref {};
     \end{cppcode*}
-  \end{exampleblock}  
-  
+  \end{exampleblock}
+
 \end{frame}
 
 
@@ -464,7 +464,7 @@
       struct elem_type_holder<0, tuple<T, Ts...>> {
         typedef T type;
       };
-      
+
       template <size_t k, class T, class... Ts>
       struct elem_type_holder<k, tuple<T, Ts...>> {
         typedef typename elem_type_holder
@@ -484,7 +484,7 @@
           <0, tuple<Ts...>>::type&>
       get(tuple<Ts...>& t) {
         return t.m_tail;
-      }      
+      }
       template <size_t k, class T, class... Ts>
       typename std::enable_if_t<k != 0,
         typename elem_type_holder

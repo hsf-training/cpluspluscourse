@@ -7,4 +7,3 @@
  * without reaching it
  */
 int mandel(const Complex &a);
-

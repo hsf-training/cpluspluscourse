@@ -23,7 +23,7 @@ template<class T>
 struct sumsquare {
     T operator()(const T& s, const T& a) { return s + a * a; };
 };
-    
+
 template<class T>
 void compute(int len, T initial, T step) {
     // allocate vectors
@@ -32,9 +32,9 @@ void compute(int len, T initial, T step) {
     // fill and randomize v
     generate(v.begin(), v.end(), Generator<T>(initial, step));
     random_shuffle(v.begin(), v.end());
-    
+
     // compute differences
-    adjacent_difference(v.begin(), v.end(), diffs.begin());    
+    adjacent_difference(v.begin(), v.end(), diffs.begin());
 
     // compute standard deviation of it
     T sum = accumulate(diffs.begin()+1, diffs.end(), T());

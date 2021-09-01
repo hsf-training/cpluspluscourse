@@ -22,7 +22,7 @@ private:
     Compare m_compare;
     ElementType* m_data;
 };
-    
+
 template<class ElementType, class Compare>
 OrderedVector<ElementType,Compare>::~OrderedVector() {
     delete[](m_data);

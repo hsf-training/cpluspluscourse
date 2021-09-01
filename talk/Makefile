@@ -1,5 +1,5 @@
 all: clean compile2
-fast: clean compile 
+fast: clean compile
 
 compile: *.tex
 	pdflatex -shell-escape C++Course.tex

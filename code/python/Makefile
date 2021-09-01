@@ -28,4 +28,3 @@ clean:
 
 debug:
 	@echo Python minor version: $(PYTHON_INCLUDE)
-

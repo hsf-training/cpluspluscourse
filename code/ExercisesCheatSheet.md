@@ -112,7 +112,7 @@ This exercise has several levels. People not at ease can stop after first level 
 Level 1 : just use the given Complex class in OrderedVector and see it works out of the box thanks to generic code in OrderedVector.
 
 Level 2 : add a template for the ordering in OrderedVector.
-The idea is to add an extra template argument "Compare" that is a functor comparing 2 arguments and an extra member "m_compare" of type "Compare" to the OrderedVector class. Then the comparison in the add function can be replaced by 
+The idea is to add an extra template argument "Compare" that is a functor comparing 2 arguments and an extra member "m_compare" of type "Compare" to the OrderedVector class. Then the comparison in the add function can be replaced by
 ```cpp
 m_compare(arg1, arg2);
 ```
@@ -135,7 +135,7 @@ The goal is to use STL algorithms. I would advise to start in this order :
   - first accumulate (the one for sums)
   - second accumulate (sum of squares) with usage of "sumsquare<T>()" as BinaryOperation
   - generate
-  
+
 One may want to only do the first 3 and go to next exercise to directly use lambdas for step 4 and 5;
 
 ### lambdas

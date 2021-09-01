@@ -16,7 +16,7 @@ private:
     unsigned int m_maxLen;
     ElementType* m_data;
 };
-    
+
 template<class ElementType>
 OrderedVector<ElementType>::~OrderedVector() {
     delete[](m_data);

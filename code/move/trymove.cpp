@@ -6,7 +6,7 @@ template<class T>
 void swap(std::vector<T> &v, int a, int b) {
     T mem = v[a];
     v[a] = v[b];
-    v[b] = mem;    
+    v[b] = mem;
 }
 
 template<class T>

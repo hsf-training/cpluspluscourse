@@ -21,7 +21,7 @@ void compute(int len, T initial, T step) {
     // fill and randomize v
     generate(, , Generator...);
     random_shuffle(...);
-    
+
     // compute differences
     adjacent_difference(...);
 

@@ -147,5 +147,5 @@ template <int N, class T>
 void swap(NVector<N,T> &a, NVector<N,T> &b) {
     T* tmp_data = a.m_data;
     a.m_data = b.m_data;
-    b.m_data = tmp_data;    
+    b.m_data = tmp_data;
 };
