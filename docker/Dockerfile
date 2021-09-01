@@ -27,7 +27,7 @@ RUN apt-get install -y build-essential  \
 && apt-get install -y binutils graphviz \
 && apt-get install -y valgrind kcachegrind
 
-# For GDB not to complain 
+# For GDB not to complain
 
 RUN echo "set auto-load safe-path /" > /root/.gdbinit
 
@@ -51,4 +51,3 @@ ENV LD_LIBRARY_PATH=.
 # Start a shell by default
 
 CMD bash
-

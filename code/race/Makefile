@@ -9,4 +9,3 @@ racing : racing.cpp
 
 racing.sol : solution/racing.sol.cpp
 	${CXX} -g -std=c++11 -O0 -pthread -Wall -Wextra -L. -o $@ $<
-

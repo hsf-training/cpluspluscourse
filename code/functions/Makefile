@@ -8,4 +8,3 @@ clean:
 
 functions : functions.cpp Structs.o
 	${CXX} -std=c++17 -Wall -Wextra -o $@ $^
-

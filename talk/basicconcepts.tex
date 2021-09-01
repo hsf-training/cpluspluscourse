@@ -48,7 +48,7 @@
   \frametitlegb{Basic types(1)}
   \begin{cppcode}
     bool b = true;            // boolean, true or false
-    
+
     char c = 'a';             // 8 bits ASCII char
     char* s = "a C string";   // array of chars ended by \0
     string t = "a C++ string";// class provided by the STL
@@ -83,7 +83,7 @@
   \alert{One needs to include specific header}
   \begin{cppcode}
     #include <cstdint>
-    
+
     int8_t c = -3;     // 8 bits, replaces char
     uint8_t c = 4;     // 8 bits, replaces unsigned char
 
@@ -105,11 +105,11 @@
   \begin{cppcode}
     int ai[4] = {1,2,3,4};
     int ai[] = {1,2,3,4};  // identical
-    
+
     char ac[3] = {'a','b','c'};   // char array
     char ac[4] = "abc";           // valid C string
     char ac[4] = {'a','b','c',0}; // same valid string
-    
+
     int i = ai[2];  // i = 3
     char c = ac[8]; // at best garbage, may segfault
     int i = ai[4];  // also garbage !
@@ -204,7 +204,7 @@ int l = *pak;
 
     // both in one go
     ai = (int*) calloc(10, sizeof(int));
-    
+
     // release memory
     free(ai);
   \end{cppcode}
@@ -340,7 +340,7 @@ int l = *pak;
       VType t = Bus;
       if (t == Red) {  // We do enter !  }
       int a = 5 * Car; // Ok, a = 5
-      
+
       enum class VT { Bus, Car }; enum class Col { Red, Blue };
       VT t = VT::Bus;
       if (t == Col::Red) { // Compiler error }
@@ -357,7 +357,7 @@ int l = *pak;
         Circle,
         Rectangle
       };
-      
+
       struct Rectangle {
         float width;
         float height;
@@ -368,7 +368,7 @@ int l = *pak;
     \begin{cppcode*}{gobble=2,firstnumber=10}
       struct Shape {
         ShapeType type;
-        union { 
+        union {
           float radius;
           Rectangle rect;
         };
@@ -382,7 +382,7 @@ int l = *pak;
       s.type =
         ShapeType::Circle;
       s.radius = 3.4;
-      
+
     \end{cppcode*}
     \columnbreak
     \begin{cppcode*}{gobble=2,firstnumber=20}
@@ -980,7 +980,7 @@ int a = 1;
         Instructions2;
       } else {
         Instructions3;
-      } 
+      }
     \end{cppcode*}
     \begin{itemize}
       \item {\it else} and {\it else if} part are optional
@@ -1135,7 +1135,7 @@ int a = 1;
     \end{cppcode*}
     \vspace{-.1cm}
     val is visible only inside the if and else statements
-  \end{exampleblock}  
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1211,7 +1211,7 @@ int a = 1;
   \begin{alertblock}{Practical example}
     \begin{cppcode*}{}
       while (n != 1)
-        if (0 == n%2) n /= 2; 
+        if (0 == n%2) n /= 2;
         else n = 3 * n + 1;
     \end{cppcode*}
   \end{alertblock}
@@ -1264,7 +1264,7 @@ int a = 1;
       int main() {
         printHello();
       }
-    \end{cppcode*}  
+    \end{cppcode*}
   \end{block}
 \end{frame}
 
@@ -1330,4 +1330,3 @@ int a = 1;
     \end{itemize}
   \end{alertblock}
 \end{frame}
-

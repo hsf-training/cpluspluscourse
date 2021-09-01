@@ -6,7 +6,7 @@ int main() {
 
 
     // Fix the code to call both draws by using types
-    
+
 
     // try with virtual inheritance
 

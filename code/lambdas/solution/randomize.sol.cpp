@@ -19,9 +19,9 @@ void compute(int len, T initial, T step) {
                                  current += step;
                                  return cur;});
     random_shuffle(v.begin(), v.end());
-    
+
     // compute differences
-    adjacent_difference(v.begin(), v.end(), diffs.begin());    
+    adjacent_difference(v.begin(), v.end(), diffs.begin());
 
     // compute standard deviation of it
     T sum = accumulate(diffs.begin()+1, diffs.end(), T());

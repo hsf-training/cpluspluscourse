@@ -205,7 +205,7 @@
       }
       printf("%s\n", name);
     } catch (std::string& e) {
-      printf("empty name found\n");      
+      printf("empty name found\n");
     }
   \end{cppcode}
 \end{frame}
@@ -225,7 +225,7 @@
   \begin{multicols}{2}
     \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
       class ZeroDivide {};
-      
+
       int divide(int a, int b) {
         if (0 == b) {
           throw ZeroDivide();
@@ -234,7 +234,7 @@
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{fontsize=\scriptsize,gobble=2,firstnumber=9} 
+    \begin{cppcode*}{fontsize=\scriptsize,gobble=2,firstnumber=9}
       int func(char* value) {
         try {
           errno = 0;
@@ -276,7 +276,7 @@
       }
     }
   \end{cppcode}
-\end{frame}  
+\end{frame}
 
 \begin{frame}[fragile]
   \frametitlegb{Controlling exceptions \hfill \deprecated}
@@ -299,7 +299,7 @@
       // no exception can go out
     }
   \end{cppcode}
-\end{frame}  
+\end{frame}
 
 \begin{frame}[fragile]
   \frametitleii{Deprecation of \cpp98 exceptions}
@@ -730,7 +730,7 @@
   \frametitlegb{Templates}
   \begin{block}{Arguments}
     \begin{itemize}
-    \item can be a class, 
+    \item can be a class,
     \item you can have several
     \item last ones can have a default value
     \end{itemize}
@@ -800,7 +800,7 @@
       F perimeter() {return 2*N*sin(PI/N)*m_radius;}
       F m_radius;
     };
-    
+
     template<typename F>
     struct Polygon<F, 6> {
       Polygon(F radius) : m_radius(radius) {}
@@ -941,7 +941,7 @@
     \end{itemize}
   \end{block}
 \end{frame}
-      
+
 \begin{frame}[fragile]
   \frametitlegb{STL's concepts}
   \begin{block}{functions / functors}
@@ -996,7 +996,7 @@
     // the range from 1 to 10.
     list<int> L;
     ...
-    list<int>::iterator in_range = 
+    list<int>::iterator in_range =
       find_if(L.begin(), L.end(),
               compose2(logical_and<bool>(),
                        bind2nd(greater_equal<int>(), 1),
@@ -1023,7 +1023,7 @@
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/stl
-    \item look at the non STL code in randomize.nostl.cpp 
+    \item look at the non STL code in randomize.nostl.cpp
       \begin{itemize}
         \item it creates a vector of ints at regular intervals
         \item it randomizes them

@@ -10,4 +10,3 @@ int mandel(const Complex &a) {
   }
   return -1;
 }
-

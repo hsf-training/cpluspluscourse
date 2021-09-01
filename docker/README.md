@@ -23,7 +23,7 @@ For the use of applications with X11 graphics, especially `kcachegrind`, one mus
 
 ## macOS
 
-1. Install and start XQuartz. 
+1. Install and start XQuartz.
 1. Search for your IP number, using terminal command `ifconfig` and searching for `inet` lines.
 1. Define `export MYIP=<your_ip_number>`.
 1. Check with `xeyes_macos.sh`.
@@ -41,4 +41,3 @@ For the use of applications with X11 graphics, especially `kcachegrind`, one mus
 1. Define `export MYIP=<your_ip_number>`.
 1. Check with `xeyes_win.sh`.
 1. Run `run_x11_win.sh`.
-
