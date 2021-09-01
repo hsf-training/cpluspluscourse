@@ -36,7 +36,7 @@ For the use of applications with X11 graphics, especially `kcachegrind`, one mus
 
 ## Windows
 
-1. Install and start Xming or Exceed. For Xming, we recommand those options: `Xming :0 -multiwindow -clipboard -ac`.
+1. Install and start Xming or Exceed. For Xming, we recommend those options: `Xming :0 -multiwindow -clipboard -ac`.
 1. The applications above should enable you to get some IP number, typically `10.0.75.1` for Exceed.
 1. Define `export MYIP=<your_ip_number>`.
 1. Check with `xeyes_win.sh`.
