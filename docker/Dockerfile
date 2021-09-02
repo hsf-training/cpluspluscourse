@@ -1,7 +1,7 @@
 
 # Version 2, en Python3
 
-FROM gcc:9.3.0
+FROM gcc:11.2.0
 
 # Ensure use of bash
 
@@ -34,8 +34,8 @@ RUN echo "set auto-load safe-path /" > /root/.gdbinit
 # Python
 # It seems I MUST say 3.7 for dev :s
 
-RUN apt-get install -y python3.7 \
-&& apt-get install -y python3.7-dev \
+RUN apt-get install -y python3 \
+&& apt-get install -y python3-dev \
 && apt-get install -y python3-pip \
 && apt-get install -y python3-tk
 
