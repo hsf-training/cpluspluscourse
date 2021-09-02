@@ -3,7 +3,7 @@
 # Building and sharing the image
 
 * `build.sh` : apply the Dokerfile recipe, building a local image whose name is taken from `name.txt`.
-* `push.sh` : push the image `name.txt` to the registry, which requires access rights to this registry.
+* `push.sh` (unavailable since migratiom to github): push the image `name.txt` to the registry, which requires access rights to this registry.
 
 
 ---
