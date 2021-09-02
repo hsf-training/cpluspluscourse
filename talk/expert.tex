@@ -199,16 +199,16 @@
   T\&\& actual type depends on the arguments passed to func
   \begin{itemize}
   \item if an lvalue of type U is given, T is deduced to U\&
-  \item if an rvalue, T is deduced to U
+  \item otherwise, collapse references normally
   \end{itemize}
   \begin{cppcode*}{firstnumber=3}
-    func(4);        // rvalue -> T is int
+    func(4);        // rvalue -> T&& is int&&
     double d = 3.14;
-    func(d);        // lvalue -> T is double&
+    func(d);        // lvalue -> T&& is double&
     float f() {...}
-    func(f());      // rvalue -> T is float
+    func(f());      // rvalue -> T&& is float&&
     int foo(int i) {
-      func(i);      // lvalue -> T is int&
+      func(i);      // lvalue -> T&& is int&
     }
   \end{cppcode*}
 \end{frame}
@@ -245,7 +245,7 @@
   \end{cppcode*}
   \begin{block}{How it works}
     \begin{itemize}
-    \item if T is int, if returns int \&\&
+    \item if T is int, it returns int \&\&
     \item if T is int\&, it returns int\& \&\& ie int\&
     \item if T is int\&\&, it returns int\&\& \&\& ie int\&\&
     \end{itemize}
@@ -265,7 +265,7 @@
     \begin{itemize}
     \item if we pass an rvalue to wrapper (U\&\&)
       \begin{itemize}
-      \item arg will be of type U
+      \item arg will be of type U\&\&
       \item func will be called with a U\&\&
       \end{itemize}
     \item if we pass an lvalue to wrapper (U\&)
@@ -308,9 +308,8 @@
   \begin{exampleblock}{Example}
     \begin{cppcode*}{}
       template <typename T>
-      void f(const T& t,
-             typename T::iterator* it = nullptr) { }
-      void f(int a) { }   // "sink" function
+      void f(typename T::type arg) { ... }
+      void f(int a) { ... }
 
       f(1); // Calls void f(int)
     \end{cppcode*}
@@ -322,7 +321,7 @@
   \frametitleii{decltype}
   \begin{block}{The main idea}
     \begin{itemize}
-    \item gives the type of the of the expression it will evaluate
+    \item gives the type of the expression it will evaluate
     \item at compile time
     \end{itemize}
   \end{block}
@@ -395,6 +394,7 @@
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
+    \small
     \begin{cppcode*}{}
       template <typename T, typename = void>
       struct hasFoo : std::false_type {};
@@ -409,9 +409,33 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleit{Using \texttt{void\_t} to simplify SFINAE expressions}
+  \frametitleii{Not so easy actually...}
+  \begin{exampleblock}{Example}
+    \small
+    \begin{cppcode*}{}
+      template <typename T, typename = void>
+      struct hasFoo : std::false_type {};
+      template <typename T>
+      struct hasFoo<T, decltype(std::declval<T>().foo())>
+        : std::true_type {};
+      
+      struct A{};
+      struct B{void foo();};
+      struct C{int foo();};
+      
+      static_assert(!hasFoo<A>::value, "A has no Foo()");
+      static_assert(hasFoo<B>::value, "B has Foo()");
+      static_assert(!hasFoo<C>::value, "C has Foo()");
+      static_assert(hasFoo<C,int>::value, "C has Foo()");
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleit{Using \texttt{void\_t}}
   \begin{block}{Concept}
     \begin{cppcode*}{gobble=2}
+      #include <type_traits>
       template <typename... >
       using void_t = void;
     \end{cppcode*}
@@ -435,8 +459,8 @@
          std::void_t<decltype(std::declval<T>().foo())>>
       : std::true_type {};
 
-      struct A{}; struct B{void foo()};
-      struct C{int foo();};
+      struct A{}; struct B{ void foo(); };
+      struct C{ int foo(); };
 
       static_assert(!hasFoo<A>::value,"Unexpected Foo()");
       static_assert(hasFoo<B>::value, "expected Foo()");
@@ -451,13 +475,13 @@
     \begin{cppcode*}{gobble=2}
       template<bool B, class T = void> struct enable_if {};
       template<class T>
-      struct enable_if<true, T> { typedef T type; };
+      struct enable_if<true, T> { using type = T; };
       template< bool B, class T = void >
       using enable_if_t = typename enable_if<B,T>::type;
     \end{cppcode*}
     \begin{itemize}
-    \item If B is true, has a typedef \texttt{type} to type T
-    \item otherwise, has no \texttt{type} typedef
+    \item If B is true, has a alias \texttt{type} to type T
+    \item otherwise, has no \texttt{type} alias
     \end{itemize}
   \end{block}
   \begin{block}{is\_*$<T>$/is\_*\_v$<T>$ (float/signed/object/final/abstract/...)}
@@ -499,13 +523,13 @@
 
       template <class T, class... Ts>
       struct elem_type_holder<0, tuple<T, Ts...>> {
-        typedef T type;
+        using type = T;
       };
       
       template <size_t k, class T, class... Ts>
       struct elem_type_holder<k, tuple<T, Ts...>> {
-        typedef typename elem_type_holder
-           <k - 1, tuple<Ts...>>::type type;
+        using type = typename elem_type_holder
+           <k - 1, tuple<Ts...>>::type;
       };
     \end{cppcode*}
   \end{block}
