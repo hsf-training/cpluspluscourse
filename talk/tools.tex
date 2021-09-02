@@ -662,8 +662,8 @@ SUMMARY: AddressSanitizer: 54 byte(s) leaked in 2 allocation(s).
       proprietary tool, the most complete
     \item[\href{http://cppcheck.sourceforge.net/}{\beamergotobutton{cppcheck}}]
       free and opensource, but less complete
-    \item[\href{http://clang-analyzer.llvm.org/}{\beamergotobutton{scan-build}}]
-      the clang source analyzer
+    \item[\href{https://clang.llvm.org/extra/clang-tidy/}{\beamergotobutton{clang-tidy}}]
+      clang-based ``linter'', includes clang static analyzer
     \end{description}
   \end{block}
 \end{frame}
@@ -680,6 +680,68 @@ SUMMARY: AddressSanitizer: 54 byte(s) leaked in 2 allocation(s).
     \item bonus : understand why valgrind did not complain \\
       and how the standard deviation could be biased \\
       hint : use gdb and check addresses of v and diffs
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{clang-tidy}
+  \begin{block}{Documentation and supported checks}
+    \begin{itemize}
+      \item \url{https://clang.llvm.org/extra/clang-tidy/}
+    \end{itemize}
+  \end{block}
+  \begin{block}{Run clang-tidy}
+    \begin{itemize}
+      \item \mintinline{bash}{clang-tidy <file.cpp> -checks=...}
+      \item \mintinline{bash}{clang-tidy <file.cpp>} (checks from .clang-tidy file)
+      \item \mintinline{bash}{clang-tidy <file.cpp> --fix} (applies fixes)
+
+    \end{itemize}
+  \end{block}
+  \begin{block}{Compilation flags}
+    \begin{itemize}
+      \item clang-tidy needs to know exactly how your program is built
+      \item \mintinline{bash}{clang-tidy ... -- <all compiler flags>}
+    \end{itemize}
+  \end{block}
+  \begin{block}{.clang-tidy file}
+    \begin{itemize}
+      \item describes which checks to run
+      \item usually checked in at repository root
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Automatically collecting compilation flags}
+    \begin{itemize}
+      \item clang-tidy looks for a file called compile\_commands.json
+      \item contains the exact build flags for each .cpp file
+      \item generate with CMake: \\
+        \mintinline{bash}{cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ...}
+      \item for Makefiles try \href{https://github.com/rizsotto/Bear}{\beamergotobutton{Bear}}
+      \item allows to run clang-tidy in bulk on all files:
+      \begin{itemize}
+        \item \mintinline{bash}{run-clang-tidy -checks ...}
+        \item \mintinline{bash}{run-clang-tidy} (checks from .clang-tidy)
+        \item \mintinline{bash}{run-clang-tidy -fix} (applies fixes)
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{clang-tidy}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+      \item go to any example which compiles (e.g. code/cppcheck)
+      \item \mintinline{bash}{mkdir build && cd build}
+      \item \mintinline{bash}{cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..}
+      \item \mintinline{bash}{clang-tidy <../file.cpp> -checks=*}
+      \item inspect output
+      \item run with \mintinline{bash}{--fix} flag
+      \item revert changes using \mintinline{bash}{git checkout <../file.cpp>}
     \end{itemize}
   \end{alertblock}
 \end{frame}
