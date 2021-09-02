@@ -81,6 +81,47 @@
   \end{minted}
 \end{frame}
 
+\subsection[format]{Code formatting}
+
+\begin{frame}[fragile]
+\frametitle{clang-format}
+\begin{block}{.clang-format}
+	\begin{itemize}
+		\item file describing your formatting preferences
+		\item should be checked-in at the repository root (project wide)
+		\item \mintinline{bash}{clang-format -style=LLVM -dump-config >} \\
+		  \mintinline{bash}{.clang-format}
+		\item adapt style options with help from: \url{https://clang.llvm.org/docs/ClangFormatStyleOptions.html}
+	\end{itemize}
+\end{block}
+\begin{block}{Run clang-format}
+	\begin{itemize}
+		\item \mintinline{bash}{clang-format --style=LLVM -i <file.cpp>}
+		\item \mintinline{bash}{clang-format -i <file.cpp>} (looks for .clang-format file)
+		\item \mintinline{bash}{git clang-format} (formats local changes)
+		\item \mintinline{bash}{git clang-format <ref>} (formats changes since git \textless{}ref\textgreater{})
+		\item Some editors/IDEs find a .clang-format file and adapt
+	\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{clang-format}
+\begin{alertblock}{Exercise Time}
+	\begin{itemize}
+		\item go to any example
+		\item format code with: \mintinline{bash}{clang-format --style=GNU -i <file.cpp>}
+		\item inspect changes, try \mintinline{bash}{git diff}
+		\item revert changes using \mintinline{bash}{git checkout -- <file.cpp>}
+		\item go to code directory and create a .clang-format file \\
+		  \mintinline{bash}{clang-format -style=LLVM -dump-config >} \\
+		  \mintinline{bash}{.clang-format}
+		\item run \mintinline{bash}{clang-format -i */*.cpp}
+		\item revert changes using \mintinline{bash}{git checkout .}
+	\end{itemize}
+\end{alertblock}
+\end{frame}
+
 \subsection[gcc]{The Compiling Chain}
 
 \begin{frame}[fragile]
