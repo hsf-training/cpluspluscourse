@@ -1272,7 +1272,7 @@
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
       transform(begin(data), end(data), begin(data),
                 [increment](int x) {
-                  std::cout << x+increment;
+                  return x+increment;
                 });
     \end{cppcode*}
   \end{exampleblock}
