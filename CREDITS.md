@@ -9,6 +9,7 @@ Credits
     * [Stephan Hageboeck](https://gitlab.cern.ch/shageboe) [CERN](http://cern.ch)/[Atlas](https://atlas.cern/)
     * [Bernhard Manfred Gruber](https://gitlab.cern.ch/bgruber) [CERN](http://cern.ch)/EP-SFT
     * [Enrico Guiraud](https://github.com/eguiraud) [CERN](http://cern.ch)/EP-SFT
+    * [Stefan Roiser](https://github.com/roiser) [CERN](http://cern.ch)/IT-SC-RD
 
   - Original content (2015-2020)
     * [Sebastien Ponce](https://github.com/sponce) [CERN](http://cern.ch)/[LHCb](http://lhcb.cern.ch)
