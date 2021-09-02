@@ -201,8 +201,7 @@
     constexpr DimLength km(1, 'k');
     constexpr float km_y = km.get('y');
     constexpr float km_i = km.get('i');
-    // static_assert(km_y == 1000, "Expected a km to be 1000 yards"); Fails compilation
-    static_assert(km_y == 1093, "Expected a km to be 1093 yards! ");
+    static_assert(km_y == 1093, "expected km == 1093 yards!");
   \end{cppcode*}
 \end{frame}
 
