@@ -476,9 +476,9 @@
   \pause
   \begin{exampleblock}{Practically}
     \begin{cppcode*}{}
-      T(const T&  other); // copy construction
+      T(T const &  other); // copy construction
       T(      T&& other); // move construction
-      T& operator=(const T&  other); // copy assignment
+      T& operator=(T const &  other); // copy assignment
       T& operator=(      T&& other); // move assignment
     \end{cppcode*}
   \end{exampleblock}
