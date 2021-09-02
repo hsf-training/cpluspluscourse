@@ -119,6 +119,29 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitleii{Static Assertions}
+  \begin{block}{static\_assert declaration}
+    \begin{itemize}
+    \item Performs compile time assertions; meaning a failed assertion stops compilation
+    \item The expression has to be a constexpr boolean expression
+    \item Purely evaluated at compile time, no effect at runtime
+    \item Often used in template programming to make assertion on types, can be
+      used to validate boolean compile time expressions
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      constexpr int f(int x) {
+        return x > 1 ? x * f(x - 1) : 1;
+      }
+      static_assert(f(5)==120,"Expected f(5) to be 120!");
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+
+\begin{frame}[fragile]
   \frametitleii{Generalized Constant Expressions(2)}
    \begin{alertblock}{Few limitations in C++14 (more in C++11)}
     \begin{itemize}
@@ -154,7 +177,8 @@
     }
     constexpr float fromSI(const float v, const char unit) {
       switch (unit) {
-      case 'k': return 0.001*v;
+        case 'k': return 0.001*v;
+        case 'y': return 1.093*v;
       ...
       }
     }
@@ -177,8 +201,7 @@
     constexpr DimLength km(1, 'k');
     constexpr float km_y = km.get('y');
     constexpr float km_i = km.get('i');
-    std::cout << "1 km = " << km_y << " yards\n"
-              << "     = " << km_i << " inches\n";
+    static_assert(km_y == 1093, "expected km == 1093 yards!");
   \end{cppcode*}
 \end{frame}
 
