@@ -339,7 +339,7 @@
         ... use value ...
       });
       { std::unique_lock<std::mutex> lock{mutex};
-        cond.wait(lock, [] { return value > 0; });
+        cond.wait(lock, [&value] { return value > 0; });
         std::cout << value << std::endl; }
     \end{cppcode*}
   \end{exampleblock}
