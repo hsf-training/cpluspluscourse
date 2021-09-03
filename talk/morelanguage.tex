@@ -19,7 +19,7 @@
     i = 5;
 
     // also ok, when nothing on the left,
-    // const applies to element on the right
+    // const applies to the element on the right
     const int j = 6;
   \end{cppcode}
 \end{frame}
@@ -67,16 +67,16 @@
   \frametitlegb{Method constness}
   \begin{block}{Constness is part of the type}
     \begin{itemize}
-    \item const T and T are different type
-    \item however, T is automatically casted into const T when needed
+    \item const T and T are different types
+    \item however, T is automatically cast to const T when needed
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    void func(int &a);
-    void funcConst(const int &a);
+    void func(int & a);
+    void funcConst(int const & a);
 
     int a = 0;
-    const int b = 0;
+    int const b = 0;
 
     func(a);      // ok
     func(b);      // error
@@ -113,14 +113,37 @@
       constexpr int f(int x) {
         return x > 1 ? x * f(x - 1) : 1;
       }
-      int a = f(5); // now computed at compile time
+      constexpr int a = f(5); // computed at compile time
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitleii{Static Assertions}
+  \begin{block}{static\_assert declaration}
+    \begin{itemize}
+    \item Performs compile time assertions; meaning a failed assertion stops compilation
+    \item The expression has to be a constexpr boolean expression
+    \item Purely evaluated at compile time, no effect at runtime
+    \item Often used in template programming to make assertion on types, can be
+      used to validate boolean compile time expressions
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      constexpr int f(int x) {
+        return x > 1 ? x * f(x - 1) : 1;
+      }
+      static_assert(f(5)==120,"Expected f(5) to be 120!");
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+
+\begin{frame}[fragile]
   \frametitleii{Generalized Constant Expressions(2)}
-  \begin{alertblock}{Few limitations}
+   \begin{alertblock}{Few limitations in C++14 (more in C++11)}
     \begin{itemize}
     \item function's body cannot contain try-catch or static variables
     \item arguments should be constexpr or literals in order to benefit from compile time computation
@@ -154,7 +177,8 @@
     }
     constexpr float fromSI(const float v, const char unit) {
       switch (unit) {
-      case 'k': return 0.001*v;
+        case 'k': return 0.001*v;
+        case 'y': return 1.093*v;
       ...
       }
     }
@@ -177,8 +201,7 @@
     constexpr DimLength km(1, 'k');
     constexpr float km_y = km.get('y');
     constexpr float km_i = km.get('i');
-    std::cout << "1 km = " << km_y << " yards\n"
-              << "     = " << km_i << " inches\n";
+    static_assert(km_y == 1093, "expected km == 1093 yards!");
   \end{cppcode*}
 \end{frame}
 
@@ -188,7 +211,7 @@
   \frametitlegb{Exceptions}
   \begin{block}{The concept}
     \begin{itemize}
-    \item exceptional Event breaking linearity of the code
+    \item exceptional event breaking linearity of the code
     \item will be handled in dedicated place
     \end{itemize}
   \end{block}
@@ -224,7 +247,7 @@
   \end{block}
   \begin{multicols}{2}
     \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
-      class ZeroDivide {};
+      struct ZeroDivide {};
 
       int divide(int a, int b) {
         if (0 == b) {
@@ -282,7 +305,7 @@
   \frametitlegb{Controlling exceptions \hfill \deprecated}
   \begin{block}{Good to know}
     \begin{itemize}
-    \item The check in done at runtime, not at compile time
+    \item The check is done at runtime, not at compile time
       \begin{itemize}
       \item unlike Java
       \end{itemize}
@@ -360,13 +383,13 @@
     \item as an operator to know whether a function launches exceptions
       \begin{cppcode*}{gobble=2, linenos=false}
         template <typename T> void foo()
-             noexcept(noexcept(T())) {};
+             noexcept(noexcept(T())) {}
       \end{cppcode*}
    \end{itemize}
   \end{block}
 \end{frame}
 
-\subsection[mv]{Move semantic}
+\subsection[mv]{Move semantics}
 
 \begin{frame}[fragile]
   \frametitleii{Move semantics : the problem}
@@ -378,9 +401,9 @@
         a = b;
         b = c;
       }
-      std::vector<int> v, w;
-      for (int i = 0; i < 10000; i++) v.push_back(i);
-      for (int i = 0; i < 10000; i++) w.push_back(i);
+      std::vector<int> v(10000), w(10000);
+      for (int i = 0; i < 10000; i++) v[i] = i;
+      for (int i = 0; i < 10000; i++) w[i] = i*i;
       swap(v, w);
     \end{cppcode*}
   \end{exampleblock}
@@ -397,9 +420,9 @@
   \frametitleii{Move semantics : the problem}
   \begin{exampleblock}{Dedicated efficient code}
     \begin{cppcode*}{}
-      std::vector<int> v, w;
-      for (int i = 0; i < 10000; i++) v.push_back(i);
-      for (int i = 0; i < 10000; i++) w.push_back(i);
+      std::vector<int> v(10000), w(10000);
+      for (int i = 0; i < 10000; i++) v[i] = i;
+      for (int i = 0; i < 10000; i++) w[i] = i*i;
       v.swap(w);
       \end{cppcode*}
   \end{exampleblock}
@@ -418,9 +441,9 @@
   \begin{exampleblock}{Another non efficient code}
     \begin{cppcode*}{}
       std::vector<int> vrandom(unsigned int n) {
-        std::vector<int> result;
+        std::vector<int> result(n);
         for (int i = 0; i < n; i++) {
-          result.push_back(rand());
+          result[i] = rand();
         }
         return result;
       }
@@ -442,8 +465,9 @@
   \begin{exampleblock}{Dedicated efficient way}
     \begin{cppcode*}{}
       void vrandom(unsigned int n, std::vector<int> &v) {
+        v.resize(n);
         for (int i = 0; i < n; i++) {
-          v.push_back(rand());
+          v[i] = rand();
         }
       }
       std::vector<int> v;
@@ -475,9 +499,9 @@
   \pause
   \begin{exampleblock}{Practically}
     \begin{cppcode*}{}
-      T(const T&  other); // copy construction
+      T(T const &  other); // copy construction
       T(      T&& other); // move construction
-      T& operator=(const T&  other); // copy assignment
+      T& operator=(T const &  other); // copy assignment
       T& operator=(      T&& other); // move assignment
     \end{cppcode*}
   \end{exampleblock}
@@ -487,7 +511,7 @@
   \frametitleii{Move semantics}
   \begin{block}{A few important points concerning move semantic}
     \begin{itemize}
-    \item the whole STL can understand the move semantic
+    \item the whole STL understands move semantics
     \item move assignment operator is allowed to destroy source
       \begin{itemize}
       \item so do not reuse source afterward
@@ -541,7 +565,7 @@
   \frametitleii{Move semantics : the easy way}
   \begin{block}{Use copy and swap idiom}
     \begin{itemize}
-    \item implement an efficient swap method to your class
+    \item implement an efficient swap method for your class
       \begin{itemize}
       \item preferably outside the class so that it is symmetric
       \end{itemize}
@@ -613,7 +637,7 @@
         return Foo();
       }
       int main() {
-        // compiler was authorised to elude the copy
+        // compiler was authorised to elide the copy
         Foo foo = f();
       }
     \end{cppcode*}
@@ -867,8 +891,8 @@
                    std::multiplies<int>()); // function
 
     for(auto n : vr) {
-      std::cout << n << " ";
-    };
+      std::cout << n << ' ';
+    }
   \end{cppcode*}
 \end{frame}
 
@@ -984,7 +1008,7 @@
     for(std::vector<int>::iterator it = vr.begin();
         it != vr.end();
         it++) {
-      std::cout << *it << " ";
+      std::cout << *it << ' ';
     };
   \end{cppcode*}
 \end{frame}
@@ -1177,7 +1201,7 @@
         TheClass::inner_type TheClass::func() {...}
         auto TheClass::func() -> inner_type {...}
       \end{cppcode*}
-    \item ReturnType is not mandatory, compiler can deduce it
+    \item C++14: ReturnType is not mandatory, compiler can deduce it
     \item will be used for lambdas
     \end{itemize}
   \end{block}
@@ -1197,10 +1221,10 @@
       # without lambdas
       def isOdd(n):
         return n%2 == 1
-      print filter(isOdd, data)
+      print(filter(isOdd, data))
 
       # with lambdas
-      print filter(lambda n:n%2==1, data)
+      print(filter(lambda n:n%2==1, data))
     \end{pythoncode*}
   \end{exampleblock}
 \end{frame}
@@ -1271,7 +1295,7 @@
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
       transform(begin(data), end(data), begin(data),
                 [increment](int x) {
-                  std::cout << x+increment;
+                  return x+increment;
                 });
     \end{cppcode*}
   \end{exampleblock}
@@ -1427,7 +1451,7 @@
     \begin{cppcode*}{xleftmargin=20pt}
       char *s;
       try {
-        foo();
+        callThatThrows();
         s = (char*) malloc(...);
         strncpy(s, ...);
       } catch (...) { ... }
@@ -1480,7 +1504,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitlegb{Resource Acquisition Is Initialization}
+  \frametitlegb{Resource Acquisition Is Initialization (RAII)}
   \begin{block}{Practically}
     Use object semantic to acquire/release resources
     \begin{itemize}
@@ -1561,7 +1585,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Quizz}
+  \frametitleii{Quiz}
   \begin{exampleblock}{}
     \begin{cppcode*}{}
       Foo *p = new Foo{};  // allocation
@@ -1587,7 +1611,7 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{std::make\_unique}
+  \frametitleia{std::make\_unique}
   \begin{block}{}
     \begin{itemize}
     \item allocates directly a unique\_ptr
@@ -1630,8 +1654,8 @@ of 'std::unique_ptr<Foo>'
       void modifier(T&);
       void consumer(unique_ptr<T>);
       unique_ptr<T> pt{producer()};
-      observer(*pt.get());      // Keep ownership
-      modifier(*pt.get());      // Keep ownership
+      observer(*pt);            // Keep ownership
+      modifier(*pt);            // Keep ownership
       consumer(std::move(pt));  // Transfer ownership
     \end{cppcode*}
   \end{exampleblock}
@@ -1648,8 +1672,8 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleia{shared\_ptr, make\_shared}
-  \begin{block}{shared\_ptr : a reference counting pointers}
+  \frametitleii{shared\_ptr, make\_shared}
+  \begin{block}{shared\_ptr : a reference counting pointer}
     \begin{itemize}
     \item wraps a regular pointer like unique\_ptr
     \item has move and copy semantic
@@ -1657,7 +1681,7 @@ of 'std::unique_ptr<Foo>'
       \begin{itemize}
       \item "Would the last person out, please turn off the lights ?"
       \end{itemize}
-    \item is thread safe, thus the reference counting is costly
+    \item reference counting is thread-safe, therefore costly
     \end{itemize}
   \end{block}
   \begin{block}{make\_shared : creates a shared\_ptr}

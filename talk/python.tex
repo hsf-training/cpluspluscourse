@@ -6,7 +6,7 @@
   \frametitle{How to build a python 3 module around \cpp code}
   \begin{block}{\cpp code : mandel.hpp}
     \begin{cppcode*}{}
-      int mandel(const Complex &a);
+      int mandel(Complex const & a);
     \end{cppcode*}
   \end{block}
 \end{frame}
@@ -169,7 +169,7 @@
   \frametitle{ctypes : usage example}
   \begin{block}{\cpp code : mandel.hpp}
     \begin{cppcode*}{}
-      int mandel(const Complex &a);
+      int mandel(Complex const & a);
     \end{cppcode*}
   \end{block}
   \begin{block}{``C'' code : mandel\_cwrapper.hpp}
@@ -216,6 +216,7 @@
     \begin{itemize}
     \item originated from the ROOT project
     \item still young, version 1.0 from Mid 2018
+    \item but very active,  current version 2.1.0 
     \item extremely powerful for interfacing \cpp and python
     \end{itemize}
   \end{block}
