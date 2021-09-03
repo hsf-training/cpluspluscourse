@@ -7,7 +7,7 @@ int main() {
     // tb.draw();
     // error: request for member ‘draw’ is ambiguous
 
-    // Fix the code to call both draws by using types    
+    // Fix the code to call both draws by using types
     Rectangle &r = tb;
     r.draw();
     Text &t = tb;

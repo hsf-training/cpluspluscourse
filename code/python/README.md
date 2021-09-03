@@ -1,5 +1,5 @@
 
-## Instructions 
+## Instructions
 
 * look at the original python code `mandel.py`
 * time it (`time python3 mandel.py`)

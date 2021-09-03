@@ -28,4 +28,3 @@ public:
     TextBox(const std::string &content,
             float width, float height);
 };
-

@@ -13,4 +13,3 @@ struct SlowToCopy {
     SlowToCopy(const char* string);
     SlowToCopy(const SlowToCopy& other);
 };
-

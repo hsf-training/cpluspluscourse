@@ -1,8 +1,8 @@
 HSF C++ Course cheat sheet
 ==========================
 
-List of exercises per day, with prefered order and solution overview.
-Each exercise is in its own directory and refered to in the following by the name of the directory
+List of exercises per day, with preferred order and solution overview.
+Each exercise is in its own directory and referred to in the following by the name of the directory
 For each day, the exercises are given in order in which they should be done.
 
 Day 1
@@ -49,7 +49,7 @@ Fix code by calling it on both parents using types :
 See the output and check the ids printed, 2 different ones.
 
 Retry with virtual inheritance.
-See and solve the compilation issue about missing Drawable constructor. Understand that it's now called directly from TextBox constructor and call it explicitely from there with a new id.
+See and solve the compilation issue about missing Drawable constructor. Understand that it's now called directly from TextBox constructor and call it explicitly from there with a new id.
 See the new id being printed twice.
 
 Day 3
@@ -136,7 +136,7 @@ This exercise has several levels. People not at ease can stop after first level 
 Level 1 : just use the given Complex class in OrderedVector and see it works out of the box thanks to generic code in OrderedVector.
 
 Level 2 : add a template argument for the ordering in OrderedVector.
-The idea is to add an extra template argument "Compare" that is a functor comparing 2 arguments and an extra member "m_compare" of type "Compare" to the OrderedVector class. Then the comparison in the add function can be replaced by 
+The idea is to add an extra template argument "Compare" that is a functor comparing 2 arguments and an extra member "m_compare" of type "Compare" to the OrderedVector class. Then the comparison in the add function can be replaced by
 ```cpp
 m_compare(arg1, arg2);
 ```
@@ -160,7 +160,7 @@ The goal is to use STL algorithms. I would advise to start in this order :
   - first accumulate (the one for sums)
   - second accumulate (sum of squares) with usage of "sumsquare<T>()" as BinaryOperation
   - generate
-  
+
 One may want to only do the first 3 and go to next exercise to directly use lambdas for step 4 and 5;
 
 ### Lambda functions (directory: `lambdas`)

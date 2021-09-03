@@ -8,4 +8,3 @@ clean:
 
 loopsRefsAuto : loopsRefsAuto.cpp
 	${CXX} -std=c++17 -Wall -Wextra -o $@ $^
-

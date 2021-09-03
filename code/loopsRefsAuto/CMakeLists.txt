@@ -8,4 +8,3 @@ include( "${CMAKE_CURRENT_SOURCE_DIR}/../CompilerSettings.cmake" )
 
 # Create the user's executable.
 add_executable( loopsRefsAuto loopsRefsAuto.cpp )
-
