@@ -35,7 +35,7 @@
     \end{cppcode*}
   \end{exampleblock}
   \pause
-  \begin{exampleblock}{Can take any function like object}
+  \begin{exampleblock}{Can take any function-like object}
     \begin{cppcode*}{}
       struct AdderFunctor {
         AdderFunctor(int i): m_i(i) {}
@@ -107,7 +107,7 @@
   \frametitleii{Fine grained control on asynchronous execution}
   \begin{block}{std::packaged\_task template}
     \begin{itemize}
-    \item creates an asynchronous version of any function like object
+    \item creates an asynchronous version of any function-like object
       \begin{itemize}
       \item identical arguments
       \item returns a std::future
@@ -216,7 +216,7 @@
   \frametitleii{Mutexes}
   \begin{block}{Concept}
     \begin{itemize}
-    \item a lock to serialize access to a non atomic piece of code
+    \item a lock to serialize access to a non-atomic piece of code
     \end{itemize}
   \end{block}
   \pause
