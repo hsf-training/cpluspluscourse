@@ -50,9 +50,9 @@
   \frametitleii{Variadic templated class}
   \begin{block}{The tuple example, simplified}
     \begin{cppcode*}{}
-      template <class... Ts> struct tuple {};
+      template <typename... Ts> struct tuple {};
       
-      template <class T, class... Ts>
+      template <typename T, typename... Ts>
       struct tuple<T, Ts...> : tuple<Ts...> {
         tuple(T t, Ts... ts) :
           tuple<Ts...>(ts...), m_tail(t) {}
@@ -192,7 +192,7 @@
 \begin{frame}[fragile]
   \frametitleii{rvalue in type-deducing context}
   \begin{cppcode*}{}
-    template <class T>
+    template <typename T>
     void func(T&& t) {}
   \end{cppcode*}
   Next to a template parameter, \&\& is not an rvalue, but a ``universal reference''\\
@@ -217,15 +217,15 @@
   \frametitleii{std::remove\_reference}
   Some template trickery removing reference from a type
   \begin{cppcode*}{}
-    template< class T >
+    template< typename T >
     struct remove_reference
     {using type = T;};
 
-    template< class T >
+    template< typename T >
     struct remove_reference<T&>
     {using type = T;};
 
-    template< class T >
+    template< typename T >
     struct remove_reference<T&&>
     {using type = T;};
   \end{cppcode*}
@@ -237,7 +237,7 @@
   \frametitleii{std::forward}
   Another template trickery keeping references and mapping non reference types to rvalue references
   \begin{cppcode*}{}
-    template<class T>
+    template<typename T>
     T&& forward(typename std::remove_reference<T>::type& t)
       noexcept {
       return static_cast<T&&>(t);
@@ -473,10 +473,10 @@
   \frametitle{SFINAE and the STL \hfill \cpp11/\cpp14/\cpp17}
   \begin{block}{enable\_if / enable\_if\_t}
     \begin{cppcode*}{gobble=2}
-      template<bool B, class T = void> struct enable_if {};
-      template<class T>
+      template<bool B, typename T = void> struct enable_if {};
+      template<typename T>
       struct enable_if<true, T> { using type = T; };
-      template< bool B, class T = void >
+      template< bool B, typename T = void >
       using enable_if_t = typename enable_if<B,T>::type;
     \end{cppcode*}
     \begin{itemize}
@@ -521,12 +521,12 @@
       template <size_t k, typename TUPLE>
       struct elem_type_holder;
 
-      template <class T, class... Ts>
+      template <typename T, typename... Ts>
       struct elem_type_holder<0, tuple<T, Ts...>> {
         using type = T;
       };
       
-      template <size_t k, class T, class... Ts>
+      template <size_t k, typename T, typename... Ts>
       struct elem_type_holder<k, tuple<T, Ts...>> {
         using type = typename elem_type_holder
            <k - 1, tuple<Ts...>>::type;
@@ -539,14 +539,14 @@
   \frametitleii{Back to variadic templated class}
   \begin{block}{The tuple get method}
     \begin{cppcode*}{}
-      template <size_t k, class... Ts>
+      template <size_t k, typename... Ts>
       typename std::enable_if_t<k == 0,
         typename elem_type_holder
           <0, tuple<Ts...>>::type&>
       get(tuple<Ts...>& t) {
         return t.m_tail;
       }      
-      template <size_t k, class T, class... Ts>
+      template <size_t k, typename T, typename... Ts>
       typename std::enable_if_t<k != 0,
         typename elem_type_holder
            <k-1, tuple<Ts...>>::type&>
