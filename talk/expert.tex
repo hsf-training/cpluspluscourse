@@ -195,7 +195,7 @@
     template <class T>
     void func(T&& t) {}
   \end{cppcode*}
-  Next to a template parameter, \&\& is not an rvalue\\
+  Next to a template parameter, \&\& is not an rvalue, but a ``universal reference''\\
   T\&\& actual type depends on the arguments passed to func
   \begin{itemize}
   \item if an lvalue of type U is given, T is deduced to U\&
