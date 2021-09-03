@@ -39,7 +39,7 @@
     \begin{cppcode*}{}
       struct AdderFunctor {
         AdderFunctor(int i): m_i(i) {}
-        int operator() (int j) { return i+j; };
+        int operator() (int j) const { return i+j; };
         int m_i;
       };
       std::thread t2(AdderFunctor(2), 5);
@@ -235,7 +235,7 @@
       void inc() {
         std::lock_guard<std::mutex> guard(m);
         a++;
-      };
+      }
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
