@@ -22,3 +22,10 @@ pip3 install pre-commit
 # cd to repository
 pre-commit install
 ```
+
+### Spell checking
+
+Spell check is performed with the [codespell](https://github.com/codespell-project/codespell)
+pre-commit hook on every commit. To ignore words you can put them in the
+`codespell.txt` file. This file should list the supposedly misspelled words with
+one word per line and is case-sensitive.
