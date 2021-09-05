@@ -1,12 +1,13 @@
 # C++ course
 
 [![gh actions](https://github.com/hsf-training/cpluspluscourse/actions/workflows/workflow.yml/badge.svg)](https://github.com/hsf-training/cpluspluscourse/actions)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/hsf-training/cpluspluscourse/master.svg)](https://results.pre-commit.ci/latest/github/hsf-training/cpluspluscourse/master)
 [![HSF Training Center](https://img.shields.io/badge/HSF%20Training%20Center-browse-ff69b4)](https://hepsoftwarefoundation.org/training/curriculum.html)
 
 This repository contains all material for the C++ Course taught at CERN from
 Sebastien Ponce (LHCb).
 
-## Getting the latest PDF
+## 📎 Getting the latest PDF
 
 For each commit, the slides are compiled as a PDF and uploaded as "artifact".
 The [GitHub docs](https://docs.github.com/en/actions/managing-workflow-runs/downloading-workflow-artifacts)
