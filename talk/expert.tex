@@ -405,7 +405,7 @@
       static_assert(!hasFoo<A>::value, "A has no Foo()");
       static_assert(hasFoo<B>::value, "B has Foo()");
     \end{cppcode*}
-  \end{exampleblock}  
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -418,11 +418,11 @@
       template <typename T>
       struct hasFoo<T, decltype(std::declval<T>().foo())>
         : std::true_type {};
-      
+
       struct A{};
       struct B{void foo();};
       struct C{int foo();};
-      
+
       static_assert(!hasFoo<A>::value, "A has no Foo()");
       static_assert(hasFoo<B>::value, "B has Foo()");
       static_assert(!hasFoo<C>::value, "C has Foo()");
