@@ -47,7 +47,7 @@
 
 \begin{frame}[fragile]
   \frametitlegb{Method constness}
-  \begin{block}{The {\it const} keyword for class functions}
+  \begin{block}{The {\it const} keyword for class member functions}
     \begin{itemize}
     \item indicate that the function does not modify the object
     \item in other words, {\it this} is a pointer to constant object
@@ -67,8 +67,8 @@
   \frametitlegb{Method constness}
   \begin{block}{Constness is part of the type}
     \begin{itemize}
-    \item const T and T are different types
-    \item however, T is automatically cast to const T when needed
+    \item {\it T const} and {\it T} are different types
+    \item however, {\it T} is automatically cast to {\it T const} when needed
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -140,10 +140,9 @@
   \end{exampleblock}
 \end{frame}
 
-
 \begin{frame}[fragile]
   \frametitleii{Generalized Constant Expressions(2)}
-   \begin{alertblock}{Few limitations in C++14 (more in C++11)}
+  \begin{alertblock}{Few limitations in C++14 (more in C++11)}
     \begin{itemize}
     \item function's body cannot contain try-catch or static variables
     \item arguments should be constexpr or literals in order to benefit from compile time computation
@@ -151,7 +150,7 @@
   \end{alertblock}
   \begin{block}{Notes}
     \begin{itemize}
-    \item classes can have constexpr functions
+    \item classes can have constexpr member functions
     \item objects can be constexpr
       \begin{itemize}
       \item if the constructor of their class is
@@ -202,6 +201,30 @@
     constexpr float km_y = km.get('y');
     constexpr float km_i = km.get('i');
     static_assert(km_y == 1093, "expected km == 1093 yards!");
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Constant expressions with {\it if constexpr} (C++17)}
+  \begin{block}{Notes}
+    \begin{itemize}
+    \item {\it if constexpr} requires a constant expression as condition
+    \item it is evaluated at compile time
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    #include <iterator>
+    template <typename Iterator, typename Dist>
+    void advance( Iterator & i, Dist n) {
+      using cat = typename std::iterator_traits<Iterator>::iterator_category ;
+      if constexpr (std::is_same_v<cat,std::random_access_iterator_tag>) {
+        i += n ;
+      }
+      else {
+        if (n >= 0) while (n--) ++i ;
+        else while (n++) --i ;
+      }
+    }
   \end{cppcode*}
 \end{frame}
 
