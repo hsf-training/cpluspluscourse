@@ -1182,7 +1182,7 @@
   \frametitleit{Compile-time branches with {\it if constexpr}}
   It requires a constant expression as condition,
   and is evaluated at compile time. Key benefit: the discarded
-  branch can contain invalid code.
+  branch can contain invalid code for the current template arguments.
   \begin{cppcode*}{}
     template <typename Iterator, typename Dist>
     void advance( Iterator & i, Dist n) {
