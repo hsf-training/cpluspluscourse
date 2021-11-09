@@ -1180,16 +1180,14 @@
 
 \begin{frame}[fragile]
   \frametitleit{Compile-time branches with {\it if constexpr}}
-  \begin{block}{Notes}
-    \begin{itemize}
-    \item {\it if constexpr} requires a constant expression as condition
-    \item it is evaluated at compile time
-    \end{itemize}
+  It requires a constant expression as condition,
+  and is evaluated at compile time.
   \end{block}
   \begin{cppcode*}{}
     template <typename Iterator, typename Dist>
     void advance( Iterator & i, Dist n) {
-      using cat = typename std::iterator_traits<Iterator>::iterator_category ;
+      using itraits = std::iterator_traits<Iterator> ;
+      using icat = typename itraits::iterator_category ;
       if constexpr (std::is_same_v<cat,std::random_access_iterator_tag>) {
         i += n ;
       }
