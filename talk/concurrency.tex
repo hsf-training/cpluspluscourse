@@ -213,18 +213,18 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Mutexes}
+  \frametitleii{Mutexes and Locks}
   \begin{block}{Concept}
     \begin{itemize}
-    \item a lock to serialize access to a non-atomic piece of code
+    \item Use locks to serialize access to a non-atomic piece of code
     \end{itemize}
   \end{block}
   \pause
   \begin{block}{The objects}
     \begin{description}[labelwidth=1.8cm]
     \item[std::mutex] in the mutex header
-    \item[std::lock\_guard] for an RAII version of it
-    \item[std::unique\_lock] same and can be released/relocked
+    \item[std::scoped\_lock] RAII to lock and unlock automatically
+    \item[std::unique\_lock] same, but can be released/relocked explicitly
     \end{description}
   \end{block}
   \pause
@@ -233,8 +233,30 @@
       int a = 0;
       std::mutex m;
       void inc() {
-        std::lock_guard<std::mutex> guard(m);
+        std::scoped_lock lock{m};
         a++;
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitleii{Mutexes and Locks}
+  \begin{block}{Good practice}
+    \begin{itemize}
+      \item Always use \texttt{scoped\_lock} (\cpp11: \texttt{lock\_guard})
+      \item Hold as short as possible, wrap critical section in "\texttt{\string{  \string}}"
+      \item Only if manual control needed, use \texttt{unique\_lock}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{gobble=2}
+      void function(...) {
+        // ...
+        {
+          std::scoped_lock myLocks{mutex1, mutex2, ...};
+          // critical section
+        }
       }
     \end{cppcode*}
   \end{exampleblock}
