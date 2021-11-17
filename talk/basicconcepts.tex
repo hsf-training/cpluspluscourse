@@ -3,7 +3,7 @@
 \subsection[Core]{Core syntax and types}
 
 \begin{frame}[fragile]
-  \frametitlegb{Hello World}
+  \frametitlecpp[98]{Hello World}
   \begin{cppcode}
     #include <iostream>
 
@@ -23,7 +23,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Comments}
+  \frametitlecpp[98]{Comments}
   \begin{cppcode}
     // simple comment for integer declaration
     int i;
@@ -45,7 +45,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Basic types(1)}
+  \frametitlecpp[98]{Basic types(1)}
   \begin{cppcode}
     bool b = true;            // boolean, true or false
 
@@ -62,7 +62,7 @@
   \end{cppcode}
 \end{frame}
 \begin{frame}[fragile]
-  \frametitlegb{Basic types(2)}
+  \frametitlecpp[98]{Basic types(2)}
   \begin{cppcode}
     int i = -123456;          // 32 bits signed integer
     unsigned int i = 1234567; // 32 bits signed integer
@@ -79,7 +79,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Portable numeric types}
+  \frametitlecpp[98]{Portable numeric types}
   \alert{One needs to include specific header}
   \begin{cppcode}
     #include <cstdint>
@@ -101,7 +101,7 @@
 \subsection[Ptr]{Arrays and Pointers}
 
 \begin{frame}[fragile]
-  \frametitlegb{Static arrays}
+  \frametitlecpp[98]{Static arrays}
   \begin{cppcode}
     int ai[4] = {1,2,3,4};
     int ai[] = {1,2,3,4};  // identical
@@ -134,7 +134,7 @@ int *pak = (int*)k;
 int l = *pak;
 }
 \begin{frame}[fragile]
-  \frametitlegb{Pointers}
+  \frametitlecpp[98]{Pointers}
   \begin{multicols}{2}
   \begin{overprint}[\columnwidth]
     \onslide<1> \highlightCppCode{}{code_arrays}
@@ -169,7 +169,7 @@ int l = *pak;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{nullptr}
+  \frametitlecpp[11]{nullptr}
   \begin{block}{Finally a \cpp~NULL pointer}
     \begin{itemize}
     \item if a pointer doesn't point to anything, set it to \mintinline{cpp}{nullptr}
@@ -189,7 +189,7 @@ int l = *pak;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Dynamic Arrays}
+  \frametitlecpp[98]{Dynamic Arrays}
   \begin{cppcode}
     #include <cstdlib>
     #include <cstring>
@@ -214,7 +214,7 @@ int l = *pak;
 \subsection[Compound]{Compound data types}
 
 \begin{frame}[fragile]
-  \frametitlegb{struct}
+  \frametitlecpp[98]{struct}
   \begin{mdframed}[style=simplebox]
     \center ``members'' grouped together under one name
   \end{mdframed}
@@ -260,7 +260,7 @@ int l = *pak;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{union}
+  \frametitlecpp[98]{union}
   \begin{mdframed}[style=simplebox]
     \center ``members'' packed together at same memory location
   \end{mdframed}
@@ -298,7 +298,7 @@ int l = *pak;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Enums}
+  \frametitlecpp[98]{Enums}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       enum VehicleType {
@@ -321,7 +321,7 @@ int l = *pak;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Scoped enumeration, aka enum class}
+  \frametitlecpp[11]{Scoped enumeration, aka enum class}
   \begin{block}{Same syntax as enum, with scope}
     \begin{cppcode*}{}
       enum class VehicleType { Bus, Car };
@@ -350,7 +350,7 @@ int l = *pak;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{More sensible example}
+  \frametitlecpp[98]{More sensible example}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       enum class ShapeType {
@@ -419,7 +419,7 @@ int l = *pak;
 \subsection[Refs]{References}
 
 \begin{frame}[fragile]
-  \frametitlegb{References}
+  \frametitlecpp[98]{References}
   \begin{block}{References}
     \begin{itemize}
       \item References allow for direct access to another object
@@ -444,7 +444,7 @@ int l = *pak;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Pointers vs References}
+  \frametitlecpp[98]{Pointers vs References}
   \begin{block}{Specificities of reference}
     \begin{itemize}
     \item natural syntax
@@ -472,7 +472,7 @@ int l = *pak;
 \subsection[$f()$]{Functions}
 
 \begin{frame}[fragile]
-  \frametitlegb{Functions}
+  \frametitlecpp[98]{Functions}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       // with return type
@@ -518,7 +518,7 @@ void printBSp(BigStruct &q) {
 printBSp(s); // no copy
 }
 \begin{frame}[fragile]
-  \frametitlegb{Functions: parameters are passed by value}
+  \frametitlecpp[98]{Functions: parameters are passed by value}
   \begin{multicols}{2}
     \begin{overprint}[\columnwidth]
       \onslide<1-2>
@@ -570,7 +570,7 @@ changeSS2(s);
 // s.a == 2
 }
 \begin{frame}[fragile]
-  \frametitlegb{Functions: pass by value or reference?}
+  \frametitlecpp[98]{Functions: pass by value or reference?}
   \begin{multicols}{2}
     \begin{overprint}[\columnwidth]
       \onslide<1>
@@ -620,7 +620,7 @@ changeSS2(s);
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Value vs. pointers and references}
+  \frametitlecpp[98]{Value vs. pointers and references}
   \begin{block}{Different ways to pass arguments to a function}
     \begin{itemize}
     \item by default arguments are passed by value (= copy, good for small types, e.g.\ numbers)
@@ -642,7 +642,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Functions}
+  \frametitlecpp[98]{Functions}
   \begin{alertblock}{Exercise}
     Familiarise yourself with pass by copy / pass by reference.
     \begin{itemize}
@@ -655,7 +655,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Functions: good practices}
+  \frametitlecpp[98]{Functions: good practices}
   \begin{onlyenv}<1>
     \begin{block}{Good practices with functions}
       \begin{itemize}
@@ -723,7 +723,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
 \subsection[Op]{Operators}
 
 \begin{frame}[fragile]
-  \frametitlegb{Operators(1)}
+  \frametitlecpp[98]{Operators(1)}
   \begin{block}{Binary \& Assignment Operators}
     \begin{cppcode*}{}
       int i = 1 + 4 - 2;  // 3
@@ -745,7 +745,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Operators(2)}
+  \frametitlecpp[98]{Operators(2)}
   \begin{block}{Bitwise and Assignment Operators}
     \begin{cppcode*}{}
       int i = 0xee & 0x55;  // 0x44
@@ -769,7 +769,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Operators(3)}
+  \frametitlecpp[98]{Operators(3)}
   \begin{block}{Comparison Operators}
     \begin{cppcode*}{}
       bool a = (3 == 3);  // true
@@ -791,7 +791,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
 \subsection[NS]{Scopes / namespaces}
 
 \begin{frame}[fragile]
-  \frametitlegb{Scope}
+  \frametitlecpp[98]{Scope}
   \begin{block}{Definition}
     Portion of the source code where a given name is valid \\
     Typically :
@@ -821,7 +821,7 @@ int a = 1;
 // b[1] = a + 1;
 }
 \begin{frame}[fragile]
-  \frametitlegb{Scope and lifetime of resources}
+  \frametitlecpp[98]{Scope and lifetime of resources}
   \begin{block}{Resource life time}
     \begin{itemize}
       \item Resources are allocated when declared
@@ -876,7 +876,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Namespaces}
+  \frametitlecpp[98]{Namespaces}
   \begin{itemize}
   \item Namespaces allow to segment your code to avoid name clashes
   \item They can be embedded to create hierarchies (separator is '::')
@@ -917,7 +917,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleit{Nested namespaces}
+  \frametitlecpp[17]{Nested namespaces}
   Easier way to declare nested namespaces
   \begin{alertblock}{\cpp14}
     \begin{cppcode*}{}
@@ -940,7 +940,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Anonymous namespaces}
+  \frametitlecpp[98]{Anonymous namespaces}
   \begin{exampleblock}{A namespace without a name !}
     \begin{cppcode*}{}
       namespace {
@@ -971,7 +971,7 @@ int a = 1;
 \subsection[Control]{Control instructions}
 
 \begin{frame}[fragile]
-  \frametitlegb{Control instructions : if}
+  \frametitlecpp[98]{Control instructions : if}
   \begin{block}{if syntax}
     \begin{cppcode*}{}
       if (condition1) {
@@ -991,7 +991,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Control instructions : if}
+  \frametitlecpp[98]{Control instructions : if}
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{}
       int collatz(int a) {
@@ -1011,7 +1011,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Control instructions : conditional operator}
+  \frametitlecpp[98]{Control instructions : conditional operator}
   \begin{block}{Syntax}
     \begin{cppcode*}{linenos=false}
       test ? expression1 : expression2;
@@ -1038,7 +1038,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Control instructions : switch}
+  \frametitlecpp[98]{Control instructions : switch}
   \begin{block}{Syntax}
     \begin{cppcode*}{gobble=2}
       switch(identifier) {
@@ -1063,7 +1063,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Control instructions : switch}
+  \frametitlecpp[98]{Control instructions : switch}
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{}
       enum class Lang { FRENCH, GERMAN, ENGLISH, OTHER };
@@ -1088,7 +1088,7 @@ int a = 1;
 \AtBeginEnvironment{minted}{\renewcommand{\fcolorbox}[4][]{#4}}
 
 \begin{frame}[fragile]
-  \frametitleit{\texttt{[[fallthrough]]} attribute}
+  \frametitlecpp[17]{\texttt{[[fallthrough]]} attribute}
   \begin{alertblock}{\cpp14}
     \begin{cppcode}
       switch (c) {
@@ -1113,7 +1113,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleit{init-statements for if and switch}
+  \frametitlecpp[17]{init-statements for if and switch}
   Allows to simplify if and switch statements
   \begin{alertblock}{\cpp14}
     \begin{cppcode*}{}
@@ -1139,7 +1139,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Control instructions : for loop}
+  \frametitlecpp[98]{Control instructions : for loop}
   \begin{block}{for loop syntax}
     \begin{cppcode*}{}
       for(initializations; condition; increments) {
@@ -1168,7 +1168,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Range based loops}
+  \frametitlecpp[11]{Range based loops}
   \begin{block}{Reason of being}
     \begin{itemize}
     \item simplifies loops tremendously
@@ -1192,7 +1192,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Control instructions : while loop}
+  \frametitlecpp[98]{Control instructions : while loop}
   \begin{block}{while loop syntax}
     \begin{cppcode*}{}
       while(condition) {
@@ -1218,7 +1218,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Control instructions : commands}
+  \frametitlecpp[98]{Control instructions : commands}
   \begin{block}{control commands}
     \begin{description}
     \item[break] goes out of the loop
@@ -1245,7 +1245,7 @@ int a = 1;
 \subsection[.h]{Headers and interfaces}
 
 \begin{frame}[fragile]
-  \frametitlegb{Headers and interfaces}
+  \frametitlecpp[98]{Headers and interfaces}
   \begin{block}{Interface}
     Set of declarations defining some functionality
     \begin{itemize}
@@ -1269,7 +1269,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Preprocessor}
+  \frametitlecpp[98]{Preprocessor}
   \begin{cppcode}
     // file inclusion
     #include "hello.hpp"
@@ -1294,7 +1294,7 @@ int a = 1;
 \subsection[auto]{Auto keyword}
 
 \begin{frame}[fragile]
-  \frametitleii{Auto keyword}
+  \frametitlecpp[11]{Auto keyword}
   \begin{block}{Reason of being}
     \begin{itemize}
     \item many type declarations are redundant
@@ -1319,7 +1319,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Loops, references, auto}
+  \frametitlecpp[98]{Loops, references, auto}
   \begin{alertblock}{Exercise}
     Familiarise yourself with range-based for loops and references
     \begin{itemize}

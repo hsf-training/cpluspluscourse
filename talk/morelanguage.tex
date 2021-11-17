@@ -3,7 +3,7 @@
 \subsection[const]{Constness}
 
 \begin{frame}[fragile]
-  \frametitlegb{Constness}
+  \frametitlecpp[98]{Constness}
   \begin{block}{The {\it const} keyword}
     \begin{itemize}
     \item indicate that the element to the left is constant
@@ -25,7 +25,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Constness and pointers}
+  \frametitlecpp[98]{Constness and pointers}
   \begin{cppcode}
     // pointer to a constant integer
     int a = 1, b = 2;
@@ -46,7 +46,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Method constness}
+  \frametitlecpp[98]{Method constness}
   \begin{block}{The {\it const} keyword for class functions}
     \begin{itemize}
     \item indicate that the function does not modify the object
@@ -64,7 +64,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Method constness}
+  \frametitlecpp[98]{Method constness}
   \begin{block}{Constness is part of the type}
     \begin{itemize}
     \item const T and T are different types
@@ -86,7 +86,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{constness}
+  \frametitlecpp[98]{constness}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/constness
@@ -100,7 +100,7 @@
 \subsection[cstexpr]{Constant Expressions}
 
 \begin{frame}[fragile]
-  \frametitleii{Generalized Constant Expressions}
+  \frametitlecpp[11]{Generalized Constant Expressions}
   \begin{block}{Reason of being}
     \begin{itemize}
     \item compute constant expressions at compile time
@@ -119,7 +119,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Static Assertions}
+  \frametitlecpp[11]{Static Assertions}
   \begin{block}{static\_assert declaration}
     \begin{itemize}
     \item Performs compile time assertions; meaning a failed assertion stops compilation
@@ -142,7 +142,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitleii{Generalized Constant Expressions(2)}
+  \frametitlecpp[11]{Generalized Constant Expressions(2)}
    \begin{alertblock}{Few limitations in C++14 (more in C++11)}
     \begin{itemize}
     \item function's body cannot contain try-catch or static variables
@@ -163,7 +163,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Real life example}
+  \frametitlecpp[11]{Real life example}
   \begin{cppcode*}{}
     constexpr float toSI(const float v, const char unit) {
       switch (unit) {
@@ -186,7 +186,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Real life example(2)}
+  \frametitlecpp[11]{Real life example(2)}
   \begin{cppcode*}{}
     class DimLength {
       const float m_value;
@@ -208,7 +208,7 @@
 \subsection[except]{Exceptions}
 
 \begin{frame}[fragile]
-  \frametitlegb{Exceptions}
+  \frametitlecpp[98]{Exceptions}
   \begin{block}{The concept}
     \begin{itemize}
     \item exceptional event breaking linearity of the code
@@ -234,7 +234,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Exceptions}
+  \frametitlecpp[98]{Exceptions}
   \begin{block}{Rules}
     \begin{itemize}
     \item exception will skip all code until next {\it catch}
@@ -277,7 +277,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Controlling exceptions \hfill \deprecated}
+  \frametitlecpp[98]{Controlling exceptions \hfill \deprecated}
   \begin{block}{Declaring expected exceptions}
     \begin{itemize}
     \item each function can declare a set of expected exceptions
@@ -302,7 +302,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Controlling exceptions \hfill \deprecated}
+  \frametitlecpp[98]{Controlling exceptions \hfill \deprecated}
   \begin{block}{Good to know}
     \begin{itemize}
     \item The check is done at runtime, not at compile time
@@ -325,7 +325,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Deprecation of \cpp98 exceptions}
+  \frametitlecpp[11]{Deprecation of \cpp98 exceptions}
   \begin{block}{}
     After a lot of thinking and experiencing, the conclusions of the community on exception handling are :
     \begin{itemize}
@@ -351,7 +351,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{What remains}
+  \frametitlecpp[11]{What remains}
   \begin{block}{throw is dead}
     \begin{itemize}
     \item throw statements are deprecated
@@ -369,7 +369,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Full power of noexcept}
+  \frametitlecpp[11]{Full power of noexcept}
   \begin{block}{3 uses of noexcept}
     \begin{itemize}
     \item standalone
@@ -392,7 +392,7 @@
 \subsection[mv]{Move semantics}
 
 \begin{frame}[fragile]
-  \frametitleii{Move semantics : the problem}
+  \frametitlecpp[11]{Move semantics : the problem}
   \begin{exampleblock}{Non efficient code}
     \begin{cppcode*}{}
       void swap(std::vector<int> &a,
@@ -417,7 +417,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Move semantics : the problem}
+  \frametitlecpp[11]{Move semantics : the problem}
   \begin{exampleblock}{Dedicated efficient code}
     \begin{cppcode*}{}
       std::vector<int> v(10000), w(10000);
@@ -437,7 +437,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Move semantics : the problem}
+  \frametitlecpp[11]{Move semantics : the problem}
   \begin{exampleblock}{Another non efficient code}
     \begin{cppcode*}{}
       std::vector<int> vrandom(unsigned int n) {
@@ -461,7 +461,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Move semantics : the problem}
+  \frametitlecpp[11]{Move semantics : the problem}
   \begin{exampleblock}{Dedicated efficient way}
     \begin{cppcode*}{}
       void vrandom(unsigned int n, std::vector<int> &v) {
@@ -481,7 +481,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Move semantics}
+  \frametitlecpp[11]{Move semantics}
   \begin{block}{The idea}
     \begin{itemize}
       \item a new type of reference : rvalue references
@@ -508,7 +508,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Move semantics}
+  \frametitlecpp[11]{Move semantics}
   \begin{block}{A few important points concerning move semantic}
     \begin{itemize}
     \item the whole STL understands move semantics
@@ -536,7 +536,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Move semantics}
+  \frametitlecpp[11]{Move semantics}
   \begin{block}{In some cases, you want to force a move}
     \begin{cppcode*}{}
       void swap(T &a, T &b) {
@@ -562,7 +562,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Move semantics : the easy way}
+  \frametitlecpp[11]{Move semantics : the easy way}
   \begin{block}{Use copy and swap idiom}
     \begin{itemize}
     \item implement an efficient swap method for your class
@@ -590,7 +590,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Move semantics : the easy way}
+  \frametitlecpp[11]{Move semantics : the easy way}
   \begin{exampleblock}{Practically}
     \begin{cppcode*}{}
       class Movable {
@@ -611,7 +611,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Move Semantic}
+  \frametitlecpp[11]{Move Semantic}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/move
@@ -629,7 +629,7 @@
 \subsection[copy]{Copy elision}
 
 \begin{frame}[fragile]
-  \frametitleit{Guaranteed copy elision}
+  \frametitlecpp[17]{Guaranteed copy elision}
   \begin{block}{What is copy elision}
     \begin{cppcode*}{}
       struct Foo { ... };
@@ -648,7 +648,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleit{Guaranteed copy elision}
+  \frametitlecpp[17]{Guaranteed copy elision}
   Allows to write code not allowed with \cpp14 (would not compile)
   \begin{block}{One case where the guarantee is needed}
     \begin{cppcode*}{}
@@ -670,7 +670,7 @@
 \subsection[\textless{}T\textgreater]{Templates}
 
 \begin{frame}[fragile]
-  \frametitlegb{Templates}
+  \frametitlecpp[98]{Templates}
   \begin{block}{Concept}
     \begin{itemize}
     \item The \cpp way to write reusable code
@@ -695,7 +695,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Templates}
+  \frametitlecpp[98]{Templates}
   \begin{alertblock}{Warning}
     These are really like macros
     \begin{itemize}
@@ -751,7 +751,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Templates}
+  \frametitlecpp[98]{Templates}
   \begin{block}{Arguments}
     \begin{itemize}
     \item can be a class,
@@ -773,7 +773,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Templates implementation}
+  \frametitlecpp[98]{Templates implementation}
   \begin{cppcode*}{}
     template<typename KeyType=int, typename ValueType=KeyType>
     struct Map {
@@ -814,7 +814,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Templates}
+  \frametitlecpp[98]{Templates}
   \begin{block}{Specialization}
     templates can be specialized for given values of their parameter
   \end{block}
@@ -835,7 +835,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{The full power of templates}
+  \frametitlecpp[98]{The full power of templates}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/templates
@@ -854,7 +854,7 @@
 \subsection[STL]{The STL}
 
 \begin{frame}[fragile]
-  \frametitlegb{The Standard Template Library}
+  \frametitlecpp[98]{The Standard Template Library}
   \begin{block}{What it is}
     \begin{itemize}
     \item A library of standard templates
@@ -877,7 +877,7 @@
 \end{frame}
 
 \begin{frame}[fragile,label=STLcode]
-  \frametitleii{STL in practice}
+  \frametitlecpp[11]{STL in practice}
   \begin{cppcode*}{}
     #include <vector>
     #include <algorithm>
@@ -897,7 +897,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{STL's concepts}
+  \frametitlecpp[98]{STL's concepts}
   \begin{block}{containers}
     \begin{itemize}
     \item a structure containing data
@@ -920,7 +920,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{STL's concepts}
+  \frametitlecpp[98]{STL's concepts}
   \begin{block}{iterators}
     \begin{itemize}
     \item generalization of pointers
@@ -942,7 +942,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{STL's concepts}
+  \frametitlecpp[98]{STL's concepts}
   \begin{block}{algorithms}
     \begin{itemize}
     \item implementation of an algorithm working on data
@@ -967,7 +967,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{STL's concepts}
+  \frametitlecpp[98]{STL's concepts}
   \begin{block}{functions / functors}
     \begin{itemize}
       \item generic utility functions/functors
@@ -992,7 +992,7 @@
 \againframe{STLcode}
 
 \begin{frame}[fragile]
-  \frametitlegb{STL in practice using \cpp98}
+  \frametitlecpp[98]{STL in practice using \cpp98}
   \begin{cppcode*}{}
     #include <vector>
     #include <algorithm>
@@ -1014,7 +1014,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{STL and functors}
+  \frametitlecpp[98]{STL and functors}
   \begin{cppcode}
     // Finds the first element in a list that lies in
     // the range from 1 to 10.
@@ -1035,7 +1035,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Welcome to lego programming !}
+  \frametitlecpp[98]{Welcome to lego programming !}
   \begin{block}{}
     \pgfdeclareimage[height=0.5cm]{AtlasLego}{AtlasLego.jpg}
     \includegraphics[width=\linewidth]{AtlasLego}
@@ -1043,7 +1043,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Using the STL}
+  \frametitlecpp[98]{Using the STL}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/stl
@@ -1061,7 +1061,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Using the STL}
+  \frametitlecpp[98]{Using the STL}
   \begin{alertblock}{Some last warning}
     You may find the STL quite difficult to use.
     \begin{itemize}
@@ -1074,7 +1074,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Loops and auto keyword with the STL}
+  \frametitlecpp[11]{Loops and auto keyword with the STL}
   \begin{block}{Old way}
     \begin{cppcode*}{}
       std::vector<int> a = ...;
@@ -1105,7 +1105,7 @@
 \subsection{More STL}
 
 \begin{frame}[fragile]
-  \frametitleit{Some new STL types}
+  \frametitlecpp[17]{Some new STL types}
   \begin{block}{\texttt{std::optional}}
     \begin{itemize}
     \item manages an optional contained value
@@ -1130,7 +1130,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{non-member begin and end}
+  \frametitlecpp[11]{non-member begin and end}
   \begin{alertblock}{The problem in \cpp98}
     STL containers and arrays have different syntax for loop
     \vspace{-1mm}
@@ -1158,7 +1158,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleit{Structured Binding Declarations}
+  \frametitlecpp[17]{Structured Binding Declarations}
   Helps when using tuples as a return type.\\
   Automatically creates variables and ties them.
   \begin{alertblock}{\cpp14}
@@ -1182,7 +1182,7 @@
 \subsection[$\lambda$]{Lambdas}
 
 \begin{frame}[fragile]
-  \frametitleii{Function return type}
+  \frametitlecpp[11]{Function return type}
   \begin{block}{A new way to specify function's return type}
     \begin{cppcode*}{linenos=false}
       ReturnType fn_name(ArgType1, ArgType2);  //old
@@ -1209,7 +1209,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitleii{Lambdas}
+  \frametitlecpp[11]{Lambdas}
   \begin{block}{Definition}
     a lambda is a function with no name
   \end{block}
@@ -1230,7 +1230,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{\cpp Lambdas}
+  \frametitlecpp[11]{\cpp Lambdas}
   \begin{block}{Simplified syntax}
     \begin{cppcode*}{gobble=2}
       [] (args) -> type {
@@ -1253,7 +1253,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitleii{Capture}
+  \frametitlecpp[11]{Capture}
   \begin{block}{Python code}
     \begin{pythoncode*}{}
       increment = 3
@@ -1281,7 +1281,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Capture}
+  \frametitlecpp[11]{Capture}
   \begin{block}{Variable capture}
     \begin{itemize}
     \item external variables need to be explicitly captured
@@ -1302,7 +1302,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Default capture is by value}
+  \frametitlecpp[11]{Default capture is by value}
   \begin{exampleblock}{Code example}
     \begin{cppcode}
       int sum = 0;
@@ -1325,7 +1325,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Capture by reference}
+  \frametitlecpp[11]{Capture by reference}
   \begin{exampleblock}{Simple example}
     In order to capture by reference, add '\&' before the variable
     \begin{cppcode*}{}
@@ -1350,7 +1350,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Capture all}
+  \frametitlecpp[11]{Capture all}
   \begin{block}{by value}
     \begin{cppcode*}{linenos=false}
       [=](...) { ... };
@@ -1372,7 +1372,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Lambdas rather than functors}
+  \frametitlecpp[11]{Lambdas rather than functors}
   \begin{exampleblock}{Example}
     \begin{cppcode*}{}
       auto build_incrementer = [](int inc) {
@@ -1395,7 +1395,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{{\texttt lambda}s makes the STL usable}
+  \frametitlecpp[11]{{\texttt lambda}s makes the STL usable}
   \begin{block}{Before lambdas}
     \begin{cppcode*}{}
       struct Incrementer {
@@ -1414,7 +1414,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{{\texttt lambda}s makes the STL usable}
+  \frametitlecpp[11]{{\texttt lambda}s makes the STL usable}
   \begin{exampleblock}{With lambdas}
     \begin{cppcode*}{}
       std::vector<int> v{1, 2, 3};
@@ -1432,7 +1432,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Lambdas}
+  \frametitlecpp[11]{Lambdas}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/lambdas
@@ -1445,7 +1445,7 @@
 \subsection[RAII]{pointers and RAII}
 
 \begin{frame}[fragile]
-  \frametitlegb{Pointers : why they are error prone ?}
+  \frametitlecpp[98]{Pointers : why they are error prone ?}
   \begin{exampleblock}{They need initialization
       \hfill \onslide<2->{\textcolor{orange}{\bf Seg Fault}}}
     \begin{cppcode*}{xleftmargin=20pt}
@@ -1488,7 +1488,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{This problem exists for any resource}
+  \frametitlecpp[98]{This problem exists for any resource}
   \begin{exampleblock}{For example with a file}
     \begin{cppcode*}{}
       try {
@@ -1504,7 +1504,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitlegb{Resource Acquisition Is Initialization (RAII)}
+  \frametitlecpp[98]{Resource Acquisition Is Initialization (RAII)}
   \begin{block}{Practically}
     Use object semantic to acquire/release resources
     \begin{itemize}
@@ -1517,7 +1517,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{RAII in practice}
+  \frametitlecpp[98]{RAII in practice}
   \begin{exampleblock}{File class}
     \begin{cppcode*}{}
       class File {
@@ -1540,7 +1540,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{RAII usage}
+  \frametitlecpp[98]{RAII usage}
   \begin{exampleblock}{Usage of File class}
     \begin{cppcode*}{}
       void log_function() {
@@ -1558,7 +1558,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{std::unique\_ptr}
+  \frametitlecpp[11]{std::unique\_ptr}
   \begin{block}{an RAII pointer}
     \begin{itemize}
     \item wraps a regular pointer
@@ -1585,7 +1585,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Quiz}
+  \frametitlecpp[11]{Quiz}
   \begin{exampleblock}{}
     \begin{cppcode*}{}
       Foo *p = new Foo{};  // allocation
@@ -1611,7 +1611,7 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleia{std::make\_unique}
+  \frametitlecpp[14]{std::make\_unique}
   \begin{block}{}
     \begin{itemize}
     \item allocates directly a unique\_ptr
@@ -1635,7 +1635,7 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{RAII or raw pointers}
+  \frametitlecpp[11]{RAII or raw pointers}
   \begin{block}{When to use what ?}
     \begin{itemize}
     \item Always use RAII for allocations
@@ -1662,7 +1662,7 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{unique\_ptr usage summary}
+  \frametitlecpp[11]{unique\_ptr usage summary}
   \begin{block}{It's about lifetime management}
     \begin{itemize}
     \item Use unique\_ptr in functions taking part to the lifetime management
@@ -1672,7 +1672,7 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{shared\_ptr, make\_shared}
+  \frametitlecpp[11]{shared\_ptr, make\_shared}
   \begin{block}{shared\_ptr : a reference counting pointer}
     \begin{itemize}
     \item wraps a regular pointer like unique\_ptr
@@ -1696,7 +1696,7 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{smart pointers}
+  \frametitlecpp[98]{smart pointers}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/smartPointers

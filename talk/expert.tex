@@ -5,7 +5,7 @@
 %http://eli.thegreenplace.net/2014/variadic-templates-in-c/
 
 \begin{frame}[fragile]
-  \frametitleii{Basic variadic template}
+  \frametitlecpp[11]{Basic variadic template}
   \begin{block}{The idea}
     \begin{itemize}
     \item a template with an arbitrary number of parameters
@@ -29,7 +29,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitleii{A couple of remarks}
+  \frametitlecpp[11]{A couple of remarks}
   \begin{block}{About performance}
     \begin{itemize}
     \item do not be afraid of recursion
@@ -47,7 +47,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Variadic templated class}
+  \frametitlecpp[11]{Variadic templated class}
   \begin{block}{The tuple example, simplified}
     \begin{cppcode*}{}
       template <typename... Ts> struct tuple {}
@@ -71,7 +71,7 @@
 
 %http://eli.thegreenplace.net/2014/perfect-forwarding-and-universal-references-in-c/
 \begin{frame}[fragile]
-  \frametitleii{The problem}
+  \frametitlecpp[11]{The problem}
   Trying to write a generic wrapper function
   \begin{cppcode*}{}
     template <typename T>
@@ -87,7 +87,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Why is it not so simple?}
+  \frametitlecpp[11]{Why is it not so simple?}
   \begin{cppcode*}{}
     template <typename T>
     void wrapper(T arg) {
@@ -101,7 +101,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Second try, second failure ?}
+  \frametitlecpp[11]{Second try, second failure ?}
   \begin{cppcode*}{}
     template <typename T>
     void wrapper(T &arg) {
@@ -119,7 +119,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{The solution : cover all cases}
+  \frametitlecpp[11]{The solution : cover all cases}
   \begin{cppcode*}{}
     template <typename T>
     void wrapper(T& arg) { func(arg); }
@@ -133,7 +133,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{The new problem : scaling to n arguments}
+  \frametitlecpp[11]{The new problem : scaling to n arguments}
   \begin{cppcode*}{}
     template <typename T1, typename T2>
     void wrapper(T1& arg1, T2& arg2)
@@ -155,7 +155,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Reference collapsing in \cpp98}
+  \frametitlecpp[11]{Reference collapsing in \cpp98}
   \begin{block}{Reference to references}
     They are forbidden in \cpp\\
     But still may happen
@@ -175,7 +175,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitleii{Reference collapsing in \cpp11}
+  \frametitlecpp[11]{Reference collapsing in \cpp11}
   \begin{block}{rvalues have been added}
     \begin{itemize}
     \item what about int\&\& \& ?
@@ -190,7 +190,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{rvalue in type-deducing context}
+  \frametitlecpp[11]{rvalue in type-deducing context}
   \begin{cppcode*}{}
     template <typename T>
     void func(T&& t) {}
@@ -214,7 +214,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{std::remove\_reference}
+  \frametitlecpp[11]{std::remove\_reference}
   Some template trickery removing reference from a type
   \begin{cppcode*}{}
     template< typename T >
@@ -234,7 +234,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{std::forward}
+  \frametitlecpp[11]{std::forward}
   Another template trickery keeping references and mapping non reference types to rvalue references
   \begin{cppcode*}{}
     template<typename T>
@@ -253,7 +253,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Perfect forwarding}
+  \frametitlecpp[11]{Perfect forwarding}
   Putting it all together
   \begin{cppcode*}{}
     template <typename... T>
@@ -284,7 +284,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Real life example}
+  \frametitlecpp[11]{Real life example}
   \begin{cppcode*}{}
     template<typename T, typename... Args>
     unique_ptr<T> make_unique(Args&&... args) {
@@ -298,7 +298,7 @@
 
 %https://jguegant.github.io/blogs/tech/sfinae-introduction.html
 \begin{frame}[fragile]
-  \frametitleii{Substitution Failure Is Not An Error (SFINAE)}
+  \frametitlecpp[11]{Substitution Failure Is Not An Error (SFINAE)}
   \begin{block}{The main idea}
     \begin{itemize}
     \item substitution replaces template parameters with the provided types or values
@@ -318,7 +318,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{decltype}
+  \frametitlecpp[11]{decltype}
   \begin{block}{The main idea}
     \begin{itemize}
     \item gives the type of the expression it will evaluate
@@ -340,7 +340,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{declval}
+  \frametitlecpp[11]{declval}
   \begin{block}{The main idea}
     \begin{itemize}
     \item gives you a ``fake reference'' to an object at compile time
@@ -364,7 +364,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{true\_type and false\_type}
+  \frametitlecpp[11]{true\_type and false\_type}
   \begin{block}{The main idea}
     \begin{itemize}
     \item encapsulate a constexpr boolean ``true'' and ``false''
@@ -382,7 +382,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Using SFINAE for introspection}
+  \frametitlecpp[11]{Using SFINAE for introspection}
   \begin{block}{The main idea}
     \begin{itemize}
     \item use a template specialization
@@ -409,7 +409,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Not so easy actually...}
+  \frametitlecpp[11]{Not so easy actually...}
   \begin{exampleblock}{Example}
     \small
     \begin{cppcode*}{}
@@ -432,7 +432,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleit{Using \texttt{void\_t}}
+  \frametitlecpp[17]{Using \texttt{void\_t}}
   \begin{block}{Concept}
     \begin{cppcode*}{gobble=2}
       #include <type_traits>
@@ -448,7 +448,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleit{Previous example using \texttt{void\_t}}
+  \frametitlecpp[17]{Previous example using \texttt{void\_t}}
     \begin{exampleblock}{Example}
       \begin{cppcode*}{}
       template <typename T, typename = void>
@@ -515,7 +515,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitleii{Back to variadic templated class}
+  \frametitlecpp[11]{Back to variadic templated class}
   \begin{block}{The tuple get method}
     \begin{cppcode*}{}
       template <size_t k, typename TUPLE>
@@ -536,7 +536,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Back to variadic templated class}
+  \frametitlecpp[11]{Back to variadic templated class}
   \begin{block}{The tuple get method}
     \begin{cppcode*}{}
       template <size_t k, typename... Ts>
