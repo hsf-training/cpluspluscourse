@@ -3,7 +3,7 @@
 \subsection[thr]{Threads and async}
 
 \begin{frame}[fragile]
-  \frametitleii{Basic concurrency}
+  \frametitlecpp[11]{Basic concurrency}
   \begin{block}{Threading}
     \begin{itemize}
     \item new object std::thread in \textless{}thread\textgreater{} header
@@ -27,7 +27,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{The thread constructor}
+  \frametitlecpp[11]{The thread constructor}
   \begin{exampleblock}{Can take a function and its arguments}
     \begin{cppcode*}{}
       void function(int j, double j) {...};
@@ -51,7 +51,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Basic asynchronicity}
+  \frametitlecpp[11]{Basic asynchronicity}
   \begin{block}{Concept}
     \begin{itemize}
     \item separation of the specification of what should be done and the retrieval of the results
@@ -76,7 +76,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Mixing the two}
+  \frametitlecpp[11]{Mixing the two}
   \begin{block}{Is async running concurrent code ?}
     \begin{itemize}
     \item it depends !
@@ -104,7 +104,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Fine grained control on asynchronous execution}
+  \frametitlecpp[11]{Fine grained control on asynchronous execution}
   \begin{block}{std::packaged\_task template}
     \begin{itemize}
     \item creates an asynchronous version of any function-like object
@@ -131,7 +131,7 @@
 \subsection[mutex]{Mutexes}
 
 \begin{frame}[fragile]
-  \frametitleii{Races}
+  \frametitlecpp[11]{Races}
   \begin{exampleblock}{Example code}
     \begin{cppcode*}{}
       int a = 0;
@@ -155,7 +155,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Atomicity}
+  \frametitlecpp[11]{Atomicity}
   \begin{exampleblock}{Definition (wikipedia)}
     \begin{itemize}
     \item an operation (or set of operations) is atomic if it appears to the rest of the system to occur instantaneously
@@ -180,7 +180,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Timing}
+  \frametitlecpp[11]{Timing}
   \begin{exampleblock}{Code}
     \begin{cppcode*}{}
       eax = a       // memory to register copy
@@ -213,7 +213,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Mutexes and Locks}
+  \frametitlecpp[11]{Mutexes and Locks}
   \begin{block}{Concept}
     \begin{itemize}
     \item Use locks to serialize access to a non-atomic piece of code
@@ -241,7 +241,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Mutexes and Locks}
+  \frametitlecpp[11]{Mutexes and Locks}
   \begin{block}{Good practice}
     \begin{itemize}
       \item Always use \texttt{scoped\_lock} (\cpp11: \texttt{lock\_guard})
@@ -263,7 +263,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Mutexes}
+  \frametitlecpp[11]{Mutexes}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item Go to code/race
@@ -276,7 +276,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Dead lock}
+  \frametitlecpp[11]{Dead lock}
   \begin{exampleblock}{Scenario}
     \begin{itemize}
     \item 2 mutexes, 2 threads
@@ -306,7 +306,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{How to avoid dead locks}
+  \frametitlecpp[11]{How to avoid dead locks}
   \begin{block}{Possible solutions}
     \begin{itemize}
     \item Never take several locks
@@ -323,7 +323,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Condition variables}
+  \frametitlecpp[11]{Condition variables}
   \begin{block}{How to express thread dependencies}
     \begin{itemize}
     \item Allows a thread to sleep until a given condition is satisfied
@@ -345,7 +345,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Condition variable usage}
+  \frametitlecpp[11]{Condition variable usage}
   \begin{exampleblock}{Example code}
     \begin{cppcode*}{}
       int value = -1;

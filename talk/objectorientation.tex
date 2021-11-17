@@ -3,7 +3,7 @@
 \subsection[OO]{Objects and Classes}
 
 \begin{frame}[fragile]
-  \frametitlegb{What are classes and objects}
+  \frametitlecpp[98]{What are classes and objects}
   \begin{block}{Classes (or ``user-defined types'')}
     C structs on steroids
     \begin{itemize}
@@ -30,7 +30,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitlegb{My First Class}
+  \frametitlecpp[98]{My First Class}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       struct MyFirstClass {
@@ -64,7 +64,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Separating the interface}
+  \frametitlecpp[98]{Separating the interface}
   \begin{block}{Header : MyFirstClass.hpp}
     \begin{cppcode*}{}
       #pragma once
@@ -89,7 +89,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Implementing methods}
+  \frametitlecpp[98]{Implementing methods}
   \begin{block}{Standard practice}
     \begin{itemize}
     \item usually in .cpp, outside of class declaration
@@ -109,7 +109,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{{\ttfamily this} keyword}
+  \frametitlecpp[98]{{\ttfamily this} keyword}
   \begin{block}{}
     \begin{itemize}
     \item {\ttfamily this} is a hidden parameter to all class methods
@@ -129,7 +129,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Method overloading}
+  \frametitlecpp[98]{Method overloading}
   \begin{block}{The rules in \cpp}
     \begin{itemize}
     \item overloading is authorized and welcome
@@ -155,7 +155,7 @@
 \subsection[inherit]{Inheritance}
 
 \begin{frame}[fragile]
-  \frametitlegb{First inheritance}
+  \frametitlecpp[98]{First inheritance}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       struct MyFirstClass {
@@ -193,7 +193,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Managing access to class members}
+  \frametitlecpp[98]{Managing access to class members}
   \begin{block}{{\it public} \color{white} / {\it private} keywords}
     \begin{description}
       \item[private] allows access only within the class
@@ -232,7 +232,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Managing access to class members(2)}
+  \frametitlecpp[98]{Managing access to class members(2)}
   \begin{block}{Solution is {\it protected} keyword}
     Gives access to classes inheriting from base class
   \end{block}
@@ -263,7 +263,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Managing inheritance privacy}
+  \frametitlecpp[98]{Managing inheritance privacy}
   \begin{block}{Inheritance can be public, protected or private}
     It influences the privacy of inherited members for external code.\\
     The code of the class itself is not affected
@@ -288,7 +288,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Managing inheritance privacy - public}
+  \frametitlecpp[98]{Managing inheritance privacy - public}
   \begin{multicols}{2}
     \begin{tikzpicture}[node distance=3cm]
       \classbox{MyFirstClass}{
@@ -330,7 +330,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Managing inheritance privacy - protected}
+  \frametitlecpp[98]{Managing inheritance privacy - protected}
   \begin{multicols}{2}
     \begin{tikzpicture}[node distance=3cm]
       \classbox{MyFirstClass}{
@@ -372,7 +372,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Managing inheritance privacy - private}
+  \frametitlecpp[98]{Managing inheritance privacy - private}
   \begin{multicols}{2}
     \begin{tikzpicture}[node distance=3cm]
       \classbox{MyFirstClass}{
@@ -414,7 +414,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Final class}
+  \frametitlecpp[11]{Final class}
   \begin{block}{Idea}
     \begin{itemize}
     \item make sure you cannot inherit from a given class
@@ -436,7 +436,7 @@
 \subsection[construct]{Constructors/destructors}
 
 \begin{frame}[fragile]
-  \frametitlegb{Class Constructors and Destructors}
+  \frametitlecpp[98]{Class Constructors and Destructors}
   \begin{block}{Concept}
     \begin{itemize}
     \item special functions building/destroying an object
@@ -472,7 +472,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitlegb{Class Constructors and Destructors}
+  \frametitlecpp[98]{Class Constructors and Destructors}
   \begin{cppcode}
     class Vector {
     public:
@@ -494,7 +494,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Constructor and inheritance}
+  \frametitlecpp[98]{Constructor and inheritance}
   \begin{cppcode}
     struct MyFirstClass {
       int a;
@@ -515,7 +515,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Copy constructor}
+  \frametitlecpp[98]{Copy constructor}
   \begin{block}{Concept}
     \begin{itemize}
     \item special constructor called for replicating an object
@@ -543,7 +543,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Class Constructors and Destructors}
+  \frametitlecpp[98]{Class Constructors and Destructors}
   \begin{cppcode}
     class Vector {
     public:
@@ -564,7 +564,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Default Constructor}
+  \frametitlecpp[11]{Default Constructor}
   \begin{block}{Idea}
     \begin{itemize}
     \item avoid writing explicitly default constructors
@@ -588,7 +588,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Constructor delegation}
+  \frametitlecpp[11]{Constructor delegation}
   \begin{block}{Idea}
     \begin{itemize}
     \item avoid replication of code in several constructors
@@ -607,7 +607,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Constructor inheritance}
+  \frametitlecpp[11]{Constructor inheritance}
   \begin{block}{Idea}
     \begin{itemize}
     \item avoid having to re-declare parent's constructors
@@ -628,7 +628,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Member initialization}
+  \frametitlecpp[11]{Member initialization}
   \begin{block}{Idea}
     \begin{itemize}
     \item avoid redefining same default value for members n times
@@ -652,7 +652,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Calling constructors}
+  \frametitlecpp[11]{Calling constructors}
   \begin{block}{After object declaration, arguments within \{\}}
     \begin{multicols}{2}
       \begin{cppcode*}{gobble=4}
@@ -684,7 +684,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Calling constructors the old way}
+  \frametitlecpp[98]{Calling constructors the old way}
   \begin{block}{Arguments are given within (), aka \cpp98 nightmare}
     \begin{multicols}{2}
       \begin{cppcode*}{gobble=4}
@@ -716,7 +716,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Calling constructors for arrays and vectors}
+  \frametitlecpp[11]{Calling constructors for arrays and vectors}
   \begin{exampleblock}{list of items given within \{\}}
     \begin{cppcode*}{firstnumber=10}
      int ip[3]{1,2,3};
@@ -737,7 +737,7 @@
 \subsection[static]{Static members}
 
 \begin{frame}[fragile]
-  \frametitlegb{Static members}
+  \frametitlecpp[98]{Static members}
   \begin{block}{Concept}
     \begin{itemize}
     \item members attached to a class rather than to an object
@@ -761,7 +761,7 @@
 \subsection[new]{Allocating objects}
 
 \begin{frame}[fragile]
-  \frametitlegb{Process memory organization}
+  \frametitlecpp[98]{Process memory organization}
   \begin{block}{4 main areas}
     \begin{description}
     \item[the code segment] for the code of the executable
@@ -787,7 +787,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{The Stack}
+  \frametitlecpp[98]{The Stack}
   \begin{block}{Main characteristics}
     \begin{itemize}
     \item allocation on the stack stays valid for the duration of the current scope.
@@ -799,7 +799,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Object allocation on the stack}
+  \frametitlecpp[98]{Object allocation on the stack}
   \begin{block}{On the stack}
     \begin{itemize}
     \item objects are created when declared (constructor called)
@@ -820,7 +820,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{The Heap}
+  \frametitlecpp[98]{The Heap}
   \begin{block}{Main characteristics}
     \begin{itemize}
     \item Allocated memory stays allocated until it is specifically deallocated
@@ -834,7 +834,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Object allocation on the heap}
+  \frametitlecpp[98]{Object allocation on the heap}
   \begin{block}{On the heap}
     \begin{itemize}
     \item object are created by calling {\it new} (constructor is called)
@@ -858,7 +858,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Array allocation on the heap}
+  \frametitlecpp[98]{Array allocation on the heap}
   \begin{block}{Arrays on the heap}
     \begin{itemize}
     \item arrays of objects are created by calling {\it new[]} \\
@@ -880,7 +880,7 @@
 \subsection[advOO]{Advanced OO}
 
 \begin{frame}[fragile]
-  \frametitlegb{Polymorphism}
+  \frametitlecpp[98]{Polymorphism}
   \begin{block}{the concept}
     \begin{itemize}
     \item objects actually have multiple types simultaneously
@@ -914,7 +914,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitlegb{Inheritance privacy and polymorphism}
+  \frametitlecpp[98]{Inheritance privacy and polymorphism}
   \begin{block}{Only public inheritance is visible to code outside the class}
     \begin{itemize}
     \item private and protected are not
@@ -947,7 +947,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Method overriding}
+  \frametitlecpp[98]{Method overriding}
   \begin{block}{the problem}
     \begin{itemize}
     \item a given method of the parent can be overridden in a child
@@ -979,7 +979,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Virtual methods}
+  \frametitlecpp[98]{Virtual methods}
   \begin{block}{the concept}
     \begin{itemize}
     \item methods can be declared \mintinline{cpp}{virtual}
@@ -1039,7 +1039,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Virtual methods - implications}
+  \frametitlecpp[11]{Virtual methods - implications}
   \begin{block}{Mechanics}
     \begin{itemize}
     \item virtual methods are deduced at run time
@@ -1063,7 +1063,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{{\texttt override} keyword}
+  \frametitlecpp[11]{{\texttt override} keyword}
   \begin{block}{Principle}
     \begin{itemize}
     \item when overriding a virtual method
@@ -1083,7 +1083,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{Why was {\texttt override} keyword introduced ?}
+  \frametitlecpp[11]{Why was {\texttt override} keyword introduced ?}
   To detect the mistake in the following code :
   \begin{block}{Without {\texttt override} (\cpp98)}
     \begin{cppcode}
@@ -1102,7 +1102,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleii{{\texttt final} keyword}
+  \frametitlecpp[11]{{\texttt final} keyword}
   \begin{block}{Idea}
     \begin{itemize}
     \item make sure you cannot override further a given virtual method
@@ -1125,7 +1125,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Pure Virtual methods}
+  \frametitlecpp[98]{Pure Virtual methods}
   \begin{block}{Concept}
     \begin{itemize}
     \item methods that exist but are not implemented
@@ -1163,7 +1163,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Pure Abstract Class aka Interface}
+  \frametitlecpp[98]{Pure Abstract Class aka Interface}
   \begin{block}{Definition of pure abstract class}
     \begin{itemize}
     \item a class that has
@@ -1191,7 +1191,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Overriding overloaded methods}
+  \frametitlecpp[98]{Overriding overloaded methods}
   \begin{block}{Concept}
     \begin{itemize}
     \item overriding an overloaded method will hide the others
@@ -1213,7 +1213,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Polymorphism}
+  \frametitlecpp[98]{Polymorphism}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/polymorphism
@@ -1228,7 +1228,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Multiple Inheritance}
+  \frametitlecpp[98]{Multiple Inheritance}
   \begin{block}{Concept}
     \begin{itemize}
     \item one class can inherit from multiple parents
@@ -1258,7 +1258,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{The diamond shape}
+  \frametitlecpp[98]{The diamond shape}
   \begin{block}{Definition}
     \begin{itemize}
     \item situation when one class inherits several times from a given grand parent
@@ -1284,7 +1284,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Virtual inheritance}
+  \frametitlecpp[98]{Virtual inheritance}
   \begin{block}{Solution}
     \begin{itemize}
     \item inheritance can be {\it virtual} or not
@@ -1323,7 +1323,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Multiple inheritance advice}
+  \frametitlecpp[98]{Multiple inheritance advice}
   \begin{block}{Do not use multiple inheritance}
     \begin{itemize}
     \item Except for inheriting from interfaces
@@ -1340,7 +1340,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Virtual inheritance}
+  \frametitlecpp[98]{Virtual inheritance}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item go to code/virtual\_inheritance
@@ -1354,7 +1354,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Virtual inheritance}
+  \frametitlecpp[98]{Virtual inheritance}
   \begin{alertblock}{Warning}
     in case of virtual inheritance it is the most derived class that calls the virtual base class's constructor
   \end{alertblock}
@@ -1364,7 +1364,7 @@
 \subsection[Op]{Operators}
 
 \begin{frame}[fragile]
-  \frametitlegb{Operators' example}
+  \frametitlecpp[98]{Operators' example}
   \begin{cppcode}
     struct Complex {
       float m_real, m_imaginary;
@@ -1381,7 +1381,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitlegb{Operators}
+  \frametitlecpp[98]{Operators}
   \begin{block}{Definition for operators of a class}
     \begin{itemize}
     \item implemented as a regular method
@@ -1406,7 +1406,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Why to have non-member operators ?}
+  \frametitlecpp[98]{Why to have non-member operators ?}
   \begin{block}{Symmetry}
     \begin{cppcode}
       struct Complex {
@@ -1429,7 +1429,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Other reason to have non-member operators ?}
+  \frametitlecpp[98]{Other reason to have non-member operators ?}
   \begin{block}{Extending existing classes}
     \begin{cppcode}
       struct Complex {
@@ -1452,7 +1452,7 @@
 \subsection[()]{Functors}
 
 \begin{frame}[fragile]
-  \frametitlegb{Functors}
+  \frametitlecpp[98]{Functors}
   \begin{block}{Concept}
     \begin{itemize}
     \item a class that implements the () operator
@@ -1476,7 +1476,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{Functors}
+  \frametitlecpp[98]{Functors}
   \begin{block}{Typical usage}
     \begin{itemize}
     \item pass a function to another one
@@ -1502,7 +1502,7 @@
 \subsection[ADL]{Name Lookups}
 
 \begin{frame}[fragile]
-  \frametitlegb{Basics of name lookup}
+  \frametitlecpp[98]{Basics of name lookup}
   \begin{exampleblock}{Example code}
     \begin{cppcode}
       std::cout << std::endl;
@@ -1527,7 +1527,7 @@
 \end{frame}
 
 \begin{frame}
-  \frametitlegb{Unqualified name lookup and ADL}
+  \frametitlecpp[98]{Unqualified name lookup and ADL}
   \begin{block}{Ordered list of scopes (simplified)}
     \begin{itemize}
     \item file (only for global level usage)
@@ -1547,7 +1547,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{ADL consequences (1)}
+  \frametitlecpp[98]{ADL consequences (1)}
   \begin{block}{Use standalone/non-member functions}
     When a method is not accessing the private part of a class, make it a function in the same namespace
     \vspace{-1mm}
@@ -1589,7 +1589,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitleit{ADL consequences (2)}
+  \frametitlecpp[17]{ADL consequences (2)}
   \begin{block}{Prefer nested namespaces to \texttt{using}}
     Don't write :
     \begin{cppcode}
@@ -1607,7 +1607,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlegb{ADL consequences (3)}
+  \frametitlecpp[98]{ADL consequences (3)}
   \begin{block}{Customization points and \texttt{using}}
     \begin{columns}[t]
       \begin{column}{.35\textwidth}
