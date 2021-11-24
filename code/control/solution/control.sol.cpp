@@ -19,7 +19,7 @@ int main() {
   }
   printf("Sums: odd = %d, even = %d\n", sum_odd, sum_eve);
 
-  // range based loop
+  // range-based loop
   sum_odd = 0;
   sum_eve = 0;
   for (int i : numbers) {
