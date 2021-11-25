@@ -582,7 +582,7 @@
     \begin{itemize}
     \item implement an efficient swap method for your class
       \begin{itemize}
-      \item preferably outside the class so that it is symmetric
+      \item preferably hidden friend and symmetric
       \end{itemize}
     \item use swap for move constructor
       \begin{itemize}
@@ -607,6 +607,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[11]{Move semantics : the easy way}
   \begin{exampleblock}{Practically}
+    \small
     \begin{cppcode*}{}
       class Movable {
         Movable();
@@ -621,6 +622,9 @@
         friend void swap(Movable &a, Movable &b);
       };
       void swap(Movable &a, Movable &b);
+      Movable a, b;
+      a = b;            // operator= copies b into "other"
+      a = std::move(b); // operator= moves b into "other"
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
