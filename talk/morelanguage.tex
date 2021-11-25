@@ -392,6 +392,11 @@
       \end{cppcode*}
     \item as an operator to know whether a function launches exceptions
       \begin{cppcode*}{gobble=2, linenos=false}
+        constexpr bool callCannotThrow = noexcept(f());
+        if constexpr (callCannotThrow) { ... }
+      \end{cppcode*}
+    \item and you can combine them
+      \begin{cppcode*}{gobble=2, linenos=false}
         template <typename T> void foo()
              noexcept(noexcept(T())) {}
       \end{cppcode*}
