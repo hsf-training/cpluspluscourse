@@ -27,8 +27,8 @@ class ChargedParticle : public Particle
 
 void display( Particle & p  )
  {
-  std::cout << p.name() << std::endl ;
-  std::cout << "  mass = " << p.mass() << std::endl ;
+  std::cout << p.name() << '\n' ;
+  std::cout << "  mass = " << p.mass() << '\n' ;
  }
 
 int main()
@@ -44,7 +44,7 @@ int main()
      {
       ChargedParticle p(1,1) ;
       display(p) ;
-      std::cout << "  charge = " << p.charge() << std::endl ;
+      std::cout << "  charge = " << p.charge() << '\n' ;
      }
    }
  }

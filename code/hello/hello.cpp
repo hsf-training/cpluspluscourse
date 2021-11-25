@@ -3,5 +3,5 @@
 #include "hello.hpp"
 
 void printHello(int i) {
-  std::cout << "Hello, world " << i << std::endl;
+  std::cout << "Hello, world " << i << '\n';
 }

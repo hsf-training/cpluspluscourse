@@ -50,7 +50,7 @@ void problem1() {
    try {
        doStuffWithData();
    } catch (std::exception& e) {
-       std::cerr << "problem1(): Do stuff with data terminated with exception:\n" << e.what() << std::endl;
+       std::cerr << "problem1(): Do stuff with data terminated with exception:\n" << e.what() << '\n';
    }
 }
 

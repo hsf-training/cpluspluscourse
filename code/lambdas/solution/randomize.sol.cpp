@@ -31,8 +31,8 @@ void compute(int len, T initial, T step) {
     T variance = sumsq/len - mean*mean;
 
     std::cout << "Range = [" << initial << ", " << step*len << "]\n"
-              << "Mean = " << mean << "\n"
-              << "Variance = " << variance << std::endl;
+              << "Mean = " << mean << '\n'
+              << "Variance = " << variance << '\n';
 }
 
 int main() {

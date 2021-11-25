@@ -19,10 +19,10 @@ const int* identitypConst(const int *a) {
 
 struct ConstTest {
     void hello(std::string &s) {
-        std::cout << "Hello " << s << std::endl;
+        std::cout << "Hello " << s << '\n';
     }
     void helloConst(std::string &s) const {
-        std::cout << "Hello " << s << std::endl;
+        std::cout << "Hello " << s << '\n';
     }
 };
 

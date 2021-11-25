@@ -8,8 +8,7 @@ Polygon* getHexa(char* name, float radius) {
 int main() {
     // create an Hexagon, call its perimeter method
     Polygon *hexa = getHexa((char*)"hexa", 1.0);
-    std::cout << "Hexa : perimeter = " << hexa->computePerimeter()
-              << std::endl << std::endl;
+    std::cout << "Hexa : perimeter = " << hexa->computePerimeter() << "\n\n";
 
     // memory deallocation
     delete hexa;

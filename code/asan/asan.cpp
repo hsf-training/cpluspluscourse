@@ -28,18 +28,18 @@ void stackOverflow() {
   char a[] = "1234";
   char b[] = "5678";
 
-  std::cout << "a='" << a << '\'' << std::endl;
-  std::cout << "b='" << b << '\'' << std::endl;
+  std::cout << "a='" << a << "\'\n";
+  std::cout << "b='" << b << "\'\n";
 
   char* ptr = a;
 
-  std::cout << "Now writing into the array:" << std::endl;
+  std::cout << "Now writing into the array:\n";
   for (unsigned int i = 0; i < 10; ++i) {
     ptr[i] = 'a' + i;
   }
 
-  std::cout << "a='" << a << '\'' << std::endl;
-  std::cout << "b='" << b << '\'' << std::endl;
+  std::cout << "a='" << a << "\'\n";
+  std::cout << "b='" << b << "\'\n";
 }
 
 // Task 2:
@@ -69,8 +69,8 @@ std::string& memoryLeak() {
 
 int main() {
   stackOverflow();
-  std::cout << "String from useAfterFree is:'" << useAfterFree() << '\'' << std::endl;
-  std::cout << "Dynamically allocated string is:'" << memoryLeak() << '\'' << std::endl;
+  std::cout << "String from useAfterFree is:'" << useAfterFree() << "\'\n";
+  std::cout << "Dynamically allocated string is:'" << memoryLeak() << "\'\n";
 
   return 0;
 }

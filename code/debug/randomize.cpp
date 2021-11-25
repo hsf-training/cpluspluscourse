@@ -47,7 +47,7 @@ int main() {
     float stddev = sqrt(sumsq/LEN - mean*mean) ;
     std::cout << "Range = [0, " << STEP*LEN << "]\n"
               << "Mean = " << mean
-              << "\nStdDev = " << stddev << std::endl;
+              << "\nStdDev = " << stddev << '\n';
 
     delete[] v;
     delete[] diffs;
