@@ -333,7 +333,7 @@
   \frametitle{Address Sanitizer (asan)}
   \begin{block}{asan introduction}
     \begin{itemize}
-    \item Compiler instrumentation supported by gcc and clang
+    \item Compiler instrumentation
     \item Program stops on invalid memory access, e.g.\
       \begin{itemize}
         \item Invalid read/write on heap and stack
@@ -344,7 +344,7 @@
     \end{itemize}
   \end{block}
   \pause
-  \begin{exampleblock}{Usage}
+  \begin{exampleblock}{Usage (gcc/clang syntax)}
     \begin{itemize}
     \item Compile with \mintinline{bash}{-fsanitize=address -fno-omit-frame-pointer -g}
     \item With clang, add optionally: \texttt{-fsanitize-address-use-after-return=always -fsanitize-address-use-after-scope}
