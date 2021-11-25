@@ -26,6 +26,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Constness and pointers}
+  \scriptsize
   \begin{cppcode}
     // pointer to a constant integer
     int a = 1, b = 2;
@@ -42,6 +43,10 @@
     int const * const k = &a;
     *k = 5; // error, value is const
     k = &b; // error, pointer is const
+
+    // const reference
+    int const & l = a;
+    l = b; // error, reference is const
   \end{cppcode}
 \end{frame}
 
