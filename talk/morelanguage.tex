@@ -453,7 +453,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Move semantics : the problem}
-  \begin{exampleblock}{Another non efficient code}
+  \begin{exampleblock}{Another potentially non efficient code}
     \begin{cppcode*}{}
       std::vector<int> vrandom(unsigned int n) {
         std::vector<int> result(n);
@@ -466,7 +466,7 @@
     \end{cppcode*}
   \end{exampleblock}
   \pause
-  \begin{alertblock}{What really happens during assignment}
+  \begin{alertblock}{What could happen during assignment in \cpp98}
     \begin{itemize}
     \item 10k allocations + 10k releases
     \item 10k copies
