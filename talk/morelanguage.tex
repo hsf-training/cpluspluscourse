@@ -1200,7 +1200,9 @@
   \begin{exampleblock}{\cpp17}
     \begin{cppcode*}{firstnumber=7}
       void foo(std::tuple<int, double, long> tuple) {
-      auto [ a, b, c ] = tuple;
+        auto [ a, b, c ] = tuple; ...
+      }
+      for (const auto& [key, value] : map) { ... }
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
