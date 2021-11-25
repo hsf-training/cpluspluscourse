@@ -1120,10 +1120,10 @@
     \end{cppcode*}
   \end{block}
   \pause
-  \begin{exampleblock}{STL way}
+  \begin{exampleblock}{STL way (\cpp17)}
     \begin{cppcode*}{firstnumber=10}
       std::vector<int> v = ...;
-      int sum = std::accumulate(v.begin(), v.end(), 0);
+      int sum = std::reduce(v.begin(), v.end(), 0);
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
