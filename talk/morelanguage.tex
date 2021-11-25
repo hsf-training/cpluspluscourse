@@ -544,8 +544,8 @@
     \begin{cppcode*}{}
       T a;
       T b = a;      // 1. Copy assign
-      T c = T(2);   // 2. Move assign
-      T d = func(); // 3. Move assign
+      T func() { ... }
+      T d = func(); // 2. Move assign
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
