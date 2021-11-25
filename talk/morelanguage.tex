@@ -116,6 +116,16 @@
       constexpr int a = f(5); // computed at compile time
     \end{cppcode*}
   \end{exampleblock}
+  \pause
+  \begin{exampleblock}{Example with \cpp14}
+    \begin{cppcode*}{}
+      constexpr int f(int x) {
+        if (x > 1) return x * f(x - 1);
+        return 1;
+      }
+      constexpr int a = f(5); // computed at compile time
+    \end{cppcode*}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -142,7 +152,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Generalized Constant Expressions(2)}
+  \frametitlecpp[14]{Generalized Constant Expressions(2)}
    \begin{alertblock}{Few limitations in C++14 (more in C++11)}
     \begin{itemize}
     \item function's body cannot contain try-catch or static variables
