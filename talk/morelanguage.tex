@@ -1666,8 +1666,8 @@ of 'std::unique_ptr<Foo>'
   \frametitlecpp[11]{RAII or raw pointers}
   \begin{block}{When to use what ?}
     \begin{itemize}
-    \item Always use RAII for allocations
-    \item You thus never have to deallocate !
+    \item Always use RAII for all resources, in particular allocations
+    \item You thus never have to release / deallocate !
     \item Use raw pointers for observer functions (or references)
       \begin{itemize}
       \item remember that unique\_ptr is move only
