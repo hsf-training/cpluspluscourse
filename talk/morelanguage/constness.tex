@@ -50,7 +50,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Method constness}
-  \begin{block}{The {\it const} keyword for class functions}
+  \begin{block}{The {\it const} keyword for class member functions}
     \begin{itemize}
     \item indicate that the function does not modify the object
     \item in other words, {\it this} is a pointer to constant object
@@ -70,8 +70,8 @@
   \frametitlecpp[98]{Method constness}
   \begin{block}{Constness is part of the type}
     \begin{itemize}
-    \item const T and T are different types
-    \item however, T is automatically cast to const T when needed
+    \item {\it T const} and {\it T} are different types
+    \item however, {\it T} is automatically cast to {\it T const} when needed
     \end{itemize}
   \end{block}
   \begin{cppcode}

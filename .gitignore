@@ -1,5 +1,6 @@
 # latex related, Course
 talk/*aux
+talk/*/*aux
 C++Course.log
 C++Course.nav
 C++Course.out
