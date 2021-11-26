@@ -9,7 +9,7 @@ compile2: *.tex
 	pdflatex -shell-escape C++Course.tex
 
 clean:
-	rm -f *.aux *.log *.nav *.out *.pyg *.snm *.vrb *.toc
+	rm -f *.aux */*.aux *.log *.nav *.out *.pyg *.snm *.vrb *.toc
 
 clobber: clean
 	rm -f C++Course.pdf
