@@ -794,6 +794,11 @@
     It is destroyed when it is popped off the stack.
     \item memory allocated on the stack is known at compile time and can thus be accessed through a variable.
     \item the stack is relatively small, it is not a good idea to allocate large arrays, structures or classes
+    \item each thread in a process has its own stack
+      \begin{itemize}
+      \item allocations on the stack are thus ``thread private''
+      \item and do not introduce any thread safety issues
+      \end{itemize}
     \end{itemize}
   \end{block}
 \end{frame}
@@ -829,6 +834,11 @@
       \end{itemize}
     \item Dynamically allocated memory must be accessed through pointers
     \item large arrays, structures, or classes should be allocated here
+    \item there is a single, shared heap per process
+      \begin{itemize}
+      \item allows to share data between threads
+      \item introduces race conditions and thread safety issues !
+      \end{itemize}
     \end{itemize}
   \end{block}
 \end{frame}
