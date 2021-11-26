@@ -27,5 +27,5 @@ int main() {
       std::cout << '.';
     }
   }
-  std::cout << std::endl;
+  std::cout << '\n';
 }

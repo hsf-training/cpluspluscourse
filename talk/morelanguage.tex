@@ -26,6 +26,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Constness and pointers}
+  \scriptsize
   \begin{cppcode}
     // pointer to a constant integer
     int a = 1, b = 2;
@@ -42,6 +43,10 @@
     int const * const k = &a;
     *k = 5; // error, value is const
     k = &b; // error, pointer is const
+
+    // const reference
+    int const & l = a;
+    l = b; // error, reference is const
   \end{cppcode}
 \end{frame}
 
@@ -116,6 +121,16 @@
       constexpr int a = f(5); // computed at compile time
     \end{cppcode*}
   \end{exampleblock}
+  \pause
+  \begin{exampleblock}{Example with \cpp14}
+    \begin{cppcode*}{}
+      constexpr int f(int x) {
+        if (x > 1) return x * f(x - 1);
+        return 1;
+      }
+      constexpr int a = f(5); // computed at compile time
+    \end{cppcode*}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -142,7 +157,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Generalized Constant Expressions(2)}
+  \frametitlecpp[14]{Generalized Constant Expressions(2)}
    \begin{alertblock}{Few limitations in C++14 (more in C++11)}
     \begin{itemize}
     \item function's body cannot contain try-catch or static variables
@@ -277,7 +292,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Controlling exceptions \hfill \deprecated}
+  \frametitlecpp[98]{Controlling exceptions \hfill \deprecated/\removed}
   \begin{block}{Declaring expected exceptions}
     \begin{itemize}
     \item each function can declare a set of expected exceptions
@@ -302,7 +317,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Controlling exceptions \hfill \deprecated}
+  \frametitlecpp[98]{Controlling exceptions \hfill \deprecated/\removed}
   \begin{block}{Good to know}
     \begin{itemize}
     \item The check is done at runtime, not at compile time
@@ -325,7 +340,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Deprecation of \cpp98 exceptions}
+  \frametitlecpp[11]{Removal of \cpp98 exceptions}
   \begin{block}{}
     After a lot of thinking and experiencing, the conclusions of the community on exception handling are :
     \begin{itemize}
@@ -354,7 +369,7 @@
   \frametitlecpp[11]{What remains}
   \begin{block}{throw is dead}
     \begin{itemize}
-    \item throw statements are deprecated
+    \item dynamic exception specification are deprecated
     \item even throw() (no exceptions)
     \end{itemize}
   \end{block}
@@ -381,6 +396,11 @@
         int f() noexcept(sizeof(long) == 8);
       \end{cppcode*}
     \item as an operator to know whether a function launches exceptions
+      \begin{cppcode*}{gobble=2, linenos=false}
+        constexpr bool callCannotThrow = noexcept(f());
+        if constexpr (callCannotThrow) { ... }
+      \end{cppcode*}
+    \item and you can combine them
       \begin{cppcode*}{gobble=2, linenos=false}
         template <typename T> void foo()
              noexcept(noexcept(T())) {}
@@ -438,7 +458,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Move semantics : the problem}
-  \begin{exampleblock}{Another non efficient code}
+  \begin{exampleblock}{Another potentially non efficient code}
     \begin{cppcode*}{}
       std::vector<int> vrandom(unsigned int n) {
         std::vector<int> result(n);
@@ -451,7 +471,7 @@
     \end{cppcode*}
   \end{exampleblock}
   \pause
-  \begin{alertblock}{What really happens during assignment}
+  \begin{alertblock}{What could happen during assignment in \cpp98}
     \begin{itemize}
     \item 10k allocations + 10k releases
     \item 10k copies
@@ -529,8 +549,8 @@
     \begin{cppcode*}{}
       T a;
       T b = a;      // 1. Copy assign
-      T c = T(2);   // 2. Move assign
-      T d = func(); // 3. Move assign
+      T func() { ... }
+      T d = func(); // 2. Move assign
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -567,7 +587,7 @@
     \begin{itemize}
     \item implement an efficient swap method for your class
       \begin{itemize}
-      \item preferably outside the class so that it is symmetric
+      \item preferably hidden friend and symmetric
       \end{itemize}
     \item use swap for move constructor
       \begin{itemize}
@@ -592,6 +612,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[11]{Move semantics : the easy way}
   \begin{exampleblock}{Practically}
+    \small
     \begin{cppcode*}{}
       class Movable {
         Movable();
@@ -606,6 +627,9 @@
         friend void swap(Movable &a, Movable &b);
       };
       void swap(Movable &a, Movable &b);
+      Movable a, b;
+      a = b;            // operator= copies b into "other"
+      a = std::move(b); // operator= moves b into "other"
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -656,6 +680,8 @@
         Foo() { ... }
         Foo(const Foo &) = delete;
         Foo(Foo &&) = delete;
+        Foo& operator=(const Foo &) = delete;
+        Foo& operator=(Foo &&) = delete;
       };
       Foo f() {
         return Foo();
@@ -912,7 +938,7 @@
       \begin{itemize}
       \item string
       \item tuple, list, vector, deque
-      \item map, set, multimap, multiset, hash\_map, hash-set, ...
+      \item map, set, multimap, multiset, hash\_map, hash\_set, ...
       \item stack, queue, priority\_queue
       \end{itemize}
     \end{itemize}
@@ -1065,11 +1091,11 @@
   \begin{alertblock}{Some last warning}
     You may find the STL quite difficult to use.
     \begin{itemize}
-    \item template syntax is simply awful
-    \item it is hard to debug (compilers spit out mostly garbage)
+    \item template syntax is really tough
+    \item it is hard to debug (compilers spit out long error novels)
     \end{itemize}
     However, this has improved a lot with \cpp11 \\
-    And will again in \cpp20 with concepts
+    And may again in \cpp20 with concepts
   \end{alertblock}
 \end{frame}
 
@@ -1094,10 +1120,10 @@
     \end{cppcode*}
   \end{block}
   \pause
-  \begin{exampleblock}{STL way}
+  \begin{exampleblock}{STL way (\cpp17)}
     \begin{cppcode*}{firstnumber=10}
       std::vector<int> v = ...;
-      int sum = std::accumulate(v.begin(), v.end(), 0);
+      int sum = std::reduce(v.begin(), v.end(), 0);
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -1174,7 +1200,9 @@
   \begin{exampleblock}{\cpp17}
     \begin{cppcode*}{firstnumber=7}
       void foo(std::tuple<int, double, long> tuple) {
-      auto [ a, b, c ] = tuple;
+        auto [ a, b, c ] = tuple; ...
+      }
+      for (const auto& [key, value] : map) { ... }
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -1638,8 +1666,8 @@ of 'std::unique_ptr<Foo>'
   \frametitlecpp[11]{RAII or raw pointers}
   \begin{block}{When to use what ?}
     \begin{itemize}
-    \item Always use RAII for allocations
-    \item You thus never have to deallocate !
+    \item Always use RAII for all resources, in particular allocations
+    \item You thus never have to release / deallocate !
     \item Use raw pointers for observer functions (or references)
       \begin{itemize}
       \item remember that unique\_ptr is move only

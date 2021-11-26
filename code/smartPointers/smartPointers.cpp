@@ -53,7 +53,7 @@ void problem1() {
        doStuffWithData();
    } catch (std::exception& e) {
        std::cerr << "problem1(): Do stuff with data terminated with exception:\n" << e.what()
-               << "\n We may have a memory leak now." << std::endl;
+               << "\n We may have a memory leak now.\n";
    }
 }
 
@@ -236,7 +236,7 @@ public:
         _largeObj(new LargeObject()) { }
 
     ~Owner() {
-        std::cout << "problem4(): I think I'm the owner. I'm deallocating " << _largeObj << " now." << std::endl;
+        std::cout << "problem4(): I think I'm the owner. I'm deallocating " << _largeObj << " now.\n";
         delete _largeObj;
     }
 

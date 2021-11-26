@@ -22,15 +22,15 @@ struct ManhattanOrder {
 };
 
 int main() {
-    std::cout << "Integer" << std::endl;
+    std::cout << "Integer\n";
     OrderedVector<int> v(10);
     for (int i = 10; i > 0; i--)
         v.add(i);
     for (int i = 0; i < 10; i++)
         std::cout << v[i] << " ";
-    std::cout << std::endl << std::endl;
+    std::cout << "\n\n";
 
-    std::cout << "String" << std::endl;
+    std::cout << "String\n";
     OrderedVector<std::string> vs(5);
     vs.add(std::string("one"));
     vs.add(std::string("two"));
@@ -39,9 +39,9 @@ int main() {
     vs.add(std::string("five"));
     for (int i = 0; i < 5; i++)
         std::cout << vs[i] << " ";
-    std::cout << std::endl << std::endl;
+    std::cout << "\n\n";
 
-    std::cout << "Complex" << std::endl;
+    std::cout << "Complex\n";
     OrderedVector<Complex> vc(5);
     vc.add(Complex(1.5,0.0));
     vc.add(Complex(1.0,1.0));
@@ -50,9 +50,9 @@ int main() {
     vc.add(Complex(0.0,0.0));
     for (int i = 0; i < 5; i++)
         std::cout << vc[i] << " ";
-    std::cout << std::endl << std::endl;
+    std::cout << "\n\n";
 
-    std::cout << "String" << std::endl;
+    std::cout << "String\n";
     OrderedVector<std::string, RevOrderString> vsr(5);
     vsr.add(std::string("one"));
     vsr.add(std::string("two"));
@@ -61,9 +61,9 @@ int main() {
     vsr.add(std::string("five"));
     for (int i = 0; i < 5; i++)
         std::cout << vsr[i] << " ";
-    std::cout << std::endl << std::endl;
+    std::cout << "\n\n";
 
-    std::cout << "Complex with manhatan order" << std::endl;
+    std::cout << "Complex with manhatan order\n";
     OrderedVector<Complex, ManhattanOrder> vcm(5);
     vcm.add(Complex(1.5,0.0));
     vcm.add(Complex(1.0,1.0));
@@ -72,9 +72,9 @@ int main() {
     vcm.add(Complex(0.0,0.0));
     for (int i = 0; i < 5; i++)
         std::cout << vcm[i] << " ";
-    std::cout << std::endl << std::endl;
+    std::cout << "\n\n";
 
-    std::cout << "Int Complex" << std::endl;
+    std::cout << "Int Complex\n";
     typedef Complex_t<int> IComplex;
     OrderedVector<IComplex> vci(5);
     vci.add(IComplex(2,0));
@@ -84,9 +84,9 @@ int main() {
     vci.add(IComplex(0,0));
     for (int i = 0; i < 5; i++)
         std::cout << vci[i] << " ";
-    std::cout << std::endl << std::endl;
+    std::cout << "\n\n";
 
-    std::cout << "Very Complex" << std::endl;
+    std::cout << "Very Complex\n";
     typedef Complex_t<Complex> VComplex;
     OrderedVector<VComplex> vcv(5);
     vcv.add(VComplex(Complex(2,0),Complex(1,0)));
@@ -96,6 +96,6 @@ int main() {
     vcv.add(VComplex(Complex(2,0),Complex(0,0)));
     for (int i = 0; i < 5; i++)
         std::cout << vcv[i] << " ";
-    std::cout << std::endl << std::endl;
+    std::cout << "\n\n";
 
 }

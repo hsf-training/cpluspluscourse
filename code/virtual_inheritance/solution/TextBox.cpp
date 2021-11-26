@@ -4,7 +4,7 @@
 Drawable::Drawable(int id) : m_id(id) {};
 
 void Drawable::draw() {
-    std::cout << "Drawing " << m_id << std::endl;
+    std::cout << "Drawing " << m_id << '\n';
 };
 
 Rectangle::Rectangle(int id, float width, float height) :

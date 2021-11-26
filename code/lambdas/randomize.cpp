@@ -2,7 +2,7 @@
 #include <math.h>
 #include <algorithm>
 #include <vector>
-#include <ext/numeric>
+#include <numeric>
 #include "Complex.hpp"
 
 using namespace std;
@@ -42,8 +42,8 @@ void compute(int len, T initial, T step) {
     T variance = sumsq/len - mean*mean;
 
     std::cout << "Range = [" << initial << ", " << step*len << "]\n"
-              << "Mean = " << mean << "\n"
-              << "Variance = " << variance << std::endl;
+              << "Mean = " << mean << '\n'
+              << "Variance = " << variance << '\n';
 }
 
 int main() {

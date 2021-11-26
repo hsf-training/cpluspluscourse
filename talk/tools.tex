@@ -23,9 +23,10 @@
       more lightweight, open source and portable
     \item[\href{https://www.eclipse.org/}{\beamergotobutton{Eclipse}}]
       similar, also open source and portable
-    \item[\href{http://www.gnu.org/software/emacs/}{\beamergotobutton{Emacs}}]
-      the expert way. Extremely powerful. Programmable \\
-      It is to IDEs what latex is to PowerPoint
+    \item[\href{http://www.gnu.org/software/emacs/}{\beamergotobutton{Emacs}} \href{https://www.vim.org/}{\beamergotobutton{Vim}}]
+      the expert ways. Extremely powerful. \\
+      They are to IDEs what latex is to PowerPoint
+    \item[CLion, Code::Blocks, Atom, NetBeans, Sublime Text, ...]
     \end{description}
     Choosing one is mostly a matter of taste
   \end{block}
@@ -125,7 +126,7 @@
 \subsection[gcc]{The Compiling Chain}
 
 \begin{frame}[fragile]
-  \frametitle{The compiling chain}
+  \frametitlecpp[17]{The compiling chain}
   \center
   \begin{tikzpicture}
     \draw[thick] node (code) at(0,0) [rectangle,draw] {Source code}
@@ -167,11 +168,11 @@
     \item[\href{http://clang.llvm.org/}{\beamergotobutton{clang}}]
         drop-in replacement of gcc \\
         slightly better error reporting \\
-        free and open source
-    \item[\href{http://software.intel.com/en-us/intel-compilers}{\beamergotobutton{icc}}]
-        the intel compiler \\
-        proprietary but now free \\
-        optimized for Intel hardware
+        free and open source, based on LLVM
+    \item[\href{https://www.intel.com/content/www/us/en/developer/tools/oneapi/dpc-compiler.html\#gs.dyllp0}{\beamergotobutton{icc} \beamergotobutton{icx}}]
+        the intel compilers, proprietary but now free \\
+        optimized for Intel hardware \
+        icc being replaced by icx, based on LLVM
     \item[\href{http://www.microsoft.com/}{\beamergotobutton{Visual \cpp}}]
       the Windows way
     \end{description}
@@ -220,7 +221,7 @@
     \begin{itemize}
     \item raw Makefiles : suitable for small projects
     \item cmake : portable, the current best choice
-    \item automake : portable but complex
+    \item automake : GNU project solution
       \end{itemize}
   \end{block}
   \begin{minted}{makefile}
@@ -282,6 +283,7 @@
     \item[\href{http://software.intel.com/en-us/articles/idb-linux}{\beamergotobutton{idb}}]
       the intel debugger, proprietary
     \end{description}
+    They usually can be integrated into your IDE
   \end{block}
 \end{frame}
 
@@ -331,7 +333,7 @@
   \frametitle{Address Sanitizer (asan)}
   \begin{block}{asan introduction}
     \begin{itemize}
-    \item Compiler instrumentation supported by gcc and clang
+    \item Compiler instrumentation
     \item Program stops on invalid memory access, e.g.\
       \begin{itemize}
         \item Invalid read/write on heap and stack
@@ -342,7 +344,7 @@
     \end{itemize}
   \end{block}
   \pause
-  \begin{exampleblock}{Usage}
+  \begin{exampleblock}{Usage (gcc/clang syntax)}
     \begin{itemize}
     \item Compile with \mintinline{bash}{-fsanitize=address -fno-omit-frame-pointer -g}
     \item With clang, add optionally: \texttt{-fsanitize-address-use-after-return=always -fsanitize-address-use-after-scope}
@@ -512,7 +514,7 @@ SUMMARY: AddressSanitizer: 54 byte(s) leaked in 2 allocation(s).
   \begin{block}{Wrap up}
     \begin{itemize}
       \item If a program crashes, run it with asan
-      \item Asan should be part of every \cpp{} CI
+      \item Should be part of every \cpp{} continuous integration system
       \item It will also find bugs that by luck didn't crash the program
       \item It doesn't generate false positives
     \end{itemize}

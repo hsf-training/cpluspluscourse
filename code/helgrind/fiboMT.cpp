@@ -36,15 +36,15 @@ void launchFibo(const char* title, int a) {
     w.title = strdup(title);
     w.a = a;
     if (pthread_create(&t, NULL, computation, &w)) {
-        std::cerr << "Error creating thread" << std::endl;
+        std::cerr << "Error creating thread\n";
         return;
     }
     struct timespec sl = {.tv_sec = 0, .tv_nsec=1000};
     nanosleep(&sl, NULL);
-    std::cout << "Computing " << w.title << std::endl;
+    std::cout << "Computing " << w.title << '\n';
     void *result;
     pthread_join(t, &(result));
-    std::cout << title << " = " << (unsigned long)result << std::endl;
+    std::cout << title << " = " << (unsigned long)result << '\n';
 }
 
 int main() {

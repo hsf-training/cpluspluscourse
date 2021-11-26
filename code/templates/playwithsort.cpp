@@ -12,15 +12,15 @@ struct OrderFunctor {
 */
 
 int main() {
-    std::cout << "Integer" << std::endl;
+    std::cout << "Integer\n";
     OrderedVector<int> v(10);
     for (int i = 10; i > 0; i--)
         v.add(i);
     for (int i = 0; i < 10; i++)
         std::cout << v[i] << " ";
-    std::cout << std::endl << std::endl;
+    std::cout << "\n\n";
 
-    std::cout << "String" << std::endl;
+    std::cout << "String\n";
     OrderedVector<std::string> vs(5);
     vs.add(std::string("one"));
     vs.add(std::string("two"));
@@ -29,6 +29,6 @@ int main() {
     vs.add(std::string("five"));
     for (int i = 0; i < 5; i++)
         std::cout << vs[i] << " ";
-    std::cout << std::endl << std::endl;
+    std::cout << "\n\n";
 
 }

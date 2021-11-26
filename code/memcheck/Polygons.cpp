@@ -9,7 +9,7 @@
 Polygon::Polygon(int n, float radius) : m_nbSides(n), m_radius(radius) {};
 
 float Polygon::computePerimeter() {
-    std::cout << "Generic computePerimeter for polygons" << std::endl;
+    std::cout << "Generic computePerimeter for polygons\n";
     return 2*m_nbSides*sin(PI/m_nbSides)*m_radius;
 }
 
