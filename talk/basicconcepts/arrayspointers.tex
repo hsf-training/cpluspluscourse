@@ -1,0 +1,111 @@
+\subsection[Ptr]{Arrays and Pointers}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Static arrays}
+  \begin{cppcode}
+    int ai[4] = {1,2,3,4};
+    int ai[] = {1,2,3,4};  // identical
+
+    char ac[3] = {'a','b','c'};   // char array
+    char ac[4] = "abc";           // valid C string
+    char ac[4] = {'a','b','c',0}; // same valid string
+
+    int i = ai[2];  // i = 3
+    char c = ac[8]; // at best garbage, may segfault
+    int i = ai[4];  // also garbage !
+  \end{cppcode}
+\end{frame}
+
+\Scontents*[store-cmd=code_arrays]{
+int i = 4;
+int *pi = &i;
+int j = *pi + 1;
+
+int ai[] = {1,2,3};
+int *pai = ai;
+int *paj = pai + 1;
+int k = *paj + 1;
+
+// not compiling
+int *pak = k;
+
+// seg fault !
+int *pak = (int*)k;
+int l = *pak;
+}
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Pointers}
+  \begin{multicols}{2}
+  \begin{overprint}[\columnwidth]
+    \onslide<1> \highlightCppCode{}{code_arrays}
+    \onslide<2> \highlightCppCode{1}{code_arrays}
+    \onslide<3> \highlightCppCode{2}{code_arrays}
+    \onslide<4> \highlightCppCode{3}{code_arrays}
+    \onslide<5> \highlightCppCode{5}{code_arrays}
+    \onslide<6> \highlightCppCode{6}{code_arrays}
+    \onslide<7> \highlightCppCode{7}{code_arrays}
+    \onslide<8> \highlightCppCode{8}{code_arrays}
+    \onslide<9> \highlightCppCode{11}{code_arrays}
+  \end{overprint}
+  \columnbreak
+    \onslide<2->{
+      \begin{tikzpicture}
+        \memorystack[size x=3cm,word size=1,nb blocks=11]
+        \onslide<2-> {\memorypush{$i = 4$}}
+        \onslide<3-> {\memorypushpointer[pi =]{1}}
+        \onslide<4-> {\memorypush{$j = 5$}}
+        \onslide<5-> {\memorypush{$1$}}
+        \onslide<5-> {\memorypush{$2$}}
+        \onslide<5-> {\memorypush{$3$}}
+        \onslide<6-> {\memorypushpointer[pai =]{4}}
+        \onslide<7-> {\memorypushpointer[paj =]{5}}
+        \onslide<8-> {\memorypush{$k = 3$}}
+        \onslide<9-> {\memorypush{$pak = 3$}}
+        \onslide<9-> {\draw[\stackcolor!80,->] (stack10-1.west) -- +(-0.5cm,0)
+          node [anchor=east] {??};}
+      \end{tikzpicture}
+    }
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{nullptr}
+  \begin{block}{Finally a \cpp~NULL pointer}
+    \begin{itemize}
+    \item if a pointer doesn't point to anything, set it to \mintinline{cpp}{nullptr}
+    \item works like 0 or NULL in standard cases
+    \item triggers compilation error when mapped to integer
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{}
+      void* vp = nullptr;
+      int* ip = nullptr;
+      int i = NULL;      // OK -> bug ?
+      int i = nullptr;   // ERROR
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Dynamic Arrays}
+  \begin{cppcode}
+    #include <cstdlib>
+    #include <cstring>
+
+    int *bad;          // pointer to random address
+    int *ai = nullptr; // better. Can be tested
+
+    // allocate array of 10 ints (not initialized)
+    ai = (int*) malloc(10*sizeof(int));
+    // and set them to 0
+    memset(ai, 0, 10*sizeof(int));
+
+    // both in one go
+    ai = (int*) calloc(10, sizeof(int));
+
+    // release memory
+    free(ai);
+  \end{cppcode}
+\end{frame}

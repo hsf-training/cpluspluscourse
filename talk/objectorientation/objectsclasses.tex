@@ -1,0 +1,151 @@
+\subsection[OO]{Objects and Classes}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{What are classes and objects}
+  \begin{block}{Classes (or ``user-defined types'')}
+    C structs on steroids
+    \begin{itemize}
+    \item with inheritance
+    \item with access control
+    \item including methods
+    \end{itemize}
+  \end{block}
+  \begin{block}{Objects}
+    instances of classes
+  \end{block}
+  \begin{block}{A class encapsulates a concept}
+    \begin{itemize}
+    \item shows an interface
+    \item provides its implementation
+      \begin{itemize}
+      \item status, properties
+      \item possible interactions
+      \item construction and destruction
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{My First Class}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2}
+      struct MyFirstClass {
+        int a;
+        void squareA() {
+          a *= a;
+        }
+        int sum(int b) {
+          return a + b;
+        }
+      };
+
+      MyFirstClass myObj;
+      myObj.a = 2;
+
+      // let's square a
+      myObj.squareA();
+    \end{cppcode*}
+    \columnbreak
+    \center
+    \null \vfill
+    \begin{tikzpicture}
+      \classbox{MyFirstClass}{
+        int a; \\
+        void squareA(); \\
+        int sum(int b);
+      }
+    \end{tikzpicture}
+    \vfill \null
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Separating the interface}
+  \begin{block}{Header : MyFirstClass.hpp}
+    \begin{cppcode*}{}
+      #pragma once
+      struct MyFirstClass {
+        int a;
+        void squareA();
+        int sum(int b);
+      };
+    \end{cppcode*}
+  \end{block}
+  \begin{block}{Implementation : MyFirstClass.cpp}
+    \begin{cppcode*}{}
+      #include "MyFirstClass.hpp"
+      void MyFirstClass::squareA() {
+        a *= a;
+      }
+      void MyFirstClass::sum(int b) {
+        return a + b;
+      }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Implementing methods}
+  \begin{block}{Standard practice}
+    \begin{itemize}
+    \item usually in .cpp, outside of class declaration
+    \item using the class name as namespace
+    \item when reference to the object is needed, use {\it this} keyword
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    void MyFirstClass::squareA() {
+      a *= a;
+    }
+
+    int MyFirstClass::sum(int b) {
+      return a + b;
+    }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{{\ttfamily this} keyword}
+  \begin{block}{}
+    \begin{itemize}
+    \item {\ttfamily this} is a hidden parameter to all class methods
+    \item it points to the current object
+    \item so it is of type {\ttfamily T*} in the methods of class {\ttfamily T}
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    void ext_func(MyFirstClass& c) {
+      ... do something with c ...
+    }
+
+    int MyFirstClass::some_method(...) {
+      ext_func(*this);
+    }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Method overloading}
+  \begin{block}{The rules in \cpp}
+    \begin{itemize}
+    \item overloading is authorized and welcome
+    \item signature is part of the method identity
+    \item but not the return type
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    struct MyFirstClass {
+      int a;
+      int sum(int b);
+      int sum(int b, int c);
+    }
+
+    int MyFirstClass::sum(int b) { return a + b; }
+
+    int MyFirstClass::sum(int b, int c) {
+      return a + b + c;
+    }
+  \end{cppcode}
+\end{frame}

@@ -1,0 +1,101 @@
+\subsection[const]{Constness}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Constness}
+  \begin{block}{The {\it const} keyword}
+    \begin{itemize}
+    \item indicate that the element to the left is constant
+    \item this element won't be modifiable in the future
+    \item this is all checked at compile time
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    // standard syntax
+    int const i = 6;
+
+    // error : i is constant
+    i = 5;
+
+    // also ok, when nothing on the left,
+    // const applies to the element on the right
+    const int j = 6;
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Constness and pointers}
+  \scriptsize
+  \begin{cppcode}
+    // pointer to a constant integer
+    int a = 1, b = 2;
+    int const *i = &a;
+    *i = 5; // error, int is const
+    i = &b; // ok, pointer is not const
+
+    // constant pointer to an integer
+    int * const j = &a;
+    *j = 5; // ok, value can be changed
+    j = &b; // error, pointer is const
+
+    // constant pointer to a constant integer
+    int const * const k = &a;
+    *k = 5; // error, value is const
+    k = &b; // error, pointer is const
+
+    // const reference
+    int const & l = a;
+    l = b; // error, reference is const
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Method constness}
+  \begin{block}{The {\it const} keyword for class functions}
+    \begin{itemize}
+    \item indicate that the function does not modify the object
+    \item in other words, {\it this} is a pointer to constant object
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    struct Example {
+      void foo() const  {
+        m_member = 0; // Error : function is constant
+      }
+      int m_member;
+    };
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Method constness}
+  \begin{block}{Constness is part of the type}
+    \begin{itemize}
+    \item const T and T are different types
+    \item however, T is automatically cast to const T when needed
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    void func(int & a);
+    void funcConst(int const & a);
+
+    int a = 0;
+    int const b = 0;
+
+    func(a);      // ok
+    func(b);      // error
+    funcConst(a); // ok
+    funcConst(b); // ok
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{constness}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/constness
+    \item open constplay.cpp
+    \item try to find out which lines won't compile
+    \item check your guesses by compiling for real
+    \end{itemize}
+  \end{alertblock}
+\end{frame}

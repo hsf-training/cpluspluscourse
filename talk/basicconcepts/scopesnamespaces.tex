@@ -1,0 +1,178 @@
+\subsection[NS]{Scopes / namespaces}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Scope}
+  \begin{block}{Definition}
+    Portion of the source code where a given name is valid \\
+    Typically :
+    \begin{itemize}
+    \item simple block of code, within \mintinline{cpp}{{}}
+    \item function, class, namespace
+    \item translation unit for global declarations
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      { int a;
+        { int b;
+        } // end of b scope
+      } // end of a scope
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\Scontents*[store-cmd=code_scopes]{
+int a = 1;
+{
+  int b[4];
+  b[0] = a;
+}
+// Doesn't compile:
+// b[1] = a + 1;
+}
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Scope and lifetime of resources}
+  \begin{block}{Resource life time}
+    \begin{itemize}
+      \item Resources are allocated when declared
+      \item Resources are freed at the end of a scope
+      \item Good practice: initialise resources when allocating!
+    \end{itemize}
+  \end{block}
+  \begin{multicols}{2}
+    \begin{overprint}[\columnwidth]
+    \onslide<1>
+    \highlightCppCode{1}{code_scopes}
+    \onslide<2>
+    \highlightCppCode{3}{code_scopes}
+    \onslide<3>
+    \highlightCppCode{4}{code_scopes}
+    \onslide<4>
+    \highlightCppCode{7}{code_scopes}
+    \end{overprint}
+
+    \columnbreak
+
+    \begin{tikzpicture}
+      \memorystack[word size=1, nb blocks=5, size x = 0.5\columnwidth]
+      \onslide<1-> {
+        \memorypush{a = 1}
+      }
+      \onslide<2>{
+        \memorypush{b[0] = ?}
+      }
+      \memorygoto{2}
+      \onslide<3>{
+        \memorypush{b[0] = 1}
+      }
+      \memorygoto{3}
+      \onslide<2-3>{
+        \memorypush{b[1] = ?}
+        \memorypush{b[2] = ?}
+        \memorypush{b[3] = ?}
+      }
+
+      \memorygoto{2}
+      \onslide<4>{
+        \memorypush{\color{gray} 1}
+        \memorypush{\color{gray} ?}
+        \memorypush{\color{gray} ?}
+        \memorypush{\color{gray} ?}
+        }
+
+    \end{tikzpicture}
+
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Namespaces}
+  \begin{itemize}
+  \item Namespaces allow to segment your code to avoid name clashes
+  \item They can be embedded to create hierarchies (separator is '::')
+  \end{itemize}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2}
+      int a;
+      namespace n {
+        int a;   // no clash
+      }
+      namespace p {
+        int a;   // no clash
+        namespace inner {
+          int a; // no clash
+        }
+      }
+      int f() {
+        n::a = 2;
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=2,firstnumber=14}
+      namespace p {
+        int f() {
+          p::a = 2;
+          a = 2;  //same as above
+          p::inner::a = 4;
+          inner::a = 4;
+          n::a = 5;
+        }
+      }
+      using namespace p::inner;
+      int g() {
+        a = 3; // using p::inner
+      }
+  \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Nested namespaces}
+  Easier way to declare nested namespaces
+  \begin{alertblock}{\cpp14}
+    \begin{cppcode*}{}
+      namespace A {
+        namespace B {
+          namespace C {
+            //...
+          }
+        }
+      }
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp17}
+    \begin{cppcode*}{}
+      namespace A::B::C {
+        //...
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Anonymous namespaces}
+  \begin{exampleblock}{A namespace without a name !}
+    \begin{cppcode*}{}
+      namespace {
+        int localVar;
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{block}{Purpose}
+    \begin{itemize}
+    \item groups a number of declarations
+    \item visible in the current translation unit
+    \item but not reusable outside
+    \item allows much better compiler optimizations and checking
+      \begin{itemize}
+      \item e.g. unused function warning
+      \item context dependent optimizations
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{Deprecates static}
+    \begin{cppcode*}{gobble=2}
+      static int localVar; // equivalent C code
+    \end{cppcode*}
+  \end{alertblock}
+\end{frame}

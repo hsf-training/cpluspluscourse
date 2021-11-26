@@ -1,0 +1,39 @@
+\subsection[auto]{Auto keyword}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Auto keyword}
+  \begin{block}{Reason of being}
+    \begin{itemize}
+    \item many type declarations are redundant
+    \item and lead to compiler errors if you mess up
+    \end{itemize}
+    \begin{cppcode*}{}
+      std::vector<int> v;
+      int a = v[3];
+      int b = v.size();  // bug ? unsigned to signed
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{Practical usage}
+    \begin{cppcode*}{}
+      std::vector<int> v;
+      auto a = v[3];
+      const auto b = v.size();
+      int sum{0};
+      for (auto n : v) { sum += n; }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Loops, references, auto}
+  \begin{alertblock}{Exercise}
+    Familiarise yourself with range-based for loops and references
+    \begin{itemize}
+      \item go to \texttt{code/loopsRefsAuto}
+      \item Look at \texttt{loopsRefsAuto.cpp}
+      \item Compile it (\texttt{make}) and run the program (\texttt{./loopsRefsAuto})
+      \item Work on the tasks that you find in \texttt{loopsRefsAuto.cpp}
+    \end{itemize}
+  \end{alertblock}
+\end{frame}

@@ -1,0 +1,238 @@
+\subsection[mutex]{Mutexes}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Races}
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{}
+      int a = 0;
+      void inc() { a++; };
+      void inc100() {
+        for (int i=0; i < 100; i++) inc();
+      };
+      int main() {
+        std::thread t1(inc100);
+        std::thread t2(inc100);
+        for (auto t: {&t1,&t2}) t->join();
+        std::cout << a << std::endl;
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{block}{What do you expect ? Try it in code/race}
+    \pause
+    Anything between 100 and 200 !!!
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Atomicity}
+  \begin{exampleblock}{Definition (wikipedia)}
+    \begin{itemize}
+    \item an operation (or set of operations) is atomic if it appears to the rest of the system to occur instantaneously
+    \end{itemize}
+  \end{exampleblock}
+  \begin{block}{Practically}
+    \begin{itemize}
+    \item an operation that won't run concurrently to another one
+    \item an operation that will have a stable environment during execution
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{Is ++ operator atomic ?}
+    \pause
+    Usually not. It behaves like :
+    \begin{cppcode*}{}
+      eax = a       // memory to register copy
+      increase eax  // increase (atomic CPU instruction)
+      a = eax       // copy back to memory
+    \end{cppcode*}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Timing}
+  \begin{exampleblock}{Code}
+    \begin{cppcode*}{}
+      eax = a       // memory to register copy
+      increase eax  // increase (atomic CPU instruction)
+      a = eax       // copy back to memory
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{block}{For 2 threads}
+    \begin{tikzpicture}
+      \begin{umlseqdiag}
+        \umlobject[x=0, class=eax]{Thread 1}
+        \umlobject[x=3, class=a, fill=blue!20]{Memory}
+        \umlobject[x=6, class=eax]{Thread 2}
+        \begin{umlcall}[op=read, type=synchron, return=0]{Thread 1}{Memory}
+        \end{umlcall}
+        \begin{umlcall}[padding=3, op=read, type=synchron, return=0]{Thread 2}{Memory}
+        \end{umlcall}
+        \begin{umlcallself}[op=incr, type=synchron]{Thread 1}
+        \end{umlcallself}
+        \begin{umlcallself}[op=incr, type=synchron]{Thread 2}
+        \end{umlcallself}
+        \begin{umlcall}[op=write 1]{Thread 2}{Memory}
+        \end{umlcall}
+        \begin{umlcall}[padding=3, op=write 1]{Thread 1}{Memory}
+        \end{umlcall}
+      \end{umlseqdiag}
+      \draw[-triangle 60](8.5,0) -- (8.5,-4) node[right, pos=0.5]{time};
+    \end{tikzpicture}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Mutexes and Locks}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item Use locks to serialize access to a non-atomic piece of code
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{The objects}
+    \begin{description}[labelwidth=1.8cm]
+    \item[std::mutex] in the mutex header
+    \item[std::scoped\_lock] RAII to lock and unlock automatically
+    \item[std::unique\_lock] same, but can be released/relocked explicitly
+    \end{description}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Practically}
+    \begin{cppcode*}{}
+      int a = 0;
+      std::mutex m;
+      void inc() {
+        std::scoped_lock lock{m};
+        a++;
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Mutexes and Locks}
+  \begin{block}{Good practice}
+    \begin{itemize}
+      \item Always use \texttt{scoped\_lock} (\cpp11: \texttt{lock\_guard})
+      \item Hold as short as possible, wrap critical section in "\texttt{\string{  \string}}"
+      \item Only if manual control needed, use \texttt{unique\_lock}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{gobble=2}
+      void function(...) {
+        // ...
+        {
+          std::scoped_lock myLocks{mutex1, mutex2, ...};
+          // critical section
+        }
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Mutexes}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item Go to code/race
+    \item Look at the code and try it\\
+      See that it has a race condition
+    \item Use a mutex to fix the issue
+    \item See the difference in execution time
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Dead lock}
+  \begin{exampleblock}{Scenario}
+    \begin{itemize}
+    \item 2 mutexes, 2 threads
+    \item locking order different in the 2 threads
+    \end{itemize}
+  \end{exampleblock}
+  \pause
+  \begin{block}{Sequence diagram}
+    \begin{tikzpicture}
+      \begin{umlseqdiag}
+        \umlobject[x=0]{Thread 1}
+        \umlobject[x=2.5, fill=blue!20]{Mutex A}
+        \umlobject[x=5, fill=blue!20]{Mutex B}
+        \umlobject[x=7.5]{Thread 2}
+        \begin{umlcall}[op=lock]{Thread 1}{Mutex A}
+        \end{umlcall}
+        \begin{umlcall}[op=lock, dt=6]{Thread 2}{Mutex B}
+        \end{umlcall}
+        \begin{umlcall}[op=lock (block), dt=6]{Thread 1}{Mutex B}
+        \end{umlcall}
+        \begin{umlcall}[op=lock (block), dt=12]{Thread 2}{Mutex A}
+        \end{umlcall}
+      \end{umlseqdiag}
+      \draw[-triangle 60](9,0) -- (9,-4) node[right, pos=0.5]{time};
+    \end{tikzpicture}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{How to avoid dead locks}
+  \begin{block}{Possible solutions}
+    \begin{itemize}
+    \item Never take several locks
+      \begin{itemize}
+      \item Or add master lock protecting the locking phase
+      \end{itemize}
+    \item Respect a strict order in the locking across all threads
+    \item Do not use locks
+      \begin{itemize}
+      \item Use other techniques, e.g. queues
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Condition variables}
+  \begin{block}{How to express thread dependencies}
+    \begin{itemize}
+    \item Allows a thread to sleep until a given condition is satisfied
+    \item std::condition\_variable object from condition\_variable header
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Usage}
+    \begin{itemize}
+    \item wraps an RAII lock around a mutex
+    \item wait() will hang until the condition is met
+      \begin{itemize}
+      \item you can have several waiters sharing the same mutex
+      \end{itemize}
+    \item notify\_one() will wake up one waiter
+    \item notify\_all() will wake up all waiters
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Condition variable usage}
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{}
+      int value = -1;
+      std::mutex mutex;
+      std::condition_variable cond;
+      auto t1 = std::thread([&cond] () {
+        value = ... long process ...;
+        cond.notify_all();
+      });
+      auto t2 = std::thread([&cond,&mutex,&value] () {
+        std::unique_lock<std::mutex> lock{mutex};
+        cond.wait(lock, [&value] { return value > 0; });
+        ... use value ...
+      });
+      { std::unique_lock<std::mutex> lock{mutex};
+        cond.wait(lock, [&value] { return value > 0; });
+        std::cout << value << std::endl; }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
