@@ -1,0 +1,226 @@
+\subsection[forward]{Perfect forwarding}
+
+%http://eli.thegreenplace.net/2014/perfect-forwarding-and-universal-references-in-c/
+\begin{frame}[fragile]
+  \frametitlecpp[11]{The problem}
+  Trying to write a generic wrapper function
+  \begin{cppcode*}{}
+    template <typename T>
+    void wrapper(T arg) {
+      func(arg);
+    }
+  \end{cppcode*}
+  Example usage :
+  \begin{itemize}
+  \item emplace\_back
+  \item make\_unique
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Why is it not so simple?}
+  \begin{cppcode*}{}
+    template <typename T>
+    void wrapper(T arg) {
+      func(arg);
+    }
+  \end{cppcode*}
+  \begin{alertblock}{What about references ?}
+    what if func takes references to avoid copies ?\\
+    wrapper would force a copy and we fail to use references
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Second try, second failure ?}
+  \begin{cppcode*}{}
+    template <typename T>
+    void wrapper(T &arg) {
+      func(arg);
+    }
+    wrapper(42);
+    // invalid initialization of
+    // non-const reference from
+    // an rvalue
+  \end{cppcode*}
+  \begin{alertblock}{}
+    const ref won't help : you may want to pass something non const\\
+    and rvalue are not yet supported...
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{The solution : cover all cases}
+  \begin{cppcode*}{}
+    template <typename T>
+    void wrapper(T& arg) { func(arg); }
+
+    template <typename T>
+    void wrapper(const T& arg) { func(arg); }
+
+    template <typename T>
+    void wrapper(T&& arg) { func(arg); }
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{The new problem : scaling to n arguments}
+  \begin{cppcode*}{}
+    template <typename T1, typename T2>
+    void wrapper(T1& arg1, T2& arg2)
+    { func(arg1, arg2); }
+
+    template <typename T1, typename T2>
+    void wrapper(const T1& arg1, T2& arg2)
+    { func(arg1, arg2); }
+
+    template <typename T1, typename T2>
+    void wrapper(T1& arg1, const T2& arg2)
+    { func(arg1, arg2); }
+    ...
+  \end{cppcode*}
+  \begin{alertblock}{Exploding complexity}
+    3$^{n}$ complexity\\
+    you do not want to try n = 5...
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Reference collapsing in \cpp98}
+  \begin{block}{Reference to references}
+    They are forbidden in \cpp\\
+    But still may happen
+    \begin{cppcode*}{}
+      template <typename T>
+      void foo(T t) {
+        T& k = t;
+        ...
+      }
+      int ii = 4;
+      foo<int&>(ii);
+    \end{cppcode*}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    all compilers were collapsing the 2 references
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitlecpp[11]{Reference collapsing in \cpp11}
+  \begin{block}{rvalues have been added}
+    \begin{itemize}
+    \item what about int\&\& \& ?
+    \item and int \&\& \&\& ?
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{\cpp11 standardization}
+    The rule is simple : \& always wins\\
+    \&\& \&, \& \&\&, \& \& $\rightarrow$ \&\\
+    \&\& \&\& $\rightarrow$ \&\&
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{rvalue in type-deducing context}
+  \begin{cppcode*}{}
+    template <typename T>
+    void func(T&& t) {}
+  \end{cppcode*}
+  Next to a template parameter, \&\& is not an rvalue, but a ``universal reference''\\
+  T\&\& actual type depends on the arguments passed to func
+  \begin{itemize}
+  \item if an lvalue of type U is given, T is deduced to U\&
+  \item otherwise, collapse references normally
+  \end{itemize}
+  \begin{cppcode*}{firstnumber=3}
+    func(4);        // rvalue -> T&& is int&&
+    double d = 3.14;
+    func(d);        // lvalue -> T&& is double&
+    float f() {...}
+    func(f());      // rvalue -> T&& is float&&
+    int foo(int i) {
+      func(i);      // lvalue -> T&& is int&
+    }
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{std::remove\_reference}
+  Some template trickery removing reference from a type
+  \begin{cppcode*}{}
+    template< typename T >
+    struct remove_reference
+    {using type = T;};
+
+    template< typename T >
+    struct remove_reference<T&>
+    {using type = T;};
+
+    template< typename T >
+    struct remove_reference<T&&>
+    {using type = T;};
+  \end{cppcode*}
+  If {\ttfamily T} is a reference type, {\ttfamily remove\_reference<T>::type} is the type referred to by T,
+  otherwise it is T.
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{std::forward}
+  Another template trickery keeping references and mapping non reference types to rvalue references
+  \begin{cppcode*}{}
+    template<typename T>
+    T&& forward(typename std::remove_reference<T>::type& t)
+      noexcept {
+      return static_cast<T&&>(t);
+    }
+  \end{cppcode*}
+  \begin{block}{How it works}
+    \begin{itemize}
+    \item if T is int, it returns int \&\&
+    \item if T is int\&, it returns int\& \&\& ie int\&
+    \item if T is int\&\&, it returns int\&\& \&\& ie int\&\&
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Perfect forwarding}
+  Putting it all together
+  \begin{cppcode*}{}
+    template <typename... T>
+    void wrapper(T&&... args) {
+      func(std::forward<T>(args)...);
+    }
+  \end{cppcode*}
+  \begin{block}{How it works}
+    \begin{itemize}
+    \item if we pass an rvalue to wrapper (U\&\&)
+      \begin{itemize}
+      \item arg will be of type U\&\&
+      \item func will be called with a U\&\&
+      \end{itemize}
+    \item if we pass an lvalue to wrapper (U\&)
+      \begin{itemize}
+      \item arg will be of type U\&
+      \item func will be called with a U\&
+      \end{itemize}
+    \item if we pass a plain value (U)
+      \begin{itemize}
+      \item arg will be of type U\&\& (no copy in wrapper)
+      \item func will be called with a U\&\&
+      \item but func takes a U, so copy happens there, as expected
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Real life example}
+  \begin{cppcode*}{}
+    template<typename T, typename... Args>
+    unique_ptr<T> make_unique(Args&&... args) {
+      return unique_ptr<T>
+        (new T(std::forward<Args>(args)...));
+    }
+  \end{cppcode*}
+\end{frame}

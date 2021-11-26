@@ -1,0 +1,49 @@
+\subsection[.h]{Headers and interfaces}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Headers and interfaces}
+  \begin{block}{Interface}
+    Set of declarations defining some functionality
+    \begin{itemize}
+    \item defined in a ``header file''
+    \item no implementation defined
+    \end{itemize}
+  \end{block}
+  \begin{block}{Header : hello.hpp}
+    \begin{cppcode*}{linenos=false}
+      void printHello();
+    \end{cppcode*}
+  \end{block}
+  \begin{block}{Usage : myfile.cpp}
+    \begin{cppcode*}{}
+      #include "hello.hpp"
+      int main() {
+        printHello();
+      }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Preprocessor}
+  \begin{cppcode}
+    // file inclusion
+    #include "hello.hpp"
+    // macros
+    #define MY_GOLDEN_NUMBER 1746
+    // compile time decision
+    #ifdef USE64BITS
+      typedef uint64_t myint;
+    #else
+      typedef uint32_t myint;
+    #endif
+  \end{cppcode}
+  \pause
+  \begin{block}{Use only in very restricted cases}
+    \begin{itemize}
+    \item include of headers
+    \item hardcoded constants before \cpp11
+    \item portability necessity
+    \end{itemize}
+  \end{block}
+\end{frame}

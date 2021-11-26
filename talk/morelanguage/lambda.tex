@@ -1,0 +1,262 @@
+\subsection[$\lambda$]{Lambdas}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Function return type}
+  \begin{block}{A new way to specify function's return type}
+    \begin{cppcode*}{linenos=false}
+      ReturnType fn_name(ArgType1, ArgType2);  //old
+      auto fn_name(ArgType1, ArgType2) -> ReturnType;
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{Advantages}
+    \begin{itemize}
+    \item Allows to simplify inner type definition
+      \begin{cppcode*}{gobble=4}
+        class TheClass {
+          using inner_type = int;
+          inner_type func();
+        }
+        TheClass::inner_type TheClass::func() {...}
+        auto TheClass::func() -> inner_type {...}
+      \end{cppcode*}
+    \item C++14: ReturnType is not mandatory, compiler can deduce it
+    \item will be used for lambdas
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Lambdas}
+  \begin{block}{Definition}
+    a lambda is a function with no name
+  \end{block}
+  \pause
+  \begin{exampleblock}{Python example}
+    \begin{pythoncode*}{}
+      data = [1,9,3,8,3,7,4,6,5]
+
+      # without lambdas
+      def isOdd(n):
+        return n%2 == 1
+      print(filter(isOdd, data))
+
+      # with lambdas
+      print(filter(lambda n:n%2==1, data))
+    \end{pythoncode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{\cpp Lambdas}
+  \begin{block}{Simplified syntax}
+    \begin{cppcode*}{gobble=2}
+      [] (args) -> type {
+        code;
+      }
+    \end{cppcode*}
+    The type specification is optional
+  \end{block}
+  \begin{exampleblock}{Usage example}
+    \begin{cppcode*}{firstnumber=4,gobble=2}
+      std::vector<int> data{1,2,3,4,5};
+      for_each(begin(data), end(data),
+               [](int i) {
+                 std::cout << "The square of " << i
+                           << " is " << i*i << std::endl;
+               });
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Capture}
+  \begin{block}{Python code}
+    \begin{pythoncode*}{}
+      increment = 3
+      data = [1,9,3,8,3,7,4,6,5]
+      map(lambda x : x + increment, data)
+    \end{pythoncode*}
+  \end{block}
+  \pause
+  \begin{block}{First attempt in \cpp}
+    \begin{cppcode*}{firstnumber=4}
+      int increment = 3;
+      std::vector<int> data{1,9,3,8,3,7,4,6,5};
+      transform(begin(data), end(data), begin(data),
+                [](int x) { return x+increment; });
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{alertblock}{Error}
+    \begin{minted}[gobble=6]{text}
+        error: 'increment' is not captured
+          [](int x) { return x+increment; });
+                                     ^
+    \end{minted}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Capture}
+  \begin{block}{Variable capture}
+    \begin{itemize}
+    \item external variables need to be explicitly captured
+    \item captured variables are listed within initial []
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      int increment = 3;
+      std::vector<int> data{1,9,3,8,3,7,4,6,5};
+      transform(begin(data), end(data), begin(data),
+                [increment](int x) {
+                  return x+increment;
+                });
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Default capture is by value}
+  \begin{exampleblock}{Code example}
+    \begin{cppcode}
+      int sum = 0;
+      std::vector<int> data{1,9,3,8,3,7,4,6,5};
+      for_each(begin(data), end(data),
+              [sum](int x) { sum += x; });
+    \end{cppcode}
+  \end{exampleblock}
+  \pause
+  \begin{alertblock}{Error}
+    \begin{minted}[gobble=4]{text}
+      error: assignment of read-only variable 'sum'
+               [sum](int x) { sum += x; });
+    \end{minted}
+  \end{alertblock}
+  \pause
+  \begin{block}{Explanation}
+    By default, variables are captured by value
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Capture by reference}
+  \begin{exampleblock}{Simple example}
+    In order to capture by reference, add '\&' before the variable
+    \begin{cppcode*}{}
+      int sum = 0;
+      std::vector<int> data{1,9,3,8,3,7,4,6,5};
+      for_each(begin(data), end(data),
+              [&sum](int x) { sum += x; });
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{exampleblock}{Mixed case}
+    One can of course mix values and references
+    \begin{cppcode*}{firstnumber=5}
+      int sum = 0, offset = 1;
+      std::vector<int> data{1,9,3,8,3,7,4,6,5};
+      for_each(begin(data), end(data),
+              [&sum, offset](int x) {
+                sum += x + offset;
+              });
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Capture all}
+  \begin{block}{by value}
+    \begin{cppcode*}{linenos=false}
+      [=](...) { ... };
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{by reference}
+    \begin{cppcode*}{linenos=false}
+      [&](...) { ... };
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{exceptions}
+    \begin{cppcode*}{linenos=false}
+      [&, b](...) { ... };
+      [=, &b](...) { ... };
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Lambdas rather than functors}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      auto build_incrementer = [](int inc) {
+        return [inc](int value) { return value + inc; };
+      };
+      auto inc1 = build_incrementer(1);
+      auto inc10 = build_incrementer(10);
+      int i = 0;
+      i = inc1(i);   // i = 1
+      i = inc10(i);  // i = 11
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{block}{How it works}
+    \begin{itemize}
+      \item build\_incrementer returns a function object
+      \item this function's behavior depends on a parameter
+      \item note how {\it auto} is useful here !
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{{\texttt lambda}s makes the STL usable}
+  \begin{block}{Before lambdas}
+    \begin{cppcode*}{}
+      struct Incrementer {
+        int m_inc;
+        Incrementer(int inc) : m_inc(inc) {}
+        int operator() (int value) {
+          return value + m_inc;
+        };
+      };
+      std::vector<int> v{1, 2, 3};
+      std::transform(begin(v), end(v), begin(v),
+                     Incrementer(1));
+      for (auto a : v) std::cout << a << " ";
+      \end{cppcode*}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{{\texttt lambda}s makes the STL usable}
+  \begin{exampleblock}{With lambdas}
+    \begin{cppcode*}{}
+      std::vector<int> v{1, 2, 3};
+      std::transform(begin(v), end(v), begin(v),
+                     [](int value) {
+                       return value + 1;
+                     });
+      for (auto a : v) std::cout << a << " ";
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{alertblock}{Conclusion}
+    Use the STL !
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Lambdas}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/lambdas
+    \item look at the code (it's the solution to the stl exercise)
+    \item use lambdas to simplify it
+    \end{itemize}
+  \end{alertblock}
+\end{frame}

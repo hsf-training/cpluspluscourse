@@ -1,0 +1,87 @@
+\subsection[Op]{Operators}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Operators' example}
+  \begin{cppcode}
+    struct Complex {
+      float m_real, m_imaginary;
+      Complex(float real, float imaginary);
+      Complex operator+(const Complex& other) {
+        return Complex(m_real + other.m_real,
+                       m_imaginary + other.m_imaginary);
+      }
+    };
+
+    Complex c1{2, 3}, c2{4, 5};
+    Complex c3 = c1 + c2; // (6, 8)
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}
+  \frametitlecpp[98]{Operators}
+  \begin{block}{Definition for operators of a class}
+    \begin{itemize}
+    \item implemented as a regular method
+      \begin{itemize}
+      \item either inside the class, as a member function
+      \item or outside the class (not all)
+      \end{itemize}
+    \item with a special name (replace @ by anything)
+      \begin{tabular}{llll}
+        Expression & As member & As non-member \\
+        \hline
+        @a & (a).operator@() & operator@(a) \\
+        a@b & (a).operator@(b) & operator@(a,b) \\
+        a=b & (a).operator=(b) & cannot be non-member \\
+        a(b...) & (a).operator()(b...) & cannot be non-member \\
+        a[b] & (a).operator[](b) & cannot be non-member \\
+        a-\textgreater & (a).operator-\textgreater() & cannot be non-member \\
+        a@ & (a).operator@(0) & operator@(a,0) \\
+      \end{tabular}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Why to have non-member operators ?}
+  \begin{block}{Symmetry}
+    \begin{cppcode}
+      struct Complex {
+        float m_real, m_imaginary;
+        Complex operator+(float other) {
+          return Complex(m_real + other, m_imaginary);
+        }
+      };
+      Complex c1{2.f, 3.f};
+      Complex c2 = c1 + 4.f;  // ok
+      Complex c3 = 4.f + c1;  // not ok !!
+    \end{cppcode}
+    \pause
+    \begin{cppcode*}{firstnumber=10}
+      Complex operator+(float a, const Complex& obj) {
+        return Complex(a + obj.m_real, obj.m_imaginary);
+      }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Other reason to have non-member operators ?}
+  \begin{block}{Extending existing classes}
+    \begin{cppcode}
+      struct Complex {
+        float m_real, m_imaginary;
+        Complex(float real, float imaginary);
+      };
+
+      std::ostream& operator<<(std::ostream& os,
+                               const Complex& obj) {
+        os << "(" << obj.m_real << ", "
+                  << obj.m_imaginary << ")";
+        return os;
+      }
+      Complex c1{2.f, 3.f};
+      std::cout << c1 << std::endl; // Prints '(2, 3)'
+    \end{cppcode}
+  \end{block}
+\end{frame}

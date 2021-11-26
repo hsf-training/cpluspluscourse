@@ -1,0 +1,97 @@
+\subsection[Core]{Core syntax and types}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Hello World}
+  \begin{cppcode}
+    #include <iostream>
+
+    // This is a function
+    void print(int i) {
+      std::cout << "Hello, world " << i << std::endl;
+    }
+
+    int main(int argc, char** argv) {
+      int n = 3;
+      for (int i = 0; i < n; i++) {
+        print(i);
+      }
+      return 0;
+    }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Comments}
+  \begin{cppcode}
+    // simple comment for integer declaration
+    int i;
+
+    /* multiline comment
+     * in case we need to say more
+     */
+    double d;
+
+    /**
+     * Best choice : doxygen compatible comments
+     * \fn bool isOdd(int i)
+     * \brief checks whether i is odd
+     * \param i input
+     * \return true if i is odd, otherwise false
+     */
+    bool isOdd(int i);
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Basic types(1)}
+  \begin{cppcode}
+    bool b = true;            // boolean, true or false
+
+    char c = 'a';             // 8 bits ASCII char
+    char* s = "a C string";   // array of chars ended by \0
+    string t = "a C++ string";// class provided by the STL
+
+    char c = -3;              // 8 bits signed integer
+    unsigned char c = 4;      // 8 bits unsigned integer
+
+    short int s = -444;       // 16 bits signed integer
+    unsigned short s = 444;   // 16 bits unsigned integer
+    short s = -444;           // int is optional
+  \end{cppcode}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Basic types(2)}
+  \begin{cppcode}
+    int i = -123456;          // 32 bits signed integer
+    unsigned int i = 1234567; // 32 bits signed integer
+
+    long l = 0L               // 32 or 64 bits (ptr size)
+    unsigned long l = 0UL;    // 32 or 64 bits (ptr size)
+
+    long long ll = 0LL;       // 64 bits signed integer
+    unsigned long long l = 0ULL; // 64 bits unsigned integer
+
+    float f = 1.23f;          // 32 (23+7+1) bits float
+    double d = 1.23E34;       // 64 (52+11+1) bits float
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Portable numeric types}
+  \alert{One needs to include specific header}
+  \begin{cppcode}
+    #include <cstdint>
+
+    int8_t c = -3;     // 8 bits, replaces char
+    uint8_t c = 4;     // 8 bits, replaces unsigned char
+
+    int16_t s = -444;  // 16 bits, replaced short
+    uint16_t s = 444;  // 16 bits, replaced unsigned short
+
+    int32_t s = -0674; // 32 bits, replaced int
+    uint32_t s = 0674; // 32 bits, replaced unsigned int
+
+    int64_t s = -0x1bc;// 64 bits, replaced long long
+    uint64_t s = 0x1bc;// 64 bits, replaced unsigned long long
+    \end{cppcode}
+\end{frame}

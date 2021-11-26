@@ -1,0 +1,55 @@
+\subsection[ctypes]{The ctypes module}
+
+\begin{frame}[fragile]
+  \frametitle{The ctypes python module}
+  \begin{block}{From the documentation}
+    \begin{itemize}
+    \item provides C compatible data types
+    \item allows calling functions in DLLs or shared libraries
+    \item can be used to wrap these libraries in pure Python
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{ctypes : usage example}
+  \begin{block}{\cpp code : mandel.hpp}
+    \begin{cppcode*}{}
+      int mandel(Complex const & a);
+    \end{cppcode*}
+  \end{block}
+  \begin{block}{``C'' code : mandel\_cwrapper.hpp}
+    \begin{cppcode*}{}
+      extern "C" {
+        int mandel(float r, float i) {
+          return mandel(Complex(r, i));
+        };
+      }
+    \end{cppcode*}
+  \end{block}
+  \begin{exampleblock}{calling the mandel library}
+    \begin{minted}[gobble=4]{python}
+      from ctypes import *
+      libmandel = CDLL('libmandelc.so')
+      v = libmandel.mandel(c_float(0.3), c_float(1.2))
+    \end{minted}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Marrying \cpp and python}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/python
+    \item look at the original python code mandel.py
+    \item time it (`time python3 mandel.py`)
+    \item look at the code in mandel.hpp/cpp
+    \item look at the python module mandel\_module.cpp
+    \item compile and modify mandel.py to use it
+    \item see the gain in time
+    \item look at the C wrapper in mandel\_cwrapper.cpp
+    \item modify mandel.py to use libmandelc directly with ctypes
+    \end{itemize}
+  \end{alertblock}
+  \tiny Note : you may have to add '.' to LD\_LIBRARY\_PATH and PYTHONPATH
+\end{frame}

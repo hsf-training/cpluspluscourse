@@ -1,0 +1,270 @@
+\subsection[RAII]{pointers and RAII}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Pointers : why they are error prone ?}
+  \begin{exampleblock}{They need initialization
+      \hfill \onslide<2->{\textcolor{orange}{\bf Seg Fault}}}
+    \begin{cppcode*}{xleftmargin=20pt}
+      char *s;
+      try {
+        callThatThrows();
+        s = (char*) malloc(...);
+        strncpy(s, ...);
+      } catch (...) { ... }
+      bar(s);
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \pause
+  \vspace{-2cm}
+  \begin{exampleblock}{They need to be released
+      \hfill \onslide<4->{\textcolor{orange}{\bf Memory leak}}}
+    \begin{cppcode*}{xleftmargin=20pt}
+      char *s = (char*) malloc(...);
+      strncpy(s, ...);
+      if (0 != strncmp(s, ...)) return;
+      foo(s);
+      free(s);
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \pause
+  \vspace{-2cm}
+  \begin{exampleblock}{They need clear ownership
+      \hfill \onslide<6->{\textcolor{orange}{\bf Who should release ?}}}
+    \begin{cppcode*}{xleftmargin=20pt}
+      char *s = (char*) malloc(...);
+      strncpy(s, ...);
+      someVector.push_back(s);
+      someSet.add(s);
+      std::thread t1(vecConsumer, someVector);
+      std::thread t2(setConsumer, someSet);
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{This problem exists for any resource}
+  \begin{exampleblock}{For example with a file}
+    \begin{cppcode*}{}
+      try {
+        FILE *handle = std::fopen(path, "w+");
+        if (0 == handle) { throw ... }
+        if (std::fputs(str, handle) == EOF) {
+          throw ...
+        }
+        fclose(handle);
+      } catch (...) { ... }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitlecpp[98]{Resource Acquisition Is Initialization (RAII)}
+  \begin{block}{Practically}
+    Use object semantic to acquire/release resources
+    \begin{itemize}
+    \item wrap the resource inside an object
+    \item acquire resource via object constructor
+    \item release resource in destructor
+    \item create this object on the stack so that it is automatically destructed when leaving the scope, including in case of exception
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{RAII in practice}
+  \begin{exampleblock}{File class}
+    \begin{cppcode*}{}
+      class File {
+      public:
+        File(const char* filename) :
+          m_file_handle(std::fopen(filename, "w+")) {
+          if (m_file_handle == NULL) { throw ... }
+        }
+        ~File() { std::fclose(m_file_handle); }
+        void write (const char* str) {
+          if (std::fputs(str, m_file_handle) == EOF) {
+            throw ...
+          }
+        }
+      private:
+        FILE* m_file_handle;
+      };
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{RAII usage}
+  \begin{exampleblock}{Usage of File class}
+    \begin{cppcode*}{}
+      void log_function() {
+        // file opening, aka resource acquisition
+        File logfile("logfile.txt") ;
+
+        // file usage
+        logfile.write("hello logfile!") ;
+
+        // file is automatically closed by the call to
+        // its destructor, even in case of exception !
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{std::unique\_ptr}
+  \begin{block}{an RAII pointer}
+    \begin{itemize}
+    \item wraps a regular pointer
+    \item has move only semantic
+      \begin{itemize}
+      \item the pointer is only owned once
+      \end{itemize}
+    \item in \textless{}memory\textgreater{} header
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Usage}
+    \begin{cppcode*}{}
+      Foo *p = new Foo{};  // allocation
+      std::unique_ptr<Foo> uptr(p);
+      std::cout << uptr.get() << " points to "
+                << uptr->someMember << std::endl;
+      void f(std::unique_ptr<Foo> ptr);
+      f(std::move(uptr)); // transfer of ownership
+      // deallocation when exiting f
+      std::cout << uptr.get() << std::endl; // 0
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Quiz}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{}
+      Foo *p = new Foo{};  // allocation
+      std::unique_ptr<Foo> uptr(p);
+      void f(std::unique_ptr<Foo> ptr);
+      f(uptr); // transfer of ownership
+    \end{cppcode*}
+    What do you expect ?
+  \end{exampleblock}
+  \pause
+  \begin{alertblock}{Compilation Error}
+    \begin{minted}{text}
+test.cpp:15:5: error: call to deleted constructor
+of 'std::unique_ptr<Foo>'
+  f(uptr);
+    ^~~~
+/usr/include/c++/4.9/bits/unique_ptr.h:356:7: note:
+ 'unique_ptr' has been explicitly marked deleted here
+ unique_ptr(const unique_ptr&) = delete;
+ ^
+    \end{minted}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[14]{std::make\_unique}
+  \begin{block}{}
+    \begin{itemize}
+    \item allocates directly a unique\_ptr
+    \item no new or delete calls anymore !
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{make\_unique usage}
+    \begin{cppcode*}{}
+      // allocation of one Foo object,
+      // calling constructor with one argument
+      auto a = std::make_unique<Foo>(memberValue);
+      std::cout << a.get() << " points to "
+                << a->someMember << std::endl;
+      // allocation of an array of Foos
+      // calling default constructor
+      auto b = std::make_unique<Foo[]>(10);
+      // deallocations
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{RAII or raw pointers}
+  \begin{block}{When to use what ?}
+    \begin{itemize}
+    \item Always use RAII for all resources, in particular allocations
+    \item You thus never have to release / deallocate !
+    \item Use raw pointers for observer functions (or references)
+      \begin{itemize}
+      \item remember that unique\_ptr is move only
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{A question of ownership}
+    \begin{cppcode*}{}
+      unique_ptr<T> producer();
+      void observer(const T&);
+      void modifier(T&);
+      void consumer(unique_ptr<T>);
+      unique_ptr<T> pt{producer()};
+      observer(*pt);            // Keep ownership
+      modifier(*pt);            // Keep ownership
+      consumer(std::move(pt));  // Transfer ownership
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{unique\_ptr usage summary}
+  \begin{block}{It's about lifetime management}
+    \begin{itemize}
+    \item Use unique\_ptr in functions taking part to the lifetime management
+    \item Otherwise use raw pointers or references
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{shared\_ptr, make\_shared}
+  \begin{block}{shared\_ptr : a reference counting pointer}
+    \begin{itemize}
+    \item wraps a regular pointer like unique\_ptr
+    \item has move and copy semantic
+    \item uses internally reference counting
+      \begin{itemize}
+      \item "Would the last person out, please turn off the lights ?"
+      \end{itemize}
+    \item reference counting is thread-safe, therefore costly
+    \end{itemize}
+  \end{block}
+  \begin{block}{make\_shared : creates a shared\_ptr}
+    \begin{cppcode*}{}
+      {
+        auto sp = std::make_shared<Foo>(); // #ref = 1
+        vector.push_back(sp);              // #ref = 2
+        set.insert(sp);                    // #ref = 3
+      } // #ref 2
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{smart pointers}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/smartPointers
+    \item compile and run the program. It doesn't generate any output.
+    \item Run with valgrind to check for leaks
+      { \scriptsize
+      \begin{minted}[gobble=6]{shell-session}
+        $ valgrind --leak-check=full --track-origins=yes ./smartPointers
+      \end{minted}
+      }
+    \item Go through {\ttfamily problem1()} to {\ttfamily problem3()} and fix the leaks using smart pointers.
+    \item {\ttfamily problem4()} is the most difficult. Skip if not enough time.
+    \end{itemize}
+  \end{alertblock}
+\end{frame}

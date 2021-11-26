@@ -1,0 +1,42 @@
+\subsection[copy]{Copy elision}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Guaranteed copy elision}
+  \begin{block}{What is copy elision}
+    \begin{cppcode*}{}
+      struct Foo { ... };
+      Foo f() {
+        return Foo();
+      }
+      int main() {
+        // compiler was authorised to elide the copy
+        Foo foo = f();
+      }
+    \end{cppcode*}
+  \end{block}
+  \begin{exampleblock}{From \cpp17 on}
+    The elision is guaranteed.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Guaranteed copy elision}
+  Allows to write code not allowed with \cpp14 (would not compile)
+  \begin{block}{One case where the guarantee is needed}
+    \begin{cppcode*}{}
+      struct Foo {
+        Foo() { ... }
+        Foo(const Foo &) = delete;
+        Foo(Foo &&) = delete;
+        Foo& operator=(const Foo &) = delete;
+        Foo& operator=(Foo &&) = delete;
+      };
+      Foo f() {
+        return Foo();
+      }
+      int main() {
+        Foo foo = f();
+      }
+    \end{cppcode*}
+  \end{block}
+\end{frame}

@@ -1,0 +1,78 @@
+\subsection{More STL}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Some new STL types}
+  \begin{block}{\texttt{std::optional}}
+    \begin{itemize}
+    \item manages an optional contained value
+    \item contextually converted to bool
+    \item useful for the return value of a function that may fail
+    \end{itemize}
+  \end{block}
+  \begin{block}{\texttt{std::any}}
+    \begin{itemize}
+    \item a type-safe container for single values of any type
+    \item the \texttt{any\_cast} function provides type-safe access
+    \item and throws \texttt{std::bad\_any\_cast} for bad access
+    \end{itemize}
+  \end{block}
+  \begin{block}{\texttt{std::variant}}
+    \begin{itemize}
+    \item a type-safe union
+    \item \texttt{std::get} reads the value of the variant
+    \item and throws \texttt{std::bad\_variant\_access} for bad accesses
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{non-member begin and end}
+  \begin{alertblock}{The problem in \cpp98}
+    STL containers and arrays have different syntax for loop
+    \vspace{-1mm}
+    \begin{cppcode*}{}
+      std::vector<int> v;
+      int a[] = {1,2,3};
+      for(auto it = v.begin(); it != v.end(); it++) {...}
+      for(int i = 0; i < 3; i++) {...}
+    \end{cppcode*}
+  \end{alertblock}
+  \pause
+  \begin{block}{A new syntax}
+    \begin{cppcode*}{firstnumber=5}
+      for(auto it = begin(v); it != end(v); it++) {...}
+      for(auto i = begin(a); i != end(a); i++) {...}
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{exampleblock}{Allowing the best syntax}
+    \begin{cppcode*}{firstnumber=7}
+      for(auto & element : v) {...}
+      for(auto & element : a) {...}
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Structured Binding Declarations}
+  Helps when using tuples as a return type.\\
+  Automatically creates variables and ties them.
+  \begin{alertblock}{\cpp14}
+    \begin{cppcode*}{}
+      void foo(std::tuple<int, double, long> tuple) {
+        int a = 0;
+        double b = 0.0;
+        long c = 0;
+        // a, b, c need to be declared first
+        std::tie(a, b, c) = tuple;
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp17}
+    \begin{cppcode*}{firstnumber=7}
+      void foo(std::tuple<int, double, long> tuple) {
+        auto [ a, b, c ] = tuple; ...
+      }
+      for (const auto& [key, value] : map) { ... }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}

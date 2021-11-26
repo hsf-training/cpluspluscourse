@@ -1,0 +1,49 @@
+\subsection[VCS]{Code management}
+
+\begin{frame}[fragile]
+  \frametitle{Code management tool}
+  \begin{alertblock}{Please use one !}
+    \begin{itemize}
+    \item even locally
+    \item even on a single file
+    \item even if you are the only committer
+    \end{itemize}
+    It will soon save your day
+  \end{alertblock}
+  \begin{block}{A few tools}
+    \begin{description}
+    \item[\href{http://git-scm.com/}{\beamergotobutton{git}}]
+      THE mainstream choice. Fast, light, easy to use
+    \item[\href{http://mercurial.selenic.com/}{\beamergotobutton{mercurial}}]
+      the alternative to git
+    \item[\href{http://bazaar.canonical.com/en/}{\beamergotobutton{Bazaar}}]
+      another alternative
+    \item[svn]
+      historical, not distributed - DO NOT USE
+    \item[CVS]
+      archeological, not distributed - DO NOT USE
+    \end{description}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{GIT crash course}
+  \begin{minted}[gobble=4]{text}
+    # git init myProject
+    Initialized empty Git repository in myProject/.git/
+
+    # vim file.cpp; vim file2.cpp
+    # git add file.cpp file2.cpp
+    # git commit -m "Committing first 2 files"
+    [master (root-commit) c481716] Committing first 2 files
+    ...
+
+    # git log --oneline
+    d725f2e Better STL test
+    f24a6ce Reworked examples + added stl one
+    bb54d15 implemented template part
+    ...
+
+    # git diff f24a6ce bb54d15
+  \end{minted}
+\end{frame}

@@ -1,0 +1,71 @@
+\subsection[gdb]{Debugging}
+
+\begin{frame}[fragile]
+  \frametitle{Debugging}
+  \begin{alertblock}{The problem}
+    \begin{itemize}
+      \item everything compiles fine (no warning)
+      \item but crashes at run time
+      \item no error message, no clue
+    \end{itemize}
+  \end{alertblock}
+  \pause
+  \begin{block}{The solution : debuggers}
+    \begin{itemize}
+    \item dedicated program able to stop execution at any time
+    \item and show you where you are and what you have
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Existing tools}
+    \begin{description}
+    \item[\href{http://www.sourceware.org/gdb/}{\beamergotobutton{gdb}}]
+      THE main player
+    \item[\href{http://lldb.llvm.org/}{\beamergotobutton{lldb}}]
+      the debugger coming with clang, still young
+    \item[\href{http://software.intel.com/en-us/articles/idb-linux}{\beamergotobutton{idb}}]
+      the intel debugger, proprietary
+    \end{description}
+    They usually can be integrated into your IDE
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{gdb crash course}
+  \begin{block}{start gdb}
+    \begin{itemize}
+    \item gdb \textless{}program\textgreater
+    \item gdb \textless{}program\textgreater \textless{}core file\textgreater
+    \item gdb -{}-args \textless{}program\textgreater \textless{}program arguments\textgreater
+    \end{itemize}
+  \end{block}
+  \begin{block}{inspect state}
+    \begin{description}
+    \item[bt] prints a backtrace
+    \item[print \textless{}var\textgreater] prints current content of the variable
+    \item[list] show code around current point
+    \item[up/down] go up or down in call stack
+    \end{description}
+  \end{block}
+  \begin{block}{breakpoints}
+    \begin{description}
+    \item[break \textless{}function\textgreater] puts a breakpoint on function entry
+    \item[break \textless{}file\textgreater:\textless{}line\textgreater] puts a breakpoint on that line
+    \end{description}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{gdb}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item go to code/debug
+    \item compile, run, see the crash
+    \item run it in gdb
+    \item inspect backtrace, variables
+    \item find problem and fix bug
+    \item try stepping, breakpoints
+    \item use -Wall -Wextra and see warning
+    \end{itemize}
+  \end{alertblock}
+\end{frame}

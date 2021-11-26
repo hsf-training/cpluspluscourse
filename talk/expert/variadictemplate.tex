@@ -1,0 +1,66 @@
+\subsection[tmpl]{Variadic templates}
+
+%http://eli.thegreenplace.net/2014/variadic-templates-in-c/
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Basic variadic template}
+  \begin{block}{The idea}
+    \begin{itemize}
+    \item a template with an arbitrary number of parameters
+    \item ... syntax as in good old printf
+    \item using recursivity and specialization for stopping it
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode*}{}
+      template<typename T>
+      T adder(T v) {
+        return v;
+      }
+      template<typename T, typename... Args>
+      T adder(T first, Args... args) {
+        return first + adder(args...);
+      }
+      long sum = adder(1, 2, 3, 8, 7);
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitlecpp[11]{A couple of remarks}
+  \begin{block}{About performance}
+    \begin{itemize}
+    \item do not be afraid of recursion
+    \item everything is at compile time !
+    \item unlike C-style variadic functions
+    \end{itemize}
+  \end{block}
+  \begin{block}{Why is it better than variadic functions}
+    \begin{itemize}
+    \item it's more performant
+    \item type safety is included
+    \item it applies to everything, including objects
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Variadic templated class}
+  \begin{block}{The tuple example, simplified}
+    \begin{cppcode*}{}
+      template <typename... Ts> struct tuple {}
+
+      template <typename T, typename... Ts>
+      struct tuple<T, Ts...> : tuple<Ts...> {
+        tuple(T t, Ts... ts) :
+          tuple<Ts...>(ts...), m_tail(t) {}
+        T m_tail;
+      };
+
+      template <> struct tuple<>{};
+
+      tuple<double, uint64_t, const char*>
+        t1(12.2, 42, "big");
+    \end{cppcode*}
+  \end{block}
+\end{frame}

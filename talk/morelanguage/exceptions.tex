@@ -1,0 +1,188 @@
+\subsection[except]{Exceptions}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Exceptions}
+  \begin{block}{The concept}
+    \begin{itemize}
+    \item exceptional event breaking linearity of the code
+    \item will be handled in dedicated place
+    \end{itemize}
+  \end{block}
+  \begin{block}{Practically}
+    \begin{itemize}
+    \item you can throw any object with {\it throw}
+    \item you handle them using {\it try ... catch} blocks
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    try {
+      if (0 == name) {
+        throw std::string("Expected non empty name");
+      }
+      printf("%s\n", name);
+    } catch (std::string& e) {
+      printf("empty name found\n");
+    }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Exceptions}
+  \begin{block}{Rules}
+    \begin{itemize}
+    \item exception will skip all code until next {\it catch}
+    \begin{itemize}
+      \item still destructors are called when exiting scopes
+      \item but your own cleanup may not be
+    \end{itemize}
+    \item {\it catch} is selective on the exception type
+    \end{itemize}
+  \end{block}
+  \begin{multicols}{2}
+    \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
+      struct ZeroDivide {};
+
+      int divide(int a, int b) {
+        if (0 == b) {
+          throw ZeroDivide();
+        }
+        return a/b;
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{fontsize=\scriptsize,gobble=2,firstnumber=9}
+      int func(char* value) {
+        try {
+          errno = 0;
+          long l = strtol(value,0,10);
+          if (errno) {
+            throw string("Bad Value");
+          }
+          divide(100, l);
+        } catch (string& e) {
+          printf("%s\n", e.c_str());
+        } catch (ZeroDivide e2) {
+          printf("Division error\n");
+        }
+      }
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Controlling exceptions \hfill \deprecated/\removed}
+  \begin{block}{Declaring expected exceptions}
+    \begin{itemize}
+    \item each function can declare a set of expected exceptions
+    \item using the {\it throw} statement in its declaration
+    \item other exceptions won't exit the scope of the function
+      \begin{itemize}
+      \item instead, the {\it unexpected} handler is called
+      \item by default, it terminates the program
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{cppcode}
+    int func(int a) throw(int) {
+      if (0 == a) {
+        throw 2;  // ok, goes out
+      } else {
+        throw "hello"; // std::unexpected called
+      }
+    }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Controlling exceptions \hfill \deprecated/\removed}
+  \begin{block}{Good to know}
+    \begin{itemize}
+    \item The check is done at runtime, not at compile time
+      \begin{itemize}
+      \item unlike Java
+      \end{itemize}
+    \item When the {\it throw} clause is absent, any exception can go out
+    \item To block all exceptions, use {\it throw()}
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{cppcode}
+    int func(int a) {
+      // any exception can go out
+    }
+    int otherfunc(int a) throw() {
+      // no exception can go out
+    }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Removal of \cpp98 exceptions}
+  \begin{block}{}
+    After a lot of thinking and experiencing, the conclusions of the community on exception handling are :
+    \begin{itemize}
+    \item Never write an exception specification
+    \item Except possibly an empty one
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{alertblock}{Some of the reasons}
+    \begin{itemize}
+    \item throw specification is runtime only
+      \begin{itemize}
+      \item does not allow compiler optimizations
+      \item on the contrary forces extra checks
+      \item generally terminates your program if violated
+      \end{itemize}
+    \item throw specification clashes with templates
+      \begin{itemize}
+      \item one cannot ``template'' the throw clause
+      \end{itemize}
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{What remains}
+  \begin{block}{throw is dead}
+    \begin{itemize}
+    \item dynamic exception specification are deprecated
+    \item even throw() (no exceptions)
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{exampleblock}{long live noexcept}
+    \begin{itemize}
+    \item noexcept a somehow equivalent to throw()
+    \item but is checked at compile time
+    \item so allows compiler optimizations
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Full power of noexcept}
+  \begin{block}{3 uses of noexcept}
+    \begin{itemize}
+    \item standalone
+      \begin{cppcode*}{gobble=2, linenos=false}
+        int f() noexcept;
+      \end{cppcode*}
+    \item as an expression saying whether exceptions can be sent
+      \begin{cppcode*}{gobble=2, linenos=false}
+        int f() noexcept(sizeof(long) == 8);
+      \end{cppcode*}
+    \item as an operator to know whether a function launches exceptions
+      \begin{cppcode*}{gobble=2, linenos=false}
+        constexpr bool callCannotThrow = noexcept(f());
+        if constexpr (callCannotThrow) { ... }
+      \end{cppcode*}
+    \item and you can combine them
+      \begin{cppcode*}{gobble=2, linenos=false}
+        template <typename T> void foo()
+             noexcept(noexcept(T())) {}
+      \end{cppcode*}
+   \end{itemize}
+  \end{block}
+\end{frame}

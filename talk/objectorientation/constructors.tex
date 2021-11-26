@@ -1,0 +1,300 @@
+\subsection[construct]{Constructors/destructors}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Class Constructors and Destructors}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item special functions building/destroying an object
+    \item a class can have several constructors
+    \item the constructors have the same name as the class
+    \item same for the destructor with a leading $\sim$
+    \end{itemize}
+  \end{block}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2}
+      class MyFirstClass {
+      public:
+        MyFirstClass();
+        MyFirstClass(int a);
+        ~MyFirstClass();
+        ...
+      protected:
+        int a;
+      };
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=2,firstnumber=10}
+      // note special notation for
+      // initialization of members
+      MyFirstClass() : a(0) {}
+
+      MyFirstClass(int a_):a(a_) {}
+
+      ~MyFirstClass() {}
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Class Constructors and Destructors}
+  \begin{cppcode}
+    class Vector {
+    public:
+      Vector(int n);
+      ~Vector();
+      void setN(int n, int value);
+      int getN(int n);
+    private:
+      int len;
+      int* data;
+    };
+    Vector::Vector(int n) : len(n) {
+      data = new int[n];
+    }
+    Vector::~Vector() {
+      delete[] data;
+    }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Constructor and inheritance}
+  \begin{cppcode}
+    struct MyFirstClass {
+      int a;
+      MyFirstClass();
+      MyFirstClass(int a);
+    };
+    struct MySecondClass : MyFirstClass {
+      int b;
+      MySecondClass();
+      MySecondClass(int b);
+      MySecondClass(int a, int b);
+    };
+    MySecondClass() : MyFirstClass(), b(0) {}
+    MySecondClass(int b_) : MyFirstClass(), b(b_) {}
+    MySecondClass(int a_,
+                  int b_) : MyFirstClass(a_), b(b_) {}
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Copy constructor}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item special constructor called for replicating an object
+    \item takes a single parameter of type const ref to class
+    \item will be implemented by the compiler if not provided
+    \item in order to forbid copy, use {\texttt delete} (coming in 2 slides)
+      \begin{itemize}
+      \item or private copy constructor with no implementation in \cpp98
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{cppcode}
+    struct MySecondClass : MyFirstClass {
+      MySecondClass();
+      MySecondClass(const MySecondClass &other);
+    };
+  \end{cppcode}
+  \pause
+  \begin{exampleblock}{The rule of 3/5 (\cpp98/\cpp11 and newer)}
+    \begin{itemize}
+    \item if a class has a destructor, a copy/move constructor or a (move) assignment operator, it should have all three/five
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Class Constructors and Destructors}
+  \begin{cppcode}
+    class Vector {
+    public:
+      Vector(int n);
+      Vector(const Vector &other);
+      ~Vector();
+      ...
+    };
+    Vector::Vector(int n) : len(n) {
+      data = new int[n];
+    }
+    Vector::Vector(const Vector &other) : len(other.len) {
+      data = new int[len];
+      memcpy(data, other.data, len);
+    }
+    Vector::~Vector() { delete[] data; }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Default Constructor}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item avoid writing explicitly default constructors
+    \item by declaring them as default
+    \end{itemize}
+  \end{block}
+  \begin{block}{Details}
+    \begin{itemize}
+    \item when no user defined constructor, a default is provided
+    \item any user defined constructor disables default ones
+    \item but they can be enforced
+    \item rule can be more subtle depending on members
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      ClassName() = default;  // provide/force default
+      ClassName() = delete;   // do not provide default
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Constructor delegation}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item avoid replication of code in several constructors
+    \item by delegating to another constructor, in the initializer list
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct Delegate {
+        int m_i;
+        Delegate() { ... complex initialization ...}
+        Delegate(int i) : Delegate(), m_i(i) {}
+      };
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Constructor inheritance}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item avoid having to re-declare parent's constructors
+    \item by stating that we inherit all parent constructors
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct BaseClass {
+        BaseClass(int value);
+      };
+      struct DerivedClass : BaseClass {
+        using BaseClass::BaseClass;
+      };
+      DerivedClass a{5};
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Member initialization}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item avoid redefining same default value for members n times
+    \item by defining it once at member declaration time
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \begin{cppcode}
+      struct BaseClass {
+        int a{5};
+        BaseClass() = default;
+        BaseClass(int _a) : a(_a) {}
+      };
+      struct DerivedClass : BaseClass {
+        int b{6};
+        using BaseClass::BaseClass;
+      };
+      DerivedClass d{7}; // a = 7, b = 6
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Calling constructors}
+  \begin{block}{After object declaration, arguments within \{\}}
+    \begin{multicols}{2}
+      \begin{cppcode*}{gobble=4}
+        struct A {
+          int a;
+          float b;
+          A();
+          A(int);
+          A(int, int);
+        };
+      \end{cppcode*}
+      \columnbreak
+      \begin{cppcode*}{gobble=4,firstnumber=8}
+        struct B {
+          int a;
+          float b;
+        };
+      \end{cppcode*}
+    \end{multicols}
+    \begin{cppcode*}{gobble=2, firstnumber=12}
+      A a{1,2};       // A::A(int, int)
+      A a{1};         // A::A(int)
+      A a{};          // A::A()
+      A a;            // A::A()
+      A a = {1,2};    // A::A(int, int)
+      B b = {1, 2.3}; // list initialization
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Calling constructors the old way}
+  \begin{block}{Arguments are given within (), aka \cpp98 nightmare}
+    \begin{multicols}{2}
+      \begin{cppcode*}{gobble=4}
+        struct A {
+          int a;
+          float b;
+          A();
+          A(int);
+          A(int, int);
+        };
+      \end{cppcode*}
+      \columnbreak
+      \begin{cppcode*}{gobble=4,firstnumber=8}
+        struct B {
+          int a;
+          float b;
+        };
+      \end{cppcode*}
+    \end{multicols}
+    \begin{cppcode*}{gobble=2, firstnumber=12}
+      A a(1,2);       // A::A(int, int)
+      A a(1);         // A::A(int)
+      A a();          // declaration of a function !
+      A a;            // A::A()
+      A a = {1,2};    // not allowed
+      B b = {1, 2.3}; // OK
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Calling constructors for arrays and vectors}
+  \begin{exampleblock}{list of items given within \{\}}
+    \begin{cppcode*}{firstnumber=10}
+     int ip[3]{1,2,3};
+     int* ip = new int[3]{1,2,3};
+     std::vector<int> v{1,2,3};
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{block}{\cpp98 nightmare}
+    \begin{cppcode*}{firstnumber=10}
+     int ip[3]{1,2,3};            // OK
+     int* ip = new int[3]{1,2,3}; // not allowed
+     std::vector<int> v{1,2,3};   // not allowed
+    \end{cppcode*}
+  \end{block}
+\end{frame}
