@@ -2,7 +2,7 @@
 
 constexpr int numbers[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-bool isodd(int i) { return i % 2; }
+bool isodd(int i) { return i % 2 == 1; }
 
 void part1() {
   int sum_odd = 0;
