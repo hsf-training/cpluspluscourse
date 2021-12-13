@@ -18,8 +18,6 @@ void part1() {
   std::cout << "Sums: odd = " << sum_odd << ", even = " << sum_eve << "\n";
 }
 
-enum class Language { English, French, German, Italian, Other };
-
 void part2() {
   // print smallest n for which 1 + 2 + ... + n > 10000
   int sum = 0;
@@ -32,6 +30,8 @@ void part2() {
   }
 }
 
+enum class Language { English, French, German, Italian, Other };
+
 void part3(Language l) {
   if (l == Language::English) {
     std::cout << "Hello\n";
@@ -42,7 +42,7 @@ void part3(Language l) {
   } else if (l == Language::Italian) {
     std::cout << "Ciao\n";
   } else {
-    std::cout << "Don't speak your language\n";
+    std::cout << "I don't speak your language\n";
   }
 }
 

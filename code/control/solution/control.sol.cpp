@@ -2,7 +2,7 @@
 
 constexpr int numbers[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-bool isodd(int i) { return i % 2; }
+bool isodd(int i) { return i % 2 == 1; }
 
 void part1() {
   int sum_odd = 0;
@@ -18,7 +18,7 @@ void part2() {
   int sum = 0;
   int i = 0;
   while (sum < 10000) {
-    i += 1;
+    ++i;
     sum += i;
   }
   std::cout << i << "\n";
@@ -29,7 +29,7 @@ void part2bis() {
   int sum = 0;
   int i = 0;
   do {
-    i += 1;
+    ++i;
     sum += i;
   } while (sum < 10000);
   std::cout << i << "\n";
