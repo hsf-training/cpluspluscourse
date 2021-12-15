@@ -8,6 +8,8 @@ void part1() {
   int sum_odd = 0;
   int sum_eve = 0;
   for (int num : numbers) {
+    // Note the usage of ternary expression to select the sum to which we add
+    // the ternary expression returns a reference to the right sum
     (isodd(num) ? sum_odd : sum_eve) += num;
   }
   std::cout << "Sums: odd = " << sum_odd << ", even = " << sum_eve << "\n";
