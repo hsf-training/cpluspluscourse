@@ -1,7 +1,7 @@
-\subsection[tmpl]{C++20 requirements & concepts}
+\subsection[tmpl]{C++20 Requirements and Concepts}
 
 \begin{frame}[fragile]
-  \frametitlecpp[20]{C++20 requirements & concepts}
+  \frametitlecpp[20]{C++20 Requirements and Concepts}
   \begin{block}{Motivation}
     Generic programming is made of functions and class templates
     which can be instantiated with different types. It is frequent
@@ -16,7 +16,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[20]{C++20 requirements & concepts}
+  \frametitlecpp[20]{C++20 Requirements and Concepts}
   \begin{block}{Requirements and concepts in a nutshell}
     \begin{itemize}
     \item A template can define requirements on some of its type parameters.
@@ -30,7 +30,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[20]{C++20 requirements & concepts}
+  \frametitlecpp[20]{C++20 Requirements and Concepts}
   \begin{block}{Old-style SFINAE example}
     The old way to forbid some type arguments is the definition of
     fake template arguments, which lead to a substitution failure when
@@ -50,7 +50,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 requirements & concepts}
+    \frametitlecpp[20]{C++20 Requirements and Concepts}
     \begin{block}{Basic requirements}
       The new keyword {\it requires} let us define many kind of requirements
       on the template parameters, with a syntax a lot more natural than previously.
@@ -72,7 +72,7 @@
   \end{frame}
 
   \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 requirements & concepts}
+    \frametitlecpp[20]{C++20 Requirements and Concepts}
     \begin{block}{Concepts}
       When a given set of requirements may be reused often, one should gather them in a concept.
     \end{block}
@@ -92,7 +92,7 @@
   \end{frame}
 
   \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 requirements & concepts}
+    \frametitlecpp[20]{C++20 Requirements and Concepts}
     \begin{block}{Within the template head}
         Actually, when relevant, the concept can be directly used instead of {it typename} within the template head.
     \end{block}
@@ -111,7 +111,7 @@
   \end{frame}
 
   \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 requirements & concepts}
+    \frametitlecpp[20]{C++20 Requirements and Concepts}
     \begin{block}{With abbreviated function templates}
         The concepts can be used together with {\it auto} in the abbreviated function templates.
     \end{block}
@@ -129,7 +129,7 @@
   \end{frame}
 
   \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 requirements & concepts}
+    \frametitlecpp[20]{C++20 Requirements and Concepts}
     \begin{block}{Standard concepts}
         Writing a bug-proof concept is actually is really expert task.
         Whenever you can, use the ones provided by the standard library.
@@ -146,7 +146,7 @@
   \end{frame}
 
   \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 requirements & concepts}
+    \frametitlecpp[20]{C++20 Requirements and Concepts}
     \begin{block}{Within a function body}
     Concepts are usable wherever a boolean is expected, including {\it if constexpr}, because they are evaluated at compile-time.
     \end{block}
@@ -171,7 +171,7 @@
   \end{frame}
 
   \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 requirements & concepts}
+    \frametitlecpp[20]{C++20 Requirements and Concepts}
     \begin{block}{Advanced requirements}
         More than the basic requirements seen before, one may use a **requires-expression**, able to:
         \begin{itemize}
