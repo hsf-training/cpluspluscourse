@@ -1,0 +1,194 @@
+\subsection[tmpl]{C++20 requirements & concepts}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{C++20 requirements & concepts}
+  \begin{block}{Motivation}
+    Generic programming is made of functions and class templates
+    which can be instantiated with different types. It is frequent
+    to instantiate them with {\em irrelevant types}, and the resulting
+    compilation errors are generally very long and hardly understandable.
+    As a last resort, the template authors are providing {\em documentation}
+    about the relevant parameters, and practice some tricky
+    {\em template meta-programmation}. C++20 finally brings simpler ways to
+    define constraint on template parameters ! Among different proposals,
+    the ISO committee has validated the flavor known as {\em Concepts Lite}.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{C++20 requirements & concepts}
+  \begin{block}{Requirements and concepts in a nutshell}
+    \begin{itemize}
+    \item A template can define requirements on some of its type parameters.
+    \item Compiler error messages clearly state which parameter value does not fulfill which expected requirement.
+    \item A typical set of requirements can be gathered in a reusable concept.
+    \item Overload resolution takes those requirements and concepts into account.
+    \item The standard library now provides many concepts, easy to use.
+    \item Writing a new perfect concept stays an expert topic.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{C++20 requirements & concepts}
+  \begin{block}{Old-style SFINAE example}
+    The old way to forbid some type arguments is the definition of
+    fake template arguments, which lead to a substitution failure when
+    the type does not fulfill the condition.
+  \end{block}
+  \begin{exampleblock}{Original C++17 code}
+    \begin{cppcode*}{}
+    template< typename T, std::enable_if_t<!std::is_floating_point_v<T>> * = nullptr>
+    bool equal( T e1, T e2 )
+    { return (e1==e2) ; }
+
+    template< typename T, std::enable_if_t<std::is_floating_point_v<T>> * = nullptr>
+    bool equal( T e1, T e2 )
+    { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{C++20 requirements & concepts}
+    \begin{block}{Basic requirements}
+      The new keyword {\it requires} let us define many kind of requirements
+      on the template parameters, with a syntax a lot more natural than previously.
+    \end{block}
+    \begin{exampleblock}{With {\it requires}}
+      \begin{cppcode*}{}
+      template< typename T>
+      bool equal( T e1, T e2 )
+      { return (e1==e2) ; }
+
+      template< typename T>
+      requires
+        (std::is_floating_point_v<T>) &&
+        (std::numeric_limits<T>::epsilon()>0)
+      bool equal( T e1, T e2 )
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
+      \end{cppcode*}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}[fragile]
+    \frametitlecpp[20]{C++20 requirements & concepts}
+    \begin{block}{Concepts}
+      When a given set of requirements may be reused often, one should gather them in a concept.
+    \end{block}
+    \begin{exampleblock}{With {\it concept}}
+      \begin{cppcode*}{}
+      template< typename T>
+      concept MyFloatingPoint =
+        (std::is_floating_point_v<T>) &&
+        (std::numeric_limits<T>::epsilon()>0) ;
+
+      template<typename T>
+      requires MyFloatingPoint<T>
+      bool equal( T e1, T e2 )
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
+      \end{cppcode*}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}[fragile]
+    \frametitlecpp[20]{C++20 requirements & concepts}
+    \begin{block}{Within the template head}
+        Actually, when relevant, the concept can be directly used instead of {it typename} within the template head.
+    \end{block}
+    \begin{exampleblock}{Instead of {\it typename}}
+      \begin{cppcode*}{}
+      template< typename T>
+      concept MyFloatingPoint =
+        (std::is_floating_point_v<T>) &&
+        (std::numeric_limits<T>::epsilon()>0) ;
+
+      template<MyFloatingPoint T>
+      bool equal( T e1, T e2 )
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
+      \end{cppcode*}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}[fragile]
+    \frametitlecpp[20]{C++20 requirements & concepts}
+    \begin{block}{With abbreviated function templates}
+        The concepts can be used together with {\it auto} in the abbreviated function templates.
+    \end{block}
+    \begin{exampleblock}{With {\it auto}}
+      \begin{cppcode*}{}
+      template< typename T>
+      concept MyFloatingPoint =
+        (std::is_floating_point_v<T>) &&
+        (std::numeric_limits<T>::epsilon()>0) ;
+
+      bool equal( MyFloatingPoint auto e1, MyFloatingPoint auto e2 )
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
+      \end{cppcode*}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}[fragile]
+    \frametitlecpp[20]{C++20 requirements & concepts}
+    \begin{block}{Standard concepts}
+        Writing a bug-proof concept is actually is really expert task.
+        Whenever you can, use the ones provided by the standard library.
+        Not surprinsgly, there is one for floating point numbers.
+    \end{block}
+    \begin{exampleblock}{With {\it std::}}
+      \begin{cppcode*}{}
+      #include <concepts>
+
+      bool equal( std::floating_point auto e1, std::floating_point auto e2 )
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
+      \end{cppcode*}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}[fragile]
+    \frametitlecpp[20]{C++20 requirements & concepts}
+    \begin{block}{Within a function body}
+    Concepts are usable wherever a boolean is expected, including {\it if constexpr}, because they are evaluated at compile-time.
+    \end{block}
+    \begin{exampleblock}{With {\it if constexpr}}
+      \begin{cppcode*}{}
+      template< typename T>
+      bool equal( T e1, T e2 )
+      {
+        if constexpr (std::floating_point<T>)
+        {
+          std::cout<<"(floating) " ;
+          return abs(e1-e2)<std::numeric_limits<T>::epsilon() ;
+        }
+        else
+        {
+          std::cout<<"(default) " ;
+          return (e1==e2) ;
+        }
+      }
+      \end{cppcode*}
+    \end{block}
+  \end{frame}
+
+  \begin{frame}[fragile]
+    \frametitlecpp[20]{C++20 requirements & concepts}
+    \begin{block}{Advanced requirements}
+        More than the basic requirements seen before, one may use a **requires-expression**, able to:
+        \begin{itemize}
+            \item include basic requirements as before,
+            \item list some expressions that must be valid,
+            \item check the return type of some expressions.
+        \end{itemize}
+        \end{block}
+    \begin{exampleblock}{Requires-expression}
+      \begin{cppcode*}{}
+      template< typename T>
+      concept StreamableAndComparableNumber = requires( T v1, T v2 )
+       {
+        requires std::integral<T> || std::floating_point<T> ;
+        std::cout<<v1<<v2 ;
+        { equal(v1,v2) } -> std::convertible_to<bool> ;
+       } ;
+      \end{cppcode*}
+    \end{block}
+  \end{frame}
