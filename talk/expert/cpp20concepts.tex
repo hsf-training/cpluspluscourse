@@ -3,15 +3,14 @@
 \begin{frame}[fragile]
   \frametitlecpp[20]{C++20 Requirements and Concepts}
   \begin{block}{Motivation}
-    Generic programming is made of functions and class templates
+    Generic programming is made of variable, function and class templates
     which can be instantiated with different types. It is frequent
-    to instantiate them with {\em unsuited types}, and the resulting
+    to instantiate them with \textbf{unsuited types}, and the resulting
     compilation errors are generally very long and hardly understandable.
-    As a last resort, the template authors are providing {\em documentation}
+    As a last resort, the template authors are providing \textbf{documentation}
     about the relevant parameters, and practice some tricky
-    {\em template meta-programmation}. C++20 finally brings simpler ways to
-    define constraints on template parameters ! Among different proposals,
-    the ISO committee has validated the flavor known as {\em Concepts Lite}.
+    \textbf{template meta-programmation}. C++20 finally brings simpler ways to
+    define constraints on template parameters !.
   \end{block}
 \end{frame}
 
@@ -19,7 +18,7 @@
   \frametitlecpp[20]{C++20 Requirements and Concepts}
   \begin{block}{Requirements and concepts in a nutshell}
     \begin{itemize}
-    \item A template can define requirements on some of its type parameters.
+    \item A template can now define requirements on its parameters.
     \item Compiler error messages clearly state which parameter value does not fulfill which expected requirement.
     \item A typical set of requirements can be gathered in a reusable concept.
     \item Overload resolution takes those requirements and concepts into account.
@@ -37,6 +36,7 @@
     the type does not fulfill the condition.
   \end{block}
   \begin{exampleblock}{Original C++17 code}
+    \scriptsize
     \begin{cppcode*}{}
     template< typename T, std::enable_if_t<!std::is_floating_point_v<T>> * = nullptr>
     bool equal( T e1, T e2 )
@@ -94,7 +94,7 @@
   \begin{frame}[fragile]
     \frametitlecpp[20]{C++20 Requirements and Concepts}
     \begin{block}{Within the template head}
-        The concept can also be directly used instead of {it typename} within the template head.
+        The concept can also be directly used instead of {it typename} within the template parameter list.
     \end{block}
     \begin{exampleblock}{Instead of {\it typename}}
       \begin{cppcode*}{}
@@ -173,7 +173,7 @@
   \begin{frame}[fragile]
     \frametitlecpp[20]{C++20 Requirements and Concepts}
     \begin{block}{Advanced requirements}
-        More than the basic requirements seen before, one may use a **requires-expression**, able to:
+        More than the basic requirements seen before, one may use a \textbf{requires-expression}, able to:
         \begin{itemize}
             \item include basic requirements as before,
             \item list some expressions that must be valid,
