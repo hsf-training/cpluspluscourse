@@ -1,0 +1,232 @@
+\subsection[concepts]{Concepts}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Requirements and concepts}
+  \begin{block}{Motivation}
+    \begin{itemize}
+    \item Generic programming is made of variable, function and class templates which can be instantiated with different types.
+    \item It is frequent to instantiate them with \textbf{unsuited types}, and the resulting compilation errors are cryptic.
+    \item As a last resort, authors provide \textbf{documentation}, and practice tricky \textbf{template meta-programming}.
+    \item C++20 brings \textbf{simpler ways to define constraints} on template parameters.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Requirements and concepts}
+  \begin{block}{The world before concepts}
+    \begin{itemize}
+    \item So to forbid unsuited arguments, one can insert fake template arguments,
+    leading to a substitution failure when conditions are not fulfilled.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{C++17 code using SFINAE}
+    \scriptsize
+    \begin{cppcode*}{}
+    template
+    <typename T, std::enable_if_t<std::is_floating_point_v<T>> * =nullptr>
+    bool equal( T e1, T e2 )
+    { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
+
+    ...equal(10,5+5)...
+    \end{cppcode*}
+    \tiny
+    \begin{verbatim}
+main.cpp:10: error: no matching function for call to 'equal(int, int)'
+candidate: 'template<class T, std::enable_if_t<is_floating_point_v<T>>*> bool equal(T, T)'
+template argument deduction/substitution failed:
+In substitution of 'template<bool _Cond, class _Tp>
+using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp = void]':
+error: no type named 'type' in 'struct std::enable_if<false, void>'
+    \end{verbatim}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Requirements and concepts}
+  \begin{block}{Basic requirements}
+    \begin{itemize}
+      \item The keyword {\it requires} let us define various constraints.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{With {\it requires}}
+    \scriptsize
+    \begin{cppcode*}{}
+    template<typename T>
+    requires (std::is_floating_point_v<T>)
+    bool equal( T e1, T e2 )
+    { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
+
+    ...equal(10,5+5)...
+    \end{cppcode*}
+    \tiny
+    \begin{verbatim}
+main.cpp:11: error: no matching function for call to 'equal(int, int)'
+candidate: 'template<class T>  requires  is_floating_point_v<T> bool equal(T, T)'
+template argument deduction/substitution failed:
+constraints not satisfied
+the expression 'is_floating_point_v<T> [with T = int]' evaluated to 'false'
+    \end{verbatim}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Requirements and concepts}
+  \begin{block}{Multiple requirements and overload resolution}
+    \begin{itemize}
+      \item In the example below, we add a requirement about the existence of a strictly positive {\it epsilon}.
+      \item Overload resolution considers the second function as a better match when the requirements are fulfilled.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{With several competing templates}
+    \scriptsize
+    \begin{cppcode*}{}
+    template<typename T>
+    bool equal( T e1, T e2 )
+    { return (e1==e2); }
+
+    template< typename T>
+    requires (std::is_floating_point_v<T>)
+          && (std::numeric_limits<T>::epsilon()>0)
+    bool equal( T e1, T e2 )
+    { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
+    \begin{block}{Concepts}
+      \begin{itemize}
+        \item When a given set of requirements may be reused often, one can gather them in a \textbf{concept}.
+      \end{itemize}
+    \end{block}
+    \begin{exampleblock}{With {\it concept}}
+      \scriptsize
+      \begin{cppcode*}{}
+      template< typename T>
+      concept MyFloatingPoint =
+        (std::is_floating_point_v<T>) &&
+        (std::numeric_limits<T>::epsilon()>0);
+
+      template<typename T>
+      requires MyFloatingPoint<T>
+      bool equal( T e1, T e2 )
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
+      \end{cppcode*}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
+    \begin{block}{Concepts as template parameters}
+      \begin{itemize}
+        \item The concept can also be directly used instead of {\it typename} within the template parameter list.
+      \end{itemize}
+    \end{block}
+    \begin{exampleblock}{Instead of {\it typename}}
+      \scriptsize
+      \begin{cppcode*}{}
+      template<MyFloatingPoint T>
+      bool equal( T e1, T e2 )
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
+      \end{cppcode*}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
+    \begin{block}{With abbreviated function templates}
+      \begin{itemize}
+        \item The concepts can be used together with {\it auto} in the abbreviated function templates.
+      \end{itemize}
+    \end{block}
+    \begin{exampleblock}{With {\it auto}}
+      \scriptsize
+      \begin{cppcode*}{}
+      bool equal( MyFloatingPoint auto e1, MyFloatingPoint auto e2 )
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
+      \end{cppcode*}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
+    \begin{block}{Standard concepts}
+      \begin{itemize}
+        \item Writing a bug-proof concept is an expert task.
+        \item Prefer the ones provided by the standard library.
+        \item Not surprisingly, there is one for floating point numbers.
+      \end{itemize}
+    \end{block}
+    \begin{exampleblock}{With {\it std::}}
+      \scriptsize
+      \begin{cppcode*}{}
+      #include <concepts>
+
+      bool equal( std::floating_point auto e1, std::floating_point auto e2 )
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
+      \end{cppcode*}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
+    \begin{block}{Within a function body}
+      \begin{itemize}
+        \item Concepts are also usable wherever a boolean is expected.
+        \item Since they are evaluated at compile-time, they can appear in a {\it if constexpr} condition.
+      \end{itemize}
+    \end{block}
+    \begin{exampleblock}{With {\it if constexpr}}
+      \scriptsize
+      \begin{cppcode*}{}
+      template<typename T>
+      bool equal( T e1, T e2 )
+      {
+        if constexpr (std::floating_point<T>)
+        { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
+        else
+        { return (e1==e2); }
+      }
+      \end{cppcode*}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
+    \begin{block}{Advanced requirements}
+        Rather than the basic requirements above, one may use a \textbf{requires-expression}, able to:
+        \begin{itemize}
+            \item include basic requirements as before,
+            \item list some expressions that must be valid,
+            \item check the return type of some expressions.
+        \end{itemize}
+    \end{block}
+    \begin{exampleblock}{Requires-expression}
+      \scriptsize
+      \begin{cppcode*}{}
+      template<typename T>
+      concept StreamableAndComparableNumber = requires( T v1, T v2 )
+       {
+        requires std::integral<T> || std::floating_point<T>;
+        std::cout<<v1<<v2;
+        { equal(v1,v2) } -> std::convertible_to<bool>;
+       };
+      \end{cppcode*}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
+    \begin{block}{To be remembered}
+      \begin{itemize}
+      \item A template can now {\it requires} properties of its parameters.
+      \item Compiler error messages clearly state which argument does not fulfill which requirement.
+      \item A set of requirements can be gathered in a {\it concept}.
+      \item Overload resolution takes requirements into account.
+      \item The standard library provides many ready-to-use concepts.
+      \item Writing a new good concept is an expert topic.
+      \end{itemize}
+    \end{block}
+\end{frame}
