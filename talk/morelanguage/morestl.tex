@@ -26,6 +26,56 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[17]{std::optional}
+  \begin{itemize}
+  \item Indicates the absence of a value with \texttt{std::nullopt}
+  \item Has value semantics (Copy, Move, Compare, stack alloc.)
+  \item Useful in place of pointers where value semantics are intuitive
+  \end{itemize}
+  \begin{exampleblock}{Code example}
+    \begin{cppcode*}{}
+      std::optional<Phone> parse_phone(std::string in)
+      {
+        if (is_valid_phone(in)) {
+          return std::optional<Phone>(in);
+        }
+        return {}; // default constructs std::nullopt
+      }
+      ...
+      auto v = parse_phone(get_input());
+      if (v) {  // alternatively v.is_valid()
+        process_phone(v.value()); // *v is equivalent
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{std::any}
+  \begin{itemize}
+  \item Indicates the absence of a value with \texttt{std::nullopt}
+  \item Has value semantics (Copy, Move, Compare, stack alloc.)
+  \item Useful in place of pointers where value semantics are intuitive
+  \end{itemize}
+  \begin{exampleblock}{Code example}
+    \begin{cppcode*}{}
+      std::optional<Phone> parse_phone(std::string in)
+      {
+        if (is_valid_phone(in)) {
+          return std::optional<Phone>(in);
+        }
+        return {}; // default constructs std::nullopt
+      }
+      ...
+      auto v = parse_phone(get_input());
+      if (v) {  // alternatively v.is_valid()
+        process_phone(v.value()); // *v is equivalent
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[11]{non-member begin and end}
   \begin{alertblock}{The problem in \cpp98}
     STL containers and arrays have different syntax for loop
