@@ -46,7 +46,7 @@
     bool equal( T e1, T e2 )
     { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
     \end{cppcode*}
-  \end{block}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -68,7 +68,7 @@
       bool equal( T e1, T e2 )
       { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
       \end{cppcode*}
-    \end{block}
+    \end{exampleblock}
   \end{frame}
 
   \begin{frame}[fragile]
@@ -88,7 +88,7 @@
       bool equal( T e1, T e2 )
       { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
       \end{cppcode*}
-    \end{block}
+    \end{exampleblock}
   \end{frame}
 
   \begin{frame}[fragile]
@@ -107,7 +107,7 @@
       bool equal( T e1, T e2 )
       { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
       \end{cppcode*}
-    \end{block}
+    \end{exampleblock}
   \end{frame}
 
   \begin{frame}[fragile]
@@ -125,7 +125,7 @@
       bool equal( MyFloatingPoint auto e1, MyFloatingPoint auto e2 )
       { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
       \end{cppcode*}
-    \end{block}
+    \end{exampleblock}
   \end{frame}
 
   \begin{frame}[fragile]
@@ -142,7 +142,7 @@
       bool equal( std::floating_point auto e1, std::floating_point auto e2 )
       { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
       \end{cppcode*}
-    \end{block}
+    \end{exampleblock}
   \end{frame}
 
   \begin{frame}[fragile]
@@ -167,7 +167,7 @@
         }
       }
       \end{cppcode*}
-    \end{block}
+    \end{exampleblock}
   \end{frame}
 
   \begin{frame}[fragile]
@@ -179,7 +179,7 @@
             \item list some expressions that must be valid,
             \item check the return type of some expressions.
         \end{itemize}
-        \end{block}
+    \end{block}
     \begin{exampleblock}{Requires-expression}
       \begin{cppcode*}{}
       template< typename T>
@@ -190,5 +190,5 @@
         { equal(v1,v2) } -> std::convertible_to<bool> ;
        } ;
       \end{cppcode*}
-    \end{block}
+    \end{exampleblock}
   \end{frame}
