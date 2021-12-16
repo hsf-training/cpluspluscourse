@@ -8,6 +8,9 @@ C++Course.snm
 C++Course.toc
 C++Course.vrb
 C++Course.pdf
+C++Course*.vrb
+C++Course.fdb_latexmk
+C++Course.fls
 _minted*
 
 # latex related, exercise intro

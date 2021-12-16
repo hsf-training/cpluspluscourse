@@ -4,185 +4,166 @@
   \frametitlecpp[98]{Exceptions}
   \begin{block}{The concept}
     \begin{itemize}
-    \item exceptional event breaking linearity of the code
-    \item will be handled in dedicated place
+      \item to handle \textit{exceptional} events that cannot be foreseen
+      \item to cleanly jump to the place where the error can be handled
     \end{itemize}
   \end{block}
-  \begin{block}{Practically}
+  \begin{block}{In practice}
     \begin{itemize}
-    \item you can throw any object with {\it throw}
-    \item you handle them using {\it try ... catch} blocks
+      \item add an exception handling block with {\it try ... catch}
+      \item throw an exception within it using {\it throw}
     \end{itemize}
   \end{block}
-  \begin{cppcode}
+  \begin{cppcode*}{fontsize=\scriptsize}
+    #include <stdexcept>
+    ...
     try {
-      if (0 == name) {
-        throw std::string("Expected non empty name");
+      if (0 == divisor) {
+        throw illegal_argument("Cannot divide by zero");
       }
-      printf("%s\n", name);
-    } catch (std::string& e) {
-      printf("empty name found\n");
+      ... // Normal processing
+    } catch (const invalid_argument& e) {
+      cerr << e.what() << endl;
     }
-  \end{cppcode}
+  \end{cppcode*}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Exceptions}
-  \begin{block}{Rules}
+  \begin{block}{Rules and Advice}
     \begin{itemize}
-    \item exception will skip all code until next {\it catch}
-    \begin{itemize}
-      \item still destructors are called when exiting scopes
-      \item but your own cleanup may not be
+      \item any object can be thrown, but best to use those in \texttt{stdexcept}
+      \begin{itemize}
+        \item define your own subclass of \texttt{std::exception} if needed
+      \end{itemize}
+      \item exceptions will be caught if the object type of \textit{catch} matches
+      \begin{itemize}
+          \item if nothing catches an exception then \texttt{std::terminate} is called
+          \item throw exceptions by value, catch them by (const) reference
+      \end{itemize}
+      \item all objects on the stack between the \textit{throw} and the \textit{catch} have their destructors called
+      \begin{itemize}
+        \item this should give you a clean release of intermediate resources
+        \item make sure you are using the RAII idiom in your own classes
+      \end{itemize}
+      \item use exceptions for runtime errors like bad inputs, file not found, DB connection, \ldots
+      \item \textit{don't} use exceptions for logic errors in your code (use \texttt{assert})
     \end{itemize}
-    \item {\it catch} is selective on the exception type
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Exceptions}
+  \begin{block}{An more illustrative example}
+    \begin{itemize}
+      \item exceptions are very powerful when there are many calls / lines of code between the error and where the error is handled
+      \item they can also rather cleanly handle different types of errors
+      \item \textit{try ... catch} statements can also be nested
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
     \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
-      struct ZeroDivide {};
-
-      int divide(int a, int b) {
-        if (0 == b) {
-          throw ZeroDivide();
+      try {
+        for (const &file : files) {
+          try {
+            process_file(file);
+          }
+          catch (const file_bad &e) {
+            ... // Skips one file
+          }
         }
-        return a/b;
+      } catch (const db_bad &e) {
+        ... // This exception
+            // aborts everything
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{fontsize=\scriptsize,gobble=2,firstnumber=9}
-      int func(char* value) {
+    \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
+      int process_file(const fileobj file) {
+        if (fh = open_file(file)) {
+          throw
+            file_bad(file.error.reason());
+        }
+        while (!fh) {
+          line = read_line(fh);
+          add_line_to_db(line); // Can throw
+                                // db_bad
+        }
+        return 0;
+      }
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Error Handling and Exceptions}
+  \begin{block}{}
+    \begin{itemize}
+      \item exceptions have little cost if no exception is thrown
+      \begin{itemize}
+        \item a throw usually costs about as much as a function call
+        \item so minimal if you are using exceptions for \textit{exceptional} events
+        \item thus their use is generally recommended
+      \end{itemize}
+      \item however, in a tight, performance critical loop, where the error is handled close to the place it happens a C-style error code might be better
+      \begin{itemize}
+        \item But profile if you really want to find out!
+      \end{itemize}
+   \end{itemize}
+  \end{block}
+  \begin{multicols}{2}
+    \begin{cppcode*}{fontsize=\tiny,gobble=2}
+      // try ... catch in hot loop
+      //   might impact performance
+      for (const &item: list) {
         try {
-          errno = 0;
-          long l = strtol(value,0,10);
-          if (errno) {
-            throw string("Bad Value");
-          }
-          divide(100, l);
-        } catch (string& e) {
-          printf("%s\n", e.c_str());
-        } catch (ZeroDivide e2) {
-          printf("Division error\n");
+          check_item(item); // Can throw bad_item
+          ... // process item
+        }
+        catch (bad_item &e) {
+          ... // ignore this item, but keep going
+        }
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{fontsize=\tiny,gobble=2}
+      // For this code logic C-style error codes
+      //   may be better
+      for (const &item: list) {
+        auto err_code = check_item(item);
+        if (!err_code) {
+          ... // process item
+        } else {
+          ... // warn and carry on
         }
       }
     \end{cppcode*}
   \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitlecpp[98]{Controlling exceptions \hfill \deprecated/\removed}
-  \begin{block}{Declaring expected exceptions}
-    \begin{itemize}
-    \item each function can declare a set of expected exceptions
-    \item using the {\it throw} statement in its declaration
-    \item other exceptions won't exit the scope of the function
-      \begin{itemize}
-      \item instead, the {\it unexpected} handler is called
-      \item by default, it terminates the program
-      \end{itemize}
-    \end{itemize}
-  \end{block}
-  \pause
-  \begin{cppcode}
-    int func(int a) throw(int) {
-      if (0 == a) {
-        throw 2;  // ok, goes out
-      } else {
-        throw "hello"; // std::unexpected called
-      }
-    }
-  \end{cppcode}
-\end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Controlling exceptions \hfill \deprecated/\removed}
-  \begin{block}{Good to know}
+  \frametitlecpp[11]{noexcept}
+  \begin{block}{noexcept}
     \begin{itemize}
-    \item The check is done at runtime, not at compile time
-      \begin{itemize}
-      \item unlike Java
-      \end{itemize}
-    \item When the {\it throw} clause is absent, any exception can go out
-    \item To block all exceptions, use {\it throw()}
-    \end{itemize}
-  \end{block}
-  \pause
-  \begin{cppcode}
-    int func(int a) {
-      // any exception can go out
-    }
-    int otherfunc(int a) throw() {
-      // no exception can go out
-    }
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlecpp[11]{Removal of \cpp98 exceptions}
-  \begin{block}{}
-    After a lot of thinking and experiencing, the conclusions of the community on exception handling are :
-    \begin{itemize}
-    \item Never write an exception specification
-    \item Except possibly an empty one
-    \end{itemize}
-  \end{block}
-  \pause
-  \begin{alertblock}{Some of the reasons}
-    \begin{itemize}
-    \item throw specification is runtime only
-      \begin{itemize}
-      \item does not allow compiler optimizations
-      \item on the contrary forces extra checks
-      \item generally terminates your program if violated
-      \end{itemize}
-    \item throw specification clashes with templates
-      \begin{itemize}
-      \item one cannot ``template'' the throw clause
-      \end{itemize}
-    \end{itemize}
-  \end{alertblock}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlecpp[11]{What remains}
-  \begin{block}{throw is dead}
-    \begin{itemize}
-    \item dynamic exception specification are deprecated
-    \item even throw() (no exceptions)
-    \end{itemize}
-  \end{block}
-  \pause
-  \begin{exampleblock}{long live noexcept}
-    \begin{itemize}
-    \item noexcept a somehow equivalent to throw()
-    \item but is checked at compile time
-    \item so allows compiler optimizations
-    \end{itemize}
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlecpp[11]{Full power of noexcept}
-  \begin{block}{3 uses of noexcept}
-    \begin{itemize}
-    \item standalone
-      \begin{cppcode*}{gobble=2, linenos=false}
+      \item specifying the \textit{noexcept} operator states that a function is guaranteed not to throw an exception
+      \begin{cppcode*}{fontsize=\scriptsize,gobble=2,linenos=false}
         int f() noexcept;
       \end{cppcode*}
-    \item as an expression saying whether exceptions can be sent
-      \begin{cppcode*}{gobble=2, linenos=false}
-        int f() noexcept(sizeof(long) == 8);
-      \end{cppcode*}
-    \item as an operator to know whether a function launches exceptions
-      \begin{cppcode*}{gobble=2, linenos=false}
-        constexpr bool callCannotThrow = noexcept(f());
-        if constexpr (callCannotThrow) { ... }
-      \end{cppcode*}
-    \item and you can combine them
-      \begin{cppcode*}{gobble=2, linenos=false}
-        template <typename T> void foo()
-             noexcept(noexcept(T())) {}
-      \end{cppcode*}
-   \end{itemize}
+      \begin{itemize}
+        \item either no exceptions will ever be thrown or any they are handled internally
+        \item checked at compile time, so it allows the compiler to optimise around that knowledge
+      \end{itemize}
+      \item \textit{noexcept(expression)} evaluates the expression and, if \textit{true} the function won't throw
+        \begin{cppcode*}{fontsize=\scriptsize,gobble=2,linenos=false}
+          int safe_if_long_is_8_bytes() noexcept(sizeof(long)==8);
+        \end{cppcode*}
+      \item These uses can be nested, e.g.,
+        \begin{cppcode*}{fontsize=\scriptsize,gobble=2,linenos=false}
+          int ok_if_f_and_g_ok() noexcept(noexcept(f()) && noexcept(g()));
+        \end{cppcode*}
+      \item If you do use \textit{noexcept}, pay attention to destructors and don't allow exceptions to escape (or ever let resources leak)
+    \end{itemize}
   \end{block}
 \end{frame}
