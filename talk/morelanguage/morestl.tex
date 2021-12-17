@@ -26,29 +26,24 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{Some new STL types}
-  \begin{block}{\texttt{std::string\_view}}
+  \frametitlecpp[17]{Some new STL types \texttt{std::string\_view}}
     \begin{itemize}
     \item Non owning view of a continuous char sequence
     \item Doesn't allocate memory, similar interface to std::string
-    \item Easy to copy, Faster for many operations eg. substr (O(1) vs O(n))
+    \item Easy to copy, faster for some calls eg. substr (O(1) vs O(n))
     \item Please ensure that the string pointed to outlives the string\_view!
     \end{itemize}
     \begin{exampleblock}{Some example uses}
       \begin{cppcode*}{}
         std::string_view sv {"Some example"};
-        auto first_word = sv.substr(0,sv.find_first_of(" "));
-
+        auto first = sv.substr(0,sv.find_first_of(" "));
         constexpr std::string_view location {"Geneva,CH"};
-
         std::string some_string {"foo bar"};
         std::string_view sv_str(some_string);
-
         char foo[3] = {'f','o','o'};
         std::string_view carr(foo, std::size(foo));
       \end{cppcode*}
     \end{exampleblock}
-  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -60,9 +55,9 @@
   \end{itemize}
   \begin{exampleblock}{Code example}
     \begin{cppcode*}{}
-      std::optional<Phone> parse_phone(std::string_view in) {
+      std::optional<Phone> parse_phone(string_view in) {
         if (is_valid_phone(in)) {
-          return in; // automatic conv. to std::optional<Phone>(in);
+          return in;// equiv. to optional<Phone>(in);
         }
         return {}; // default constructs std::nullopt
       }
@@ -86,16 +81,16 @@
     \begin{cppcode*}{}
       using option_t = std::variant<int,float,string>;
       option_t opt; // default constructs first type
-      std::variant<std::monostate, NonDefault, int, float> myvariant;
+      std::variant<std::monostate, NonDefault, int> myvar;
       opt = 100;
-      int ival = std::get<int>(opt); // also std::get<0>(opt)
+      int ival = std::get<int>(opt);//also std::get<0>(opt)
       try {
-        float val = std::get<float>(opt) // will throw as opt is int
+        float val = std::get<float>(opt) // will throw...
       } catch (const std::bad_variant_access& ex) {...}
 
-      // Much easier with get_if returns a ptr or null if not conv.
+      // Much easier with get_if; returns a ptr or null
       if (const float* val = std::get_if<float>(&opt))
-          std::cout << "option type is f64, value=" << val;
+          std::cout<<"option type is f64, value="<< val;
     \end{cppcode*}
   \end{exampleblock}
 
@@ -137,7 +132,7 @@
           m->take_hit(this->damage);
         } else if (Orc *o = std::any_cast<Orc>(&e)) {
           o->take_hit(this->damage*0.5);
-        } else if (Cat* c = std::any_cast<Cat>(&e)) {// No!
+        } else if (Cat* c = std::any_cast<Cat>(&e)) {//No!
           c->pet();
         } ....}
     \end{cppcode*}
