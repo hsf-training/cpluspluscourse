@@ -6,7 +6,7 @@
     \begin{itemize}
     \item Generic programming is made of variable, function and class templates which can be instantiated with different types.
     \item It is frequent to instantiate them with \textbf{unsuited types}, and the resulting compilation errors are cryptic.
-    \item As a last resort, template authors provide \textbf{documentation}, and practice tricky \textbf{template meta-programmation}.
+    \item As a last resort, authors provide \textbf{documentation}, and practice tricky \textbf{template meta-programmation}.
     \item C++20 brings \textbf{simpler ways to define constraints} on template parameters.
     \end{itemize}
   \end{block}
@@ -16,21 +16,20 @@
   \frametitlecpp[20]{Requirements and concepts}
   \begin{block}{The world before concepts}
     \begin{itemize}
-    \item The old way to forbid some type arguments is the definition of
-    fake template arguments, which lead to a substitution failure when
-    the type does not fulfill the condition.
+    \item So to forbid unsuited arguments, one can insert fake template arguments,
+    leading to a substitution failure when conditions are not fulfilled.
     \end{itemize}
   \end{block}
   \begin{exampleblock}{C++17 code using SFINAE}
     \scriptsize
     \begin{cppcode*}{}
     template
-    < typename T, std::enable_if_t<!std::is_floating_point_v<T>> * = nullptr >
+    < typename T, std::enable_if_t<!std::is_floating_point_v<T>> * =nullptr >
     bool equal( T e1, T e2 )
     { return (e1==e2) ; }
 
     template
-    < typename T, std::enable_if_t<std::is_floating_point_v<T>> * = nullptr >
+    < typename T, std::enable_if_t<std::is_floating_point_v<T>> * =nullptr >
     bool equal( T e1, T e2 )
     { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
     \end{cppcode*}
@@ -43,7 +42,7 @@
       \begin{itemize}
         \item The keyword {\it requires} let us define various kinds of requirements.
         \item In the example below, we add a requirement about the existence of a strictly positive {\it epsilon}.
-        \item Overload resolution consider the second function as a better match when the requirements are fulfilled.
+        \item Overload resolution considers the second function as a better match when the requirements are fulfilled.
       \end{itemize}
     \end{block}
     \begin{exampleblock}{With {\it requires}}
@@ -54,9 +53,8 @@
       { return (e1==e2) ; }
 
       template< typename T>
-      requires
-        (std::is_floating_point_v<T>) &&
-        (std::numeric_limits<T>::epsilon()>0)
+      requires (std::is_floating_point_v<T>)
+            && (std::numeric_limits<T>::epsilon()>0)
       bool equal( T e1, T e2 )
       { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
       \end{cppcode*}
@@ -67,7 +65,7 @@
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Concepts}
       \begin{itemize}
-        \item When a given set of requirements may be reused often, one may gather them in a concept.
+        \item When a given set of requirements may be reused often, one can gather them in a concept.
       \end{itemize}
     \end{block}
     \begin{exampleblock}{With {\it concept}}
@@ -90,7 +88,7 @@
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Within the template head}
       \begin{itemize}
-        \item The concept can also be directly used instead of {it typename} within the template parameter list.
+        \item The concept can also be directly used instead of {\it typename} within the template parameter list.
       \end{itemize}
     \end{block}
     \begin{exampleblock}{Instead of {\it typename}}
@@ -124,7 +122,7 @@
     \begin{block}{Standard concepts}
       \begin{itemize}
         \item Writing a bug-proof concept is an expert task.
-        \item Whenever you can, use the ones provided by the standard library.
+        \item Prefer the ones provided by the standard library.
         \item Not surprisingly, there is one for floating point numbers.
       \end{itemize}
     \end{block}
@@ -143,7 +141,8 @@
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Within a function body}
       \begin{itemize}
-        \item Concepts are also usable wherever a boolean is expected, including within a {\it if constexpr} condition, because they are evaluated at compile-time.
+        \item Concepts are also usable wherever a boolean is expected.
+        \item Since they are evaluated at compile-time, they can appear in a {\it if constexpr} condition.
       \end{itemize}
     \end{block}
     \begin{exampleblock}{With {\it if constexpr}}
