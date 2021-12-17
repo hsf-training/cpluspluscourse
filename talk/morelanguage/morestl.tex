@@ -103,7 +103,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{Visiting with std::variant}
-    \begin{cppcode*}{A simple visitor}
+    \begin{cppcode*}{}
       using option_t = std::variant<int,float,string>;
       struct Visitor {
         void operator() (int i) { std::cout<< "i32:"<< i;}
