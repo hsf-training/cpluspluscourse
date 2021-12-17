@@ -56,6 +56,7 @@
       on the template parameters, with a syntax a lot more natural than previously.
     \end{block}
     \begin{exampleblock}{With {\it requires}}
+      \scriptsize
       \begin{cppcode*}{}
       template< typename T>
       bool equal( T e1, T e2 )
@@ -77,6 +78,7 @@
       When a given set of requirements may be reused often, one should gather them in a concept.
     \end{block}
     \begin{exampleblock}{With {\it concept}}
+      \scriptsize
       \begin{cppcode*}{}
       template< typename T>
       concept MyFloatingPoint =
@@ -97,6 +99,7 @@
         The concept can also be directly used instead of {it typename} within the template parameter list.
     \end{block}
     \begin{exampleblock}{Instead of {\it typename}}
+      \scriptsize
       \begin{cppcode*}{}
       template< typename T>
       concept MyFloatingPoint =
@@ -116,6 +119,7 @@
         The concepts can be used together with {\it auto} in the abbreviated function templates.
     \end{block}
     \begin{exampleblock}{With {\it auto}}
+      \scriptsize
       \begin{cppcode*}{}
       template< typename T>
       concept MyFloatingPoint =
@@ -136,6 +140,7 @@
         Not surprisingly, there is one for floating point numbers.
     \end{block}
     \begin{exampleblock}{With {\it std::}}
+      \scriptsize
       \begin{cppcode*}{}
       #include <concepts>
 
@@ -151,6 +156,7 @@
     Concepts are also usable wherever a boolean is expected, including {\it if constexpr}, because they are evaluated at compile-time.
     \end{block}
     \begin{exampleblock}{With {\it if constexpr}}
+      \scriptsize
       \begin{cppcode*}{}
       template< typename T>
       bool equal( T e1, T e2 )
@@ -181,6 +187,7 @@
         \end{itemize}
     \end{block}
     \begin{exampleblock}{Requires-expression}
+      \scriptsize
       \begin{cppcode*}{}
       template< typename T>
       concept StreamableAndComparableNumber = requires( T v1, T v2 )
