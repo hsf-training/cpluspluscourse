@@ -119,6 +119,34 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[17]{std::any}
+  \begin{itemize}
+  \item Type safe alternative to void*
+  \item Useful for passing arbitrary values across interfaces that may not know
+    all the types
+  \item \texttt{any\_cast} will only match concrete types, inheritance hierarchy
+    is irrelevant
+  \end{itemize}
+
+  \begin{exampleblock}{Code example}
+    \begin{cppcode*}{}
+      class Orc: public Monster {...};
+
+      void Player::attack(const std::any& e) {
+        if (Monster *m = std::any_cast<Monster>(&e)) {
+          m->take_hit(this->damage);
+        } else if (Orc *o = std::any_cast<Orc>(&e)) {
+          o->take_hit(this->damage*0.5); // Orc will only match this, not its parent
+        } else if (Cat* c = std::any_cast<Cat>(&e)) { // No!
+          c->pet();
+        } ....
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[11]{non-member begin and end}
   \begin{alertblock}{The problem in \cpp98}
     STL containers and arrays have different syntax for loop
