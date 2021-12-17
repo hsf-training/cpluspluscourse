@@ -34,10 +34,9 @@
   \end{itemize}
   \begin{exampleblock}{Code example}
     \begin{cppcode*}{}
-      std::optional<Phone> parse_phone(std::string in)
-      {
+      std::optional<Phone> parse_phone(std::string in) {
         if (is_valid_phone(in)) {
-          return std::optional<Phone>(in);
+          return in; // automatic conv. to std::optional<Phone>(in);
         }
         return {}; // default constructs std::nullopt
       }
