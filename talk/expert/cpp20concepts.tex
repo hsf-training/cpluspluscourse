@@ -25,12 +25,12 @@
     \scriptsize
     \begin{cppcode*}{}
     template
-    < typename T, std::enable_if_t<!std::is_floating_point_v<T>> * = nullptr>
+    < typename T, std::enable_if_t<!std::is_floating_point_v<T>> * = nullptr >
     bool equal( T e1, T e2 )
     { return (e1==e2) ; }
 
     template
-    < typename T, std::enable_if_t<std::is_floating_point_v<T>> * = nullptr>
+    < typename T, std::enable_if_t<std::is_floating_point_v<T>> * = nullptr >
     bool equal( T e1, T e2 )
     { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
     \end{cppcode*}
@@ -41,8 +41,10 @@
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Basic requirements}
       \begin{itemize}
-        \item The new keyword {\it requires} let us define many kind of requirements
-      on the template parameters, with a more readable syntax.
+        \item The new keyword {\it requires} let us define many kind of requirements.
+        \item Below, we also require the existence of a trictly positive {\it epsilon}.
+        \item There is no more need to require anything from the general case : the overload
+        resolution will consider the second function as a better match if the requirements are fulfilled.
       \end{itemize}
     \end{block}
     \begin{exampleblock}{With {\it requires}}
@@ -66,7 +68,7 @@
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Concepts}
       \begin{itemize}
-        \item When a given set of requirements may be reused often, one should gather them in a concept.
+        \item When a given set of requirements may be reused often, one may gather them in a concept.
       \end{itemize}
     \end{block}
     \begin{exampleblock}{With {\it concept}}
@@ -142,7 +144,7 @@
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Within a function body}
       \begin{itemize}
-        \item Concepts are also usable wherever a boolean is expected, including {\it if constexpr}, because they are evaluated at compile-time.
+        \item Concepts are also usable wherever a boolean is expected, including within a {\it if constexpr} condition, because they are evaluated at compile-time.
       \end{itemize}
     \end{block}
     \begin{exampleblock}{With {\it if constexpr}}
@@ -163,7 +165,7 @@
 \begin{frame}[fragile]
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Advanced requirements}
-        More than the basic requirements seen before, one may use a \textbf{requires-expression}, able to:
+        Rather than the basic requirements above, one may use a \textbf{requires-expression}, able to:
         \begin{itemize}
             \item include basic requirements as before,
             \item list some expressions that must be valid,
