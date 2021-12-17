@@ -108,7 +108,7 @@
       struct Visitor {
         void operator() (int i) { std::cout<< "i32:"<< i;}
         void operator() (float f) { std::cout<< "f32:"<< f;}
-        void operator() (std::string s) { std::cout<< "str:"<< s;}
+        void operator() (string s) { std::cout<< "s:"<< s;}
       };
       void print_opt(option_t opt) {
         std::visit(Visitor{}, opt);
@@ -136,11 +136,10 @@
         if (Monster *m = std::any_cast<Monster>(&e)) {
           m->take_hit(this->damage);
         } else if (Orc *o = std::any_cast<Orc>(&e)) {
-          o->take_hit(this->damage*0.5); // Orc will only match this, not its parent
-        } else if (Cat* c = std::any_cast<Cat>(&e)) { // No!
+          o->take_hit(this->damage*0.5);
+        } else if (Cat* c = std::any_cast<Cat>(&e)) {// No!
           c->pet();
-        } ....
-      }
+        } ....}
     \end{cppcode*}
   \end{exampleblock}
 
