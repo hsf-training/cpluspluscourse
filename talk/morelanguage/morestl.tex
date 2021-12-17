@@ -26,6 +26,32 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[17]{Some new STL types}
+  \begin{block}{\texttt{std::string\_view}}
+    \begin{itemize}
+    \item Non owning view of a continuous char sequence
+    \item Doesn't allocate memory, similar interface to std::string
+    \item Easy to copy, Faster for many operations eg. substr (O(1) vs O(n))
+    \item Please ensure that the string pointed to outlives the string\_view!
+    \end{itemize}
+    \begin{exampleblock}{Some example uses}
+      \begin{cppcode*}{}
+        std::string_view sv {"Some example"};
+        auto first_word = sv.substr(0,sv.find_first_of(" "));
+
+        constexpr std::string_view location {"Geneva,CH"};
+
+        std::string some_string {"foo bar"};
+        std::string_view sv_str(some_string);
+
+        char foo[3] = {'f','o','o'};
+        std::string_view carr(foo, std::size(foo));
+      \end{cppcode*}
+    \end{exampleblock}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[17]{std::optional}
   \begin{itemize}
   \item Indicates the absence of a value with \texttt{std::nullopt}
@@ -34,7 +60,7 @@
   \end{itemize}
   \begin{exampleblock}{Code example}
     \begin{cppcode*}{}
-      std::optional<Phone> parse_phone(std::string in) {
+      std::optional<Phone> parse_phone(std::string_view in) {
         if (is_valid_phone(in)) {
           return in; // automatic conv. to std::optional<Phone>(in);
         }
