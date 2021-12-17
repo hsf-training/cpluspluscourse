@@ -76,28 +76,46 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{std::any}
+  \frametitlecpp[17]{std::variant}
   \begin{itemize}
-  \item Indicates the absence of a value with \texttt{std::nullopt}
-  \item Has value semantics (Copy, Move, Compare, stack alloc.)
-  \item Useful in place of pointers where value semantics are intuitive
+  \item Expresses intent that variable holds one of the types
+  \item Makes it easy to implement visitor pattern
   \end{itemize}
+
   \begin{exampleblock}{Code example}
     \begin{cppcode*}{}
-      std::optional<Phone> parse_phone(std::string in)
-      {
-        if (is_valid_phone(in)) {
-          return std::optional<Phone>(in);
-        }
-        return {}; // default constructs std::nullopt
-      }
-      ...
-      auto v = parse_phone(get_input());
-      if (v) {  // alternatively v.is_valid()
-        process_phone(v.value()); // *v is equivalent
-      }
+      using option_t = std::variant<int,float,string>;
+      option_t opt; // default constructs first type
+      std::variant<std::monostate, NonDefault, int, float> myvariant;
+      opt = 100;
+      int ival = std::get<int>(opt); // also std::get<0>(opt)
+      try {
+        float val = std::get<float>(opt) // will throw as opt is int
+      } catch (const std::bad_variant_access& ex) {...}
+
+      // Much easier with get_if returns a ptr or null if not conv.
+      if (const float* val = std::get_if<float>(&opt))
+          std::cout << "option type is f64, value=" << val;
     \end{cppcode*}
   \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Visiting with std::variant}
+    \begin{cppcode*}{A simple visitor}
+      using option_t = std::variant<int,float,string>;
+      struct Visitor {
+        void operator() (int i) { std::cout<< "i32:"<< i;}
+        void operator() (float f) { std::cout<< "f32:"<< f;}
+        void operator() (std::string s) { std::cout<< "str:"<< s;}
+      };
+      void print_opt(option_t opt) {
+        std::visit(Visitor{}, opt);
+      }
+      ...
+      print_opt(100); print_opt(3.14f); print_opt("example");
+    \end{cppcode*}
 \end{frame}
 
 \begin{frame}[fragile]
