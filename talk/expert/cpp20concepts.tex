@@ -1,48 +1,36 @@
-\subsection[tmpl]{C++20 Requirements and Concepts}
+\subsection[tmpl]{Requirements and concepts}
 
 \begin{frame}[fragile]
-  \frametitlecpp[20]{C++20 Requirements and Concepts}
+  \frametitlecpp[20]{Requirements and concepts}
   \begin{block}{Motivation}
-    Generic programming is made of variable, function and class templates
-    which can be instantiated with different types. It is frequent
-    to instantiate them with \textbf{unsuited types}, and the resulting
-    compilation errors are generally very long and hardly understandable.
-    As a last resort, the template authors are providing \textbf{documentation}
-    about the relevant parameters, and practice some tricky
-    \textbf{template meta-programmation}. C++20 finally brings simpler ways to
-    define constraints on template parameters !.
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlecpp[20]{C++20 Requirements and Concepts}
-  \begin{block}{Requirements and concepts in a nutshell}
     \begin{itemize}
-    \item A template can now define requirements on its parameters.
-    \item Compiler error messages clearly state which parameter value does not fulfill which expected requirement.
-    \item A typical set of requirements can be gathered in a reusable concept.
-    \item Overload resolution takes those requirements and concepts into account.
-    \item The standard library now provides many concepts, easy to use.
-    \item Writing a new perfect concept stays an expert topic.
+    \item Generic programming is made of variable, function and class templates which can be instantiated with different types.
+    \item It is frequent to instantiate them with \textbf{unsuited types}, and the resulting compilation errors are generally very long and hardly understandable.
+    \item As a last resort, the template authors are providing \textbf{documentation} about the required parameters, and practice some tricky \textbf{template meta-programmation}.
+    \item C++20 brings \textbf{simpler ways to define constraints} on template parameters.
     \end{itemize}
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[20]{C++20 Requirements and Concepts}
+  \frametitlecpp[20]{Requirements and concepts}
   \begin{block}{Old-style SFINAE example}
-    The old way to forbid some type arguments is the definition of
+    \begin{itemize}
+    \item The old way to forbid some type arguments is the definition of
     fake template arguments, which lead to a substitution failure when
     the type does not fulfill the condition.
+    \end{itemize}
   \end{block}
   \begin{exampleblock}{Original C++17 code}
     \scriptsize
     \begin{cppcode*}{}
-    template< typename T, std::enable_if_t<!std::is_floating_point_v<T>> * = nullptr>
+    template
+    < typename T, std::enable_if_t<!std::is_floating_point_v<T>> * = nullptr>
     bool equal( T e1, T e2 )
     { return (e1==e2) ; }
 
-    template< typename T, std::enable_if_t<std::is_floating_point_v<T>> * = nullptr>
+    template
+    < typename T, std::enable_if_t<std::is_floating_point_v<T>> * = nullptr>
     bool equal( T e1, T e2 )
     { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
     \end{cppcode*}
@@ -50,10 +38,12 @@
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 Requirements and Concepts}
+    \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Basic requirements}
-      The new keyword {\it requires} let us define many kind of requirements
-      on the template parameters, with a syntax a lot more natural than previously.
+      \begin{itemize}
+        \item The new keyword {\it requires} let us define many kind of requirements
+      on the template parameters, with a more readable syntax.
+      \end{itemize}
     \end{block}
     \begin{exampleblock}{With {\it requires}}
       \scriptsize
@@ -70,12 +60,14 @@
       { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
       \end{cppcode*}
     \end{exampleblock}
-  \end{frame}
+\end{frame}
 
-  \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 Requirements and Concepts}
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Concepts}
-      When a given set of requirements may be reused often, one should gather them in a concept.
+      \begin{itemize}
+        \item When a given set of requirements may be reused often, one should gather them in a concept.
+      \end{itemize}
     \end{block}
     \begin{exampleblock}{With {\it concept}}
       \scriptsize
@@ -91,53 +83,49 @@
       { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
       \end{cppcode*}
     \end{exampleblock}
-  \end{frame}
+\end{frame}
 
-  \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 Requirements and Concepts}
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Within the template head}
-        The concept can also be directly used instead of {it typename} within the template parameter list.
+      \begin{itemize}
+        \item The concept can also be directly used instead of {it typename} within the template parameter list.
+      \end{itemize}
     \end{block}
     \begin{exampleblock}{Instead of {\it typename}}
       \scriptsize
       \begin{cppcode*}{}
-      template< typename T>
-      concept MyFloatingPoint =
-        (std::is_floating_point_v<T>) &&
-        (std::numeric_limits<T>::epsilon()>0) ;
-
       template<MyFloatingPoint T>
       bool equal( T e1, T e2 )
       { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
       \end{cppcode*}
     \end{exampleblock}
-  \end{frame}
+\end{frame}
 
-  \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 Requirements and Concepts}
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{With abbreviated function templates}
-        The concepts can be used together with {\it auto} in the abbreviated function templates.
+      \begin{itemize}
+        \item The concepts can be used together with {\it auto} in the abbreviated function templates.
+      \end{itemize}
     \end{block}
     \begin{exampleblock}{With {\it auto}}
       \scriptsize
       \begin{cppcode*}{}
-      template< typename T>
-      concept MyFloatingPoint =
-        (std::is_floating_point_v<T>) &&
-        (std::numeric_limits<T>::epsilon()>0) ;
-
       bool equal( MyFloatingPoint auto e1, MyFloatingPoint auto e2 )
       { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
       \end{cppcode*}
     \end{exampleblock}
-  \end{frame}
+\end{frame}
 
-  \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 Requirements and Concepts}
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Standard concepts}
-        Writing a bug-proof concept is an expert task.
-        Whenever you can, use the ones provided by the standard library.
-        Not surprisingly, there is one for floating point numbers.
+      \begin{itemize}
+        \item Writing a bug-proof concept is an expert task.
+        \item Whenever you can, use the ones provided by the standard library.
+        \item Not surprisingly, there is one for floating point numbers.
+      \end{itemize}
     \end{block}
     \begin{exampleblock}{With {\it std::}}
       \scriptsize
@@ -148,12 +136,14 @@
       { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
       \end{cppcode*}
     \end{exampleblock}
-  \end{frame}
+\end{frame}
 
-  \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 Requirements and Concepts}
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Within a function body}
-    Concepts are also usable wherever a boolean is expected, including {\it if constexpr}, because they are evaluated at compile-time.
+      \begin{itemize}
+        \item Concepts are also usable wherever a boolean is expected, including {\it if constexpr}, because they are evaluated at compile-time.
+      \end{itemize}
     \end{block}
     \begin{exampleblock}{With {\it if constexpr}}
       \scriptsize
@@ -162,22 +152,16 @@
       bool equal( T e1, T e2 )
       {
         if constexpr (std::floating_point<T>)
-        {
-          std::cout<<"(floating) " ;
-          return abs(e1-e2)<std::numeric_limits<T>::epsilon() ;
-        }
+        { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
         else
-        {
-          std::cout<<"(default) " ;
-          return (e1==e2) ;
-        }
+        { return (e1==e2) ; }
       }
       \end{cppcode*}
     \end{exampleblock}
-  \end{frame}
+\end{frame}
 
-  \begin{frame}[fragile]
-    \frametitlecpp[20]{C++20 Requirements and Concepts}
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Advanced requirements}
         More than the basic requirements seen before, one may use a \textbf{requires-expression}, able to:
         \begin{itemize}
@@ -198,4 +182,18 @@
        } ;
       \end{cppcode*}
     \end{exampleblock}
-  \end{frame}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Requirements and concepts}
+    \begin{block}{To be remembered}
+      \begin{itemize}
+      \item A template can now {\it requires} properties of its parameters.
+      \item Compiler error messages clearly state which argument does not fulfill which requirement.
+      \item A typical set of requirements can be gathered in a reusable {\it concept}.
+      \item Overload resolution takes those requirements and concepts into account.
+      \item The standard library now provides many concepts, easy to use.
+      \item Writing from scratch a new bug-proof concept stays an expert topic.
+      \end{itemize}
+    \end{block}
+\end{frame}
