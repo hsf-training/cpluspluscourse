@@ -29,7 +29,7 @@
       process_stream_data(stream &s) {
         ...
         if (data_location >= buffer.length()) {
-          raise range_error("buf overflow");
+          throw range_error("buf overflow");
         }
         ...
       }
@@ -45,7 +45,7 @@
       \begin{itemize}
         \item define your own subclass of \texttt{std::exception} if needed
       \end{itemize}
-      \item exceptions will be caught if the object type in the \textit{catch} clause matches
+      \item an exception will be caught if the thrown object's type matches a \textit{catch} clause
       \begin{itemize}
           \item if nothing catches an exception then \texttt{std::terminate} is called
           \item throw exceptions by value, catch them by (const) reference
@@ -156,7 +156,7 @@
   \frametitlecpp[11]{noexcept}
   \begin{block}{noexcept}
     \begin{itemize}
-      \item specifying the \textit{noexcept} specifier states that a function is guaranteed throw an exception
+      \item specifying the \textit{noexcept} specifier states that a function is guaranteed to not throw an exception
       \begin{cppcode*}{fontsize=\scriptsize,gobble=2,linenos=false}
         int f() noexcept;
       \end{cppcode*}
@@ -169,7 +169,7 @@
           int safe_if_long_is_8_bytes() noexcept(sizeof(long)==8);
         \end{cppcode*}
       \item Use \textit{noexcept} on leaf functions where you can be sure of the behaviour
-      \item Note that since C++11 destructors are \textit{noexcept} - never try and throw from them
+      \item Note that since C++11 destructors are \textit{noexcept} - never throw from them
     \end{itemize}
   \end{block}
 \end{frame}
