@@ -10,7 +10,7 @@
   \end{block}
   \begin{block}{In practice}
     \begin{itemize}
-      \item add an exception handling block with {\it try ... catch} when exceptions are possible
+      \item add an exception handling block with {\it try ... catch} when exceptions are possible \textit{and can be handled}
       \item throw an exception using {\it throw} when a function cannot proceed (or recover internally)
     \end{itemize}
   \end{block}
@@ -39,7 +39,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Exceptions}
-  \begin{block}{Rules and Advice}
+  \begin{block}{Rules and Advice I}
     \begin{itemize}
       \item any object can be thrown; best to use those in \texttt{stdexcept}
       \begin{itemize}
@@ -50,13 +50,32 @@
           \item if nothing catches an exception then \texttt{std::terminate} is called
           \item throw exceptions by value, catch them by (const) reference
       \end{itemize}
-      \item all objects on the stack between the \textit{throw} and the \textit{catch} are destructed automatically
+      \item all objects on the stack between the \textit{throw} and the \textit{catch} are destructed automatically during stack unwinding
       \begin{itemize}
         \item this should give you a clean release of intermediate resources
         \item make sure you are using the RAII idiom in your own classes
       \end{itemize}
-      \item use exceptions for \textit{unlikely} runtime errors outside the program's control (bad inputs, files unexpectedly not found, DB connection, \ldots)
-      \item \textit{don't} use exceptions for logic errors in your code (consider \texttt{assert} and tests)
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Exceptions}
+  \begin{block}{Rules and Advice II}
+    \begin{itemize}
+      \item use exceptions for \textit{unlikely} runtime errors outside the program's control
+      \begin{itemize}
+        \item  bad inputs, files unexpectedly not found, DB connection, \ldots
+      \end{itemize}
+      \item \textit{don't} use exceptions for logic errors in your code
+      \begin{itemize}
+        \item consider \texttt{assert} and tests
+      \end{itemize}
+      \item \textit{don't} use exceptions to provide alternative return values (or to skip them)
+      \begin{itemize}
+        \item you can use \texttt{std::optional} or \texttt{std::variant}
+        \item avoid using the global C-style \texttt{errno}
+      \end{itemize}
     \end{itemize}
   \end{block}
 \end{frame}
@@ -111,13 +130,13 @@
     \begin{itemize}
       \item exceptions have little cost if no exception is thrown
       \begin{itemize}
-        \item a throw itself typically costs about as much as a function call (the stack needs to be unwound, but needs to be done for C-style errors too)
+        \item a throw itself typically costs about as much as a function call (the stack needs to be unwound, but needs to be done for other error handling styles too)
         \item so minimal if you are using exceptions for \textit{exceptional} events
         \item thus their use is generally recommended
       \end{itemize}
-      \item however, in a tight, performance-critical loop, where the error is handled close to the place it happens a C-style error code might be better
+      \item however, in a tight, performance-critical loop, where the error is handled close to the place it happens a more explicit error code or object might be better
       \begin{itemize}
-        \item But profile if you really want to find out!
+        \item but profile if you really want to find out!
       \end{itemize}
    \end{itemize}
   \end{block}
@@ -137,10 +156,10 @@
     \end{cppcode*}
     \columnbreak
     \begin{cppcode*}{fontsize=\tiny,gobble=2}
-      // For this code logic C-style error codes
+      // For this code, explicit error codes
       //   may be better
       for (const &item: list) {
-        auto err_code = check_item(item);
+        std::optional<T> err_code = check_item(item);
         if (!err_code) {
           ... // process item
         } else {
