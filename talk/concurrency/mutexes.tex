@@ -92,7 +92,7 @@
   \pause
   \begin{block}{The objects}
     \begin{description}[labelwidth=1.8cm]
-    \item[std::mutex] in the mutex header
+    \item[std::mutex] in the mutex header. \textbf{Mut}ual \textbf{ex}clusion
     \item[std::scoped\_lock] RAII to lock and unlock automatically
     \item[std::unique\_lock] same, but can be released/relocked explicitly
     \end{description}
@@ -114,7 +114,7 @@
   \frametitlecpp[17]{Mutexes and Locks}
   \begin{block}{Good practice}
     \begin{itemize}
-      \item Always use \texttt{scoped\_lock} (\cpp11: \texttt{lock\_guard})
+      \item Generally use \texttt{scoped\_lock} (\cpp11: \texttt{lock\_guard})
       \item Hold as short as possible, wrap critical section in "\texttt{\string{  \string}}"
       \item Only if manual control needed, use \texttt{unique\_lock}
     \end{itemize}
@@ -133,7 +133,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Mutexes}
+  \frametitle{Mutexes and Locks}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
     \item Go to code/race
@@ -179,6 +179,7 @@
   \frametitlecpp[11]{How to avoid dead locks}
   \begin{block}{Possible solutions}
     \begin{itemize}
+    \item \cpp17: \mintinline{cpp}{std::scoped_lock lock{m1, m2};} comes with deadlock-avoidance algorithm
     \item Never take several locks
       \begin{itemize}
       \item Or add master lock protecting the locking phase
