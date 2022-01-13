@@ -186,6 +186,12 @@ Typical race condition where a simple mutex and lock_guard "solves" the problem.
 
 The second step is to look at the execution time and find out that it's not really a solution. One could then try an atomic and see the difference, although I do not introduce them in the course
 
+### condition_variable
+
+Small example where 4 consumer threads are notified by a producer.
+1. The production phase is not protected by a lock.
+2. When the consumers are waking up, they don't release the lock that's tied to the condition variable, so they cannot wake up in parallel.
+
 ### `python`
 
 This is playing with low level C++/python interfacing. All the c code is provided, so the only task is to use the different implementations (C, C++ manual interface, ctype) from python and see the speed of each of them.
