@@ -130,9 +130,7 @@
     \begin{itemize}
       \item exceptions have little cost if no exception is thrown
       \begin{itemize}
-        \item a throw itself typically costs about as much as a function call (the stack needs to be unwound, but needs to be done for other error handling styles too)
-        \item so minimal if you are using exceptions for \textit{exceptional} events
-        \item thus their use is generally recommended
+        \item so they are recommended for \textit{exceptional} events
       \end{itemize}
       \item however, in a tight, performance-critical loop, where the error is handled close to the place it happens a more explicit error code or object might be better
       \begin{itemize}
