@@ -193,3 +193,28 @@
   \end{block}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Shared mutex / locks}
+  \begin{block}{Sharing a mutex}
+    \begin{itemize}
+      \item Normal \texttt{mutex} objects cannot be shared
+      \item \texttt{shared\_mutex} to the rescue, but can be slower
+      \item \textit{Either} exclusive \textit{or} shared locking; never both
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{gobble=2}
+      Data data; std::shared_mutex mutex;
+      auto reader = [&](){
+        std::shared_lock lock{mutex};
+        read(data); // Many can read
+      };
+      std::thread r1{reader}, r2{reader}, ...;
+
+      std::thread writer([&](){
+        std::scoped_lock lock{mutex}; // exclusive
+        modify(data); // Only one can write
+      });
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
