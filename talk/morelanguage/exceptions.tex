@@ -10,8 +10,14 @@
   \end{block}
   \begin{block}{In practice}
     \begin{itemize}
-      \item add an exception handling block with {\it try ... catch} when exceptions are possible \textit{and can be handled}
-      \item throw an exception using {\it throw} when a function cannot proceed (or recover internally)
+      \item add an exception handling block with {\it try ... catch} 
+      \begin{itemize}
+        \item when exceptions are possible \textit{and can be handled}
+      \end{itemize}
+      \item throw an exception using {\it throw}
+      \begin{itemize}
+        \item when a function cannot proceed or recover internally
+      \end{itemize}
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
@@ -139,32 +145,40 @@
    \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{fontsize=\tiny,gobble=2}
-      // try ... catch in hot loop
-      //   might impact performance
-      for (const &item: list) {
-        try {
-          check_item(item); // Can throw bad_item
-          ... // process item
-        }
-        catch (bad_item &e) {
-          ... // ignore this item, but keep going
-        }
-      }
-    \end{cppcode*}
+    \begin{minipage}{4.5cm}
+      \begin{alertblock}{Don't}
+        \begin{cppcode*}{fontsize=\tiny,gobble=2,linenos=false}
+          // try ... catch in hot loop might 
+          //    impact performance
+          for (const &item: list) {
+            try {
+              check_item(item); // Can throw
+              ... // process item
+            }
+            catch (bad_item &e) {
+              ... // ignore and keep going
+            }
+          }
+        \end{cppcode*}
+      \end{alertblock}
+    \end{minipage}
     \columnbreak
-    \begin{cppcode*}{fontsize=\tiny,gobble=2}
-      // For this code, explicit error codes
-      //   may be better
-      for (const &item: list) {
-        std::optional<T> err_code = check_item(item);
-        if (!err_code) {
-          ... // process item
-        } else {
-          ... // warn and carry on
-        }
-      }
-    \end{cppcode*}
+    \begin{minipage}{5.8cm}
+      \begin{exampleblock}{Do}
+        \begin{cppcode*}{fontsize=\tiny,gobble=2,linenos=false}
+          // For this code, explicit error codes
+          //   may be better
+          for (const &item: list) {
+            std::optional<T> err_code = check_item(item);
+            if (!err_code) {
+              ... // process item
+            } else {
+              ... // warn and carry on
+            }
+          }
+        \end{cppcode*}
+      \end{exampleblock}
+    \end{minipage}
   \end{multicols}
 \end{frame}
 
