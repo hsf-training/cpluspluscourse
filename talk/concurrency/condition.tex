@@ -1,0 +1,114 @@
+\subsection[condition]{Condition Variables}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Condition variables}
+  \begin{block}{Communicating thread dependencies}
+    \begin{itemize}
+      \item \texttt{std::condition\_variable} from condition\_variable header
+      \item Allows for a thread to sleep (= conserve CPU time) until a given condition is satisfied
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{Usage}
+    \begin{itemize}
+    \item Use RAII-style locks to protect shared data
+    \item wait() will block until the condition is met
+      \begin{itemize}
+      \item you can have several waiters sharing the same mutex
+      \end{itemize}
+    \item notify\_one() will wake up one waiter
+    \item notify\_all() will wake up all waiters
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Using condition variables}
+  \begin{block}{Producer side}
+    \begin{itemize}
+      \item Imagine multiple threads sharing data. Protect it with a mutex
+      \item Use a \texttt{condition\_variable} to notify consumers
+      \item Optimisation: Don't hold lock while notifying (would block the waking threads)
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{}
+      std::mutex mutex;
+      std::condition_variable cond;
+      Data data;
+      std::thread producer([&](){
+        {
+          std::scoped_lock lock{mutex};
+          data = produceData(); // may take long ...
+        }
+        cond.notify_all();
+      });
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{overprint}
+  \onslide<1>
+  \begin{block}{Consumer side I: Going into wait}
+    \begin{itemize}
+      \item Start many threads which have to wait for shared data
+      \item Provide a lock to be managed by \texttt{wait}
+      \item \texttt{wait} will only lock while necessary; unlocked while sleeping
+      \item Threads might wake up, but \texttt{wait} returns only when condition satisfied
+    \end{itemize}
+  \end{block}
+  \onslide<2->
+  \begin{block}{Consumer side II: Waking up}
+    \begin{itemize}
+      \item \texttt{notify\_all()} is called, threads wake up
+      \item Threads try to acquire mutex, evaluate condition
+      \item One thread succeeds to acquire mutex, exits from \texttt{wait}
+      \item \alt<2>{ {\color{red} Problem}: Other threads still blocked!}{ {\color{green!80!black} Solution:} Put locking and waiting in a scope}
+    \end{itemize}
+  \end{block}
+  \end{overprint}
+
+  \begin{exampleblock}{}
+    \begin{overprint}
+    \onslide<1-2>
+    \begin{cppcode*}{gobble=2,highlightlines=4}
+      auto processData = [&](){
+
+        std::unique_lock<std::mutex> lock{mutex};
+        cond.wait(lock, [&](){ return data.isReady(); });
+
+        process(data);
+      };
+      std::thread t1{processData}, t2{processData}, ...;
+      for (auto t : {&producer, &t1, &t2, ...}) t->join();
+    \end{cppcode*}
+
+    \onslide<3>
+    \begin{cppcode*}{gobble=2}
+      auto processData = [&](){
+        {
+          std::unique_lock<std::mutex> lock{mutex};
+          cond.wait(lock, [&](){ return data.isReady(); });
+        }
+        process(data);
+      };
+      std::thread t1{processData}, t2{processData}, ...;
+      for (auto t : {&producer, &t1, &t2, ...}) t->join();
+    \end{cppcode*}
+    \end{overprint}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Condition variables}
+  \begin{alertblock}{Exercise Time}
+    \begin{itemize}
+    \item Go to code/condition\_variable
+    \item Look at the code and run it\\
+      See that it has a race condition
+    \item Fix the race condition in the usage of the condition variable
+    \item Try to make threads process data in parallel
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
