@@ -1,11 +1,14 @@
-all: racing
-solution: racing.sol
+PROGRAM_NAME=racing
+
+all: $(PROGRAM_NAME)
+solution: $(PROGRAM_NAME).sol
+
 
 clean:
-	rm -f *o racing *~ core racing.sol
+	rm -f *o $(PROGRAM_NAME) *~ core $(PROGRAM_NAME).sol
 
-racing : racing.cpp
-	${CXX} -g -std=c++17 -O0 -pthread -Wall -Wextra -L. -o $@ $<
+$(PROGRAM_NAME) : $(PROGRAM_NAME).cpp
+	${CXX} -g -std=c++17 -O2 -pthread -Wall -Wextra -L. -o $@ $<
 
-racing.sol : solution/racing.sol.cpp
-	${CXX} -g -std=c++17 -O0 -pthread -Wall -Wextra -L. -o $@ $<
+$(PROGRAM_NAME).sol : solution/$(PROGRAM_NAME).sol.cpp
+	${CXX} -g -std=c++17 -O2 -pthread -Wall -Wextra -L. -o $@ $<
