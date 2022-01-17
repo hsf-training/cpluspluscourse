@@ -186,6 +186,12 @@ Typical race condition where a simple mutex and lock_guard "solves" the problem.
 
 The second step is to look at the execution time and find out that it's not really a solution. One could then try an atomic and see the difference, although I do not introduce them in the course
 
+### `atomic`
+
+Exactly the same race condition as above. Fix them using an `atomic<int>`.
+
+*Optional*: Compare run times for lock and atomic solution. Those are likely not very different, as many locks are implemented using atomics.
+
 ### condition_variable
 
 Small example where 4 consumer threads are notified by a producer.
