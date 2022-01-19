@@ -6,7 +6,7 @@
     \begin{itemize}
     \item Generic programming is made of variable, function and class templates which can be instantiated with different types.
     \item It is frequent to instantiate them with \textbf{unsuited types}, and the resulting compilation errors are cryptic.
-    \item As a last resort, authors provide \textbf{documentation}, and practice tricky \textbf{template meta-programmation}.
+    \item As a last resort, authors provide \textbf{documentation}, and practice tricky \textbf{template meta-programming}.
     \item C++20 brings \textbf{simpler ways to define constraints} on template parameters.
     \end{itemize}
   \end{block}
@@ -26,12 +26,12 @@
     template
     < typename T, std::enable_if_t<!std::is_floating_point_v<T>> * =nullptr >
     bool equal( T e1, T e2 )
-    { return (e1==e2) ; }
+    { return (e1==e2); }
 
     template
     < typename T, std::enable_if_t<std::is_floating_point_v<T>> * =nullptr >
     bool equal( T e1, T e2 )
-    { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
+    { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -86,7 +86,7 @@
 
 \begin{frame}[fragile]
     \frametitlecpp[20]{Requirements and concepts}
-    \begin{block}{Within the template head}
+    \begin{block}{Concepts as template parameters}
       \begin{itemize}
         \item The concept can also be directly used instead of {\texttt typename} within the template parameter list.
       \end{itemize}
