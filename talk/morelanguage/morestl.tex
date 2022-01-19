@@ -129,7 +129,7 @@
           m->take_hit(this->damage);
         } else if (Orc *o = std::any_cast<Orc>(&e)) {
           o->take_hit(this->damage*0.5);
-        } else if (Cat* c = std::any_cast<Cat>(&e)) {//No!
+        } else if (Cat *c = std::any_cast<Cat>(&e)) {//No!
           c->pet();
         } ....}
     \end{cppcode*}
