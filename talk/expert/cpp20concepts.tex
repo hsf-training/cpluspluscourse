@@ -50,12 +50,12 @@ main.cpp:4:72:   required from here
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Basic requirements}
       \begin{itemize}
-        \item The keyword {\texttt requires} let us define various kinds of requirements.
-        \item In the example below, we add a requirement about the existence of a strictly positive {\texttt epsilon}.
+        \item The keyword {\mintinline requires} let us define various kinds of requirements.
+        \item In the example below, we add a requirement about the existence of a strictly positive {\mintinline epsilon}.
         \item Overload resolution considers the second function as a better match when the requirements are fulfilled.
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{With {\texttt requires}}
+    \begin{exampleblock}{With {\mintinline requires}}
       \scriptsize
       \begin{cppcode*}{}
       template< typename T>
@@ -78,7 +78,7 @@ main.cpp:4:72:   required from here
         \item When a given set of requirements may be reused often, one can gather them in a \textbf{concept}.
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{With {\texttt concept}}
+    \begin{exampleblock}{With {\mintinline concept}}
       \scriptsize
       \begin{cppcode*}{}
       template< typename T>
@@ -98,10 +98,10 @@ main.cpp:4:72:   required from here
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Concepts as template parameters}
       \begin{itemize}
-        \item The concept can also be directly used instead of {\texttt typename} within the template parameter list.
+        \item The concept can also be directly used instead of {\mintinline typename} within the template parameter list.
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{Instead of {\texttt typename}}
+    \begin{exampleblock}{Instead of {\mintinline typename}}
       \scriptsize
       \begin{cppcode*}{}
       template<MyFloatingPoint T>
@@ -115,10 +115,10 @@ main.cpp:4:72:   required from here
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{With abbreviated function templates}
       \begin{itemize}
-        \item The concepts can be used together with {\texttt auto} in the abbreviated function templates.
+        \item The concepts can be used together with {\mintinline auto} in the abbreviated function templates.
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{With {\texttt auto}}
+    \begin{exampleblock}{With {\mintinline auto}}
       \scriptsize
       \begin{cppcode*}{}
       bool equal( MyFloatingPoint auto e1, MyFloatingPoint auto e2 )
@@ -136,7 +136,7 @@ main.cpp:4:72:   required from here
         \item Not surprisingly, there is one for floating point numbers.
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{With {\texttt std::}}
+    \begin{exampleblock}{With {\mintinline std::}}
       \scriptsize
       \begin{cppcode*}{}
       #include <concepts>
@@ -152,10 +152,10 @@ main.cpp:4:72:   required from here
     \begin{block}{Within a function body}
       \begin{itemize}
         \item Concepts are also usable wherever a boolean is expected.
-        \item Since they are evaluated at compile-time, they can appear in a {\texttt if constexpr} condition.
+        \item Since they are evaluated at compile-time, they can appear in a {\mintinline if constexpr} condition.
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{With {\texttt if constexpr}}
+    \begin{exampleblock}{With {\mintinline if constexpr}}
       \scriptsize
       \begin{cppcode*}{}
       template< typename T>
@@ -198,9 +198,9 @@ main.cpp:4:72:   required from here
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{To be remembered}
       \begin{itemize}
-      \item A template can now {\texttt requires} properties of its parameters.
+      \item A template can now {\mintinline requires} properties of its parameters.
       \item Compiler error messages clearly state which argument does not fulfill which requirement.
-      \item A set of requirements can be gathered in a {\texttt concept}.
+      \item A set of requirements can be gathered in a {\mintinline concept}.
       \item Overload resolution takes requirements into account.
       \item The standard library provides many ready-to-use concepts.
       \item Writing a new good concept is an expert topic.
