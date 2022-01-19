@@ -47,10 +47,10 @@ main.cpp:4:72:   required from here
   \frametitlecpp[20]{Requirements and concepts}
   \begin{block}{Basic requirements}
     \begin{itemize}
-      \item The keyword \texttt{\textbf{requires}} let us define various kinds of requirements.
+      \item The keyword {\it requires} let us define various kinds of requirements.
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{With \texttt{\textbf{requires}}}
+  \begin{exampleblock}{With {\it requires}}
     \scriptsize
     \begin{cppcode*}{}
     template< typename T>
@@ -75,11 +75,11 @@ main.cpp:5:16: note: the expression 'is_floating_point_v<T> [with T = int]' eval
   \frametitlecpp[20]{Requirements and concepts}
   \begin{block}{Basic requirements}
     \begin{itemize}
-      \item In the example below, we add a requirement about the existence of a strictly positive \texttt{\textbf{epsilon}}.
+      \item In the example below, we add a requirement about the existence of a strictly positive {\it epsilon}.
       \item Overload resolution considers the second function as a better match when the requirements are fulfilled.
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{With \texttt{\textbf{requires}}}
+  \begin{exampleblock}{With {\it requires}}
     \scriptsize
     \begin{cppcode*}{}
     template< typename T>
@@ -102,7 +102,7 @@ main.cpp:5:16: note: the expression 'is_floating_point_v<T> [with T = int]' eval
         \item When a given set of requirements may be reused often, one can gather them in a {\textbf concept}.
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{With \texttt{\textbf{concept}}}
+    \begin{exampleblock}{With {\it concept}}
       \scriptsize
       \begin{cppcode*}{}
       template< typename T>
@@ -122,10 +122,10 @@ main.cpp:5:16: note: the expression 'is_floating_point_v<T> [with T = int]' eval
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{Concepts as template parameters}
       \begin{itemize}
-        \item The concept can also be directly used instead of \texttt{\textbf{typename}} within the template parameter list.
+        \item The concept can also be directly used instead of {\it typename} within the template parameter list.
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{Instead of \texttt{\textbf{typename}}}
+    \begin{exampleblock}{Instead of {\it typename}}
       \scriptsize
       \begin{cppcode*}{}
       template<MyFloatingPoint T>
@@ -139,10 +139,10 @@ main.cpp:5:16: note: the expression 'is_floating_point_v<T> [with T = int]' eval
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{With abbreviated function templates}
       \begin{itemize}
-        \item The concepts can be used together with \texttt{\textbf{auto}} in the abbreviated function templates.
+        \item The concepts can be used together with {\it auto} in the abbreviated function templates.
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{With \texttt{\textbf{auto}}}
+    \begin{exampleblock}{With {\it auto}}
       \scriptsize
       \begin{cppcode*}{}
       bool equal( MyFloatingPoint auto e1, MyFloatingPoint auto e2 )
@@ -160,7 +160,7 @@ main.cpp:5:16: note: the expression 'is_floating_point_v<T> [with T = int]' eval
         \item Not surprisingly, there is one for floating point numbers.
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{With \texttt{\textbf{std::}}}
+    \begin{exampleblock}{With {\it std::}}
       \scriptsize
       \begin{cppcode*}{}
       #include <concepts>
@@ -176,10 +176,10 @@ main.cpp:5:16: note: the expression 'is_floating_point_v<T> [with T = int]' eval
     \begin{block}{Within a function body}
       \begin{itemize}
         \item Concepts are also usable wherever a boolean is expected.
-        \item Since they are evaluated at compile-time, they can appear in a \texttt{\textbf{if constexpr}} condition.
+        \item Since they are evaluated at compile-time, they can appear in a {\it if constexpr} condition.
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{With \texttt{\textbf{if constexpr}}}
+    \begin{exampleblock}{With {\it if constexpr}}
       \scriptsize
       \begin{cppcode*}{}
       template< typename T>
@@ -222,9 +222,9 @@ main.cpp:5:16: note: the expression 'is_floating_point_v<T> [with T = int]' eval
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{To be remembered}
       \begin{itemize}
-      \item A template can now \texttt{\textbf{requires}} properties of its parameters.
+      \item A template can now {\it requires} properties of its parameters.
       \item Compiler error messages clearly state which argument does not fulfill which requirement.
-      \item A set of requirements can be gathered in a \texttt{\textbf{concept}}.
+      \item A set of requirements can be gathered in a {\it concept}.
       \item Overload resolution takes requirements into account.
       \item The standard library provides many ready-to-use concepts.
       \item Writing a new good concept is an expert topic.
