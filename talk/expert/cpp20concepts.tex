@@ -24,15 +24,27 @@
     \scriptsize
     \begin{cppcode*}{}
     template
-    < typename T, std::enable_if_t<!std::is_floating_point_v<T>> * =nullptr >
-    bool equal( T e1, T e2 )
-    { return (e1==e2); }
-
-    template
     < typename T, std::enable_if_t<std::is_floating_point_v<T>> * =nullptr >
     bool equal( T e1, T e2 )
     { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
+
+    ...equal(10,5+5)...
     \end{cppcode*}
+    \begin{verbatim}
+      main.cpp:10:8: error: no matching function for call to 'equal(int, int)'
+      10 |   equal(10,5+5) ;
+         |   ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+      main.cpp:5:6: note: candidate: 'template<class T, std::enable_if_t<is_floating_point_v<T> >* <anonymous> > bool equal(T, T)'
+       5 | bool equal( T e1, T e2 )
+         |      ^~~~~
+      main.cpp:5:6: note:   template argument deduction/substitution failed:
+      In file included from main.cpp:1:
+      /usr/local/include/c++/11.2.0/type_traits: In substitution of 'template<bool _Cond, class _Tp> using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp = void]':
+      main.cpp:4:72:   required from here
+      /usr/local/include/c++/11.2.0/type_traits:2514:11: error: no type named 'type' in 'struct std::enable_if<false, void>'
+    2514 |     using enable_if_t = typename enable_if<_Cond, _Tp>::type;
+         |           ^~~~~~~~~~~
+    \end{verbatim}
   \end{exampleblock}
 \end{frame}
 
@@ -50,13 +62,13 @@
       \begin{cppcode*}{}
       template< typename T>
       bool equal( T e1, T e2 )
-      { return (e1==e2) ; }
+      { return (e1==e2); }
 
       template< typename T>
       requires (std::is_floating_point_v<T>)
             && (std::numeric_limits<T>::epsilon()>0)
       bool equal( T e1, T e2 )
-      { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
       \end{cppcode*}
     \end{exampleblock}
 \end{frame}
@@ -74,12 +86,12 @@
       template< typename T>
       concept MyFloatingPoint =
         (std::is_floating_point_v<T>) &&
-        (std::numeric_limits<T>::epsilon()>0) ;
+        (std::numeric_limits<T>::epsilon()>0);
 
       template<typename T>
       requires MyFloatingPoint<T>
       bool equal( T e1, T e2 )
-      { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
       \end{cppcode*}
     \end{exampleblock}
 \end{frame}
@@ -96,7 +108,7 @@
       \begin{cppcode*}{}
       template<MyFloatingPoint T>
       bool equal( T e1, T e2 )
-      { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
       \end{cppcode*}
     \end{exampleblock}
 \end{frame}
@@ -112,7 +124,7 @@
       \scriptsize
       \begin{cppcode*}{}
       bool equal( MyFloatingPoint auto e1, MyFloatingPoint auto e2 )
-      { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
       \end{cppcode*}
     \end{exampleblock}
 \end{frame}
@@ -132,7 +144,7 @@
       #include <concepts>
 
       bool equal( std::floating_point auto e1, std::floating_point auto e2 )
-      { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
+      { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
       \end{cppcode*}
     \end{exampleblock}
 \end{frame}
@@ -152,9 +164,9 @@
       bool equal( T e1, T e2 )
       {
         if constexpr (std::floating_point<T>)
-        { return abs(e1-e2)<std::numeric_limits<T>::epsilon() ; }
+        { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
         else
-        { return (e1==e2) ; }
+        { return (e1==e2); }
       }
       \end{cppcode*}
     \end{exampleblock}
@@ -176,10 +188,10 @@
       template< typename T>
       concept StreamableAndComparableNumber = requires( T v1, T v2 )
        {
-        requires std::integral<T> || std::floating_point<T> ;
-        std::cout<<v1<<v2 ;
-        { equal(v1,v2) } -> std::convertible_to<bool> ;
-       } ;
+        requires std::integral<T> || std::floating_point<T>;
+        std::cout<<v1<<v2;
+        { equal(v1,v2) } -> std::convertible_to<bool>;
+       };
       \end{cppcode*}
     \end{exampleblock}
 \end{frame}
