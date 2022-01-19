@@ -184,23 +184,38 @@
 
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{noexcept}
-  \begin{block}{noexcept}
+  \frametitlecpp[11]{noexcept specifier}
+  \begin{block}{}
     \begin{itemize}
-      \item specifying the \textit{noexcept} specifier states that a function is guaranteed to not throw an exception
-      \begin{cppcode*}{fontsize=\scriptsize,gobble=2,linenos=false}
+      \item giving the \textit{noexcept} specifier states that a function is guaranteed to not throw an exception
+      \begin{cppcode*}{fontsize=\footnotesize,gobble=2,linenos=false}
         int f() noexcept;
       \end{cppcode*}
       \begin{itemize}
         \item either no exceptions will be thrown or they are handled internally
         \item checked at compile time, so it allows the compiler to optimise around that knowledge
       \end{itemize}
-      \item \textit{noexcept(expression)} specifier evaluates the expression and, if \textit{true}, the function won't throw
-        \begin{cppcode*}{fontsize=\scriptsize,gobble=2,linenos=false}
+      \item \textit{noexcept(expression)} specifier evaluates the expression and, if \textit{true}, the function it applied to guarantees it won't throw
+        \begin{cppcode*}{fontsize=\footnotesize,gobble=2,linenos=false}
           int safe_if_long_is_8_bytes() noexcept(sizeof(long)==8);
         \end{cppcode*}
       \item Use \textit{noexcept} on leaf functions where you can be sure of the behaviour
       \item Note that since C++11 destructors are \textit{noexcept} - never throw from them
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{noexcept operator}
+  \begin{block}{}
+    \begin{itemize}
+      \item the operator \textit{noexcept(expression)} performs a compile time check to know whether an expression can launch exceptions
+      \item it returns a bool, which is \textit{true} if no exceptions will be emitted
+        \begin{cppcode*}{fontsize=\footnotesize,gobble=2, linenos=false}
+          constexpr bool callCannotThrow = noexcept(f());
+          if constexpr (callCannotThrow) { ... }
+        \end{cppcode*}
     \end{itemize}
   \end{block}
 \end{frame}
