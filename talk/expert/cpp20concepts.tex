@@ -32,13 +32,12 @@
     \end{cppcode*}
     \tiny
     \begin{verbatim}
-main.cpp:10:8: error: no matching function for call to 'equal(int, int)'
-main.cpp:5:6: note: candidate: 'template<class T, std::enable_if_t<is_floating_point_v<T> >* <anonymous> > bool equal(T, T)'
-main.cpp:5:6: note:   template argument deduction/substitution failed:
-In file included from main.cpp:1:
-/usr/local/include/c++/11.2.0/type_traits: In substitution of 'template<bool _Cond, class _Tp> using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp = void]':
-main.cpp:4:72:   required from here
-/usr/local/include/c++/11.2.0/type_traits:2514:11: error: no type named 'type' in 'struct std::enable_if<false, void>'
+main.cpp:10: error: no matching function for call to 'equal(int, int)'
+candidate: 'template<class T, std::enable_if_t<is_floating_point_v<T> >* <anonymous> > bool equal(T, T)'
+template argument deduction/substitution failed:
+In substitution of 'template<bool _Cond, class _Tp>
+using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp = void]':
+error: no type named 'type' in 'struct std::enable_if<false, void>'
     \end{verbatim}
   \end{exampleblock}
 \end{frame}
@@ -60,14 +59,12 @@ main.cpp:4:72:   required from here
     \end{cppcode*}
     \tiny
     \begin{verbatim}
-main.cpp:11:8: error: no matching function for call to 'equal(int, int)'
-main.cpp:6:6: note: candidate: 'template<class T>  requires  is_floating_point_v<T> bool equal(T, T)'
-main.cpp:6:6: note:   template argument deduction/substitution failed:
-main.cpp:6:6: note: constraints not satisfied
-main.cpp: In substitution of 'template<class T>  requires  is_floating_point_v<T> bool equal(T, T) [with T = int]':
-main.cpp:11:8:   required from here
-main.cpp:6:6:   required by the constraints of 'template<class T>  requires  is_floating_point_v<T> bool equal(T, T)'
-main.cpp:5:16: note: the expression 'is_floating_point_v<T> [with T = int]' evaluated to 'false'
+main.cpp:11: error: no matching function for call to 'equal(int, int)'
+candidate: 'template<class T>  requires  is_floating_point_v<T> bool equal(T, T)'
+template argument deduction/substitution failed:
+constraints not satisfied
+In substitution of 'template<class T>
+the expression 'is_floating_point_v<T> [with T = int]' evaluated to 'false'
     \end{verbatim}
   \end{exampleblock}
 \end{frame}
