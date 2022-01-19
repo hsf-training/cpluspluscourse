@@ -30,6 +30,35 @@
   \end{multicols}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Function default arguments}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2}
+      // must be the trailing
+      // argument
+      int add(int a,
+              int b = 2) {
+        return a + b;
+      }
+      // add(1) == 3
+      // add(3,4) == 7
+
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=2,firstnumber=11}
+      // multiple default
+      // arguments are possible
+      int add(int base = 2,
+              int exp = 2) {
+        return a + b;
+      }
+      // add() == 4
+      // add(3) == 5
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+
 \Scontents*[store-cmd=code_bigStruct]{
 struct BigStruct {...};
 BigStruct s;
