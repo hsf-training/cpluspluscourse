@@ -30,20 +30,18 @@
 
     ...equal(10,5+5)...
     \end{cppcode*}
+    \tiny
     \begin{verbatim}
-      main.cpp:10:8: error: no matching function for call to 'equal(int, int)'
-      10 |   equal(10,5+5) ;
-         |   ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
-      main.cpp:5:6: note: candidate: 'template<class T, std::enable_if_t<is_floating_point_v<T> >* <anonymous> > bool equal(T, T)'
-       5 | bool equal( T e1, T e2 )
-         |      ^~~~~
-      main.cpp:5:6: note:   template argument deduction/substitution failed:
-      In file included from main.cpp:1:
-      /usr/local/include/c++/11.2.0/type_traits: In substitution of 'template<bool _Cond, class _Tp> using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp = void]':
-      main.cpp:4:72:   required from here
-      /usr/local/include/c++/11.2.0/type_traits:2514:11: error: no type named 'type' in 'struct std::enable_if<false, void>'
-    2514 |     using enable_if_t = typename enable_if<_Cond, _Tp>::type;
-         |           ^~~~~~~~~~~
+main.cpp:10:8: error: no matching function for call to 'equal(int, int)'
+|   equal(10,5+5) ;
+main.cpp:5:6: note: candidate: 'template<class T, std::enable_if_t<is_floating_point_v<T> >* <anonymous> > bool equal(T, T)'
+| bool equal( T e1, T e2 )
+main.cpp:5:6: note:   template argument deduction/substitution failed:
+In file included from main.cpp:1:
+/usr/local/include/c++/11.2.0/type_traits: In substitution of 'template<bool _Cond, class _Tp> using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp = void]':
+main.cpp:4:72:   required from here
+/usr/local/include/c++/11.2.0/type_traits:2514:11: error: no type named 'type' in 'struct std::enable_if<false, void>'
+|     using enable_if_t = typename enable_if<_Cond, _Tp>::type;
     \end{verbatim}
   \end{exampleblock}
 \end{frame}
