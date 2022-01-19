@@ -79,18 +79,15 @@
 
   \begin{exampleblock}{Code example}
     \begin{cppcode*}{}
-      using option_t = std::variant<int,float,string>;
-      option_t opt; // default constructs first type
-      std::variant<std::monostate, NonDefault, int> myvar;
-      opt = 100;
-      int ival = std::get<int>(opt);//also std::get<0>(opt)
+      std::variant<int,float,string> opt{100}; // Now holding int
+      int ival = std::get<int>(opt); //also std::get<0>(opt)
       try {
         float val = std::get<float>(opt) // will throw...
       } catch (const std::bad_variant_access& ex) {...}
 
-      // Much easier with get_if; returns a ptr or null
-      if (const float* val = std::get_if<float>(&opt))
-          std::cout<<"option type is f64, value="<< val;
+      // Or check the type before accessing it
+      if (std::holds_alternative<float>(opt))
+          std::cout<<"option type is fp32, value="<< std::get<float>(opt);
     \end{cppcode*}
   \end{exampleblock}
 
