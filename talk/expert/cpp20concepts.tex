@@ -46,7 +46,7 @@ error: no type named 'type' in 'struct std::enable_if<false, void>'
   \frametitlecpp[20]{Requirements and concepts}
   \begin{block}{Basic requirements}
     \begin{itemize}
-      \item The keyword {\it requires} let us define various kinds of requirements.
+      \item The keyword {\it requires} let us define various constraints.
     \end{itemize}
   \end{block}
   \begin{exampleblock}{With {\it requires}}
@@ -72,13 +72,13 @@ the expression 'is_floating_point_v<T> [with T = int]' evaluated to 'false'
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{Requirements and concepts}
-  \begin{block}{Basic requirements}
+  \begin{block}{Multiple requirements and overload resolution}
     \begin{itemize}
       \item In the example below, we add a requirement about the existence of a strictly positive {\it epsilon}.
       \item Overload resolution considers the second function as a better match when the requirements are fulfilled.
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{With {\it requires}}
+  \begin{exampleblock}{With several competing templates}
     \scriptsize
     \begin{cppcode*}{}
     template< typename T>
