@@ -26,7 +26,7 @@
     template
     < typename T, std::enable_if_t<!std::is_floating_point_v<T>> * =nullptr >
     bool equal( T e1, T e2 )
-    { return (e1==e2) ; }
+    { return (e1==e2); }
 
     template
     < typename T, std::enable_if_t<std::is_floating_point_v<T>> * =nullptr >
