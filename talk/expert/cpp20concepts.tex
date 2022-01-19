@@ -33,7 +33,7 @@
     \tiny
     \begin{verbatim}
 main.cpp:10: error: no matching function for call to 'equal(int, int)'
-candidate: 'template<class T, std::enable_if_t<is_floating_point_v<T> >* <anonymous> > bool equal(T, T)'
+candidate: 'template<class T, std::enable_if_t<is_floating_point_v<T>>*> bool equal(T, T)'
 template argument deduction/substitution failed:
 In substitution of 'template<bool _Cond, class _Tp>
 using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp = void]':
@@ -56,6 +56,8 @@ error: no type named 'type' in 'struct std::enable_if<false, void>'
     requires (std::is_floating_point_v<T>)
     bool equal( T e1, T e2 )
     { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
+
+    ...equal(10,5+5)...
     \end{cppcode*}
     \tiny
     \begin{verbatim}
@@ -63,7 +65,6 @@ main.cpp:11: error: no matching function for call to 'equal(int, int)'
 candidate: 'template<class T>  requires  is_floating_point_v<T> bool equal(T, T)'
 template argument deduction/substitution failed:
 constraints not satisfied
-In substitution of 'template<class T>
 the expression 'is_floating_point_v<T> [with T = int]' evaluated to 'false'
     \end{verbatim}
   \end{exampleblock}
