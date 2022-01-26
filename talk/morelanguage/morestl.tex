@@ -1,69 +1,50 @@
 \subsection{More STL}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{Some new STL types}
-  \begin{block}{\texttt{std::optional}}
+  \frametitlecpp[17]{\texttt{std::string\_view}}
+  \begin{block}{Non owning view of a continuous char sequence}
     \begin{itemize}
-    \item manages an optional contained value
-    \item contextually converted to bool
-    \item useful for the return value of a function that may fail
+    \item Doesn't allocate memory
+    \item Similar interface to \texttt{std::string}
+    \item Easy to copy, faster for some calls eg. \texttt{substr} (O(1) vs O(n))
+    \item The data pointed has to outlives the \texttt{string\_view}
     \end{itemize}
   \end{block}
-  \begin{block}{\texttt{std::any}}
-    \begin{itemize}
-    \item a type-safe container for single values of any type
-    \item the \texttt{any\_cast} function provides type-safe access
-    \item and throws \texttt{std::bad\_any\_cast} for bad access
-    \end{itemize}
-  \end{block}
-  \begin{block}{\texttt{std::variant}}
-    \begin{itemize}
-    \item a type-safe union
-    \item \texttt{std::get} reads the value of the variant
-    \item and throws \texttt{std::bad\_variant\_access} for bad accesses
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlecpp[17]{Some new STL types \texttt{std::string\_view}}
-    \begin{itemize}
-    \item Non owning view of a continuous char sequence
-    \item Doesn't allocate memory, similar interface to std::string
-    \item Easy to copy, faster for some calls eg. substr (O(1) vs O(n))
-    \item Please ensure that the string pointed to outlives the string\_view!
-    \end{itemize}
-    \begin{exampleblock}{Some example uses}
-      \begin{cppcode*}{}
-        std::string_view sv {"Some example"};
-        auto first = sv.substr(0,sv.find_first_of(" "));
-        constexpr std::string_view location {"Geneva,CH"};
-        std::string some_string {"foo bar"};
-        std::string_view sv_str(some_string);
-        char foo[3] = {'f','o','o'};
-        std::string_view carr(foo, std::size(foo));
-      \end{cppcode*}
-    \end{exampleblock}
+  \begin{exampleblock}{Some example uses}
+    \begin{cppcode*}{}
+      constexpr std::string_view sv {"Some example"};
+      auto first = sv.substr(0, sv.find_first_of(" "));
+      std::string some_string {"foo bar"};
+      std::string_view sv_str(some_string);
+      char foo[3] = {'f','o','o'};
+      std::string_view carr(foo, std::size(foo));
+    \end{cppcode*}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{std::optional}
-  \begin{itemize}
-  \item Indicates the absence of a value with \texttt{std::nullopt}
-  \item Has value semantics (Copy, Move, Compare, stack alloc.)
-  \item Useful in place of pointers where value semantics are intuitive
-  \end{itemize}
+  \begin{block}{Manages an optional contained value}
+    \begin{itemize}
+    \item Contextually converts to bool telling if it contains something
+    \item Has value semantics (Copy, Move, Compare, stack alloc.)
+    \item Useful for
+      \begin{itemize}
+        \item the return value of a function that may fail
+        \item Useful in place of pointers where value semantics are intuitive
+      \end{itemize}
+    \end{itemize}
+  \end{block}
   \begin{exampleblock}{Code example}
+    \small
     \begin{cppcode*}{}
-      std::optional<Phone> parse_phone(string_view in) {
+      std::optional<Phone> parse_phone( std::string_view in) {
         if (is_valid_phone(in)) {
-          return in;// equiv. to optional<Phone>(in);
-        }
-        return {}; // default constructs std::nullopt
+          return in;      // equiv. to optional<Phone>(in);
+        } else return {}; // default constructs std::nullopt
       }
-      ...
-      auto v = parse_phone(get_input());
-      if (v) {  // alternatively v.is_valid()
+      auto v = parse_phone(...);
+      if (v) {            // alternatively v.is_valid()
         process_phone(v.value()); // *v is equivalent
       }
     \end{cppcode*}
@@ -72,29 +53,41 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{std::variant}
-  \begin{itemize}
-  \item Expresses intent that variable holds one of the types
-  \item Makes it easy to implement visitor pattern
-  \end{itemize}
-
+  \begin{block}{a type-safe union}
+    \begin{itemize}
+    \item Allows the variable to hold any of the given types
+    \item \texttt{std::get} reads the value of the variant
+    \item and throws \texttt{std::bad\_variant\_access} for bad accesses
+    \item Makes it easy to implement visitor pattern
+    \end{itemize}
+  \end{block}
   \begin{exampleblock}{Code example}
+    \small
     \begin{cppcode*}{}
-      std::variant<int,float,string> opt{100}; // Now holding int
-      int ival = std::get<int>(opt); //also std::get<0>(opt)
+      std::variant<int, float, string> opt{100}; // holding int
+      int ival = std::get<int>(opt); // or std::get<0>(opt)
       try {
-        float val = std::get<float>(opt) // will throw...
-      } catch (const std::bad_variant_access& ex) {...}
+        float val = std::get<float>(opt) // will throw
+      } catch (std::bad_variant_access const& ex) {...}
 
       // Or check the type before accessing it
       if (std::holds_alternative<float>(opt))
-          std::cout<<"option type is fp32, value="<< std::get<float>(opt);
+          std::cout << std::get<float>(opt);
     \end{cppcode*}
   \end{exampleblock}
 
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{Visiting with std::variant}
+  \frametitlecpp[17]{std::variant and the visitor pattern}
+  \begin{block}{std::visit}
+    \begin{itemize}
+    \item Applies a ``visitor'' to given variant
+    \item A visitor is a callable able to handle the different types
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Practically}
+    \small
     \begin{cppcode*}{}
       using option_t = std::variant<int,float,string>;
       struct Visitor {
@@ -104,37 +97,37 @@
       };
       void print_opt(option_t opt) {
         std::visit(Visitor{}, opt);
+        std::cout << "\n";
       }
-      ...
       print_opt(100); print_opt(3.14f); print_opt("example");
     \end{cppcode*}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{std::any}
-  \begin{itemize}
-  \item Type safe alternative to void*
-  \item Useful for passing arbitrary values across interfaces that may not know
-    all the types
-  \item \texttt{any\_cast} will only match concrete types, inheritance hierarchy
-    is irrelevant
-  \end{itemize}
-
+  \begin{block}{a type-safe container for single values of any type}
+    \begin{itemize}
+    \item Allows a variable to hold any type (say bye to \texttt{void*})
+    \item \texttt{std::any\_cast} reads the internal value
+    \item and throws \texttt{std::bad\_any\_cast} for bad accesses
+    \item \texttt{any\_cast} will only match concrete types, ignoring inheritance
+    \end{itemize}
+  \end{block}
   \begin{exampleblock}{Code example}
+    \small
     \begin{cppcode*}{}
-      class Orc: public Monster {...};
-
-      void Player::attack(const std::any& e) {
-        if (Monster *m = std::any_cast<Monster>(&e)) {
-          m->take_hit(this->damage);
-        } else if (Orc *o = std::any_cast<Orc>(&e)) {
-          o->take_hit(this->damage*0.5);
-        } else if (Cat *c = std::any_cast<Cat>(&e)) {//No!
-          c->pet();
-        } ....}
+      std::any val{100};          // holding int
+      val = std::string("hello"); // holding string
+      std::string s = std::any_cast<std::string>(val);
+      try {
+        float val = std::any_cast<int>(val); // will throw
+      } catch (std::bad_any_cast const& ex) {...}
+      // Or check the type before accessing it
+      if (val.type() == typeid(int))
+        std::cout << std::any_cast<int>(val);
     \end{cppcode*}
   \end{exampleblock}
-
 \end{frame}
 
 \begin{frame}[fragile]
@@ -190,23 +183,28 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{Compile-time branches with {\it if constexpr}}
-  It requires a constant expression as condition,
-  and is evaluated at compile time. Key benefit: the discarded
-  branch can contain invalid code for the instantiated template arguments.
-  \begin{cppcode*}{}
-    template <typename Iterator, typename Dist>
-    void advance( Iterator & i, Dist n) {
-      using rtag = std::random_access_iterator_tag ;
-      using itraits = std::iterator_traits<Iterator> ;
-      using icat = typename itraits::iterator_category ;
-      if constexpr (std::is_same_v<icat,rtag>) {
-        i += n ;
+  \frametitlecpp[17]{compile-time branches}
+  \begin{block}{{\it if constexpr}}
+    \begin{itemize}
+    \item takes a \texttt{constexpr} expression as condition
+    \item evaluates at compile time
+    \item key benefit : the discarded branch can contain invalid code
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example code}
+    \small
+    \begin{cppcode*}{}
+      template <typename T>
+      auto remove_ptr(T t) {
+        if constexpr (std::is_pointer_v<T>) {
+          return *t;
+        } else {
+          return t;
+        }
       }
-      else {
-        if (n >= 0) while (n--) ++i ;
-        else while (n++) --i ;
-      }
-    }
-  \end{cppcode*}
+      int i = ...; int *j = ...;
+      int r = remove_ptr(i);  // equivalent to i
+      int q = remove_ptr(j);  // equivalent to *j
+    \end{cppcode*}
+  \end{exampleblock}
 \end{frame}
