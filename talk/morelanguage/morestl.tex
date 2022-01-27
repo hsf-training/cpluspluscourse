@@ -121,7 +121,7 @@
       val = std::string("hello"); // holding string
       std::string s = std::any_cast<std::string>(val);
       try {
-        float val = std::any_cast<int>(val); // will throw
+        int val = std::any_cast<int>(val); // will throw
       } catch (std::bad_any_cast const& ex) {...}
       // Or check the type before accessing it
       if (val.type() == typeid(int))
