@@ -1,6 +1,6 @@
 all: C++Course.pdf
 
-%.pdf: *.tex
+%.pdf: *.tex **/*.tex
 	pdflatex -shell-escape C++Course.tex
 	pdflatex -shell-escape C++Course.tex
 
