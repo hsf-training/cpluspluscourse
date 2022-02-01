@@ -57,15 +57,19 @@ Day 3
 
 Exercises of day 3 are special as they will have been played (quickly) during the course. But people should replay them and discover the tools by themselves.
 
-### Compiler / `polymorphism`
+### Compiler
 
-This reuses the polymorphism exercise.
+Based on the functions exercise, we are replaying the compilation steps manually.
 
 A "break the ice" exercise here would be to ask people to do the first step (preprocessor) and make a poll on how many lines of C++ are present in the output. It will vary depending on setups, versions, OS, etc...
 
 Then the important part is to play with nm and the -C option of C++filt to be able to decode symbols, find them and thus address a build error that mentions missing symbols.
 
 Another important bit is ldd and inspecting library dependencies.
+
+Notes:
+- `--std=` >= c++11 is needed to initialise the structs.
+- The Makefile skips the generation of the object file for functions.cpp. This might surprise some people.
 
 ### `debug`
 
