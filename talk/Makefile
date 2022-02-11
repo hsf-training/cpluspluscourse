@@ -1,10 +1,6 @@
-all: compile2
-fast: compile
+all: C++Course.pdf
 
-compile: *.tex
-	pdflatex -shell-escape C++Course.tex
-
-compile2: *.tex
+%.pdf: *.tex **/*.tex
 	pdflatex -shell-escape C++Course.tex
 	pdflatex -shell-escape C++Course.tex
 

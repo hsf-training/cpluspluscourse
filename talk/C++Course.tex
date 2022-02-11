@@ -6,6 +6,9 @@
 
 \input{setup}
 
+\newboolean{onlybasics}
+\setboolean{onlybasics}{false}
+
 \begin{document}
 
 \showboxdepth=\maxdimen
@@ -24,7 +27,7 @@
     \item It is not complete at all (would need 3 weeks...)
       \begin{itemize}
       \item although is it already too long for the time we have
-      \item \inserttotalframenumber{} slides, \insertpresentationendpage{} pages, 21 exercises...
+      \item \inserttotalframenumber{} slides, \insertpresentationendpage{} pages, 10s of exercises...
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -62,12 +65,48 @@
 
 \include{introduction/introduction}
 \include{basicconcepts/basicconcepts}
-\include{objectorientation/objectorientation}
-\include{morelanguage/morelanguage}
-\include{expert/expert}
-\include{tools/tools}
-\include{concurrency/concurrency}
-\include{python/python}
+
+% basic version has subset of tools at this stage
+\ifthenelse{\boolean{onlybasics}}{
+  \section[Tool]{Useful tools}
+  \input{tools/editors}
+  \input{tools/vcs}
+  \input{tools/formatting}
+  \input{tools/compiling}
+  \input{tools/debugging}
+}{}
+
+% basic version only keeps a subset of these 2 chapters
+\ifthenelse{\boolean{onlybasics}}{
+  \section[OO]{Object orientation (OO)}
+  \input{objectorientation/objectsclasses}
+  \input{objectorientation/inheritance}
+  \input{objectorientation/constructors}
+  \input{objectorientation/static}
+  \input{objectorientation/allocations}
+  \input{objectorientation/advancedoo}
+  \input{objectorientation/operators}
+  \input{objectorientation/functors}
+
+  \section[More]{Core modern \cpp}
+  \input{morelanguage/constness}
+  \input{morelanguage/exceptions}
+  \input{morelanguage/templates}
+  \input{morelanguage/stl}
+  \input{morelanguage/lambda}
+  \input{morelanguage/raii}
+} {
+  \include{objectorientation/objectorientation}
+  \include{morelanguage/morelanguage}
+}
+
+% do not include these chapters in basic version
+\ifthenelse{\boolean{onlybasics}}{}{
+  \include{expert/expert}
+  \include{tools/tools}
+  \include{concurrency/concurrency}
+  \include{python/python}
+}
 
 \begin{frame}
   \frametitle{This is the end}
