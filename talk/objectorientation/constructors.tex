@@ -4,8 +4,8 @@
   \frametitlecpp[98]{Class Constructors and Destructors}
   \begin{block}{Concept}
     \begin{itemize}
-    \item special functions building/destroying an object
-    \item a class can have several constructors
+    \item special functions called when building/destroying an object
+    \item a class can have several constructors, but only one destructor
     \item the constructors have the same name as the class
     \item same for the destructor with a leading $\sim$
     \end{itemize}
@@ -59,7 +59,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Constructor and inheritance}
+  \frametitlecpp[98]{Constructors and inheritance}
   \begin{cppcode}
     struct MyFirstClass {
       int a;
@@ -84,9 +84,9 @@
   \begin{block}{Concept}
     \begin{itemize}
     \item special constructor called for replicating an object
-    \item takes a single parameter of type const ref to class
-    \item will be implemented by the compiler if not provided
-    \item in order to forbid copy, use {\texttt delete} (coming in 2 slides)
+    \item takes a single parameter of type \mintinline{cpp}{const &} to class
+    \item provided by the compiler if not declared by the user
+    \item in order to forbid copy, use \mintinline{cpp}{= delete} (see next slides)
       \begin{itemize}
       \item or private copy constructor with no implementation in \cpp98
       \end{itemize}
@@ -100,9 +100,9 @@
     };
   \end{cppcode}
   \pause
-  \begin{exampleblock}{The rule of 3/5 (\cpp98/\cpp11 and newer)}
+  \begin{exampleblock}{The rule of 3/5/0 (\cpp98/\cpp11 and newer) - {\color{blue!50!white} \href{https://en.cppreference.com/w/cpp/language/rule_of_three}{cppreference}}}
     \begin{itemize}
-    \item if a class has a destructor, a copy/move constructor or a (move) assignment operator, it should have all three/five
+    \item if a class has a destructor, a copy/move constructor or a copy/move assignment operator, it should have all three/five. strive for having none.
     \end{itemize}
   \end{exampleblock}
 \end{frame}
@@ -122,24 +122,24 @@
     }
     Vector::Vector(const Vector &other) : len(other.len) {
       data = new int[len];
-      memcpy(data, other.data, len);
+      std::copy(other.data, other.data + len, data);
     }
     Vector::~Vector() { delete[] data; }
   \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Default Constructor}
+  \frametitlecpp[11]{Defaulted Constructor}
   \begin{block}{Idea}
     \begin{itemize}
-    \item avoid writing explicitly default constructors
-    \item by declaring them as default
+    \item avoid empty default constructors like \mintinline{cpp}{ClassName() {}}
+    \item declare them as \mintinline{cpp}{= default}
     \end{itemize}
   \end{block}
   \begin{block}{Details}
     \begin{itemize}
     \item when no user defined constructor, a default is provided
-    \item any user defined constructor disables default ones
+    \item any user-defined constructor disables the default one
     \item but they can be enforced
     \item rule can be more subtle depending on members
     \end{itemize}
@@ -153,7 +153,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Constructor delegation}
+  \frametitlecpp[11]{Delegating constructor}
   \begin{block}{Idea}
     \begin{itemize}
     \item avoid replication of code in several constructors
@@ -243,7 +243,7 @@
       A a{};          // A::A()
       A a;            // A::A()
       A a = {1,2};    // A::A(int, int)
-      B b = {1, 2.3}; // list initialization
+      B b = {1, 2.3}; // aggregate initialization
     \end{cppcode*}
   \end{block}
 \end{frame}

@@ -32,7 +32,7 @@
         int b; \\
         int sum();
       }
-      \draw[very thick,->] (MySecondClass)--(MyFirstClass);
+      \draw[very thick,-Triangle] (MySecondClass)--(MyFirstClass);
     \end{tikzpicture}
     \vfill \null
   \end{multicols}
@@ -151,8 +151,8 @@
       \classbox[below of=MySecondClass,node distance=1.75cm]{MyThirdClass}{
         void funcThird();
       }
-      \draw[very thick,->] (MySecondClass)--(MyFirstClass) node[midway,right] {public};
-      \draw[very thick,->] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
+      \draw[very thick,-Triangle] (MySecondClass)--(MyFirstClass) node[midway,right] {public};
+      \draw[very thick,-Triangle] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
     \end{tikzpicture}
     \columnbreak
     \begin{cppcode*}{gobble=2}
@@ -193,8 +193,8 @@
       \classbox[below of=MySecondClass,node distance=1.75cm]{MyThirdClass}{
         void funcThird();
       }
-      \draw[very thick,->] (MySecondClass)--(MyFirstClass) node[midway,right] {protected};
-      \draw[very thick,->] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
+      \draw[very thick,-Triangle] (MySecondClass)--(MyFirstClass) node[midway,right] {protected};
+      \draw[very thick,-Triangle] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
     \end{tikzpicture}
     \columnbreak
     \begin{cppcode*}{gobble=2}
@@ -235,8 +235,8 @@
       \classbox[below of=MySecondClass,node distance=1.75cm]{MyThirdClass}{
         void funcThird();
       }
-      \draw[very thick,->] (MySecondClass)--(MyFirstClass) node[midway,right] {private};
-      \draw[very thick,->] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
+      \draw[very thick,-Triangle] (MySecondClass)--(MyFirstClass) node[midway,right] {private};
+      \draw[very thick,-Triangle] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
     \end{tikzpicture}
     \columnbreak
     \begin{cppcode*}{gobble=2}

@@ -4,7 +4,7 @@
   \frametitlecpp[98]{Functors}
   \begin{block}{Concept}
     \begin{itemize}
-    \item a class that implements the () operator
+    \item a class that implements \mintinline{cpp}{operator()}
     \item allows to use objects in place of functions
     \item and as objects have constructors, allow to construct functions
     \end{itemize}
@@ -36,13 +36,13 @@
     struct BinaryFunction {
       virtual double operator() (double a, double b) = 0;
     };
-    struct Add : public BinaryFunction {
-      double operator() (double a, double b) override
-      { return a+b; }
-    };
     double binary_op(double a, double b, BinaryFunction &func) {
       return func(a, b);
     }
+    struct Add : BinaryFunction {
+      double operator() (double a, double b) override
+      { return a+b; }
+    };
     Add addfunc;
     double c = binary_op(a, b, addfunc);
   \end{cppcode}
