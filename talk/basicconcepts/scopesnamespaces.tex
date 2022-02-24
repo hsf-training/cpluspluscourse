@@ -8,7 +8,7 @@
     \begin{itemize}
     \item simple block of code, within \mintinline{cpp}{{}}
     \item function, class, namespace
-    \item translation unit for global declarations
+    \item translation unit (.cpp file + all includes) for global declarations
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
@@ -31,12 +31,12 @@ int a = 1;
 // b[1] = a + 1;
 }
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Scope and lifetime of resources}
-  \begin{block}{Resource life time}
+  \frametitlecpp[98]{Scope and lifetime of variables}
+  \begin{block}{Variable life time}
     \begin{itemize}
-      \item Resources are allocated when declared
-      \item Resources are freed at the end of a scope
-      \item Good practice: initialise resources when allocating!
+      \item Variables are allocated when defined
+      \item Variables are freed at the end of a scope
+      \item Good practice: initialise variables when allocating them!
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
@@ -103,24 +103,25 @@ int a = 1;
           int a; // no clash
         }
       }
-      int f() {
+      void f() {
         n::a = 2;
       }
     \end{cppcode*}
     \columnbreak
     \begin{cppcode*}{gobble=2,firstnumber=14}
       namespace p {
-        int f() {
+        void f() {
           p::a = 2;
           a = 2;  //same as above
+          ::a = 3;
           p::inner::a = 4;
           inner::a = 4;
           n::a = 5;
         }
       }
       using namespace p::inner;
-      int g() {
-        a = 3; // using p::inner
+      void g() {
+        a = 3; // error: ambiguous
       }
   \end{cppcode*}
   \end{multicols}

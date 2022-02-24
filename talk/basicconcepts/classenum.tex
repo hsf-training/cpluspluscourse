@@ -1,4 +1,4 @@
-\subsection[Compound]{Compound data types}
+\subsection[Class/Enum]{Class and enum types}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{struct}
@@ -125,12 +125,12 @@
     \begin{cppcode*}{}
       enum VType { Bus, Car }; enum Color { Red, Blue };
       VType t = Bus;
-      if (t == Red) {  // We do enter !  }
+      if (t == Red) { /* We do enter */ }
       int a = 5 * Car; // Ok, a = 5
 
       enum class VT { Bus, Car }; enum class Col { Red, Blue };
       VT t = VT::Bus;
-      if (t == Col::Red) { // Compiler error }
+      if (t == Col::Red) { /* Compiler error */ }
       int a = t * 5;       // Compiler error
     \end{cppcode*}
   \end{exampleblock}
