@@ -1,0 +1,42 @@
+\subsection[prof]{Profiling}
+
+\begin{frame}[fragile]
+  \frametitle{Profiling}
+  \begin{block}{Conceptually}
+    \begin{itemize}
+      \item take a measurement of a performance aspect of a program
+      \begin{itemize}
+        \item where in my code is most of the time spent?
+        \item is my program compute or memory bound?
+        \item does my program make good use of the cache?
+        \item is my program using all cores most of the time?
+        \item how often are threads blocked and why?
+        \item which API calls are made and in which order?
+        \item ...
+      \end{itemize}
+      \item the goal is to find performance bottlenecks
+      \item is usually done on a compiled program, not on source code
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{perf, VTune and uProf}
+  \begin{block}{perf}
+    \begin{itemize}
+      \item perf is a powerful command line profiling tool for linux
+      \item compile with \mintinline{bash}{-g -fno-omit-frame-pointer}
+      \item \mintinline{bash}{perf stat -d <prg>} gathers performance statistics while running \mintinline{bash}{<prg>}
+      \item \mintinline{bash}{perf record -g <prg>} starts profiling \mintinline{bash}{<prg>}
+      \item \mintinline{bash}{perf report} displays a report from the last profile
+      \item More information in \href{https://perf.wiki.kernel.org/index.php/Main_Page}{this wiki}, \href{https://www.brendangregg.com/linuxperf.html}{this website} or \href{https://indico.cern.ch/event/980497/contributions/4130271/attachments/2161581/3647235/linux-systems-performance.pdf}{this talk}.
+    \end{itemize}
+  \end{block}
+  \begin{block}{Intel VTune and AMD uProf}
+    \begin{itemize}
+      \item Graphical profilers from CPU vendors with rich features
+      \item Needs vendor's CPU for full experience
+      \item More information on \href{https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html}{Intel's website} and \href{https://developer.amd.com/amd-uprof/}{AMD's website}
+    \end{itemize}
+  \end{block}
+\end{frame}
