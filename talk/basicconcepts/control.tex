@@ -1,15 +1,15 @@
-\subsection[Control]{Control instructions}
+\subsection[Control]{Control structures}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control instructions : if}
+  \frametitlecpp[98]{Control structures : if}
   \begin{block}{if syntax}
     \begin{cppcode*}{}
       if (condition1) {
-        Instructions1;
+        Statements1;
       } else if (condition2) {
-        Instructions2;
+        Statements2;
       } else {
-        Instructions3;
+        Statements3;
       }
     \end{cppcode*}
     \begin{itemize}
@@ -21,7 +21,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control instructions : if}
+  \frametitlecpp[98]{Control structures : if}
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{}
       int collatz(int a) {
@@ -41,7 +41,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control instructions : conditional operator}
+  \frametitlecpp[98]{Control structures : conditional operator}
   \begin{block}{Syntax}
     \begin{cppcode*}{linenos=false}
       test ? expression1 : expression2;
@@ -68,13 +68,13 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control instructions : switch}
+  \frametitlecpp[98]{Control structures : switch}
   \begin{block}{Syntax}
     \begin{cppcode*}{gobble=2}
       switch(identifier) {
-        case c1 : instructions1; break;
-        case c2 : instructions2; break;
-        case c3 : instructions3; break;
+        case c1 : statements1; break;
+        case c2 : statements2; break;
+        case c3 : statements3; break;
         ...
         default : instructiond; break;
       }
@@ -93,7 +93,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control instructions : switch}
+  \frametitlecpp[98]{Control structures : switch}
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{}
       enum class Lang { FRENCH, GERMAN, ENGLISH, OTHER };
@@ -169,11 +169,11 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control instructions : for loop}
+  \frametitlecpp[98]{Control structures : for loop}
   \begin{block}{for loop syntax}
     \begin{cppcode*}{}
       for(initializations; condition; increments) {
-        instructions;
+        statements;
       }
     \end{cppcode*}
     \vspace{-0.2cm}
@@ -222,14 +222,14 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control instructions : while loop}
+  \frametitlecpp[98]{Control structures : while loop}
   \begin{block}{while loop syntax}
     \begin{cppcode*}{}
       while(condition) {
-        instructions;
+        statements;
       }
       do {
-        Instructions;
+        statements;
       } while(condition);
     \end{cppcode*}
     \vspace{-0.3cm}
@@ -248,7 +248,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control instructions : commands}
+  \frametitlecpp[98]{Control structures : commands}
   \begin{block}{control commands}
     \begin{description}
     \item[break] goes out of the loop

@@ -5,7 +5,7 @@
   \begin{block}{Binary \& Assignment Operators}
     \begin{cppcode*}{}
       int i = 1 + 4 - 2;  // 3
-      i *= 3;             // 9
+      i *= 3;             // 9, short for: i = i * 3;
       i /= 2;             // 4
       i = 23 % i;         // modulo => 3
     \end{cppcode*}
@@ -63,5 +63,6 @@
     \begin{cppcode*}{linenos=false}
       c &= 1+(++b)|(a--)*4%5^7; // ???
     \end{cppcode*}
+    Details can be found on {\color{blue!50!white} \href{https://en.cppreference.com/w/cpp/language/operator_precedence}{cppreference}}
   \end{block}
 \end{frame}
