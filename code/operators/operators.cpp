@@ -102,30 +102,3 @@ int main() {
   // * it usually suffices to implement operator< and operator== and derive the
   // other relational operators from them. C++20 will do this automatically.
 }
-
-// The final output of your program should be along these lines:
-// Three: 3/1
-// One third: 1/3
-// One third times two: 2/3
-// One third times two: 2/3
-// Three times one third: 1/1
-// Three times one third: 1/1
-// One third times two: 2/3
-// One third times one third: 1/9
-// One third times itself twice: 1/81
-// One third plus 2: 7/3
-// 2 plus one third: 7/3
-// One third plus two sixth: 2/3
-// One third plus one and added to itself: 8/3
-// One third == one third: true
-// One third != one forth: true
-// One third == two sixth: true
-// One third != three sixth: true
-// 1/3 < 1/3 : false
-// 1/4 < 1/3 : true
-// 1/3 <= 1/3: true
-// 1/3 <= 1/4: false
-// 1/3 > 1/3: false
-// 1/4 > 1/3: false
-// 1/3 >= 1/3: true
-// 1/3 >= 1/4: true
