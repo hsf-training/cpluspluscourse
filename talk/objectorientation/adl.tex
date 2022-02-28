@@ -17,7 +17,7 @@
       \end{itemize}
     \item unqualified lookup
       \begin{itemize}
-      \item here for \mintinline{cpp}{std}
+      \item here for \mintinline{cpp}{std} and \mintinline{cpp}{operator<<}
       \item name is looked for in a sequence of scopes until found
       \item remaining scopes are not examined
       \end{itemize}
@@ -30,17 +30,17 @@
   \begin{block}{Ordered list of scopes (simplified)}
     \begin{itemize}
     \item file (only for global level usage)
-    \item current namespace/block, parent namespace/block, etc...
-    \item current class if any, base class if any, etc...
-    \item for names used to the left of the () operator, Argument Dependent Lookup (ADL)
+    \item current namespace/block, enclosing namespaces/blocks, etc...
+    \item current class if any, base classes if any, etc...
+    \item for a call expression (e.g.\ \mintinline{cpp}{f(a, b)} or \mintinline{cpp}{a + b}), Argument Dependent Lookup (ADL)
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Argument Dependent Lookup (simplified)}
-    For each argument of a function call, the function name is also searched in:
+    To find a function name (including operators), the compiler also examines the arguments. For each argument, it searches:
     \begin{itemize}
-    \item the class of the argument's type if any
-    \item its direct and indirect base classes if any
-    \item the enclosing namespace of all these classes
+    \item class, if any
+    \item direct and indirect base classes, if any
+    \item enclosing namespace
     \end{itemize}
   \end{exampleblock}
 \end{frame}
@@ -112,20 +112,16 @@
       \begin{column}{.35\textwidth}
         Don't write :
         \begin{cppcode*}{gobble=6}
-          namespace N {
-            A a,b;
-            std::swap(a, b);
-          }
+          N::A a,b;
+          std::swap(a, b);
         \end{cppcode*}
       \end{column}
       \begin{column}{.35\textwidth}
         Prefer :
-        \begin{cppcode*}{gobble=6,firstnumber=5}
-          namespace N {
-            A a,b;
-            using std::swap;
-            swap(a, b);
-          }
+        \begin{cppcode*}{gobble=6,firstnumber=3}
+          N::A a,b;
+          using std::swap;
+          swap(a, b);
         \end{cppcode*}
       \end{column}
     \end{columns}
@@ -137,8 +133,9 @@
     \end{itemize}
     \begin{columns}
       \begin{column}{.7\textwidth}
-        \begin{cppcode*}{gobble = 6,firstnumber=10}
+        \begin{cppcode*}{gobble = 6,firstnumber=6}
           namespace N {
+            class A { ... };
             // optimized swap for A
             void swap(A&, A&);
           }

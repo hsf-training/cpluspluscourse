@@ -27,8 +27,8 @@
       \classbox{Drawable}{}
       \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{}
-      \draw[very thick,->] (Polygon) -- (Shape);
-      \draw[very thick,->] (Shape) -- (Drawable);
+      \draw[very thick,-Triangle] (Polygon) -- (Shape);
+      \draw[very thick,-Triangle] (Shape) -- (Drawable);
     \end{tikzpicture}
   \end{multicols}
 \end{frame}
@@ -61,8 +61,8 @@
       \classbox{Drawable}{}
       \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{}
-      \draw[very thick,->] (Polygon) -- (Shape) node[midway,right] {public};
-      \draw[very thick,->] (Shape) -- (Drawable) node[midway,right] {private};
+      \draw[very thick,-Triangle] (Polygon) -- (Shape) node[midway,right] {public};
+      \draw[very thick,-Triangle] (Shape) -- (Drawable) node[midway,right] {private};
     \end{tikzpicture}
   \end{multicols}
 \end{frame}
@@ -93,8 +93,8 @@
       \classbox[below of=Shape]{Polygon}{
         void draw();
       }
-      \draw[very thick,->] (Polygon) -- (Shape);
-      \draw[very thick,->] (Shape) -- (Drawable);
+      \draw[very thick,-Triangle] (Polygon) -- (Shape);
+      \draw[very thick,-Triangle] (Shape) -- (Drawable);
     \end{tikzpicture}
   \end{multicols}
 \end{frame}
@@ -128,8 +128,8 @@
       \classbox[below of=Shape]{Polygon}{
         \mintinline{cpp}{void draw();}
       }
-      \draw[very thick,->] (Polygon) -- (Shape);
-      \draw[very thick,->] (Shape) -- (Drawable);
+      \draw[very thick,-Triangle] (Polygon) -- (Shape);
+      \draw[very thick,-Triangle] (Shape) -- (Drawable);
     \end{tikzpicture}
   \end{multicols}
 
@@ -152,8 +152,8 @@
       \classbox[below of=Shape]{Polygon}{
         \mintinline{cpp}{void draw();}
       }
-      \draw[very thick,->] (Polygon) -- (Shape);
-      \draw[very thick,->] (Shape) -- (Drawable);
+      \draw[very thick,-Triangle] (Polygon) -- (Shape);
+      \draw[very thick,-Triangle] (Shape) -- (Drawable);
     \end{tikzpicture}
   \end{multicols}
   \end{overprint}
@@ -163,9 +163,9 @@
   \frametitlecpp[11]{Virtual methods - implications}
   \begin{block}{Mechanics}
     \begin{itemize}
-    \item virtual methods are deduced at run time
+    \item virtual methods are dispatched at run time
       \begin{itemize}
-      \item while non-virtual methods are deduced at compile time
+      \item while non-virtual methods are bound at compile time
       \end{itemize}
     \item they also imply extra storage and an extra indirection
       \begin{itemize}
@@ -177,7 +177,7 @@
   \begin{alertblock}{Consequences}
     \begin{itemize}
     \item virtual methods are ``slower'' than standard ones
-    \item and they cannot be inlined
+    \item and they can rarely be inlined
     \item templates are an alternative for performance-critical cases
     \end{itemize}
   \end{alertblock}
@@ -188,7 +188,8 @@
   \begin{block}{Principle}
     \begin{itemize}
     \item when overriding a virtual method
-    \item the \mintinline{cpp}|override| keyword needs to be used
+    \item the \mintinline{cpp}|override| keyword should be used
+    \item the \mintinline{cpp}|virtual| keyword is then optional
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Practically}
@@ -226,7 +227,7 @@
   \frametitlecpp[11]{{\texttt final} keyword}
   \begin{block}{Idea}
     \begin{itemize}
-    \item make sure you cannot override further a given virtual method
+    \item make sure you cannot further override a given virtual method
     \item by declaring it final
     \end{itemize}
   \end{block}
@@ -249,10 +250,10 @@
   \frametitlecpp[98]{Pure Virtual methods}
   \begin{block}{Concept}
     \begin{itemize}
-    \item methods that exist but are not implemented
-      \item marked by ``{\tt = 0} '' in the declaration
+    \item unimplemented methods that must be overridden
+    \item marked by \mintinline{cpp}{= 0} in the declaration
     \item makes their class abstract
-    \item an object can only be instantiated for a non-abstract class
+    \item only non-abstract classes can be instantiated
     \end{itemize}
   \end{block}
   \pause
@@ -277,8 +278,8 @@
       \classbox[below of=Shape]{Polygon}{
         \mintinline{cpp}{void draw() override;}
       }
-      \draw[very thick,->] (Polygon) -- (Shape);
-      \draw[very thick,->] (Shape) -- (Drawable);
+      \draw[very thick,-Triangle] (Polygon) -- (Shape);
+      \draw[very thick,-Triangle] (Shape) -- (Drawable);
     \end{tikzpicture}
   \end{multicols}
 \end{frame}
@@ -289,7 +290,7 @@
     \begin{itemize}
     \item a class that has
       \begin{itemize}
-        \item no data member
+        \item no data members
         \item all its methods pure virtual
       \end{itemize}
     \item the equivalent of an Interface in Java
@@ -361,9 +362,9 @@
       \classbox[below of=Polygon,node distance=1.5cm]{Rectangle}{}
       \classbox[right of=Rectangle,node distance=3cm]{Text}{}
       \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{}
-      \draw[very thick,->] (Polygon) -- (Rectangle);
-      \draw[very thick,->] (Rectangle) -- (TextBox);
-      \draw[very thick,->] (Text) -- (TextBox);
+      \draw[very thick,Triangle-] (Polygon) -- (Rectangle);
+      \draw[very thick,Triangle-] (Rectangle) -- (TextBox);
+      \draw[very thick,Triangle-] (Text) -- (TextBox);
     \end{tikzpicture}
     \columnbreak
     \vspace{2cm}
@@ -397,10 +398,10 @@
     \classbox[below left of=Drawable,node distance=2cm]{Rectangle}{}
     \classbox[right of=Rectangle,node distance=3cm]{Text}{}
     \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{}
-    \draw[very thick,->] (Drawable) -- (Rectangle);
-    \draw[very thick,->] (Drawable) -- (Text);
-    \draw[very thick,->] (Rectangle) -- (TextBox);
-    \draw[very thick,->] (Text) -- (TextBox);
+    \draw[very thick,Triangle-] (Drawable) -- (Rectangle);
+    \draw[very thick,Triangle-] (Drawable) -- (Text);
+    \draw[very thick,Triangle-] (Rectangle) -- (TextBox);
+    \draw[very thick,Triangle-] (Text) -- (TextBox);
   \end{tikzpicture}
 \end{frame}
 
@@ -423,22 +424,22 @@
       \classbox[below left of=Drawable,node distance=2cm]{Rectangle}{}
       \classbox[right of=Rectangle,node distance=3cm]{Text}{}
       \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{}
-      \draw[very thick,->] (Drawable) -- node[below,pos=0.35,sloped] {\scriptsize virtual} (Rectangle);
-      \draw[very thick,->] (Drawable) -- node[below,pos=0.45,sloped] {\scriptsize virtual} (Text);
-      \draw[very thick,->] (Rectangle) -- (TextBox);
-      \draw[very thick,->] (Text) -- (TextBox);
+      \draw[very thick,Triangle-] (Drawable) -- node[below,pos=0.35,sloped] {\scriptsize virtual} (Rectangle);
+      \draw[very thick,Triangle-] (Drawable) -- node[below,pos=0.45,sloped] {\scriptsize virtual} (Text);
+      \draw[very thick,Triangle-] (Rectangle) -- (TextBox);
+      \draw[very thick,Triangle-] (Text) -- (TextBox);
     \end{tikzpicture}
     \columnbreak
     \begin{tikzpicture}[]
       \classbox[]{Drawable1}{}
       \classbox[below of=Drawable1,node distance=1.5cm]{Rectangle}{}
-      \draw[very thick,->] (Drawable1) -- (Rectangle);
+      \draw[very thick,Triangle-] (Drawable1) -- (Rectangle);
       \classbox[right of=Drawable1,node distance=3cm]{Drawable2}{}
       \classbox[below of=Drawable2,node distance=1.5cm]{Text}{}
-      \draw[very thick,->] (Drawable2) -- (Text);
+      \draw[very thick,Triangle-] (Drawable2) -- (Text);
       \classbox[below right of=Rectangle,node distance=2cm]{TextBox}{}
-      \draw[very thick,->] (Rectangle) -- (TextBox);
-      \draw[very thick,->] (Text) -- (TextBox);
+      \draw[very thick,Triangle-] (Rectangle) -- (TextBox);
+      \draw[very thick,Triangle-] (Text) -- (TextBox);
     \end{tikzpicture}
   \end{multicols}
 \end{frame}
@@ -455,7 +456,7 @@
   \begin{alertblock}{Do not use diamond shapes}
     \begin{itemize}
     \item This is a sign that your architecture is not correct
-    \item In case you are tempted, think twice and change mind
+    \item In case you are tempted, think twice and change your mind
     \end{itemize}
   \end{alertblock}
 \end{frame}
@@ -476,6 +477,9 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Virtual inheritance}
+  \begin{exampleblock}{Good practice}
+    if you write a class and expect users to inherit from it, declare its destructor \mintinline{cpp}{virtual}
+  \end{exampleblock}
   \begin{alertblock}{Warning}
     in case of virtual inheritance it is the most derived class that calls the virtual base class's constructor
   \end{alertblock}
