@@ -23,10 +23,11 @@ int main() {
   const Fraction athird{1, 3};
 
   // print the fractions
-  printAndCheck("Three", three, Fraction{3, 1});
-  printAndCheck("One third", athird, Fraction{1, 3});
+  std::cout << "Three: " << three << '\n';
+  std::cout << "One third: " << athird << '\n';
 
   // multiply fraction with an int
+  // the printAndCheck function requires operator<< and operator==:
   printAndCheck("One third times two", athird * 2, Fraction{2, 3});
   // ensure symmetry
   printAndCheck("One third times two", 2 * athird, Fraction{2, 3});
@@ -76,7 +77,7 @@ int main() {
 
   std::cout << std::boolalpha;  // print bools as 'true' or 'false' from now on
 
-  // compare two fractions for equality, all of these should be 'true'
+  // more equality comparisons
   printAndCheck("One third == one third", (athird == Fraction{1, 3}), true);
   printAndCheck("One third != one forth", (athird != Fraction{1, 4}), true);
   printAndCheck("One third == two sixth", (athird == Fraction{2, 6}), true);
@@ -100,5 +101,5 @@ int main() {
   // * we can very often implement an arithemtic operator@ in terms of
   // operator@=
   // * it usually suffices to implement operator< and operator== and derive the
-  // other relational operators from them. C++20 will do this automatically.
+  // other relational operators from them. C++20 will do part of this automatically.
 }
