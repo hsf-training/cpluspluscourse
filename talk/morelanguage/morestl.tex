@@ -28,20 +28,18 @@
     \begin{itemize}
     \item Contextually converts to bool telling if it contains something
     \item Has value semantics (Copy, Move, Compare, stack alloc.)
-    \item Useful for
-      \begin{itemize}
-        \item the return value of a function that may fail
-        \item Useful in place of pointers where value semantics are intuitive
-      \end{itemize}
+    \item Useful for the return value of a function that may fail
+    \item Useful in place of pointers where value semantics are intuitive
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Code example}
     \small
     \begin{cppcode*}{}
-      std::optional<Phone> parse_phone( std::string_view in) {
-        if (is_valid_phone(in)) {
-          return in;      // equiv. to optional<Phone>(in);
-        } else return {}; // default constructs std::nullopt
+      std::optional<Phone> parse_phone(std::string_view in) {
+        if (is_valid_phone(in))
+          return in;   // equiv. to optional<Phone>(in);
+        else
+          return {};   // default constructs std::nullopt
       }
       auto v = parse_phone(...);
       if (v) {            // alternatively v.is_valid()
@@ -160,7 +158,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{Structured Binding Declarations}
-  Helps when using tuples as a return type.\\
+  Helps when using \mintinline{cpp}{std::tuple} or tuple-like types as a return type.\\
   Automatically creates variables and ties them.
   \begin{alertblock}{\cpp14}
     \begin{cppcode*}{}
@@ -186,7 +184,7 @@
   \frametitlecpp[17]{compile-time branches}
   \begin{block}{{\it if constexpr}}
     \begin{itemize}
-    \item takes a \texttt{constexpr} expression as condition
+    \item takes a \mintinline{cpp}{constexpr} expression as condition
     \item evaluates at compile time
     \item key benefit : the discarded branch can contain invalid code
     \end{itemize}

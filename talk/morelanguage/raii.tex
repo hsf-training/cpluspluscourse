@@ -44,12 +44,12 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{This problem exists for any resource}
+  \frametitlecpp[11]{This problem exists for any resource}
   \begin{exampleblock}{For example with a file}
     \begin{cppcode*}{}
       try {
         FILE *handle = std::fopen(path, "w+");
-        if (0 == handle) { throw ... }
+        if (nullptr == handle) { throw ... }
         if (std::fputs(str, handle) == EOF) {
           throw ...
         }
@@ -65,9 +65,10 @@
     Use object semantic to acquire/release resources
     \begin{itemize}
     \item wrap the resource inside an object
-    \item acquire resource via object constructor
+    \item acquire resource in constructor
     \item release resource in destructor
     \item create this object on the stack so that it is automatically destructed when leaving the scope, including in case of exception
+    \item use move semantics to pass the resource around
     \end{itemize}
   \end{block}
 \end{frame}
@@ -131,11 +132,11 @@
       Foo *p = new Foo{};  // allocation
       std::unique_ptr<Foo> uptr(p);
       std::cout << uptr.get() << " points to "
-                << uptr->someMember << std::endl;
+                << uptr->someMember << '\n';
       void f(std::unique_ptr<Foo> ptr);
       f(std::move(uptr)); // transfer of ownership
       // deallocation when exiting f
-      std::cout << uptr.get() << std::endl; // 0
+      std::cout << uptr.get() << '\n'; // 0
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -170,8 +171,8 @@ of 'std::unique_ptr<Foo>'
   \frametitlecpp[14]{std::make\_unique}
   \begin{block}{}
     \begin{itemize}
-    \item allocates directly a unique\_ptr
-    \item no new or delete calls anymore !
+    \item directly allocates a unique\_ptr
+    \item no \mintinline{cpp}{new} or \mintinline{cpp}{delete} calls anymore !
     \end{itemize}
   \end{block}
   \pause
@@ -195,7 +196,7 @@ of 'std::unique_ptr<Foo>'
   \begin{block}{When to use what ?}
     \begin{itemize}
     \item Always use RAII for all resources, in particular allocations
-    \item You thus never have to release / deallocate !
+    \item You thus never have to release / deallocate yourself !
     \item Use raw pointers for observer functions (or references)
       \begin{itemize}
       \item remember that unique\_ptr is move only
@@ -221,7 +222,7 @@ of 'std::unique_ptr<Foo>'
   \frametitlecpp[11]{unique\_ptr usage summary}
   \begin{block}{It's about lifetime management}
     \begin{itemize}
-    \item Use unique\_ptr in functions taking part to the lifetime management
+    \item Use unique\_ptr in functions taking part in lifetime management
     \item Otherwise use raw pointers or references
     \end{itemize}
   \end{block}
@@ -231,9 +232,9 @@ of 'std::unique_ptr<Foo>'
   \frametitlecpp[11]{shared\_ptr, make\_shared}
   \begin{block}{shared\_ptr : a reference counting pointer}
     \begin{itemize}
-    \item wraps a regular pointer like unique\_ptr
+    \item wraps a regular pointer similar to unique\_ptr
     \item has move and copy semantic
-    \item uses internally reference counting
+    \item uses reference counting internally
       \begin{itemize}
       \item "Would the last person out, please turn off the lights ?"
       \end{itemize}
