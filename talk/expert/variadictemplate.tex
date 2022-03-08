@@ -6,22 +6,21 @@
   \frametitlecpp[11]{Basic variadic template}
   \begin{block}{The idea}
     \begin{itemize}
-    \item a template with an arbitrary number of parameters
-    \item ... syntax as in good old printf
-    \item using recursivity and specialization for stopping it
+    \item a template parameter accepting arbitrary many arguments
+    \item template parameter pack for e.g.\ types, function parameter packs for values, and expansions, details on \href{https://en.cppreference.com/w/cpp/language/parameter_pack}{cppreference}
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{Practically}
+  \begin{exampleblock}{Recursive example}
     \begin{cppcode*}{}
       template<typename T>
-      T adder(T v) {
-        return v;
+      T sum(T v) { return v; }
+
+      template<typename T,
+               typename... Args>     // temp. param. pack
+      T sum(T first, Args... args) { // func. param. pack
+        return first + sum(args...); // pack expansion
       }
-      template<typename T, typename... Args>
-      T adder(T first, Args... args) {
-        return first + adder(args...);
-      }
-      long sum = adder(1, 2, 3, 8, 7);
+      long sum = sum(1, 2, 3, 8, 7);
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -45,19 +44,42 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Variadic templated class}
+  \frametitlecpp[17]{Fold expressions}
+  \begin{block}{The idea}
+    \begin{itemize}
+      \item reduces a parameter pack over a binary operator
+      \item details on \href{https://en.cppreference.com/w/cpp/language/fold}{cppreference}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      template<typename... Args>
+      T sum1(Args... args) {
+        return (args + ...);     // unary fold over +
+      }
+      template<typename... Args>
+      T sum2(Args... args) {
+        return (args + ... + 0); // binary fold over +
+      }
+      long sum = sum1(); // error
+      long sum = sum2(); // ok
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Variadic class template}
   \begin{block}{The tuple example, simplified}
     \begin{cppcode*}{}
-      template <typename... Ts> struct tuple {}
+      template <typename... Ts>
+      struct tuple {};
 
       template <typename T, typename... Ts>
       struct tuple<T, Ts...> : tuple<Ts...> {
-        tuple(T t, Ts... ts) :
-          tuple<Ts...>(ts...), m_tail(t) {}
-        T m_tail;
+        tuple(T head, Ts... tail) :
+          tuple<Ts...>(tail...), m_head(head) {}
+        T m_head;
       };
-
-      template <> struct tuple<>{};
 
       tuple<double, uint64_t, const char*>
         t1(12.2, 42, "big");

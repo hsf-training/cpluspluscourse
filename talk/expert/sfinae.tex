@@ -5,27 +5,29 @@
   \frametitlecpp[11]{Substitution Failure Is Not An Error (SFINAE)}
   \begin{block}{The main idea}
     \begin{itemize}
-    \item substitution replaces template parameters with the provided types or values
-    \item if it leads to an invalid code, do not fail but try other overloads
+    \item substitution replaces template parameters with the provided arguments (types or values)
+    \item if it leads to invalid code, do not fail but try other overloads
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
     \begin{cppcode*}{}
       template <typename T>
       void f(typename T::type arg) { ... }
+
       void f(int a) { ... }
 
       f(1); // Calls void f(int)
     \end{cppcode*}
   \end{exampleblock}
-  Note : SFINAE will be largely superseded by concepts in \cpp20
+  Note : SFINAE is largely superseded by concepts in \cpp20
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{decltype}
   \begin{block}{The main idea}
     \begin{itemize}
-    \item gives the type of the expression it will evaluate
+    \item gives the type of the result of an expression
+    \item the expression is not evaluated
     \item at compile time
     \end{itemize}
   \end{block}
@@ -35,6 +37,7 @@
       A a;
       decltype(a.x) y;       // double
       decltype((a.x)) z = y; // double& (lvalue)
+      decltype(1 + 2u) i = 4; // unsigned int
 
       template<typename T, typename U>
       auto add(T t, U u) -> decltype(t + u);
@@ -47,11 +50,12 @@
   \frametitlecpp[11]{declval}
   \begin{block}{The main idea}
     \begin{itemize}
-    \item gives you a ``fake reference'' to an object at compile time
-    \item useful for types that cannot be easily constructed
+    \item gives you a reference to a ``fake'' object at compile time
+    \item useful for types that cannot easily be constructed
+    \item use only in unevaluated contexts, e.g. inside \mintinline{cpp}{decltype}
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{Example}
+  \begin{exampleblock}{}
     \begin{cppcode*}{}
       struct Default {
         int foo() const { return 1; }
@@ -71,16 +75,18 @@
   \frametitlecpp[11]{true\_type and false\_type}
   \begin{block}{The main idea}
     \begin{itemize}
-    \item encapsulate a constexpr boolean ``true'' and ``false''
+    \item encapsulate a compile-time boolean as type
     \item can be inherited
-    \item constexpr
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
     \begin{cppcode*}{}
-      struct testStruct : std::true_type { };
-      constexpr bool testVar = testStruct();
-      bool test = testStruct::value; // true
+      struct truth : std::true_type { };
+
+      constexpr bool test = truth::value; // true
+      constexpr truth t;
+      constexpr bool test = t(); // true
+      constexpr bool test = t;   // true
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -105,9 +111,9 @@
       template <typename T>
       struct hasFoo<T, decltype(std::declval<T>().foo())>
         : std::true_type {};
-      struct A{}; struct B{void foo();};
-      static_assert(!hasFoo<A>::value, "A has no Foo()");
-      static_assert(hasFoo<B>::value, "B has Foo()");
+      struct A{}; struct B{ void foo(); };
+      static_assert(!hasFoo<A>::value, "A has no foo()");
+      static_assert(hasFoo<B>::value, "B has foo()");
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -127,10 +133,10 @@
       struct B{void foo();};
       struct C{int foo();};
 
-      static_assert(!hasFoo<A>::value, "A has no Foo()");
-      static_assert(hasFoo<B>::value, "B has Foo()");
-      static_assert(!hasFoo<C>::value, "C has Foo()");
-      static_assert(hasFoo<C,int>::value, "C has Foo()");
+      static_assert(!hasFoo<A>::value, "A has no foo()");
+      static_assert(hasFoo<B>::value, "B has foo()");
+      static_assert(!hasFoo<C>::value, "C has foo()");
+      static_assert(hasFoo<C,int>::value, "C has foo()");
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -138,16 +144,17 @@
 \begin{frame}[fragile]
   \frametitlecpp[17]{Using \texttt{void\_t}}
   \begin{block}{Concept}
-    \begin{cppcode*}{gobble=2}
-      #include <type_traits>
-      template <typename... >
-      using void_t = void;
-    \end{cppcode*}
     \begin{itemize}
     \item Maps a sequence of given types to void
-    \item Introduced in \cpp17 though trivial to copy to \cpp11
-    \item Can thus be used in specialization to check the validity of an expression
+    \item Introduced in \cpp17 though trivial to implement in \cpp11
+    \item Can be used in specializations to check the validity of an expression
     \end{itemize}
+  \end{block}
+  \begin{block}{Implementation in header type\_traits}
+    \begin{cppcode*}{gobble=2}
+      template <typename...>
+      using void_t = void;
+    \end{cppcode*}
   \end{block}
 \end{frame}
 
@@ -166,9 +173,9 @@
       struct A{}; struct B{ void foo(); };
       struct C{ int foo(); };
 
-      static_assert(!hasFoo<A>::value,"Unexpected Foo()");
-      static_assert(hasFoo<B>::value, "expected Foo()");
-      static_assert(hasFoo<C>::value, "expected Foo()");
+      static_assert(!hasFoo<A>::value,"Unexpected foo()");
+      static_assert(hasFoo<B>::value, "expected foo()");
+      static_assert(hasFoo<C>::value, "expected foo()");
       \end{cppcode*}
     \end{exampleblock}
 \end{frame}
@@ -180,7 +187,7 @@
       template<bool B, typename T = void> struct enable_if {};
       template<typename T>
       struct enable_if<true, T> { using type = T; };
-      template< bool B, typename T = void >
+      template<bool B, typename T = void>
       using enable_if_t = typename enable_if<B,T>::type;
     \end{cppcode*}
     \begin{itemize}
@@ -190,9 +197,9 @@
   \end{block}
   \begin{block}{is\_*$<T>$/is\_*\_v$<T>$ (float/signed/object/final/abstract/...)}
     \begin{itemize}
-    \item Checks whether T is ...
-    \item At compile time
-    \item Has member \texttt{value}, as boolean telling whether it was
+    \item Standard type traits in header \texttt{type\_traits}
+    \item Checks at compile time whether T is ...
+    \item Result in boolean member \texttt{value}
     \end{itemize}
   \end{block}
 \end{frame}
@@ -205,35 +212,33 @@
           <typename In,
            typename = typename std::enable_if_t
                       <!std::is_pointer_v<In>>>
-        In& operator()( In& in ) const { return in; }
+        In& operator()(In& in) const { return in; }
 
         template <typename In>
-        In& operator()( In* in ) const {
+        In& operator()(In* in) const {
           assert(in!=nullptr); return *in;
         }
-      } deref {};
+      } deref{};
     \end{cppcode*}
   \end{exampleblock}
-
 \end{frame}
-
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Back to variadic templated class}
   \begin{block}{The tuple get method}
     \begin{cppcode*}{}
-      template <size_t k, typename TUPLE>
-      struct elem_type_holder;
+      template <size_t I, typename Tuple>
+      struct elem_type;
 
       template <typename T, typename... Ts>
-      struct elem_type_holder<0, tuple<T, Ts...>> {
+      struct elem_type<0, tuple<T, Ts...>> {
         using type = T;
       };
 
-      template <size_t k, typename T, typename... Ts>
-      struct elem_type_holder<k, tuple<T, Ts...>> {
-        using type = typename elem_type_holder
-           <k - 1, tuple<Ts...>>::type;
+      template <size_t I, typename T, typename... Ts>
+      struct elem_type<I, tuple<T, Ts...>> {
+        using type = typename elem_type
+           <I - 1, tuple<Ts...>>::type;
       };
     \end{cppcode*}
   \end{block}
@@ -241,23 +246,42 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Back to variadic templated class}
-  \begin{block}{The tuple get method}
+  \begin{block}{The tuple get function}
     \begin{cppcode*}{}
-      template <size_t k, typename... Ts>
-      typename std::enable_if_t<k == 0,
-        typename elem_type_holder
-          <0, tuple<Ts...>>::type&>
+      template <size_t I, typename... Ts>
+      typename std::enable_if_t<I == 0,
+        typename elem_type<0, tuple<Ts...>>::type&>
       get(tuple<Ts...>& t) {
-        return t.m_tail;
+        return t.m_head;
       }
-      template <size_t k, typename T, typename... Ts>
-      typename std::enable_if_t<k != 0,
-        typename elem_type_holder
-           <k-1, tuple<Ts...>>::type&>
+      template <size_t I, typename T, typename... Ts>
+      typename std::enable_if_t<I != 0,
+        typename elem_type<I - 1, tuple<Ts...>>::type&>
       get(tuple<T, Ts...>& t) {
         tuple<Ts...>& base = t;
-        return get<k - 1>(base);
+        return get<I - 1>(base);
       }
     \end{cppcode*}
   \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{with if constexpr}
+  \begin{block}{The tuple get function}
+    \begin{cppcode*}{}
+      template <size_t I, typename T, typename... Ts>
+      auto& get(tuple<T, Ts...>& t) {
+        if constexpr(I == 0)
+          return t.m_head;
+        else
+          return get<I - 1>(static_cast<tuple<Ts...>>(t));
+      }
+    \end{cppcode*}
+  \end{block}
+  \begin{exampleblock}{Best practice}
+    \begin{itemize}
+      \item \mintinline{cpp}{if constexpr} can replace SFINAE in many places.
+      \item It is usually more readable as well. Use it if you can.
+    \end{itemize}
+  \end{exampleblock}
 \end{frame}
