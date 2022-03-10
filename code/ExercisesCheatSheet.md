@@ -17,6 +17,12 @@ Just try to compile and run `./hello` to make sure that everything is set up cor
 - Make sure that the signature is `(SlowToCopy const & a)` to avoid copies.
 - Try to modify the data in the structs. Compare what happens for each of `(SlowToCopy a), (SlowToCopy & a), (SlowToCopyy const & a)`.
 
+### `control`
+- change from a C++98 style for loop to range-based loop
+- replace if / else statement with conditional operator
+- change from a for loop to while and do/while loop
+- change an if statement to a switch statement
+
 ### `loopsRefsAuto`
 - Write an indexed for loop to initialise the members of the structs. The program should not print garbage numbers.
 - Use `auto const &` to prevent copies in the second loop.
