@@ -64,12 +64,12 @@
     struct MyFirstClass {
       int a;
       MyFirstClass();
-      MyFirstClass(int a);
+      explicit MyFirstClass(int a);
     };
     struct MySecondClass : MyFirstClass {
       int b;
       MySecondClass();
-      MySecondClass(int b);
+      explicit MySecondClass(int b);
       MySecondClass(int a, int b);
     };
     MySecondClass() : MyFirstClass(), b(0) {}
@@ -125,6 +125,44 @@
       std::copy(other.data, other.data + len, data);
     }
     Vector::~Vector() { delete[] data; }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Explicit unary constructor}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item A constructor with a single non-default parameter can be used by the compiler for an implicit conversion.
+    \item In the code below, {\it 3} is implicitly converted into a {\it Vector} of size {\it 3}, which may be unexpected by the developer.
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    print( const Vector & v ) {}
+      std::cout<<"printing v elements..."<<std::endl ;
+    }
+
+    int main {
+      print(3) ;
+    };
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Explicit unary constructor}
+  \begin{block}{Concept}
+    \begin{itemize}
+      \item The keyword {\it explicit} forbid such implicit conversion.
+      \item It is recommended to use it systematically, except in special cases.
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    class Vector {
+    public:
+      explicit Vector(int n);
+      Vector(const Vector &other);
+      ~Vector();
+      ...
+    };
   \end{cppcode}
 \end{frame}
 
