@@ -169,20 +169,20 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Capture all}
-  \begin{block}{by value}
+  \frametitlecpp[11]{Capture list}
+  \begin{block}{all by value}
     \begin{cppcode*}{linenos=false}
       [=](...) { ... };
     \end{cppcode*}
   \end{block}
   \pause
-  \begin{block}{by reference}
+  \begin{block}{all by reference}
     \begin{cppcode*}{linenos=false}
       [&](...) { ... };
     \end{cppcode*}
   \end{block}
   \pause
-  \begin{block}{exceptions}
+  \begin{block}{mix}
     \begin{cppcode*}{linenos=false}
       [&, b](...) { ... };
       [=, &b](...) { ... };
@@ -208,13 +208,13 @@
     \begin{itemize}
       \item build\_incrementer returns a function object
       \item this function's behavior depends on a parameter
-      \item note how {\it auto} is useful here !
+      \item note how \mintinline{cpp}{auto} is useful here !
     \end{itemize}
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{{\texttt lambda}s makes the STL usable}
+  \frametitlecpp[11]{{\texttt lambda}s make the STL usable}
   \begin{block}{Before lambdas}
     \begin{cppcode*}{}
       struct Incrementer {
@@ -233,7 +233,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{{\texttt lambda}s makes the STL usable}
+  \frametitlecpp[11]{{\texttt lambda}s make the STL usable}
   \begin{exampleblock}{With lambdas}
     \begin{cppcode*}{}
       std::vector<int> v{1, 2, 3};
@@ -246,7 +246,7 @@
   \end{exampleblock}
   \pause
   \begin{alertblock}{Conclusion}
-    Use the STL !
+    Use the STL (with lambdas)!
   \end{alertblock}
 \end{frame}
 

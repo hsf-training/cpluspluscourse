@@ -32,10 +32,10 @@
         Foo& operator=(Foo &&) = delete;
       };
       Foo f() {
-        return Foo();
+        return Foo();  // ok
       }
       int main() {
-        Foo foo = f();
+        Foo foo = f(); // ok
       }
     \end{cppcode*}
   \end{block}

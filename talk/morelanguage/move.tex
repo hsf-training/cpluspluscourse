@@ -11,8 +11,9 @@
         b = c;
       }
       std::vector<int> v(10000), w(10000);
-      for (int i = 0; i < 10000; i++) v[i] = i;
-      for (int i = 0; i < 10000; i++) w[i] = i*i;
+      for (int i = 0; i < 10000; i++) {
+        v[i] = i; w[i] = i*i;
+      }
       swap(v, w);
     \end{cppcode*}
   \end{exampleblock}
@@ -30,8 +31,9 @@
   \begin{exampleblock}{Dedicated efficient code}
     \begin{cppcode*}{}
       std::vector<int> v(10000), w(10000);
-      for (int i = 0; i < 10000; i++) v[i] = i;
-      for (int i = 0; i < 10000; i++) w[i] = i*i;
+      for (int i = 0; i < 10000; i++) {
+        v[i] = i; w[i] = i*i;
+      }
       v.swap(w);
       \end{cppcode*}
   \end{exampleblock}
@@ -49,14 +51,14 @@
   \frametitlecpp[11]{Move semantics : the problem}
   \begin{exampleblock}{Another potentially non efficient code}
     \begin{cppcode*}{}
-      std::vector<int> vrandom(unsigned int n) {
-        std::vector<int> result(n);
+      MyVector<int> vrandom(unsigned int n) {
+        MyVector<int> result(n);
         for (int i = 0; i < n; i++) {
           result[i] = rand();
         }
         return result;
       }
-      std::vector<int> v = vrandom(10000);
+      MyVector<int> v = vrandom(10000);
     \end{cppcode*}
   \end{exampleblock}
   \pause
@@ -65,21 +67,21 @@
     \item 10k allocations + 10k releases
     \item 10k copies
     \end{itemize}
-    Note that in this case, the compiler may optimize the copy away.
+    The compiler may optimize the copy away.
   \end{alertblock}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Move semantics : the problem}
-  \begin{exampleblock}{Dedicated efficient way}
+  \begin{exampleblock}{Dedicated efficient way before C++11}
     \begin{cppcode*}{}
-      void vrandom(unsigned int n, std::vector<int> &v) {
+      void vrandom(unsigned int n, MyVector<int> &v) {
         v.resize(n);
         for (int i = 0; i < n; i++) {
           v[i] = rand();
         }
       }
-      std::vector<int> v;
+      MyVector<int> v;
       vrandom(10000, v);
     \end{cppcode*}
   \end{exampleblock}
@@ -93,10 +95,10 @@
   \frametitlecpp[11]{Move semantics}
   \begin{block}{The idea}
     \begin{itemize}
-      \item a new type of reference : rvalue references
+      \item a new type of reference : rvalue reference
       \begin{itemize}
       \item used for move semantic
-      \item denoted by \&\&
+      \item denoted by \mintinline{cpp}{&&}
       \end{itemize}
       \item 2 new members in every class, with move semantic :
       \begin{description}
@@ -108,9 +110,9 @@
   \pause
   \begin{exampleblock}{Practically}
     \begin{cppcode*}{}
-      T(T const &  other); // copy construction
+      T(T const & other); // copy construction
       T(      T&& other); // move construction
-      T& operator=(T const &  other); // copy assignment
+      T& operator=(T const & other); // copy assignment
       T& operator=(      T&& other); // move assignment
     \end{cppcode*}
   \end{exampleblock}
@@ -120,16 +122,16 @@
   \frametitlecpp[11]{Move semantics}
   \begin{block}{A few important points concerning move semantic}
     \begin{itemize}
-    \item the whole STL understands move semantics
-    \item move assignment operator is allowed to destroy source
+    \item the language and STL understand move semantics
+    \item move constructor and assignment operator are allowed to leave source "empty"
       \begin{itemize}
-      \item so do not reuse source afterward
-      \item still, I advice to never leave inconsistent objects
+      \item so do not use source afterward
+      \item leave source in a valid state (for its destructor)
       \end{itemize}
-    \item if not implemented, move falls back to copy version
+    \item if move semantic is not implemented, copy will be performed
     \item move is called by the compiler whenever possible
       \begin{itemize}
-      \item e.g. when passing temporary
+      \item e.g.\ when passing temporaries or returning from a function
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -149,23 +151,24 @@
   \begin{block}{In some cases, you want to force a move}
     \begin{cppcode*}{}
       void swap(T &a, T &b) {
-        T c = a;  // copy
-        a = b;    // copy
-        b = c;    // copy
+        T c = a;  // copy construct
+        a = b;    // copy assign
+        b = c;    // copy assign
       }
     \end{cppcode*}
   \end{block}
   \pause
-  \begin{block}{There are mainly two ways}
+  \begin{block}{Explicitly request moving}
     \begin{itemize}
-    \item casting to an rvalue reference
-    \item using the std::move function
+    \item using the \mintinline{cpp}{std::move} function
+    \item which is basically a cast to an rvalue reference
     \end{itemize}
     \begin{cppcode*}{firstnumber=6}
-      T a;
-      T b = a;                   // Copy assign
-      T c = static_cast<T&&>(a); // Move assign
-      T d = std::move(a);        // Move assign
+      void swap(T &a, T &b) {
+        T c = std::move(a);      // move construct
+        a = std::move(b);        // move assign
+        b = static_cast<T&&>(c); // move assign (don't)
+      }
     \end{cppcode*}
   \end{block}
 \end{frame}
@@ -174,7 +177,7 @@
   \frametitlecpp[11]{Move semantics : the easy way}
   \begin{block}{Use copy and swap idiom}
     \begin{itemize}
-    \item implement an efficient swap method for your class
+    \item implement an efficient swap function for your class
       \begin{itemize}
       \item preferably hidden friend and symmetric
       \end{itemize}
@@ -194,31 +197,55 @@
       \item let local object be destructed when exiting the method \\
         this will actually destroy the original content of the target
       \end{itemize}
+    \item swap, move constructor/assignment operator should be \mintinline{cpp}{noexept}
     \end{itemize}
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[fragile,t]
   \frametitlecpp[11]{Move semantics : the easy way}
   \begin{exampleblock}{Practically}
     \small
     \begin{cppcode*}{}
       class Movable {
         Movable();
-        Movable(Movable &&other) :
+        Movable(const Movable &other);
+        Movable(Movable &&other) noexcept :
           Movable() {         // constructor delegation
           swap(*this, other);
         }
-        Movable& operator=(Movable other) { // by value
+        Movable& operator=(Movable other) noexcept { // by value
           swap(*this, other);
           return *this;
         }
-        friend void swap(Movable &a, Movable &b);
+        friend void swap(Movable &a, Movable &b) noexcept {...}
       };
-      void swap(Movable &a, Movable &b);
       Movable a, b;
       a = b;            // operator= copies b into "other"
       a = std::move(b); // operator= moves b into "other"
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile,t]
+  \frametitlecpp[11]{Move semantics : the complete picture}
+  \begin{exampleblock}{Practically}
+    \small
+    \begin{cppcode*}{}
+      class Movable {
+        Movable();
+        Movable(const Movable &other);
+        Movable(Movable &&other) noexcept :
+          Movable() {         // constructor delegation
+          swap(*this, other);
+        }
+        Movable& operator=(const Movable& other);
+        Movable& operator=(Movable&& other) noexcept {
+          swap(*this, other);
+          return *this;
+        }
+        friend void swap(Movable &a, Movable &b) noexcept { ... }
+      };
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}

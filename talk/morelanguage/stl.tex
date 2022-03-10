@@ -24,7 +24,7 @@
 \end{frame}
 
 \begin{frame}[fragile,label=STLcode]
-  \frametitlecpp[11]{STL in practice}
+  \frametitlecpp[14]{STL in practice}
   \begin{cppcode*}{}
     #include <vector>
     #include <algorithm>
@@ -35,7 +35,7 @@
     std::transform(vi.begin(), vi.end(),      // range1
                    vi.begin(),          // start range2
                    vr.begin(),          // start result
-                   std::multiplies<int>()); // function
+                   std::multiplies{}); // function
 
     for(auto n : vr) {
       std::cout << n << ' ';
@@ -58,8 +58,9 @@
     \item examples
       \begin{itemize}
       \item string
-      \item tuple, list, vector, deque
-      \item map, set, multimap, multiset, hash\_map, hash\_set, ...
+      \item tuple, list, forward\_list (\cpp11), vector, deque, array (\cpp11)
+      \item map, set, multimap, multiset
+      \item unordered\_map (\cpp11), unordered\_set (\cpp11)
       \item stack, queue, priority\_queue
       \end{itemize}
     \end{itemize}
@@ -71,7 +72,7 @@
   \begin{block}{iterators}
     \begin{itemize}
     \item generalization of pointers
-    \item allowing iteration over some data
+    \item allow iteration over some data
     \item irrespective of
       \begin{itemize}
       \item the container used (templated)
@@ -97,17 +98,17 @@
     \item irrespective of
       \begin{itemize}
       \item the data handled
-      \item the container where data live
-      \item the iterator used to go through data
+      \item the container where the data live
+      \item the iterator used to go through data (almost)
       \end{itemize}
     \item examples
       \begin{itemize}
       \item for\_each, find, find\_if, count, count\_if, search
       \item copy, swap, transform, replace, fill, generate
       \item remove, remove\_if
-      \item unique, reverse, rotate, random, partition
-      \item sort, partial\_sort, merge, min, max
-      \item lexicographical\_compare, iota, accumulate, partial\_sum
+      \item unique, reverse, rotate, shuffle, partition
+      \item sort, partial\_sort, merge, make\_heap, min, max
+      \item lexicographical\_compare, iota, reduce, partial\_sum
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -115,9 +116,10 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{STL's concepts}
-  \begin{block}{functions / functors}
+  \begin{block}{functors / function objects}
     \begin{itemize}
-      \item generic utility functions/functors
+      \item generic utility functions
+      \item as structs with \mintinline{cpp}{operator()}
       \item mostly useful to be passed to STL algorithms
     \item implemented independently of
       \begin{itemize}
@@ -126,11 +128,12 @@
       \end{itemize}
     \item examples
       \begin{itemize}
-      \item plus, minus, multiply, divide, modulus, negate
+      \item plus, minus, multiplies, divides, modulus, negate
       \item equal\_to, less, greater, less\_equal, ...
       \item logical\_and, logical\_or, logical\_not
-      \item identity, project1st, project2nd
-      \item binder1st, binder2nd, unary\_compose, binary\_compose
+      \item bit\_and, bit\_or, bit\_xor, bit\_not
+      \item identity, not\_fn
+      \item bind, bind\_front
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -163,21 +166,39 @@
 \begin{frame}[fragile]
   \frametitlecpp[98]{STL and functors}
   \begin{cppcode}
-    // Finds the first element in a list that lies in
-    // the range from 1 to 10.
-    list<int> L;
+    // Finds the first element in a list between 1 and 10.
+    list<int> l;
     ...
-    list<int>::iterator in_range =
-      find_if(L.begin(), L.end(),
+    list<int>::iterator it =
+      find_if(l.begin(), l.end(),
               compose2(logical_and<bool>(),
                        bind2nd(greater_equal<int>(), 1),
                        bind2nd(less_equal<int>(), 10)));
 
     // Computes sin(x)/(x + DBL_MIN) for elements of a range.
     transform(first, last, first,
-              compose2(divides<double>(),
+              compose2(divides<double>(), // non-standard
                        ptr_fun(sin),
                        bind2nd(plus<double>(), DBL_MIN)));
+  \end{cppcode}
+  \begin{alertblock}{Deprecation warning}
+  	Binders and function adaptors were removed in \cpp17 or \cpp20
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[14]{STL and lambdas}
+  \begin{cppcode}
+    // Finds the first element in a list between 1 and 10.
+    list<int> l;
+    ...
+    const auto it =
+      find_if(l.begin(), l.end(),
+        [](int i) { return i >= 1 && i <= 10; });
+
+    // Computes sin(x)/(x + DBL_MIN) for elements of a range.
+    transform(first, last, first,
+      [](auto x) { return sin(x)/(x + DBL_MIN); });
   \end{cppcode}
 \end{frame}
 
@@ -224,7 +245,7 @@
   \frametitlecpp[11]{Loops and auto keyword with the STL}
   \begin{block}{Old way}
     \begin{cppcode*}{}
-      std::vector<int> a = ...;
+      std::vector<int> v = ...;
       int sum = 0;
       for (std::vector<int>::iterator it = v.begin();
            it != v.end(); it++) {

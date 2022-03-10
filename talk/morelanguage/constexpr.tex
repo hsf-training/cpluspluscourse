@@ -55,7 +55,7 @@
   \frametitlecpp[14]{Generalized Constant Expressions(2)}
    \begin{alertblock}{Few limitations in C++14 (more in C++11)}
     \begin{itemize}
-    \item function's body cannot contain try-catch or static variables
+    \item function's body cannot contain try-catch, uninitialized or static variables - details on \href{https://en.cppreference.com/w/cpp/language/constexpr}{cppreference}
     \item arguments should be constexpr or literals in order to benefit from compile time computation
     \end{itemize}
   \end{alertblock}
@@ -75,20 +75,20 @@
 \begin{frame}[fragile]
   \frametitlecpp[11]{Real life example}
   \begin{cppcode*}{}
-    constexpr float toSI(const float v, const char unit) {
+    constexpr float toSI(float v, char unit) {
       switch (unit) {
-      case 'k': return 1000*v;
-      case 'm': return 0.001*v;
-      case 'y': return 0.9144*v;
-      case 'i': return 0.0254*v;
+      case 'k': return 1000.0f*v;
+      case 'm': return 0.001f*v;
+      case 'y': return 0.9144f*v;
+      case 'i': return 0.0254f*v;
       ...
       default: return v;
       }
     }
-    constexpr float fromSI(const float v, const char unit) {
+    constexpr float fromSI(float v, char unit) {
       switch (unit) {
-        case 'k': return 0.001*v;
-        case 'y': return 1.093*v;
+        case 'k': return 0.001f*v;
+        case 'y': return 1.093f*v;
       ...
       }
     }
@@ -99,12 +99,12 @@
   \frametitlecpp[11]{Real life example(2)}
   \begin{cppcode*}{}
     class DimLength {
-      const float m_value;
+      float m_value;
     public:
-      constexpr DimLength(const float v, const char unit):
+      constexpr DimLength(float v, char unit):
         m_value(toSI(v, unit)) {
       }
-      constexpr float get(const char unit) const {
+      constexpr float get(char unit) const {
         return fromSI(m_value, unit);
       }
     };

@@ -13,8 +13,8 @@
   \end{block}
   \begin{cppcode}
     template<typename T>
-    const T & max(const T &A, const T &B) {
-      return A > B ? A : B;
+    const T & max(const T &a, const T &b) {
+      return a > b ? a : b;
     }
 
     template<typename T>
@@ -131,8 +131,8 @@
   \begin{block}{template parameters can also be a value}
     \begin{itemize}
     \item integral types, pointer, enums in \cpp98
-    \item auto in \cpp17
-    \item floats and literals in \cpp20
+    \item \mintinline{cpp}{auto} in \cpp17
+    \item floats and literal types in \cpp20
     \end{itemize}
   \end{block}
   \begin{cppcode*}{}
