@@ -64,12 +64,12 @@
     struct MyFirstClass {
       int a;
       MyFirstClass();
-      explicit MyFirstClass(int a);
+      MyFirstClass(int a);
     };
     struct MySecondClass : MyFirstClass {
       int b;
       MySecondClass();
-      explicit MySecondClass(int b);
+      MySecondClass(int b);
       MySecondClass(int a, int b);
     };
     MySecondClass() : MyFirstClass(), b(0) {}
