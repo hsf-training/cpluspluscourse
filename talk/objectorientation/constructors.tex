@@ -129,6 +129,44 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[98]{Explicit unary constructor}
+  \begin{block}{Concept}
+    \begin{itemize}
+    \item A constructor with a single non-default parameter can be used by the compiler for an implicit conversion.
+    \item In the code below, {\it 3} is implicitly converted into a {\it Vector} of size {\it 3}, which may be unexpected by the developer.
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    void print( const Vector & v )
+      std::cout<<"printing v elements...\n";
+    }
+
+    int main {
+      print(3) ;
+    };
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Explicit unary constructor}
+  \begin{block}{Concept}
+    \begin{itemize}
+      \item The keyword \mintinline{cpp}{explicit} forbids such implicit conversions.
+      \item It is recommended to use it systematically, except in special cases.
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    class Vector {
+    public:
+      explicit Vector(int n);
+      Vector(const Vector &other);
+      ~Vector();
+      ...
+    };
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[11]{Defaulted Constructor}
   \begin{block}{Idea}
     \begin{itemize}
