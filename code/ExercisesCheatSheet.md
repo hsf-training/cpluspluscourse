@@ -22,6 +22,12 @@ Just try to compile and run `./hello` to make sure that everything is set up cor
 - Use `auto const &` to prevent copies in the second loop.
 - Understand the difference to `auto &`, get in the habit of using const references.
 
+### `control`
+- change from a C++98 style for loop to range-based loop
+- replace if / else statement with conditional operator
+- change from a for loop to while and do/while loop
+- change an if statement to a switch statement
+
 Day 2
 -----
 ### `polymorphism`
