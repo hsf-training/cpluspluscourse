@@ -22,10 +22,10 @@
     \item[cpp]
         the preprocessor \\
         handles the \# directives (macros, includes) \\
-        creates ``complete'' source code
+        creates ``complete'' source code (ie. translation unit)
     \item[g++]
         the compiler \\
-        creates assembly code from \cpp code
+        creates machine code from \cpp code
     \item[ld]
         the linker \\
         links several binary files into libraries and executables
@@ -45,11 +45,11 @@
         slightly better error reporting \\
         free and open source, based on LLVM
     \item[\href{https://www.intel.com/content/www/us/en/developer/tools/oneapi/dpc-compiler.html\#gs.dyllp0}{\beamergotobutton{icc} \beamergotobutton{icx}}]
-        the intel compilers, proprietary but now free \\
-        optimized for Intel hardware \
+        Intel's compilers, proprietary but now free \\
+        optimized for Intel hardware \\
         icc being replaced by icx, based on LLVM
-    \item[\href{http://www.microsoft.com/}{\beamergotobutton{Visual \cpp}}]
-      the Windows way
+    \item[\href{https://visualstudio.microsoft.com/}{\beamergotobutton{Visual \cpp / MSVC}}]
+      Microsoft's C++ compiler on Windows
     \end{description}
   \end{block}
   \begin{alertblock}{My preferred choice today}
@@ -64,14 +64,14 @@
   \frametitle{Useful compiler options (gcc/clang)}
   \begin{block}{Get more warnings}
     \begin{description}
-      \item[-Wall -Wextra] the way to get all warnings
-      \item[-Werror] the way to force yourself to look at warnings
+      \item[-Wall -Wextra] get all warnings
+      \item[-Werror] force yourself to look at warnings
     \end{description}
   \end{block}
-  \begin{block}{Around optimization}
+  \begin{block}{Optimization}
     \begin{description}
       \item[-g] add debug symbols
-      \item[-O0, -O2] 0 = no optimization, -O2 = optimized
+      \item[-Ox] 0 = no opt., 1-2 = opt., 3 = highly opt. (maybe larger binary), g = opt. for debugging
     \end{description}
   \end{block}
   \begin{block}{Compilation environment}
