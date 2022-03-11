@@ -14,8 +14,8 @@ void swap(std::vector<T> &v, int a, int b) {
 template<typename T>
 void randomize(std::vector<T> &v) {
     // we randomize via len random inversions
-    unsigned int len = v.size();
-    for (unsigned int i = 0; i < len; i++) {
+    std::size_t len = v.size();
+    for (std::size_t i = 0; i < len; i++) {
         int a = rand()%len;
         int b = rand()%len;
         swap(v, a, b);

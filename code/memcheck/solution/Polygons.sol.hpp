@@ -1,3 +1,5 @@
+#pragma once
+
 class Polygon {
 public:
     Polygon(int n, float radius);
@@ -5,7 +7,7 @@ public:
     float computePerimeter();
 protected:
     int m_nbSides;
-    int m_radius;
+    float m_radius;
 };
 
 class Hexagon : public Polygon {

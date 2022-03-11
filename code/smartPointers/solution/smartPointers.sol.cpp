@@ -35,7 +35,7 @@ double sumEntries(const double* data, std::size_t size) {
     if (size > 200)
         throw std::invalid_argument("I only want to sum 200 numbers or less.");
 
-    return std::accumulate(data, data + size, 0);
+    return std::accumulate(data, data + size, 0.);
 }
 
 // Often, data are owned by one entity, and only used by others. Fix the leak.
