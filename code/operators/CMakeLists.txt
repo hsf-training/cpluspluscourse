@@ -5,12 +5,11 @@ project( operators LANGUAGES CXX )
 
 # Set up the compilation environment.
 include( "${CMAKE_CURRENT_SOURCE_DIR}/../CompilerSettings.cmake" )
+include( "${CMAKE_CURRENT_SOURCE_DIR}/../SolutionTarget.cmake" )
 
 # Create the user's executable.
-add_executable( operators operators.cpp )
+add_executable( operators "operators.cpp" )
 
 # Create the "solution executable".
-add_executable( operators.sol EXCLUDE_FROM_ALL solution/operators.sol.cpp )
-if( TARGET solution )
-   add_dependencies( solution operators.sol )
-endif()
+add_executable( operators.sol EXCLUDE_FROM_ALL "solution/operators.sol.cpp" )
+add_dependencies( solution operators.sol )

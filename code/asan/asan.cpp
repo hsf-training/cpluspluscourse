@@ -35,7 +35,7 @@ void stackOverflow() {
 
   std::cout << "Now writing into the array:\n";
   for (unsigned int i = 0; i < 10; ++i) {
-    ptr[i] = 'a' + i;
+    ptr[i] = static_cast<char>('a' + i);
   }
 
   std::cout << "a='" << a << "\'\n";

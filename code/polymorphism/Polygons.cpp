@@ -2,13 +2,11 @@
 #include <iostream>
 #include <cmath>
 
-#define PI 3.14159265
-
 Polygon::Polygon(int n, float radius) : m_nbSides(n), m_radius(radius) {};
 
 float Polygon::computePerimeter() {
     std::cout << "Generic computePerimeter for polygons\n";
-    return 2*m_nbSides*sin(PI/m_nbSides)*m_radius;
+    return 2*m_nbSides*std::sin(static_cast<float>(M_PI)/m_nbSides)*m_radius;
 }
 
 Pentagon::Pentagon(float radius) : Polygon(5, radius) {}
