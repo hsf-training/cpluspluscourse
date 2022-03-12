@@ -23,14 +23,17 @@ exercisesIntro.vrb
 exercisesIntro.pdf
 
 # exercises
+*.a
 *.o
 *.so
 *.sol
 code/*aux
 code/callgrind/fibocrunch
+code/control/control
 code/constness/constplay
 code/cppcheck/randomize
 code/debug/randomize
+code/functions/functions
 code/helgrind/fiboMT
 code/hello/hello
 code/lambdas/randomize
@@ -42,3 +45,9 @@ code/stl/randomize.nostl
 code/templates/playwithsort
 code/valgrind/randomize
 code/virtual_inheritance/trymultiherit
+
+# tools
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+callgrind.out.*
