@@ -3,12 +3,18 @@
 
 This example should help to check that your machine is well installed.
 
-## g++ & make
+## make & cmake
 
-Try:
+On linux, provided you have a "recent enough" g++, this should work directly:
 ```
 make
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
+./hello
+```
+
+On windows, it may be mandatory to run `cmake` first:
+```
+cmake .
+make
 ./hello
 ```
 
@@ -24,5 +30,5 @@ kcachegrind
 
 Try:
 ```
-cppcheck .
+cppcheck *.hpp *.cpp
 ```
