@@ -23,20 +23,20 @@
 \begin{frame}[fragile]
   \frametitlecpp[98]{Comments}
   \begin{cppcode}
-    // simple comment for integer declaration
+    // simple comment until end of line
     int i;
 
     /* multiline comment
      * in case we need to say more
      */
-    double d;
+    double /* or something in between */ d;
 
     /**
      * Best choice : doxygen compatible comments
-     * \fn bool isOdd(int i)
      * \brief checks whether i is odd
      * \param i input
      * \return true if i is odd, otherwise false
+     * \see https://www.doxygen.nl/manual/docblocks.html
      */
     bool isOdd(int i);
   \end{cppcode}

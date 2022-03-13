@@ -8,7 +8,7 @@
     \begin{itemize}
     \item simple block of code, within \mintinline{cpp}{{}}
     \item function, class, namespace
-    \item translation unit (.cpp file + all includes) for global declarations
+    \item the global scope, i.e.\ translation unit (.cpp file + all includes)
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
@@ -27,14 +27,14 @@ int a = 1;
   int b[4];
   b[0] = a;
 }
-// Doesn't compile:
+// Doesn't compile here:
 // b[1] = a + 1;
 }
 \begin{frame}[fragile]
   \frametitlecpp[98]{Scope and lifetime of variables}
   \begin{block}{Variable life time}
     \begin{itemize}
-      \item Variables are allocated when defined
+      \item Variables are (statically) allocated when defined
       \item Variables are freed at the end of a scope
       \item Good practice: initialise variables when allocating them!
     \end{itemize}
@@ -104,24 +104,24 @@ int a = 1;
         }
       }
       void f() {
-        n::a = 2;
+        n::a = 3;
       }
     \end{cppcode*}
     \columnbreak
     \begin{cppcode*}{gobble=2,firstnumber=14}
-      namespace p {
+      namespace p { // reopen p
         void f() {
-          p::a = 2;
-          a = 2;  //same as above
-          ::a = 3;
-          p::inner::a = 4;
-          inner::a = 4;
-          n::a = 5;
+          p::a = 6;
+          a = 6;  //same as above
+          ::a = 1;
+          p::inner::a = 8;
+          inner::a = 8;
+          n::a = 3;
         }
       }
       using namespace p::inner;
       void g() {
-        a = 3; // error: ambiguous
+        a = -1; // err: ambiguous
       }
   \end{cppcode*}
   \end{multicols}
@@ -130,7 +130,7 @@ int a = 1;
 \begin{frame}[fragile]
   \frametitlecpp[17]{Nested namespaces}
   Easier way to declare nested namespaces
-  \begin{alertblock}{\cpp14}
+  \begin{alertblock}{\cpp98}
     \begin{cppcode*}{}
       namespace A {
         namespace B {
@@ -151,7 +151,7 @@ int a = 1;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Anonymous namespaces}
+  \frametitlecpp[98]{Unnamed namespaces}
   \begin{exampleblock}{A namespace without a name !}
     \begin{cppcode*}{}
       namespace {
@@ -162,7 +162,7 @@ int a = 1;
   \begin{block}{Purpose}
     \begin{itemize}
     \item groups a number of declarations
-    \item visible in the current translation unit
+    \item visible only in the current translation unit
     \item but not reusable outside
     \item allows much better compiler optimizations and checking
       \begin{itemize}
