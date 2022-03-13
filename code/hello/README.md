@@ -3,19 +3,21 @@
 
 This example should help to check that your machine is well installed.
 
-## make & cmake
+## make vs cmake
 
-On linux, provided you have a "recent enough" g++, this should work directly:
+On any linux like system, provided you have a "recent enough" g++, this should work out of the box:
 ```
 make
 ./hello
 ```
 
-On windows, it may be mandatory to run `cmake` first:
+On  native Windows, it may be mandatory to run `cmake` first:
 ```
-cmake .
-make
-./hello
+mkdir build
+cd build
+cmake ..
+cmake --build .
+Debug/hello.exe
 ```
 
 ## valgrind & callgrind & graphical tools
