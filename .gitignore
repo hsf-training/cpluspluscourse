@@ -23,6 +23,7 @@ exercisesIntro.vrb
 exercisesIntro.pdf
 
 # exercises
+build
 *.a
 *.o
 *.so
