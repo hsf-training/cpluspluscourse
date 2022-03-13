@@ -7,7 +7,9 @@ project( functions LANGUAGES CXX )
 include( "${CMAKE_CURRENT_SOURCE_DIR}/../CompilerSettings.cmake" )
 
 # Create the user's executable.
-add_executable( functions Structs.cpp functions.cpp )
+add_executable( functions "Structs.h" "Structs.cpp" "functions.cpp" )
+if( "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC" )
+   target_compile_definitions( functions PRIVATE _CRT_SECURE_NO_WARNINGS )
 
 # Create the "solution executable".
 add_executable( functions.sol EXCLUDE_FROM_ALL Structs.cpp solution/functions.sol.cpp )
