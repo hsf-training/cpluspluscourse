@@ -30,7 +30,7 @@ pre-commit hook on every commit. To ignore words you can put them in the
 `codespell.txt` file. This file should list the supposedly misspelled words with
 one word per line and is case-sensitive.
 
-## Exercises general rules
+## Exercises guidelines
 
 - Prefer "east const" for new stuff.
 - For the time being, maintain both a `Makefile` and a `CMakeLists.txt`.
