@@ -31,6 +31,8 @@ build
 code/*aux
 code/callgrind/fibocrunch
 code/control/control
+code/loopsRefsAuto/loopsRefsAuto
+code/operators/operators
 code/constness/constplay
 code/cppcheck/randomize
 code/debug/randomize
