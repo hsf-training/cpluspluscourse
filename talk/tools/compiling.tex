@@ -97,7 +97,7 @@
     \item raw Makefiles: suitable for small projects
     \item cmake: portable, the current best choice
     \item automake: GNU project solution
-      \end{itemize}
+    \end{itemize}
   \end{block}
   \begin{minted}{makefile}
     test : test.cpp libpoly.so
@@ -107,6 +107,49 @@
     clean:
         rm -f *o *so *~ test test.sol
   \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{CMake}
+  \begin{block}{}
+    \begin{itemize}
+      \item a cross-platform meta build system
+      \item generates platform-specific build systems
+      \item see also this \href{https://www.youtube.com/watch?v=eC9-iRN2b04}{basic} and \href{https://www.youtube.com/watch?v=bsXLMQ6WgIk}{detailed} talks
+    \end{itemize}
+  \end{block}
+  \begin{block}{Example CMakeLists.txt}
+    \begin{minted}[linenos=true,autogobble]{cmake}
+      cmake_minimum_required(VERSION 3.18)
+      project(hello CXX)
+
+      find_package(ZLIB REQUIRED) # for external libs
+
+      add_executable(hello main.cpp util.h util.cpp)
+      target_compile_features(hello PUBLIC cxx_std_17)
+      target_link_libraries(hello PUBLIC ZLIB::ZLIB)
+    \end{minted}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{CMake - Building}
+  \begin{block}{Building a CMake-based project}
+    Start in the directory with the top-level \texttt{CMakeLists.txt}:
+    \begin{minted}[linenos=true,autogobble]{bash}
+      mkdir build # will contain all build-related files
+      cd build
+      cmake ..    # configures and generates a build system
+      cmake -DCMAKE_BUILD_TYPE=Release .. # pass arguments
+      ccmake .    # change configuration using terminal GUI
+      cmake-gui . # change configuration using Qt GUI
+      cmake --build . -j8    # build project with 8 threads
+      cmake --build . --target hello  # build only hello
+      sudo cmake --install . # install project into system
+      cd ..
+      rm -r build # clean everything
+    \end{minted}
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
