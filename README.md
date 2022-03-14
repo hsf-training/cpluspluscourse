@@ -34,6 +34,6 @@ one word per line and is case-sensitive.
 
 - Prefer "east const" for new stuff.
 - For the time being, maintain both a `Makefile` and a `CMakeLists.txt`.
-- Each exercise should a `solution` subdirectory.
-- `CheatSheet` file(s) is a raodmap for mentors.
+- Each exercise should have a `solution` subdirectory.
+- `CheatSheet` file(s) is/are a roadmap for mentors.
 - Instructions for students stay in `README.md` files and/or directly in the main exercise file.
