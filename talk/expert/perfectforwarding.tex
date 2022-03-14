@@ -32,7 +32,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Second try, second failure ?}
+  \frametitlecpp[11]{Second try, second failure?}
   \begin{cppcode*}{}
     template <typename T>
     void wrapper(T &arg) {
@@ -50,7 +50,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{The solution : cover all cases}
+  \frametitlecpp[11]{The solution: cover all cases}
   \begin{cppcode*}{}
     template <typename T>
     void wrapper(T& arg) { func(arg); }
@@ -64,7 +64,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{The new problem : scaling to n arguments}
+  \frametitlecpp[11]{The new problem: scaling to n arguments}
   \begin{cppcode*}{}
     template <typename T1, typename T2>
     void wrapper(T1& arg1, T2& arg2)
@@ -109,8 +109,8 @@
   \frametitlecpp[11]{Reference collapsing in \cpp11}
   \begin{block}{rvalues have been added}
     \begin{itemize}
-    \item what about int\&\& \& ?
-    \item and int \&\& \&\& ?
+    \item what about int\&\& \&?
+    \item and int \&\& \&\&?
     \end{itemize}
   \end{block}
   \begin{exampleblock}{\cpp11 standardization}

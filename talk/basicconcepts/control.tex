@@ -1,7 +1,7 @@
 \subsection[Control]{Control structures}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control structures : if}
+  \frametitlecpp[98]{Control structures: if}
   \begin{block}{if syntax}
     \begin{cppcode*}{}
       if (condition1) {
@@ -22,7 +22,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control structures : if}
+  \frametitlecpp[98]{Control structures: if}
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{}
       int collatz(int a) {
@@ -42,7 +42,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control structures : conditional operator}
+  \frametitlecpp[98]{Control structures: conditional operator}
   \begin{block}{Syntax}
     \begin{cppcode*}{linenos=false}
       test ? expression1 : expression2;
@@ -71,7 +71,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control structures : switch}
+  \frametitlecpp[98]{Control structures: switch}
   \begin{block}{Syntax}
     \begin{cppcode*}{gobble=2}
       switch(identifier) {
@@ -85,7 +85,7 @@
     \begin{itemize}
       \item \mintinline{cpp}{break} is not mandatory but...
       \item cases are entry points, not independent pieces
-      \item execution falls through to the next case without a \mintinline{cpp}{break} !
+      \item execution falls through to the next case without a \mintinline{cpp}{break}!
       \item \mintinline{cpp}{default} may be omitted
     \end{itemize}
   \end{block}
@@ -96,7 +96,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control structures : switch}
+  \frametitlecpp[98]{Control structures: switch}
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{}
       enum class Lang { French, German, English, Other };
@@ -167,7 +167,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control structures : for loop}
+  \frametitlecpp[98]{Control structures: for loop}
   \begin{block}{for loop syntax}
     \begin{cppcode*}{}
       for(initializations; condition; increments) {
@@ -220,7 +220,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control structures : while loop}
+  \frametitlecpp[98]{Control structures: while loop}
   \begin{block}{while loop syntax}
     \begin{cppcode*}{}
       while(condition) {
@@ -245,13 +245,13 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Control structures : jump statements}
+  \frametitlecpp[98]{Control structures: jump statements}
   \begin{block}{}
     \begin{description}
     \item[break] exits the loop and continues after it
     \item[continue] goes immediately to next loop iteration
     \item[return] exists the current function
-    \item[goto] can jump anywhere inside a function, don't use !
+    \item[goto] can jump anywhere inside a function, don't use!
     \end{description}
   \end{block}
   \pause

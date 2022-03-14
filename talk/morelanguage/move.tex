@@ -1,7 +1,7 @@
 \subsection[mv]{Move semantics}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Move semantics : the problem}
+  \frametitlecpp[11]{Move semantics: the problem}
   \begin{exampleblock}{Non efficient code}
     \begin{cppcode*}{}
       void swap(std::vector<int> &a,
@@ -27,7 +27,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Move semantics : the problem}
+  \frametitlecpp[11]{Move semantics: the problem}
   \begin{exampleblock}{Dedicated efficient code}
     \begin{cppcode*}{}
       std::vector<int> v(10000), w(10000);
@@ -48,7 +48,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Move semantics : the problem}
+  \frametitlecpp[11]{Move semantics: the problem}
   \begin{exampleblock}{Another potentially non efficient code}
     \begin{cppcode*}{}
       MyVector<int> vrandom(unsigned int n) {
@@ -72,7 +72,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Move semantics : the problem}
+  \frametitlecpp[11]{Move semantics: the problem}
   \begin{exampleblock}{Dedicated efficient way before C++11}
     \begin{cppcode*}{}
       void vrandom(unsigned int n, MyVector<int> &v) {
@@ -95,12 +95,12 @@
   \frametitlecpp[11]{Move semantics}
   \begin{block}{The idea}
     \begin{itemize}
-      \item a new type of reference : rvalue reference
+      \item a new type of reference: rvalue reference
       \begin{itemize}
       \item used for move semantic
       \item denoted by \mintinline{cpp}{&&}
       \end{itemize}
-      \item 2 new members in every class, with move semantic :
+      \item 2 new members in every class, with move semantic:
       \begin{description}
       \item[a move constructor] similar to copy constructor
       \item[a move assignment operator] similar to assignment operator (now called copy assignment operator)
@@ -174,7 +174,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Move semantics : the easy way}
+  \frametitlecpp[11]{Move semantics: the easy way}
   \begin{block}{Use copy and swap idiom}
     \begin{itemize}
     \item implement an efficient swap function for your class
@@ -203,7 +203,7 @@
 \end{frame}
 
 \begin{frame}[fragile,t]
-  \frametitlecpp[11]{Move semantics : the easy way}
+  \frametitlecpp[11]{Move semantics: the easy way}
   \begin{exampleblock}{Practically}
     \small
     \begin{cppcode*}{}
@@ -228,7 +228,7 @@
 \end{frame}
 
 \begin{frame}[fragile,t]
-  \frametitlecpp[11]{Move semantics : the complete picture}
+  \frametitlecpp[11]{Move semantics: the complete picture}
   \begin{exampleblock}{Practically}
     \small
     \begin{cppcode*}{}
