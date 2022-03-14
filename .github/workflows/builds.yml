@@ -1,0 +1,160 @@
+
+# Name for this "action".
+name: Build Exercises
+
+# Perform the builds on every push and pull request.
+on: [ push, pull_request ]
+
+# All the different build/test jobs.
+jobs:
+
+  # Native (non-container) build jobs.
+  native:
+
+    # The "build matrix".
+    strategy:
+      matrix:
+        EXERCISE:
+          - NAME: "asan"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "atomic"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "callgrind"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "condition_variable"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "constness"
+            BUILD_DEFAULT: false
+            BUILD_SOLUTION: false
+          - NAME: "control"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "cppcheck"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "debug"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "functions"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "helgrind"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "hello"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: false
+          - NAME: "lambdas"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "loopsRefsAuto"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "memcheck"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "modern_oo"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "move"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "operators"
+            BUILD_DEFAULT: false
+            BUILD_SOLUTION: true
+          - NAME: "polymorphism"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "python"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: false
+          - NAME: "race"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "smartPointers"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "stl"
+            BUILD_DEFAULT: false
+            BUILD_SOLUTION: true
+          - NAME: "templates"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "valgrind"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+          - NAME: "virtual_inheritance"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
+        PLATFORM:
+          - OS: "ubuntu-latest"
+            GENERATOR: -G "Unix Makefiles"
+          - OS: "macos-latest"
+            GENERATOR: -G "Xcode"
+          - OS: "windows-latest"
+            GENERATOR:
+        exclude:
+          - EXERCISE:
+              NAME: "helgrind"
+              BUILD_DEFAULT: true
+              BUILD_SOLUTION: true
+            PLATFORM:
+              OS: "windows-latest"
+              GENERATOR:
+          - EXERCISE:
+              NAME: "python"
+              BUILD_DEFAULT: true
+              BUILD_SOLUTION: false
+            PLATFORM:
+              OS: "windows-latest"
+              GENERATOR:
+          - EXERCISE:
+              NAME: "stl"
+              BUILD_DEFAULT: false
+              BUILD_SOLUTION: true
+            PLATFORM:
+              OS: "windows-latest"
+              GENERATOR:
+          - EXERCISE:
+              NAME: "stl"
+              BUILD_DEFAULT: false
+              BUILD_SOLUTION: true
+            PLATFORM:
+              OS: "macos-latest"
+              GENERATOR: -G "Xcode"
+
+    # The system to run on.
+    runs-on: ${{ matrix.PLATFORM.OS }}
+
+    # The build/test steps to execute.
+    steps:
+    # Use a standard checkout of the code.
+    - uses: actions/checkout@v2
+    # Run the CMake configuration.
+    - name: CMake Configure
+      run: cmake -S ${{ github.workspace }}/code/${{ matrix.EXERCISE.NAME }}
+                 -B build
+                 ${{ matrix.PLATFORM.GENERATOR }}
+    # Perform the build of the "main exercise" with CMake.
+    - name: CMake Build Main
+      run: cmake --build build
+      if: matrix.EXERCISE.BUILD_DEFAULT
+    # Perform the build of the "solution" with CMake.
+    - name: CMake Build Solution
+      run: cmake --build build --target solution
+      if: matrix.EXERCISE.BUILD_SOLUTION
+    # Perform the build of the "main exercise" with GNU Make.
+    - name: GNU Make Build Main
+      run: make -C ${{ github.workspace }}/code/${{ matrix.EXERCISE.NAME }}
+      if: ${{ matrix.PLATFORM.OS != 'windows-latest' &&
+              matrix.EXERCISE.BUILD_DEFAULT }}
+    # Perform the build of the "solution" with GNU Make.
+    - name: GNU Make Build Solution
+      run: make -C ${{ github.workspace }}/code/${{ matrix.EXERCISE.NAME }}
+                solution
+      if: ${{ matrix.PLATFORM.OS != 'windows-latest' &&
+              matrix.EXERCISE.BUILD_SOLUTION }}
