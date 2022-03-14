@@ -19,7 +19,7 @@ void part2() {
   // print smallest n for which 1 + 2 + ... + n > 10000
   int sum = 0;
   int i = 0;
-  while (sum < 10000) {
+  while (sum <= 10000) {
     ++i;
     sum += i;
   }
@@ -33,7 +33,7 @@ void part2bis() {
   do {
     ++i;
     sum += i;
-  } while (sum < 10000);
+  } while (sum <= 10000);
   std::cout << i << "\n";
 }
 

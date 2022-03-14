@@ -7,4 +7,8 @@ project( loopsRefsAuto LANGUAGES CXX )
 include( "${CMAKE_CURRENT_SOURCE_DIR}/../CompilerSettings.cmake" )
 
 # Create the user's executable.
-add_executable( loopsRefsAuto loopsRefsAuto.cpp )
+add_executable( loopsRefsAuto "loopsRefsAuto.cpp" )
+
+# Create the "solution executable".
+add_executable( loopsRefsAuto.sol EXCLUDE_FROM_ALL "solution/loopsRefsAuto.sol.cpp" )
+add_dependencies( solution loopsRefsAuto.sol )

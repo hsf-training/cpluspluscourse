@@ -1,10 +1,3 @@
-#include "Structs.h" // The data structs we will work with
-
-#include <cstdio> // For printing
-
-void printFiveCharacters(FastToCopy argument) {
-    printf("The first five characters are '%.5s'\n", argument.data);
-}
 
 /* Tasks:
  * 1. Check out Structs.h. It defines two structs that we will work with.
@@ -21,14 +14,20 @@ void printFiveCharacters(FastToCopy argument) {
  *    Try both with and without const attributes in your print function's signature.
  */
 
+#include "Structs.h" // The data structs we will work with
+
+#include <cstdio> // For printing
+
+void printFiveCharacters(FastToCopy argument) {
+    printf("The first five characters are '%.5s'\n", argument.data);
+}
+
 int main() {
     FastToCopy fast = {"abcdef"};
     printFiveCharacters(fast);
 
-    SlowToCopy slow = {"ghijk"};
+    SlowToCopy slow = {"ghijkl"};
     // print it here
-
-
 
     return 0;
 }
