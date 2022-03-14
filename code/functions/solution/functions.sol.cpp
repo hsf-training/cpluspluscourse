@@ -7,7 +7,7 @@ void printFiveCharacters(FastToCopy argument) {
 }
 
 void printFiveCharacters(const SlowToCopy & argument) {
-    //argument.data[0] = '\n' ;
+    //argument.data[0] = '\n' ; // EXPECTED COMPILATION ERROR
     printf("The first five characters are '%.5s'\n", argument.data);
 }
 
