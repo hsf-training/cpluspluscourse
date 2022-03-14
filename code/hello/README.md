@@ -11,7 +11,7 @@ make
 ./hello
 ```
 
-On  native Windows, it may be mandatory to run `cmake` first:
+On native Windows, build with `cmake`:
 ```
 mkdir build
 cd build
