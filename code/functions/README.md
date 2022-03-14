@@ -1,8 +1,7 @@
 # Functions and how arguments are passed in C++
 
 Here, we will look a bit into how arguments are passed into functions.
-You will find an example where everything is passed by value (by copy), but
-there is a struct that is slow to copy.
+You will find an example where everything is passed by value (by copy), but there is a struct that is slow to copy.
 We will try to work with it without copying it.
 
 # Instructions
