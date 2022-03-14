@@ -2,12 +2,11 @@
 \usetheme{Warsaw}
 \useoutertheme{split}
 
-%\includeonly{python/python}
-
 \input{setup}
 
 \newboolean{onlybasics}
 \setboolean{onlybasics}{false}
+\IfFileExists{onlybasics.tex}{\input{onlybasics}}{}
 
 \begin{document}
 
