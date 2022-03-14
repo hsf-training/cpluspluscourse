@@ -10,7 +10,7 @@ int main() {
     FastToCopy fast = {"abcdef"};
     printFiveCharacters(fast);
 
-    SlowToCopy slow = {"ghijk"};
+    SlowToCopy slow = {"ghijkl"};
     // print it here
 
     return 0;
