@@ -69,9 +69,9 @@ jobs:
           - NAME: "polymorphism"
             BUILD_DEFAULT: true
             BUILD_SOLUTION: true
-#          - NAME: "python"
-#            BUILD_DEFAULT: true
-#            BUILD_SOLUTION: false
+          - NAME: "python"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: false
           - NAME: "race"
             BUILD_DEFAULT: true
             BUILD_SOLUTION: true
@@ -134,6 +134,10 @@ jobs:
     steps:
     # Use a standard checkout of the code.
     - uses: actions/checkout@v2
+    # Make sure that Python 3 is available to the build.
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
     # Run the CMake configuration.
     - name: CMake Configure
       run: cmake -S ${{ github.workspace }}/code/${{ matrix.EXERCISE.NAME }}
