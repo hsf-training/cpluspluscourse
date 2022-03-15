@@ -40,7 +40,19 @@ The idea of this exercise is to play with all kinds of possible loops and contro
 
 ### Operators (directory: `operators`)
 
-TBD
+This exercise is about making `main` run successfully by completing the implementation of `Fraction`.
+Implement a constructor for `Fraction` and add two integer data members for numerator and denominator.
+Comment out everything in `main` except the first two LOCs.
+This should compile now and print nothing.
+
+Then uncomment the `std::cout` statements and implement `operator<<` for `Fraction`.
+Compile and run.
+
+Proceed this way through the entire exercise.
+There are multiple possibilities to implement some operators, e.g. as members, as hidden friends, or as free functions.
+Also when and where to normalize a fraction is up to the students.
+All solutions are fine, as long as the `main` function runs successfully.
+
 
 Day 2 - Tools Exercises
 -----
