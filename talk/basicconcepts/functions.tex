@@ -19,12 +19,12 @@
     \begin{cppcode*}{gobble=2,firstnumber=11}
       // no return
       void log(char* msg) {
-        printf("%s", msg);
+        std::cout << msg;
       }
 
       // no parameter
       void hello() {
-        printf("Hello World");
+      	std::cout << "Hello World";
       }
     \end{cppcode*}
   \end{multicols}
@@ -48,8 +48,8 @@
     \begin{cppcode*}{gobble=2,firstnumber=11}
       // multiple default
       // arguments are possible
-      int add(int base = 2,
-              int exp = 2) {
+      int add(int a = 2,
+              int b = 2) {
         return a + b;
       }
       // add() == 4
@@ -151,7 +151,7 @@ changeSS2(s);
     \columnbreak
     \null \vfill
     \begin{tikzpicture}
-      \memorystack[word size=1, nb blocks=3, size x=3cm]
+      \memorystack[word size=1, block size=4, nb blocks=3, size x=3cm]
       \onslide<2-6> {
         \memorypush{s.a = 1}
       }
@@ -178,13 +178,14 @@ changeSS2(s);
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Value vs. pointers and references}
+  \frametitlecpp[98]{Pass by value, reference or pointer}
   \begin{block}{Different ways to pass arguments to a function}
     \begin{itemize}
-    \item by default arguments are passed by value (= copy, good for small types, e.g.\ numbers)
-    \item references are preferred to avoid copies
-    \item same for pointers, but less favoured
-    \item use \mintinline{cpp}{const} for safety
+    \item by default, arguments are passed by value (= copy) \\
+          good for small types, e.g.\ numbers
+    \item prefer references for mandatory parameters to avoid copies
+    \item use pointers for optional parameters to allow \mintinline{cpp}{nullptr}
+    \item use \mintinline{cpp}{const} for safety and readability whenever possible
     \end{itemize}
   \end{block}
   \pause
@@ -202,7 +203,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
 \begin{frame}[fragile]
   \frametitlecpp[98]{Functions}
   \begin{alertblock}{Exercise}
-    Familiarise yourself with pass by copy / pass by reference.
+    Familiarise yourself with pass by value / pass by reference.
     \begin{itemize}
       \item go to \texttt{code/functions}
       \item Look at \texttt{functions.cpp}
@@ -215,12 +216,12 @@ void fWrite(T &value);     fWrite(a); // non-const ref
 \begin{frame}[fragile]
   \frametitlecpp[98]{Functions: good practices}
   \begin{onlyenv}<1>
-    \begin{block}{Good practices with functions}
+    \begin{block}{Ensure good readability/maintainability:}
       \begin{itemize}
         \item Keep functions short
-        \item Do one logical thing
+        \item Do one logical thing (single-responsibility principle)
         \item Use expressive names
-        \item Document the functions
+        \item Document non-trivial functions
       \end{itemize}
     \end{block}
     \begin{exampleblock}{Example: Good}
@@ -239,7 +240,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
     \begin{alertblock}{Example: don't! Everything in one long function}
       \begin{multicols}{2}
         \begin{cppcode*}{gobble=6}
-          unsigned int foo() {
+          unsigned int runJob() {
             // Step 1: data
             Data data;
             data.resize(123456);

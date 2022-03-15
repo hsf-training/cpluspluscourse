@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 
 class Drawable {
@@ -12,8 +14,8 @@ class Rectangle : public virtual Drawable {
 public:
     Rectangle(int id, float width, float height);
 protected:
-    int m_width;
-    int m_height;
+    float m_width;
+    float m_height;
 };
 
 class Text : public virtual Drawable {

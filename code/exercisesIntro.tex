@@ -40,9 +40,9 @@
 \newcommand{\cpp}{C$^{++}$}
 
 \title{Exercises HowTo}
-\author[S. Ponce]{S\'ebastien Ponce  \texttt{sebastien.ponce@cern.ch}}
+\author[B. Gruber, S. Hageboeck, S. Ponce]{Based on the work of \\ S\'ebastien Ponce \\ \texttt{sebastien.ponce@cern.ch}}
 \institute{CERN}
-\date{August 2021}
+\date{March 2022}
 \pgfdeclareimage[height=0.5cm]{cernlogo}{CERN-logo.jpg}
 \logo{\pgfuseimage{cernlogo}}
 
@@ -64,7 +64,7 @@
     \begin{itemize}
     \item \texttt{git} for getting/managing your code
     \item \texttt{gdb} to debug your problems
-    \item valgrind, kcachegrind, cppcheck for corresponding exercises
+    \item valgrind, kcachegrind, cppcheck, clang-format, clang-tidy for corresponding exercises
     \end{itemize}
   \end{alertblock}
   \begin{block}{\cpp and python specific needs}
@@ -90,9 +90,10 @@ cd cpluspluscourse/code
     \small
     \begin{verbatim}
 
-wget http://cern.ch/sponce/C++Course/code.tgz
-tar xzf code.tgz
-cd code
+wget https://github.com/hsf-training/cpluspluscourse/archive\
+/refs/heads/master.zip
+unzip master.zip
+cd cpluspluscourse-master/code
     \end{verbatim}
   \end{alertblock}
 \end{frame}
@@ -115,7 +116,7 @@ cd code
   \end{block}
   \begin{alertblock}{solution subdirectory}
     \begin{itemize}
-    \item the solution to the exercise (``make solution'')
+    \item one possible solution to the exercise (``make solution'')
     \item please do not use before trying !
     \end{itemize}
   \end{alertblock}
@@ -159,7 +160,7 @@ cd code
     \begin{itemize}
     \item g++ and make
       \begin{minted}[gobble=6]{shell}
-        make;
+        make
         export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
         ./hello
       \end{minted}

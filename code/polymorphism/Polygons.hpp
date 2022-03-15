@@ -1,10 +1,12 @@
+#pragma once
+
 class Polygon {
 public:
     Polygon(int n, float radius);
     float computePerimeter();
 protected:
     int m_nbSides;
-    int m_radius;
+    float m_radius;
 };
 
 class Pentagon : public Polygon {

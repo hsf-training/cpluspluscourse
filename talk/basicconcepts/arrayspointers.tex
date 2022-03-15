@@ -22,11 +22,11 @@ int *pi = &i;
 int j = *pi + 1;
 
 int ai[] = {1,2,3};
-int *pai = ai;
+int *pai = ai; // decay to ptr
 int *paj = pai + 1;
 int k = *paj + 1;
 
-// not compiling
+// compile error
 int *pak = k;
 
 // seg fault !
@@ -50,17 +50,17 @@ int l = *pak;
   \columnbreak
     \onslide<2->{
       \begin{tikzpicture}
-        \memorystack[size x=3cm,word size=1,nb blocks=11]
-        \onslide<2-> {\memorypush{$i = 4$}}
+        \memorystack[size x=3cm,word size=1,block size=4,nb blocks=11]
+        \onslide<2-> {\memorypush{i = 4}}
         \onslide<3-> {\memorypushpointer[pi =]{1}}
-        \onslide<4-> {\memorypush{$j = 5$}}
-        \onslide<5-> {\memorypush{$1$}}
-        \onslide<5-> {\memorypush{$2$}}
-        \onslide<5-> {\memorypush{$3$}}
+        \onslide<4-> {\memorypush{j = 5}}
+        \onslide<5-> {\memorypush{ai[0] = 1}}
+        \onslide<5-> {\memorypush{ai[1] = 2}}
+        \onslide<5-> {\memorypush{ai[2] = 3}}
         \onslide<6-> {\memorypushpointer[pai =]{4}}
         \onslide<7-> {\memorypushpointer[paj =]{5}}
-        \onslide<8-> {\memorypush{$k = 3$}}
-        \onslide<9-> {\memorypush{$pak = 3$}}
+        \onslide<8-> {\memorypush{k = 3}}
+        \onslide<9-> {\memorypush{pak = 3}}
         \onslide<9-> {\draw[\stackcolor!80,->] (stack10-1.west) -- +(-0.5cm,0)
           node [anchor=east] {??};}
       \end{tikzpicture}
@@ -89,23 +89,23 @@ int l = *pak;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Dynamic Arrays}
+  \frametitlecpp[98]{Dynamic Arrays using C}
   \begin{cppcode}
     #include <cstdlib>
     #include <cstring>
 
     int *bad;          // pointer to random address
-    int *ai = nullptr; // better. Can be tested
+    int *ai = nullptr; // better, deterministic, can be tested
 
-    // allocate array of 10 ints (not initialized)
+    // allocate array of 10 ints (uninitialized)
     ai = (int*) malloc(10*sizeof(int));
-    // and set them to 0
-    memset(ai, 0, 10*sizeof(int));
+    memset(ai, 0, 10*sizeof(int)); // and set them to 0
 
-    // both in one go
-    ai = (int*) calloc(10, sizeof(int));
+    ai = (int*) calloc(10, sizeof(int)); // both in one go
 
-    // release memory
-    free(ai);
+    free(ai); // release memory
   \end{cppcode}
+  \begin{alertblock}{Don't use C's memory management}
+    Use \mintinline{cpp}{std::vector} and friends or smart pointers
+  \end{alertblock}
 \end{frame}

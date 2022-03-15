@@ -22,12 +22,26 @@ void printFiveCharacters(FastToCopy argument) {
     printf("The first five characters are '%.5s'\n", argument.data);
 }
 
+void printFiveCharacters(const SlowToCopy & argument) {
+    //argument.data[0] = '\n' ; // EXPECTED COMPILATION ERROR
+    printf("The first five characters are '%.5s'\n", argument.data);
+}
+
+void printFiveCharactersWithCopy(SlowToCopy argument) {
+    printf("The first five characters are '%.5s'\n", argument.data);
+    // We can actually modify the argument if we want, since it's a copy:
+    argument.data[0] = 'a';
+}
+
 int main() {
     FastToCopy fast = {"abcdef"};
     printFiveCharacters(fast);
 
     SlowToCopy slow = {"ghijkl"};
-    // print it here
+    printFiveCharacters(slow);
+
+    printf("Now printing with copy:\n");
+    printFiveCharactersWithCopy(slow);
 
     return 0;
 }

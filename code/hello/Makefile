@@ -1,11 +1,15 @@
-all: libhello.so hello
+all: libhello.a hello
+
 solution: all
 
 clean:
-	rm -f *o *so hello *~ callgrind.out.*
+	rm -f *.o *.a *.so hello *~ callgrind.out.*
 
-libhello.so: hello.cpp hello.hpp
-	$(CXX) --std=c++17 -g -Wall -Wextra -shared -fPIC -o $@ $<
+hello.o: hello.cpp hello.hpp
+	$(CXX) --std=c++17 -c -g -Wall -Wextra -o $@ $<
 
-hello : main.cpp libhello.so
+libhello.a: hello.o
+	ar rcs $@ $<
+
+hello : main.cpp libhello.a
 	$(CXX) --std=c++17 -g -Wall -Wextra -o $@ $^

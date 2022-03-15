@@ -38,10 +38,10 @@ void compute(int len, T initial, T step) {
     // compute standard deviation of it
     T sum = accumulate(diffs.begin()+1, diffs.end(), T());
     T sumsq = accumulate(diffs.begin()+1, diffs.end(), T(), sumsquare<T>());
-    T mean = sum/len;
-    T variance = sumsq/len - mean*mean;
+    T mean = sum/static_cast<float>(len);
+    T variance = sumsq/static_cast<float>(len) - mean*mean;
 
-    std::cout << "Range = [" << initial << ", " << step*len << "]\n"
+    std::cout << "Range = [" << initial << ", " << step*static_cast<float>(len) << "]\n"
               << "Mean = " << mean << '\n'
               << "Variance = " << variance << '\n';
 }

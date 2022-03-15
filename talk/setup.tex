@@ -125,8 +125,9 @@
   size x/.initial=4cm,
   size y/.initial=.5cm,
   word size/.initial=4,
+  block size/.initial=1,
   nb blocks/.initial=8,
-  base address/.initial=12351,
+  base address/.initial=12288,
   color/.initial=black,
   addresses/.initial=1
 }
@@ -139,6 +140,7 @@
     size x/.get=\stacksizex,
     size y/.get=\stacksizey,
     word size/.get=\stackwordsize,
+    block size/.get=\blocksize,
     nb blocks/.get=\stacknbblocks,
     base address/.get=\stackbaseaddr,
     color/.get=\stackcolor,
@@ -163,7 +165,7 @@
             [rectangle,minimum width=\stacksizex,minimum height=\stacksizey] {};
     }
     \ifnum1=\displayaddrs\relax
-      \pgfmathparse{\n*\stackwordsize+\stackbaseaddr}
+      \pgfmathparse{(\n-1)*\blocksize*\stackwordsize+\stackbaseaddr}
       \pgfmathdectoBase\hexversion{\pgfmathresult}{16}
       \draw node at (\stacksizex,\n*\stacksizey-\stacksizey/2) [right=2pt]
             {0x\hexversion};
@@ -225,9 +227,10 @@
 \newcommand\memorypushpointer[2][]{
   \memorystackset{
     word size/.get=\stackwordsize,
-    base address/.get=\stackbaseaddr
+    base address/.get=\stackbaseaddr,
+    block size/.get=\blocksize,
   }
-  \pgfmathparse{#2*\stackwordsize+\stackbaseaddr}
+  \pgfmathparse{(#2-1)*\stackwordsize*\blocksize+\stackbaseaddr}
   \pgfmathdectoBase\hexaddress{\pgfmathresult}{16}
   \memorypushvalue{\arabic{memorystackindex}}{1}{#1 0x\hexaddress}
   \draw[\stackcolor!80,->] (stack\arabic{memorystackindex}-1.west) .. controls +(left:1) and +(left:1) .. (stack#2-1.west);

@@ -23,20 +23,20 @@
 \begin{frame}[fragile]
   \frametitlecpp[98]{Comments}
   \begin{cppcode}
-    // simple comment for integer declaration
+    // simple comment until end of line
     int i;
 
     /* multiline comment
      * in case we need to say more
      */
-    double d;
+    double /* or something in between */ d;
 
     /**
      * Best choice : doxygen compatible comments
-     * \fn bool isOdd(int i)
      * \brief checks whether i is odd
      * \param i input
      * \return true if i is odd, otherwise false
+     * \see https://www.doxygen.nl/manual/docblocks.html
      */
     bool isOdd(int i);
   \end{cppcode}
@@ -47,51 +47,73 @@
   \begin{cppcode}
     bool b = true;            // boolean, true or false
 
-    char c = 'a';             // 8 bits ASCII char
+    char c = 'a';             // min 8 bit integer (signed or not)
+                              // can store an ASCII character
+    signed char c = 4;        // min 8 bit signed integer
+    unsigned char c = 4;      // min 8 bit unsigned integer
+
     char* s = "a C string";   // array of chars ended by \0
     string t = "a C++ string";// class provided by the STL
 
-    char c = -3;              // 8 bits signed integer
-    unsigned char c = 4;      // 8 bits unsigned integer
-
-    short int s = -444;       // 16 bits signed integer
-    unsigned short s = 444;   // 16 bits unsigned integer
+    short int s = -444;       // min 16 bit signed integer
+    unsigned short s = 444;   // min 16 bit unsigned integer
     short s = -444;           // int is optional
   \end{cppcode}
 \end{frame}
 \begin{frame}[fragile]
   \frametitlecpp[98]{Basic types(2)}
   \begin{cppcode}
-    int i = -123456;          // 32 bits signed integer
-    unsigned int i = 1234567; // 32 bits signed integer
+    int i = -123456;          // min 16, usually 32 bit
+    unsigned int i = 1234567; // min 16, usually 32 bit
 
-    long l = 0L               // 32 or 64 bits (ptr size)
-    unsigned long l = 0UL;    // 32 or 64 bits (ptr size)
+    long l = 0L               // min 32 bit
+    unsigned long l = 0UL;    // min 32 bit
 
-    long long ll = 0LL;       // 64 bits signed integer
-    unsigned long long l = 0ULL; // 64 bits unsigned integer
+    long long ll = 0LL;          // min 64 bit
+    unsigned long long l = 0ULL; // min 64 bit
 
-    float f = 1.23f;          // 32 (23+7+1) bits float
-    double d = 1.23E34;       // 64 (52+11+1) bits float
+    float f = 1.23f;          // 32 (23+7+1) bit float
+    double d = 1.23E34;       // 64 (52+11+1) bit float
+    long double ld = 1.23E34L // min 64 bit float
   \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Portable numeric types}
-  \alert{One needs to include specific header}
+  \alert{Requires inclusion of a specific header}
   \begin{cppcode}
     #include <cstdint>
 
-    int8_t c = -3;     // 8 bits, replaces char
-    uint8_t c = 4;     // 8 bits, replaces unsigned char
+    int8_t c = -3;     // 8 bit signed integer
+    uint8_t c = 4;     // 8 bit unsigned integer
 
-    int16_t s = -444;  // 16 bits, replaced short
-    uint16_t s = 444;  // 16 bits, replaced unsigned short
+    int16_t s = -444;  // 16 bit signed integer
+    uint16_t s = 444;  // 16 bit unsigned integer
 
-    int32_t s = -0674; // 32 bits, replaced int
-    uint32_t s = 0674; // 32 bits, replaced unsigned int
+    int32_t s = -0674; // 32 bit signed integer
+    uint32_t s = 0674; // 32 bit unsigned integer
 
-    int64_t s = -0x1bc;// 64 bits, replaced long long
-    uint64_t s = 0x1bc;// 64 bits, replaced unsigned long long
+    int64_t s = -0x1bc;// 64 bit signed integer
+    uint64_t s = 0x1bc;// 64 bit unsigned int
+    \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Useful aliases}
+    \alert{Requires inclusion of headers}
+  \begin{cppcode}
+    #include <cstddef> // and many other headers
+
+    size_t s = sizeof(int); // unsigned integer
+                            // can hold any variable's size
+
+    #include <cstdint>
+
+    ptrdiff_t c = &s - &s;  // signed integer, can hold any
+                            // diff between two pointers
+
+    // int, which can hold any pointer value:
+    intptr_t i = reinterpret_cast<intptr_t>(&s);   // signed
+    uintptr_t i = reinterpret_cast<uintptr_t>(&s); // unsigned
     \end{cppcode}
 \end{frame}

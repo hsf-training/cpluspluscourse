@@ -5,8 +5,8 @@
   \begin{block}{Interface}
     Set of declarations defining some functionality
     \begin{itemize}
-    \item defined in a ``header file''
-    \item no implementation defined
+    \item put in a so-called ``header file''
+    \item the implementation exists somewhere else
     \end{itemize}
   \end{block}
   \begin{block}{Header : hello.hpp}
@@ -29,21 +29,47 @@
   \begin{cppcode}
     // file inclusion
     #include "hello.hpp"
-    // macros
+    // macro constants and function-style macros
     #define MY_GOLDEN_NUMBER 1746
-    // compile time decision
-    #ifdef USE64BITS
-      typedef uint64_t myint;
-    #else
-      typedef uint32_t myint;
+    #define CHECK_ERROR(x) if ((x) != MY_GOLDEN_NUMBER) \
+      std::cerr << #x " was not the golden number\n";
+    // compile time or platform specific configuration
+    #if defined(USE64BITS) || defined(__GNUG__)
+      using myint = uint64_t;
+    #elif
+      using myint = uint32_t;
     #endif
   \end{cppcode}
   \pause
   \begin{block}{Use only in very restricted cases}
     \begin{itemize}
-    \item include of headers
-    \item hardcoded constants before \cpp11
-    \item portability necessity
+    \item inclusion of headers
+    \item customization for specific compilers/platforms
     \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Header include guards}
+  \begin{block}{Problem: redefinition by accident}
+    \begin{itemize}
+      \item a header may define new names (e.g.\ types)
+      \item multiple (transitive) inclusions of a header would define those names multiple times, which is a compile error
+      \item solution: guard the content of your headers!
+    \end{itemize}
+  \end{block}
+  \begin{block}{Include guards}
+    \begin{cppcode*}{}
+      #ifndef MY_HEADER_INCLUDED
+      #define MY_HEADER_INCLUDED
+      ... // content
+      #endif
+    \end{cppcode*}
+  \end{block}
+  \begin{block}{Pragma once (non-standard)}
+    \begin{cppcode*}{}
+      #pragma once
+      ... // content
+    \end{cppcode*}
   \end{block}
 \end{frame}

@@ -1,7 +1,7 @@
 \subsection[RAII]{pointers and RAII}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Pointers : why they are error prone ?}
+  \frametitlecpp[98]{Pointers: why they are error prone?}
   \begin{exampleblock}{They need initialization
       \hfill \onslide<2->{\textcolor{orange}{\bf Seg Fault}}}
     \begin{cppcode*}{xleftmargin=20pt}
@@ -172,7 +172,7 @@ of 'std::unique_ptr<Foo>'
   \begin{block}{}
     \begin{itemize}
     \item directly allocates a unique\_ptr
-    \item no \mintinline{cpp}{new} or \mintinline{cpp}{delete} calls anymore !
+    \item no \mintinline{cpp}{new} or \mintinline{cpp}{delete} calls anymore!
     \end{itemize}
   \end{block}
   \pause
@@ -196,7 +196,7 @@ of 'std::unique_ptr<Foo>'
   \begin{block}{When to use what ?}
     \begin{itemize}
     \item Always use RAII for all resources, in particular allocations
-    \item You thus never have to release / deallocate yourself !
+    \item You thus never have to release / deallocate yourself!
     \item Use raw pointers for observer functions (or references)
       \begin{itemize}
       \item remember that unique\_ptr is move only
@@ -236,7 +236,7 @@ of 'std::unique_ptr<Foo>'
     \item has move and copy semantic
     \item uses reference counting internally
       \begin{itemize}
-      \item "Would the last person out, please turn off the lights ?"
+      \item "Would the last person out, please turn off the lights?"
       \end{itemize}
     \item reference counting is thread-safe, therefore costly
     \end{itemize}

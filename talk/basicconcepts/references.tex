@@ -30,13 +30,14 @@
   \begin{block}{Specificities of reference}
     \begin{itemize}
     \item natural syntax
-    \item will never be \mintinline{cpp}{nullptr}
+    \item must be assigned when defined, cannot be \mintinline{cpp}{nullptr}
+    \item cannot be reassigned
     \item non-const references to temporary objects are not allowed
     \end{itemize}
   \end{block}
   \begin{block}{Advantages of pointers}
     \begin{itemize}
-    \item can be \mintinline{cpp}{nullptr}
+    \item can be reassigned to point elsewhere or to \mintinline{cpp}{nullptr}
     \item clearly indicates that argument may be modified
     \end{itemize}
   \end{block}

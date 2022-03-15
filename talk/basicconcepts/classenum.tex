@@ -14,17 +14,17 @@
 
       Individual student;
       student.age = 25;
-      student.weight = 78.5;
+      student.weight = 78.5f;
 
       Individual teacher = {
-        45, 67
+        45, 67.0f
       };
     \end{cppcode*}
     \columnbreak
     \begin{cppcode*}{gobble=2,firstnumber=14}
-      Individual *studentPtr =
-        &student;
-      studentPtr->age = 25;
+      Individual *ptr = &student;
+      ptr->age = 25;
+      // same as: (*ptr).age = 25;
     \end{cppcode*}
     \pause
     \vfill
@@ -58,7 +58,6 @@
         short hours;
         char days;
       };
-
       Duration d1, d2, d3;
       d1.seconds = 259200;
       d2.hours = 72;
@@ -82,13 +81,26 @@
     \end{tikzpicture}
     \vfill \null
   \end{multicols}
+  \onslide<7->{
+  \begin{alertblock}{}
+    Starting with \cpp17: prefer \mintinline{cpp}{std::variant}
+  \end{alertblock}
+  }
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Enums}
+  \begin{block}{}
+    \begin{itemize}
+        \item use to declare a list of related constants (enumerators)
+        \item has an underlying integral type
+        \item enumerator names leak into enclosing scope
+    \end{itemize}
+  \end{block}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       enum VehicleType {
+
         BIKE,  // 0
         CAR,   // 1
         BUS,   // 2
@@ -97,7 +109,8 @@
     \end{cppcode*}
     \columnbreak
     \begin{cppcode*}{gobble=2}
-      enum VehicleType {
+      enum VehicleType
+        : int { // C++11
         BIKE = 3,
         CAR = 5,
         BUS = 7,
@@ -118,7 +131,7 @@
   \pause
   \begin{exampleblock}{Only advantages}
     \begin{itemize}
-    \item scoping avoids name clashes
+    \item scopes enumerator names, avoids name clashes
     \item strong typing, no automatic conversion to int
     \end{itemize}
     \small
@@ -184,17 +197,19 @@
 
 \begin{frame}[fragile]
   \frametitle{typedef and using \hfill \cpp98 / \cpp11}
-  Ways to create type aliases
+  Used to create type aliases
   \begin{alertblock}{\cpp98}
     \begin{cppcode*}{gobble=2}
       typedef uint64_t myint;
       myint toto = 17;
+      typedef int pos[3];
     \end{cppcode*}
   \end{alertblock}
   \begin{exampleblock}{\cpp11}
     \begin{cppcode*}{gobble=2}
       using myint = uint64_t;
       myint toto = 17;
+      using pos = int[3];
 
       template <typename T> using myvec = std::vector<T>;
       myvec<int> titi;
