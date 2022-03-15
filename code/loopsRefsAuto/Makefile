@@ -2,7 +2,7 @@ all: loopsRefsAuto
 solution: loopsRefsAuto.sol
 
 clean:
-	rm -f *o functions *~
+	rm -f *o *~ loopsRefsAuto loopsRefsAuto.sol
 
 %.o: %.cpp %.h
 	${CXX} -std=c++17 -Wall -Wextra -c  -o $@ $<
