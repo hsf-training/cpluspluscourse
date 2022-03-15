@@ -69,9 +69,9 @@ jobs:
           - NAME: "polymorphism"
             BUILD_DEFAULT: true
             BUILD_SOLUTION: true
-          - NAME: "python"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: false
+#          - NAME: "python"
+#            BUILD_DEFAULT: true
+#            BUILD_SOLUTION: false
           - NAME: "race"
             BUILD_DEFAULT: true
             BUILD_SOLUTION: true
