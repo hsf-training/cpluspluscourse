@@ -24,7 +24,7 @@ pass by copy / pass by reference
 
 ### Control Structures (directory: `control`)
 
-The idea of this exercise is to play with all kinds of possible loops and control structures and to understand how they work. 
+The idea of this exercise is to play with all kinds of possible loops and control structures and to understand how they work.
 
 - change from a C++98 style for loop to range-based loop
 - replace if / else statement with conditional operator
