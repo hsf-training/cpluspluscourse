@@ -181,7 +181,7 @@ changeSS2(s);
   \frametitlecpp[98]{Pass by value, reference or pointer}
   \begin{block}{Different ways to pass arguments to a function}
     \begin{itemize}
-    \item by default arguments are passed by value (= copy) \\
+    \item by default, arguments are passed by value (= copy) \\
           good for small types, e.g.\ numbers
     \item prefer references for mandatory parameters to avoid copies
     \item use pointers for optional parameters to allow \mintinline{cpp}{nullptr}
@@ -203,7 +203,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
 \begin{frame}[fragile]
   \frametitlecpp[98]{Functions}
   \begin{alertblock}{Exercise}
-    Familiarise yourself with pass by copy / pass by reference.
+    Familiarise yourself with pass by value / pass by reference.
     \begin{itemize}
       \item go to \texttt{code/functions}
       \item Look at \texttt{functions.cpp}
