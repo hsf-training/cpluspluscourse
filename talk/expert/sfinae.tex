@@ -184,7 +184,7 @@
   \frametitle{SFINAE and the STL \hfill \cpp11/\cpp14/\cpp17}
   \begin{block}{enable\_if / enable\_if\_t}
     \begin{cppcode*}{gobble=2}
-      template<bool B, typename T = void> struct enable_if {};
+      template<bool B, typename T=void> struct enable_if {};
       template<typename T>
       struct enable_if<true, T> { using type = T; };
       template<bool B, typename T = void>
