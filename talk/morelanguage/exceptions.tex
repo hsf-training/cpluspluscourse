@@ -32,7 +32,7 @@
     \end{cppcode*}
     \columnbreak
     \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
-      process_stream_data(stream &s) {
+      void process_stream_data(stream &s) {
         ...
         if (data_location >= buffer.length()) {
           throw range_error("buf overflow");
@@ -45,21 +45,22 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Exceptions}
-  \begin{block}{Rules and Advice I}
+  \begin{block}{Rules and behavior}
     \begin{itemize}
-      \item any object can be thrown; best to use those in \texttt{stdexcept}
+      \item objects of any type can be thrown
       \begin{itemize}
-        \item define your own subclass of \texttt{std::exception} if needed
+        \item prefer standard exception types from the \texttt{<stdexcept>} header
+        \item define your own subclass of \mintinline{cpp}{std::exception} if needed
       \end{itemize}
-      \item an exception will be caught if the thrown object's type matches a \textit{catch} clause
+      \item an exception will be caught if the type in the catch clause matches or is a base class of the thrown object's static type
       \begin{itemize}
-          \item if nothing catches an exception then \texttt{std::terminate} is called
-          \item throw exceptions by value, catch them by (const) reference
+          \item if no one catches an exception then \mintinline{cpp}{std::terminate} is called
       \end{itemize}
+      \item you can have multiple catch clauses, will be matched in order
       \item all objects on the stack between the \mintinline{cpp}{throw} and the \mintinline{cpp}{catch} are destructed automatically during stack unwinding
       \begin{itemize}
-        \item this should give you a clean release of intermediate resources
-        \item make sure you are using the RAII idiom in your own classes
+        \item this should cleanly release intermediate resources
+        \item make sure you are using the RAII idiom for your own classes
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -67,21 +68,23 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{Exceptions}
-  \begin{block}{Rules and Advice II}
+  \begin{block}{Advice}
     \begin{itemize}
+      \item throw exceptions by value, catch them by (const) reference
       \item use exceptions for \textit{unlikely} runtime errors outside the program's control
       \begin{itemize}
         \item  bad inputs, files unexpectedly not found, DB connection, \ldots
       \end{itemize}
       \item \textit{don't} use exceptions for logic errors in your code
       \begin{itemize}
-        \item consider \texttt{assert} and tests
+        \item consider \mintinline{cpp}{assert} and tests
       \end{itemize}
       \item \textit{don't} use exceptions to provide alternative return values (or to skip them)
       \begin{itemize}
         \item you can use \mintinline{cpp}{std::optional} or \mintinline{cpp}{std::variant}
         \item avoid using the global C-style \mintinline{cpp}{errno}
       \end{itemize}
+      \item See also the \href{https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-errors}{\cpp core guidelines} and the \href{https://isocpp.org/wiki/faq/exceptions}{ISO \cpp FAQ}
     \end{itemize}
   \end{block}
 \end{frame}
@@ -130,6 +133,27 @@
   \end{multicols}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Exceptions}
+  \begin{block}{Catching everything}
+    \begin{itemize}
+    \item sometimes we need to catch all possible exceptions
+    \item e.g. in \mintinline{cpp}{main}, a thread, a destructor, interfacing with C, \ldots
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+
+    try {
+      callUnknownFramework();
+    } catch(const std::exception& e) {
+      // catches std::exception and all derived types
+      std::cerr << "Exception: " << e.what() << std::endl;
+    } catch(...) {
+      // catches everything else
+      std::cerr << "Unknown exception type" << std::endl;
+    }
+  \end{cppcode}
+\end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Error Handling and Exceptions}
@@ -188,19 +212,19 @@
   \frametitlecpp[11]{noexcept specifier}
   \begin{block}{}
     \begin{itemize}
-      \item giving the \mintinline{cpp}{noexcept} specifier states that a function is guaranteed to not throw an exception
-      \begin{cppcode*}{fontsize=\footnotesize,gobble=2,linenos=false}
+      \item a function with the \mintinline{cpp}{noexcept} specifier states that it guarantees to not throw an exception
+      \begin{cppcode*}{gobble=2,linenos=false}
         int f() noexcept;
       \end{cppcode*}
       \begin{itemize}
         \item either no exceptions will be thrown or they are handled internally
         \item checked at compile time, so it allows the compiler to optimise around that knowledge
       \end{itemize}
-      \item \mintinline{cpp}{noexcept(expression)} specifier evaluates the expression and, if \textit{true}, the function it applied to guarantees it won't throw
-        \begin{cppcode*}{fontsize=\footnotesize,gobble=2,linenos=false}
-          int safe_if_long_is_8_bytes() noexcept(sizeof(long)==8);
-        \end{cppcode*}
-      \item Use \mintinline{cpp}{noexcept} on leaf functions where you can be sure of the behaviour
+      \item a function with \mintinline{cpp}{noexcept(expression)} is only \mintinline{cpp}{noexcept} when \mintinline{cpp}{expression} evaluates to \mintinline{cpp}{true} at compile-time
+      \begin{cppcode*}{gobble=2,linenos=false}
+        int safe_if_8B_long() noexcept(sizeof(long)==8);
+      \end{cppcode*}
+      \item Use \mintinline{cpp}{noexcept} on leaf functions where you know the behaviour
       \item Since C++11 destructors are \mintinline{cpp}{noexcept} - never throw from them
     \end{itemize}
   \end{block}
@@ -211,12 +235,23 @@
   \frametitlecpp[11]{noexcept operator}
   \begin{block}{}
     \begin{itemize}
-      \item the \mintinline{cpp}{noexcept(expression)} operator performs a compile-time check to know whether an expression can throw exceptions
-      \item it returns a bool, which is \textit{true} if no exceptions will be emitted
-        \begin{cppcode*}{fontsize=\footnotesize,gobble=2, linenos=false}
-          constexpr bool callCannotThrow = noexcept(f());
-          if constexpr (callCannotThrow) { ... }
-        \end{cppcode*}
+      \item the \mintinline{cpp}{noexcept(expression)} operator checks at compile-time whether an expression can throw exceptions
+      \item it returns a \mintinline{cpp}{bool}, which is \mintinline{cpp}{true} if no exceptions can be thrown
     \end{itemize}
+  \end{block}
+  \begin{block}{}
+    \begin{cppcode*}{gobble=2, linenos=false}
+      constexpr bool callCannotThrow = noexcept(f());
+      if constexpr (callCannotThrow) { ... }
+    \end{cppcode*}
+  \end{block}
+  \begin{block}{}
+    \begin{cppcode*}{gobble=2, linenos=false}
+      template <typename Function>
+      void g(Function f) noexcept(noexcept(f())) {
+        ...
+        f();
+      }
+    \end{cppcode*}
   \end{block}
 \end{frame}
