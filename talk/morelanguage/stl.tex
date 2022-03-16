@@ -187,6 +187,25 @@
   \end{block}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Functors / function objects}
+  \begin{block}{Example}
+    \begin{cppcode*}{}
+      struct Incrementer {
+        int inc;
+        Incrementer(int inc) : inc(inc) {}
+
+        int operator()(int value) const {
+          return value + m_inc;
+        };
+      };
+      std::vector<int> v{1, 2, 3};
+      std::transform(v.begin(), v.end(), v.begin(),
+                     Incrementer{42});
+      \end{cppcode*}
+    \end{block}
+\end{frame}
+
 \againframe{STLcode}
 
 \begin{frame}[fragile]
