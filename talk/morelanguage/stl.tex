@@ -68,6 +68,50 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[11]{Containers: std::vector}
+  \begin{cppcode*}{}
+    #include <vector>
+    std::vector<T> v{5, 3, 4}; // 3 Ts, 5, 3, 4
+    std::vector<T> v(100);     // 100 default constr. Ts
+    std::vector<T> v(100, 42); // 100 Ts with value 42
+    std::vector<T> v2 = v;            // copy
+    std::vector<T> v2 = std::move(v); // move, v is empty
+
+    std::size_t s = v.size();
+    bool empty = v.empty();
+
+    v[2] = 17;         // write element 2
+    T& t = v[1000];    // access element 1000, bug!
+    T& t = v.at(1000); // throws std::out_of_range
+    T& f = v.front();  // access first element
+    v.back() =  0;     // write last element
+    T* v.data();       // pointer to underlying storage
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Containers: std::vector}
+  \begin{cppcode*}{}
+    std::vector<T> v = ...;
+    auto b = v.begin(); // iterator to first element
+    auto e = v.end();   // iterator to one past last element
+    // all following operations, except reserve, invalidate
+    // all iterators (b and e) and references to elements
+
+    v.resize(100); // size changes, grows: new T{}s appended
+                   //           shrinks: Ts at end destroyed
+    v.reserve(1000); // size remains, memory increased
+    for (T i = 0; i < 900; i++)
+      v.push_back(i); // add to the end
+    v.insert(v.begin()+3, T{}); // insert after 3rd position
+
+    v.pop_back();         // removes last element
+    v.erase(v.end() - 3); // removes 3rd last element
+    v.clear();            // removes all element
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[98]{STL's concepts}
   \begin{block}{iterators}
     \begin{itemize}
