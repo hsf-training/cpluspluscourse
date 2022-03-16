@@ -1,14 +1,14 @@
 #include <iostream>
 
-constexpr int numbers[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
+constexpr unsigned int numbers[]{1000001, 1000002, 1000003, 1000004, 1000005, 1000006, 1000007, 1000008, 1000009};
 
-bool isodd(int i) { return i % 2 == 1; }
+bool isodd(unsigned int i) { return i % 2 == 1; }
 
 void part1() {
   int sum_odd = 0;
   int sum_eve = 0;
   for (int i = 0; i < 9; ++i) {
-    int num = numbers[i];
+    unsigned int num = numbers[i];
     if (isodd(num)) {
       sum_odd += num;
     } else {
