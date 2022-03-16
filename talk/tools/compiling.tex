@@ -143,7 +143,7 @@
       cmake -DCMAKE_BUILD_TYPE=Release .. # pass arguments
       ccmake .    # change configuration using terminal GUI
       cmake-gui . # change configuration using Qt GUI
-      cmake --build . -j8    # build project with 8 threads
+      cmake --build . -j8    # build project with 8 jobs
       cmake --build . --target hello  # build only hello
       sudo cmake --install . # install project into system
       cd ..
