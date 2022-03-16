@@ -1,12 +1,11 @@
 #include <iostream>
-#include <math.h>
 #include <algorithm>
 #include <vector>
 #include <numeric>
+#include <random>
 #include "Complex.hpp"
 
 using namespace std;
-using namespace __gnu_cxx;
 
 template<typename T>
 struct Generator {
@@ -20,7 +19,7 @@ void compute(int len, T initial, T step) {
 
     // fill and randomize v
     generate(, , Generator...);
-    random_shuffle(...);
+    shuffle(..., std::default_random_engine{});
 
     // compute differences
     adjacent_difference(...);
