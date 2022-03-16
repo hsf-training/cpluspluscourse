@@ -6,7 +6,7 @@ Each exercise is in its own directory and referred to in the following by the na
 For each day, the exercises are given in order in which they should be done.
 
 Day 1 - Basics Exercises
-----
+------------------------
 
 ### Hello World (directory: `hello`)
 
@@ -39,7 +39,7 @@ The idea of this exercise is to play with all kinds of possible loops and contro
 
 
 Day 2 - Tools Exercises
------
+-----------------------
 
 
 The tools exercises of day 2 are special as they will have been played (quickly) during the course. But people should replay them and discover the tools by themselves.
@@ -69,8 +69,8 @@ The solution of the crash is simply an inversion of 2 lines in the code where de
 
 
 
-## Day 2 - OO Exercises
-
+Day 2 - OO Exercises
+--------------------
 
 ### Polymorphism (directory: `polymorphism`)
 
@@ -82,7 +82,6 @@ Polygon *poly = new Hexagon(1.0);
 poly->computePerimeter();
 ```
 and check what is called, in regular and virtual method case
-
 
 ### Virtual inheritance (directory: `virtual_inheritance`)
 
@@ -118,9 +117,8 @@ There are multiple possibilities to implement some operators, e.g. as members, a
 Also when and where to normalize a fraction is up to the students.
 All solutions are fine, as long as the `main` function runs successfully.
 
-
 Day 3 - Modern C++ Exercises
-----
+----------------------------
 
 ### Constness (directory: `constness`)
 
