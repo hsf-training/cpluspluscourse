@@ -240,7 +240,11 @@
   \end{itemize}
 \end{frame}
 
+\ifthenelse{\boolean{onlybasics}}{%
+\begin{frame}<handout:0|beamer:0>[fragile]
+}{%
 \begin{frame}[fragile]
+}
   \frametitlecpp[11]{{\texttt final} keyword}
   \begin{block}{Idea}
     \begin{itemize}

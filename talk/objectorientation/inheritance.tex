@@ -269,7 +269,11 @@
   \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile]
+\ifthenelse{\boolean{onlybasics}}{%
+  \begin{frame}<handout:0|beamer:0>[fragile]%
+}{%
+\begin{frame}[fragile]%
+}%
   \frametitlecpp[11]{Final class}
   \begin{block}{Idea}
     \begin{itemize}
