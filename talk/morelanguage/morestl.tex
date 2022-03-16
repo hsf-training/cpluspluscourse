@@ -5,9 +5,9 @@
   \begin{block}{Non owning view of a continuous char sequence}
     \begin{itemize}
     \item Doesn't allocate memory
-    \item Similar interface to \texttt{std::string}
+    \item Similar interface to \mintinline{cpp}{std::string}
     \item Easy to copy, faster for some calls eg. \texttt{substr} (O(1) vs O(n))
-    \item The data pointed to has to outlive the \texttt{string\_view}
+    \item The data pointed to has to outlive the \mintinline{cpp}{string\_view}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Some example uses}
@@ -54,8 +54,8 @@
   \begin{block}{a type-safe union}
     \begin{itemize}
     \item Allows the variable to hold any of the given types
-    \item \texttt{std::get} reads the value of the variant
-    \item and throws \texttt{std::bad\_variant\_access} for bad accesses
+    \item \mintinline{cpp}{std::get} reads the value of the variant
+    \item and throws \mintinline{cpp}{std::bad_variant_access} for bad accesses
     \item Makes it easy to implement visitor pattern
     \end{itemize}
   \end{block}
@@ -106,10 +106,10 @@
   \frametitlecpp[17]{std::any}
   \begin{block}{a type-safe container for single values of any type}
     \begin{itemize}
-    \item Allows a variable to hold any type (say bye to \texttt{void*})
-    \item \texttt{std::any\_cast} reads the internal value
-    \item and throws \texttt{std::bad\_any\_cast} for bad accesses
-    \item \texttt{any\_cast} will only match concrete types, ignoring inheritance
+    \item Allows a variable to hold any type (say bye to \mintinline{cpp}{void*})
+    \item \mintinline{cpp}{std::any_cast} reads the internal value
+    \item and throws \mintinline{cpp}{std::bad_any_cast} for bad accesses
+    \item \mintinline{cpp}{any_cast} will only match concrete types, ignoring inheritance
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Code example}
