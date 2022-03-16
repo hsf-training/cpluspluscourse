@@ -5,7 +5,7 @@
   \begin{block}{What it is}
     \begin{itemize}
     \item A library of standard templates
-    \item Everything you need, or ever dreamed of
+    \item Has almost everything you need
       \begin{itemize}
       \item strings, containers, iterators
       \item algorithms, functions, sorters
@@ -18,9 +18,9 @@
     \end{itemize}
   \end{block}
   \pause
-  \begin{alertblock}{Just use it}
+  \begin{exampleblock}{Use it}
     and adapt it to your needs, thanks to templates
-  \end{alertblock}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile,label=STLcode]
@@ -35,7 +35,7 @@
     std::transform(vi.begin(), vi.end(),      // range1
                    vi.begin(),          // start range2
                    vr.begin(),          // start result
-                   std::multiplies{}); // function
+                   std::multiplies{}); // function objects
 
     for(auto n : vr) {
       std::cout << n << ' ';
@@ -47,8 +47,7 @@
   \frametitlecpp[98]{STL's concepts}
   \begin{block}{containers}
     \begin{itemize}
-    \item a structure containing data
-    \item with a given way of handling it
+    \item data structures for managing a range of elements
     \item irrespective of
       \begin{itemize}
       \item the data itself (templated)
@@ -57,12 +56,15 @@
       \end{itemize}
     \item examples
       \begin{itemize}
-      \item string
-      \item tuple, list, forward\_list (\cpp11), vector, deque, array (\cpp11)
+      \item string, string\_view (\cpp17)
+      \item list, forward\_list (\cpp11), vector, deque, array (\cpp11)
       \item map, set, multimap, multiset
       \item unordered\_map (\cpp11), unordered\_set (\cpp11)
       \item stack, queue, priority\_queue
+      \item span (\cpp20)
       \end{itemize}
+    \item non-containers: pair, tuple (\cpp11), optional (\cpp17), variant (\cpp17), any (\cpp17)
+    \item see also the \href{https://en.cppreference.com/w/cpp/string/basic_string}{string} and \href{https://en.cppreference.com/w/cpp/container}{container library} on cppreference
     \end{itemize}
   \end{block}
 \end{frame}
@@ -154,7 +156,7 @@
       \item sort, partial\_sort, merge, make\_heap, min, max
       \item lexicographical\_compare, iota, reduce, partial\_sum
       \end{itemize}
-    \item see also \href{https://www.youtube.com/watch?v=2olsGf6JIkU}{105 STL Algorithms in Less Than an Hour}
+    \item see also \href{https://www.youtube.com/watch?v=2olsGf6JIkU}{105 STL Algorithms in Less Than an Hour} and the \href{https://en.cppreference.com/w/cpp/algorithm}{algorithms library} on cppreference
     \end{itemize}
   \end{block}
 \end{frame}
@@ -180,6 +182,7 @@
       \item identity, not\_fn
       \item bind, bind\_front
       \end{itemize}
+    \item see also documentation on \href{https://en.cppreference.com/w/cpp/utility/functional}{cppreference}
     \end{itemize}
   \end{block}
 \end{frame}
@@ -187,32 +190,39 @@
 \againframe{STLcode}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{STL in practice using \cpp98}
-  \begin{cppcode*}{}
-    #include <vector>
-    #include <algorithm>
-
-    std::vector<int> vi, vr(3);
-    vi.push_back(5); vi.push_back(3); vi.push_back(4);
-
-    std::transform(vi.begin(), vi.end(),      // range1
-                   vi.begin(),          // start range2
-                   vr.begin(),          // start result
-                   std::multiplies<int>()); // function
-
-    for(std::vector<int>::iterator it = vr.begin();
-        it != vr.end();
-        it++) {
-      std::cout << *it << ' ';
-    };
-  \end{cppcode*}
+  \frametitlecpp[11]{Range-based for loops with STL containers}
+  \begin{block}{Iterator-based loop (since \cpp98)}
+    \begin{cppcode*}{}
+      std::vector<int> v = ...;
+      int sum = 0;
+      for (std::vector<int>::iterator it = v.begin();
+           it != v.end(); it++)
+        sum += *it;
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{Range-based for loop (since \cpp11)}
+    \begin{cppcode*}{firstnumber=6}
+      std::vector<int> v = ...;
+      int sum = 0;
+      for (auto a : v) { sum += a; }
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{exampleblock}{STL way (since \cpp98)}
+    \begin{cppcode*}{firstnumber=9}
+      std::vector<int> v = ...;
+      int sum = std::accumulate(v.begin(), v.end(), 0);
+      // std::reduce(v.begin(), v.end(), 0); // C++17
+    \end{cppcode*}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{STL and functors}
   \begin{cppcode}
     // Finds the first element in a list between 1 and 10.
-    list<int> l;
+    list<int> l = ...;
     ...
     list<int>::iterator it =
       find_if(l.begin(), l.end(),
@@ -235,14 +245,14 @@
   \frametitlecpp[14]{STL and lambdas}
   \begin{cppcode}
     // Finds the first element in a list between 1 and 10.
-    list<int> l;
+    std::list<int> l = ...;
     ...
     const auto it =
-      find_if(l.begin(), l.end(),
+      std::find_if(l.begin(), l.end(),
         [](int i) { return i >= 1 && i <= 10; });
 
     // Computes sin(x)/(x + DBL_MIN) for elements of a range.
-    transform(first, last, first,
+    std::transform(first, last, first,
       [](auto x) { return sin(x)/(x + DBL_MIN); });
   \end{cppcode}
 \end{frame}
@@ -275,42 +285,17 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Using the STL}
-  \begin{alertblock}{Some last warning}
-    You may find the STL quite difficult to use.
+  \begin{exampleblock}{Be brave and persistent!}
     \begin{itemize}
+    \item you may find the STL quite difficult to use
     \item template syntax is really tough
-    \item it is hard to debug (compilers spit out long error novels)
+    \item it is hard to get right, compilers spit out long error novels
+    \begin{itemize}
+      \item but, compilers are getting better with error messages
     \end{itemize}
-    However, this has improved a lot with \cpp11 \\
-    And may again in \cpp20 with concepts
-  \end{alertblock}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlecpp[11]{Loops and auto keyword with the STL}
-  \begin{block}{Old way}
-    \begin{cppcode*}{}
-      std::vector<int> v = ...;
-      int sum = 0;
-      for (std::vector<int>::iterator it = v.begin();
-           it != v.end(); it++) {
-        sum += *it;
-      }
-    \end{cppcode*}
-  \end{block}
-  \pause
-  \begin{block}{New way}
-    \begin{cppcode*}{firstnumber=7}
-      std::vector<int> v = ...;
-      int sum = 0;
-      for (auto a : v) { sum += a; }
-    \end{cppcode*}
-  \end{block}
-  \pause
-  \begin{exampleblock}{STL way (\cpp17)}
-    \begin{cppcode*}{firstnumber=10}
-      std::vector<int> v = ...;
-      int sum = std::reduce(v.begin(), v.end(), 0);
-    \end{cppcode*}
+    \item \cpp20 will help with concepts and ranges
+    \item the STL is extremely powerful and flexible
+    \item it will be worth your time!
+    \end{itemize}
   \end{exampleblock}
 \end{frame}
