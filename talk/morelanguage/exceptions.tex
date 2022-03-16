@@ -225,7 +225,7 @@
         int safe_if_8B_long() noexcept(sizeof(long)==8);
       \end{cppcode*}
       \item Use \mintinline{cpp}{noexcept} on leaf functions where you know the behaviour
-      \item Since C++11 destructors are \mintinline{cpp}{noexcept} - never throw from them
+      \item C++11 destructors are \mintinline{cpp}{noexcept} - never throw from them
     \end{itemize}
   \end{block}
 \end{frame}
