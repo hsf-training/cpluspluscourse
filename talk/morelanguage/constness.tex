@@ -45,12 +45,14 @@
     // const reference
     int const & l = a;
     l = b; // error, reference is const
+
+    int const & const l = a; // compile error
   \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Method constness}
-  \begin{block}{The {\it const} keyword for class member functions}
+  \begin{block}{The {\it const} keyword for member functions}
     \begin{itemize}
     \item indicate that the function does not modify the object
     \item in other words, \mintinline{cpp}{this} is a pointer to a constant object
@@ -59,7 +61,8 @@
   \begin{cppcode}
     struct Example {
       void foo() const  {
-        m_member = 0; // Error : function is constant
+        // type of 'this' is 'Example const*'
+        m_member = 0; // Error: member function is const
       }
       int m_member;
     };
@@ -70,8 +73,8 @@
   \frametitlecpp[98]{Method constness}
   \begin{block}{Constness is part of the type}
     \begin{itemize}
-    \item {\it T const} and {\it T} are different types
-    \item however, {\it T} is automatically cast to {\it T const} when needed
+    \item \mintinline{cpp}{T const} and \mintinline{cpp}{T} are different types
+    \item however, \mintinline{cpp}{T} is automatically cast to \mintinline{cpp}{T const} when needed
     \end{itemize}
   \end{block}
   \begin{cppcode}
