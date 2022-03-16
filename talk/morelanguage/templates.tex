@@ -1,14 +1,14 @@
 \subsection[\textless{}T\textgreater]{Templates}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Templates}
+  \frametitlecpp[17]{Templates}
   \begin{block}{Concept}
     \begin{itemize}
     \item The \cpp way to write reusable code
       \begin{itemize}
-        \item aka macros on steroids
+        \item like macros, but fully integrated into the type system
       \end{itemize}
-    \item Applicable to functions and objects
+    \item Applicable to functions, classes and variables
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -16,21 +16,21 @@
     const T & max(const T &a, const T &b) {
       return a > b ? a : b;
     }
-
     template<typename T>
     struct Vector {
       int m_len;
       T* m_data;
     };
+    template <typename T>
+    int size = sizeof(T);
  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Templates}
   \begin{alertblock}{Warning}
-    These are really like macros
     \begin{itemize}
-      \item they are compiled n times
+      \item they are compiled for each instantiation
       \item they need to be defined before used
       \begin{itemize}
         \item so all templated code has to be in headers
@@ -83,11 +83,11 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Templates}
-  \begin{block}{Arguments}
+  \begin{block}{Template parameters}
     \begin{itemize}
-    \item can be a class,
+    \item can be types, values or other templates
     \item you can have several
-    \item last ones can have a default value
+    \item default values allowed starting at the last parameter
     \end{itemize}
   \end{block}
   \begin{cppcode*}{}
@@ -128,7 +128,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Non-type template parameter \hfill \cpp98 / \cpp17 / \cpp20}
-  \begin{block}{template parameters can also be a value}
+  \begin{block}{template parameters can also be values}
     \begin{itemize}
     \item integral types, pointer, enums in \cpp98
     \item \mintinline{cpp}{auto} in \cpp17
@@ -136,7 +136,8 @@
     \end{itemize}
   \end{block}
   \begin{cppcode*}{}
-    template<unsigned int N> struct Polygon {
+    template<unsigned int N>
+    struct Polygon {
       Polygon(float radius);
       float perimeter() {return 2*N*sin(PI/N)*m_radius;}
       float m_radius;
@@ -150,7 +151,8 @@
     templates can be specialized for given values of their parameter
   \end{block}
   \begin{cppcode*}{}
-    template<typename F, unsigned int N> struct Polygon {
+    template<typename F, unsigned int N>
+    struct Polygon {
       Polygon(F radius) : m_radius(radius) {}
       F perimeter() {return 2*N*sin(PI/N)*m_radius;}
       F m_radius;
