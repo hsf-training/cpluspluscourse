@@ -93,41 +93,37 @@
   \frametitlecpp[98]{Exceptions}
   \begin{block}{A more illustrative example}
     \begin{itemize}
-      \item exceptions are very powerful when there are many calls / lines of code between the error and where the error is handled
+      \item exceptions are very powerful when there is much code between the error and where the error is handled
       \item they can also rather cleanly handle different types of errors
-      \item \textit{try ... catch} statements can also be nested
+      \item \mintinline{cpp}{try}/\mintinline{cpp}{catch} statements can also be nested
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
     \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
       try {
-        for (const &file : files) {
+        for (File const &f : files) {
           try {
-            process_file(file);
+            process_file(f);
           }
-          catch (const file_bad &e) {
-            ... // Skips one file
+          catch (const bad_file &e) {
+            ... // loop continues
           }
         }
-      } catch (const db_bad &e) {
-        ... // This exception
-            // aborts everything
+      } catch (const bad_db &e) {
+        ... // loop aborted
       }
     \end{cppcode*}
     \columnbreak
     \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
-      int process_file(const fileobj &file) {
+      void process_file(const File &file) {
         ...
-        if (fh = open_file(file)) {
-          throw
-            file_bad(file.error.reason());
+        if (handle = open_file(file))
+          throw bad_file(file.status());
+        while (!handle) {
+          line = read_line(handle);
+          database.insert(line); // can throw
+                                 // bad_db
         }
-        while (!fh) {
-          line = read_line(fh);
-          add_line_to_db(line); // Can throw
-                                // db_bad
-        }
-        return 0;
       }
     \end{cppcode*}
   \end{multicols}
@@ -161,44 +157,38 @@
     \begin{itemize}
       \item exceptions have little cost if no exception is thrown
       \begin{itemize}
-        \item so they are recommended for \textit{exceptional} events
+        \item they are recommended to report \textit{exceptional} errors
       \end{itemize}
-      \item however, in a tight, performance-critical loop, where the error is handled close to the place it happens a more explicit error code or object might be better
-      \begin{itemize}
-        \item but profile if you really want to find out!
-      \end{itemize}
+      \item for performance, when error raising and handling are close, or errors occur often, prefer error codes or a dedicated class
+      \item when in doubt about which error strategy is better, profile!
    \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{minipage}{4.5cm}
-      \begin{alertblock}{Don't}
-        \begin{cppcode*}{fontsize=\tiny,gobble=2,linenos=false}
-          // try ... catch in hot loop might
-          //    impact performance
-          for (const &item: list) {
+    \begin{minipage}{5cm}
+      \begin{alertblock}{Avoid}
+        \begin{cppcode*}{fontsize=\scriptsize,gobble=6,linenos=false}
+          for (string const &num: nums) {
             try {
-              check_item(item); // Can throw
-              ... // process item
-            }
-            catch (bad_item &e) {
-              ... // ignore and keep going
+              int i = convert(num); // can
+                                    // throw
+              process(i);
+            } catch (not_an_int const &e) {
+              ... // log and continue
             }
           }
         \end{cppcode*}
       \end{alertblock}
     \end{minipage}
     \columnbreak
-    \begin{minipage}{5.8cm}
-      \begin{exampleblock}{Do}
-        \begin{cppcode*}{fontsize=\tiny,gobble=2,linenos=false}
-          // For this code, explicit error codes
-          //   may be better
-          for (const &item: list) {
-            std::optional<T> err_code = check_item(item);
-            if (!err_code) {
-              ... // process item
+    \begin{minipage}{5cm}
+      \begin{exampleblock}{Prefer}
+        \begin{cppcode*}{fontsize=\scriptsize,gobble=6,linenos=false}
+          for (string const &num: nums) {
+            optional<int> i = convert(num);
+            if (i) {
+              process(*i);
             } else {
-              ... // warn and carry on
+              ... // log and continue
             }
           }
         \end{cppcode*}
