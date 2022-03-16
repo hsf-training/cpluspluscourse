@@ -26,7 +26,7 @@ void createAndFillVector(int** v, unsigned int len) {
 }
 
 int main() {
-    int *v;
+    int *v = nullptr;
     // create and randomize vector
     createAndFillVector(&v, LEN+1);
     randomize(v, LEN+1);

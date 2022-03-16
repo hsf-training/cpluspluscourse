@@ -6,11 +6,11 @@ int main() {
     Pentagon penta{1.0};
     std::cout << "Penta : perimeter = " << penta.computePerimeter() << "\n\n";
 
-    // create an Hexagon, call its perimeter method
+    // create a Hexagon, call its perimeter method
     Hexagon hexa{1.0};
     std::cout << "Hexa : perimeter = " << hexa.computePerimeter() << "\n\n";
 
-    // create an Hexagon, call its parent's perimeter method
+    // create a Hexagon, call the perimeter method through a reference to Polygon
     Hexagon hexa2{1.0};
     Polygon &poly = hexa2;
     std::cout << "Hexa : perimeter = " << hexa2.computePerimeter() << '\n'
