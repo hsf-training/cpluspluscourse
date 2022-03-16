@@ -21,19 +21,29 @@
       int i = myObj2.sum(); // i = 9
     \end{cppcode*}
     \columnbreak
-    \center
+    \raggedleft
     \null \vfill
-    \begin{tikzpicture}[node distance=2.5cm]
-      \classbox{MyFirstClass}{
-        int a; \\
-        void squareA();
-      }
-      \classbox[below of=MyFirstClass]{MySecondClass}{
-        int b; \\
-        int sum();
-      }
-      \draw[very thick,-Triangle] (MySecondClass)--(MyFirstClass);
-    \end{tikzpicture}
+    \begin{overprint}[0.8\columnwidth]
+      \onslide<1>
+      \begin{tikzpicture}[node distance=2.5cm]
+        \classbox{MyFirstClass}{
+          int a; \\
+          void squareA();
+        }
+        \classbox[below of=MyFirstClass]{MySecondClass}{
+          int b; \\
+          int sum();
+        }
+        \draw[very thick,-Triangle] (MySecondClass)--(MyFirstClass);
+      \end{tikzpicture}
+      \onslide<2>
+      \begin{tikzpicture}
+        \memorystack[size x=3cm,word size=1,block size=4,nb blocks=4]
+        \memorypush{a = 2}
+        \memorypush{b = 5}
+        \memorystruct{1}{2}{\tiny myobj2}
+      \end{tikzpicture}
+    \end{overprint}
     \vfill \null
   \end{multicols}
 \end{frame}

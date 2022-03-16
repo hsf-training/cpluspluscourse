@@ -23,13 +23,30 @@
     \end{cppcode*}
     \columnbreak
     \center
-    \begin{tikzpicture}[node distance=1.5cm]
-      \classbox{Drawable}{}
-      \classbox[below of=Drawable]{Shape}{}
-      \classbox[below of=Shape]{Polygon}{}
-      \draw[very thick,-Triangle] (Polygon) -- (Shape);
-      \draw[very thick,-Triangle] (Shape) -- (Drawable);
-    \end{tikzpicture}
+    \begin{overprint}
+      \onslide<1>
+      \begin{tikzpicture}[node distance=1.5cm]
+        \classbox{Drawable}{}
+        \classbox[below of=Drawable]{Shape}{}
+        \classbox[below of=Shape]{Polygon}{}
+        \draw[very thick,-Triangle] (Polygon) -- (Shape);
+        \draw[very thick,-Triangle] (Shape) -- (Drawable);
+      \end{tikzpicture}
+      \onslide<2->
+      \begin{tikzpicture}
+        \memorystack[size x=3cm,word size=1,block size=4,nb blocks=9]
+        \memorypush{Drawable.a}
+        \memorypush{Drawable.b}
+        \memorypush{...}
+        \memorypush{Shape.a}
+        \memorypush{Shape.b}
+        \memorypush{...}
+        \memorypush{Polygon.nLines}
+        \onslide<2>{\memorystruct{1}{7}{\tiny Polygon}}
+        \onslide<3>{\memorystruct{1}{3}{\tiny Drawable}}
+        \onslide<4>{\memorystruct{1}{6}{\tiny Shape}}
+      \end{tikzpicture}
+    \end{overprint}
   \end{multicols}
 \end{frame}
 
