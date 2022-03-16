@@ -292,6 +292,7 @@
       \begin{itemize}
         \item no data members
         \item all its methods pure virtual
+        \item a \mintinline{cpp}{virtual} destructor
       \end{itemize}
     \item the equivalent of an Interface in Java
     \end{itemize}
@@ -299,6 +300,7 @@
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       struct Drawable {
+        ~Drawable() = default;
         virtual void draw() = 0;
       }
     \end{cppcode*}
