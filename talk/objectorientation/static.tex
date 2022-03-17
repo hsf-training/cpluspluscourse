@@ -14,10 +14,10 @@
     public:
       static std::string upper(std::string) {...}
     private:
-      static int s_nbCallsToUpper; // add `inline` in C++17
+      static int callsToUpper; // add `inline` in C++17
     };
-    int Text::s_nbCallsToUpper = 0; // required before C++17
+    int Text::callsToUpper = 0; // required before C++17
     std::string uppers = Text::upper("my text");
-    // now Text::s_nbCallsToUpper is 1
+    // now Text::callsToUpper is 1
   \end{cppcode}
 \end{frame}
