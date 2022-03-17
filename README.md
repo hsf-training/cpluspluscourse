@@ -38,7 +38,7 @@ one word per line and is case-sensitive.
 
 ### About instructions for mentors and students
 
-Cheat sheet is only for mentors, with roadmap, solutions and key points to discuss.
+The [cheat sheet](code/ExercisesCheatSheet_All.md) is only for mentors, with roadmap, solutions and key points to discuss.
 
 Readmes are for students. These host the basic building instructions, give the name of the main program file, and possibly give a summary of the exercise goals and steps.
 
