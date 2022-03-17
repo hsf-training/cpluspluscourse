@@ -56,7 +56,7 @@ The `make` command should work directly on any linux-like system. The `make solu
 - Do we require gmake ?
 - Do we require bash shell ?
 
-The `cmake` tool add support for Windows. It is meant to be used in a `build` subdirectory:
+The `cmake` tool adds support for building on Windows. It is meant to be used in a `build` subdirectory:
 ```
 mkdir build
 cd build
