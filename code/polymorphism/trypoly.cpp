@@ -5,12 +5,12 @@ int main() {
     // create a Pentagon, call its perimeter method
 
 
-    // create an Hexagon, call its perimeter method
+    // create a Hexagon, call its perimeter method
 
 
-    // create an Hexagon, call its parent's perimeter method
+    // create a Hexagon, call the perimeter method through a reference to Polygon
 
 
-    // retry with virtual methods
+    // retry virtual method
 
 }
