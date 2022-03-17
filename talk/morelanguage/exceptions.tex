@@ -35,7 +35,7 @@
       void process_stream_data(stream &s) {
         ...
         if (data_location >= buffer.length()) {
-          throw range_error("buf overflow");
+          throw range_error{"buf overflow"};
         }
         ...
       }
