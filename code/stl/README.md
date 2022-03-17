@@ -5,5 +5,5 @@
   * it creates a vector of ints at regular intervals
   * it randomizes them
   * it computes differences between consecutive ints and the mean and variance of it
-* open test.cpp and complete the “translation” to STL
-* see how easy it is to reuse the code with complex numbers
+* open randomize.cpp and complete the “translation” to the STL
+* see how easy it is to reuse the code with complex numbers, by calling `compute` with objects of type `Complex`
