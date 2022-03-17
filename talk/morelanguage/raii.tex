@@ -135,7 +135,7 @@
   \pause
   \begin{exampleblock}{Usage}
     \begin{cppcode*}{}
-      std::unique_ptr<Foo> p(new Foo{}); // allocation
+      std::unique_ptr<Foo> p{ new Foo{} }; // allocation
       std::cout << p.get() << " points to "
                 << p->someMember << '\n';
       void f(std::unique_ptr<Foo> ptr);

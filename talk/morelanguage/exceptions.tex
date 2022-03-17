@@ -105,17 +105,17 @@
           try {
             process_file(f);
           }
-          catch (const bad_file &e) {
+          catch (bad_file const & e) {
             ... // loop continues
           }
         }
-      } catch (const bad_db &e) {
+      } catch (bad_db const & e) {
         ... // loop aborted
       }
     \end{cppcode*}
     \columnbreak
     \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
-      void process_file(const File &file) {
+      void process_file(File const & file) {
         ...
         if (handle = open_file(file))
           throw bad_file(file.status());
