@@ -1,12 +1,11 @@
 #include <iostream>
-#include <math.h>
 #include <algorithm>
 #include <vector>
 #include <numeric>
+#include <random>
 #include "Complex.hpp"
 
 using namespace std;
-using namespace __gnu_cxx;
 
 template<typename T>
 struct Generator {
@@ -31,14 +30,14 @@ void compute(int len, T initial, T step) {
 
     // fill and randomize v
     generate(v.begin(), v.end(), Generator<T>(initial, step));
-    random_shuffle(v.begin(), v.end());
+    shuffle(v.begin(), v.end(), std::default_random_engine{});
 
     // compute differences
     adjacent_difference(v.begin(), v.end(), diffs.begin());
 
     // compute standard deviation of it
-    T sum = accumulate(diffs.begin()+1, diffs.end(), T());
-    T sumsq = accumulate(diffs.begin()+1, diffs.end(), T(), sumsquare<T>());
+    T sum = reduce(diffs.begin()+1, diffs.end(), T());
+    T sumsq = reduce(diffs.begin()+1, diffs.end(), T(), sumsquare<T>());
     T mean = sum/len;
     T variance = sumsq/len - mean*mean;
 
