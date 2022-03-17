@@ -48,9 +48,6 @@ jobs:
           - NAME: "hello"
             BUILD_DEFAULT: true
             BUILD_SOLUTION: false
-          - NAME: "lambdas"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "loopsRefsAuto"
             BUILD_DEFAULT: true
             BUILD_SOLUTION: true

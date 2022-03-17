@@ -8,17 +8,12 @@
 using namespace std;
 
 template<typename T>
-struct Generator {
-    ...
-};
-
-template<typename T>
 void compute(int len, T initial, T step) {
     // allocate vectors
     std::vector<T> v(len+1), diffs(len+1);
 
     // fill and randomize v
-    generate(, , Generator...);
+    generate(, , [](...) { ...; });
     shuffle(..., std::default_random_engine{});
 
     // compute differences
@@ -26,7 +21,7 @@ void compute(int len, T initial, T step) {
 
     // compute standard deviation of it
     T sum = accumulate(...);
-    T sumsq = accumulate(...);
+    T sumsq = accumulate(..., [](...) { ...; });
     T mean = sum/len;
     T variance = sumsq/len - mean*mean;
 
@@ -37,4 +32,5 @@ void compute(int len, T initial, T step) {
 
 int main() {
     compute(1000, 0.0, 7.0);
+    // call compute here with Complex
 }
