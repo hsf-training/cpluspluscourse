@@ -194,33 +194,24 @@ It can then be tried with e.g. reverse ordering of strings or an order of Comple
 
 Level 3 : use the genericity of the Complex class and play with Complex of integers or Complex of Complex
 
-### Standard algorithms (directory: `stl`)
+### Smart pointers (directory: `smartPointers`)
+
+Here we have four code snippets that will benefit from using smart pointers.
+
+- `problem1` is a simple case of usage of `make_unique` with an observer pattern where the raw pointer should be used.
+- `problem2` is an example of a collection of pointers. Move semantic has to be used to transfer ownership of newly created objects to the container (alternatively, `emplace_back`).
+- `problem3` is an example of shared ownership where `std::shared_pointer` should be used.
+- `problem4` demonstrates the usage of `shared_ptr` as class members. It has a second part where a `weak_ptr` can be used, but can be skipped if not enough time.
+
+### Standard algorithms and lambdas (directory: `stl`)
 
 The goal is to use STL algorithms. I would advise to start in this order :
 
   - random_shuffle
   - adjacent_difference
   - first accumulate (the one for sums)
-  - second accumulate (sum of squares) with usage of "sumsquare<T>()" as BinaryOperation
-  - generate
-
-One may want to only do the first 3 and go to next exercise to directly use lambdas for step 4 and 5;
-
-### Lambda functions (directory: `lambdas`)
-
-Can be merged into previous exercise as the easy (and modern) solution to step 4 and 5 where functors were needed in the STL exercises.
-
-The accumulate lambda is a simple one, the one for generate involves a state to be captured by reference.
-
-### Smart pointers (directory: `smartPointers`)
-
-Here we have four code snippets that will benefit from using smart pointers.
-
- - `problem1` is a simple case of usage of `make_unique` with an observer pattern where the raw pointer should be used.
- - `problem2` is an example of a collection of pointers. Move semantic has to be used to transfer ownership of newly created objects to the container (alternatively, `emplace_back`).
- - `problem3` is an example of shared ownership where `std::shared_pointer` should be used.
- - `problem4` demonstrates the usage of `shared_ptr` as class members. It has a second part where a `weak_ptr` can be used, but can be skipped if not enough time.
-
+  - second accumulate (using lambda to compute sum of squares)
+  - generate (involves a state to be captured by reference)
 
 ### Move semantic (directory: `move`)
 
