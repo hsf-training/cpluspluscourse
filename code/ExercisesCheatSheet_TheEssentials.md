@@ -135,39 +135,22 @@ This exercise has several levels. People not at ease can stop after first level 
 
 Level 1 : just use the given Complex class in OrderedVector and see it works out of the box thanks to generic code in OrderedVector.
 
-Level 2 : add a template argument for the ordering in OrderedVector.
-The idea is to add an extra template argument "Compare" that is a functor comparing 2 arguments and an extra member "m_compare" of type "Compare" to the OrderedVector class. Then the comparison in the add function can be replaced by
-
-```cpp
-m_compare(arg1, arg2);
-```
-It can then be tried with e.g. reverse ordering of strings or an order of Complex based on Manhattan distance (https://en.wikipedia.org/wiki/Taxicab_geometry)
-
-Level 3 : use the genericity of the Complex class and play with Complex of integers or Complex of Complex
-
-### Standard algorithms (directory: `stl`)
-
-The goal is to use STL algorithms. I would advise to start in this order :
-
-  - random_shuffle
-  - adjacent_difference
-  - first accumulate (the one for sums)
-  - second accumulate (sum of squares) with usage of "sumsquare<T>()" as BinaryOperation
-  - generate
-
-One may want to only do the first 3 and go to next exercise to directly use lambdas for step 4 and 5;
-
-### Lambda functions (directory: `lambdas`)
-
-Can be merged into previous exercise as the easy (and modern) solution to step 4 and 5 where functors were needed in the STL exercises.
-
-The accumulate lambda is a simple one, the one for generate involves a state to be captured by reference.
+** stop after level 1, the rest is for the advanced course **
 
 ### Smart pointers (directory: `smartPointers`)
 
 Here we have four code snippets that will benefit from using smart pointers.
 
  - `problem1` is a simple case of usage of `make_unique` with an observer pattern where the raw pointer should be used.
- - `problem2` is an example of a collection of pointers. Move semantic has to be used to transfer ownership of newly created objects to the container (alternatively, `emplace_back`).
- - `problem3` is an example of shared ownership where `std::shared_pointer` should be used.
- - `problem4` demonstrates the usage of `shared_ptr` as class members. It has a second part where a `weak_ptr` can be used, but can be skipped if not enough time.
+ - `problem2` is an example of a collection of pointers. Use `emplace_back` to transfer ownership of newly created objects to the container. You might need to briefly explain what `std::move` does, if needed.
+ - ** problem 3 and 4 is for the advanced course **
+
+### Standard algorithms and lambdas (directory: `stl`)
+
+The goal is to use STL algorithms. I would advise to start in this order :
+
+  - random_shuffle
+  - adjacent_difference
+  - first accumulate (the one for sums)
+  - second accumulate (using lambda to compute sum of squares)
+  - generate (involves a state to be captured by reference)
