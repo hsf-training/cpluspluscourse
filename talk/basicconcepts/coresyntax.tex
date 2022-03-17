@@ -91,12 +91,33 @@
     int16_t s = -444;  // 16 bit signed integer
     uint16_t s = 444;  // 16 bit unsigned integer
 
-    int32_t s = -0674; // 32 bit signed integer
-    uint32_t s = 0674; // 32 bit unsigned integer
+    int32_t s = -674;  // 32 bit signed integer
+    uint32_t s = 674;  // 32 bit unsigned integer
 
-    int64_t s = -0x1bc;// 64 bit signed integer
-    uint64_t s = 0x1bc;// 64 bit unsigned int
+    int64_t s = -1635; // 64 bit signed integer
+    uint64_t s = 1635; // 64 bit unsigned int
     \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Integer literals}
+  \begin{cppcode}
+    int i = 1234;            // decimal     (base 10)
+    int i = 02322;           // octal       (base  8)
+    int i = 0x4d2;           // hexadecimal (base 16)
+    int i = 0X4D2;           // hexadecimal (base 16)
+    int i = 0b10011010010;   // binary      (base  2) C++14
+
+    int i = 123'456'789;     // digit separators, C++14
+    int i = 0b100'1101'0010; // digit separators, C++14
+
+    42           // int
+    42u,   42U   // unsigned int
+    42l,   42L   // long
+    42ul,  42UL  // unsigned long
+    42ll,  42LL  // long long
+    42ull, 42ULL // unsigned long long
+  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
