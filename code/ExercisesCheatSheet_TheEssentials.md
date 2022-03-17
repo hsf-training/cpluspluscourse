@@ -65,9 +65,13 @@ The goal there is really to play, look around and try things. Tutors may have a 
 
 The solution of the crash is simply an inversion of 2 lines in the code where definition of v and it's randomization are inverted.
 
-### Clang format
+### Clang format (any directory)
 
-
+The students can try this on any example.
+Please warn the students: If they want to revert later, they should pick an example with no local changes.
+Just follow the instructions on the slide deck.
+It is also fine if the mentor demonstrates it quickly.
+Please advise the students they should use `.clang-format` files from their projects before they start developing their own one.
 
 Day 2 - OO Exercises
 --------------------
