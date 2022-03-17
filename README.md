@@ -46,7 +46,7 @@ Inside the code, one gets more precise help on what should/could be done and als
 
 ### About solutions
 
-Each exercice should provide some solution in `solution` subdirectory. For any `<name>.cpp` exercise, the solution should be called `solution/<name>.sol.cpp`.
+Each exercice should provide a solution in the `solution` subdirectory. For any `<name>.cpp` exercise, the solution should be called `solution/<name>.sol.cpp`.
 
 ### About building
 
