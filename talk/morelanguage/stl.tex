@@ -86,7 +86,7 @@
     T& t = v[1000];    // access element 1000, bug!
     T& t = v.at(1000); // throws std::out_of_range
     T& f = v.front();  // access first element
-    v.back() =  0;     // write last element
+    v.back() = 0;     // write to last element
     T* v.data();       // pointer to underlying storage
   \end{cppcode*}
 \end{frame}
@@ -108,8 +108,8 @@
     v.insert(v.begin()+3, T{}); // insert after 3rd position
 
     v.pop_back();         // removes last element
-    v.erase(v.end() - 3); // removes 3rd last element
-    v.clear();            // removes all element
+    v.erase(v.end() - 3); // removes 3rd-last element
+    v.clear();            // removes all elements
   \end{cppcode*}
 \end{frame}
 
@@ -188,18 +188,19 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Functors / function objects}
+  \frametitlecpp[11]{Functors / function objects}
   \begin{block}{Example}
     \begin{cppcode*}{}
       struct Incrementer {
-        int inc;
-        Incrementer(int inc) : inc(inc) {}
+        int m_inc;
+        Incrementer(int inc) : m_inc(inc) {}
 
         int operator()(int value) const {
           return value + m_inc;
-        };
+        }
       };
-      std::vector<int> v{1, 2, 3};
+      std::vector<int> v;
+      v.push_back(5); v.push_back(3); ...
       std::transform(v.begin(), v.end(), v.begin(),
                      Incrementer{42});
       \end{cppcode*}

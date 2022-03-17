@@ -64,7 +64,7 @@
   \begin{exampleblock}{Usage example}
     \begin{cppcode*}{firstnumber=4,gobble=2}
       std::vector<int> data{1,2,3,4,5};
-      for_each(begin(data), end(data), [](int i) {
+      std::for_each(begin(data), end(data), [](int i) {
         std::cout << "The square of " << i
                   << " is " << i*i << std::endl;
       });
@@ -141,7 +141,7 @@
   \end{alertblock}
   \pause
   \begin{block}{Explanation}
-    By default, variables are captured by value, and the lambda's \mintinline{cpp}{operator()} is \mintinline{cpp}{const}).
+    By default, variables are captured by value, and the lambda's \mintinline{cpp}{operator()} is \mintinline{cpp}{const}.
   \end{block}
 \end{frame}
 
@@ -231,7 +231,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Higher order lambdas}
+  \frametitlecpp[11]{Higher-order lambdas}
   \begin{exampleblock}{Example}
     \begin{cppcode*}{}
       auto build_incrementer = [](int inc) {

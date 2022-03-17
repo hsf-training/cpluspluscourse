@@ -10,7 +10,7 @@
         a = b;
         b = c;
       }
-      std::vector<int> v(10'000), w(10'000);
+      std::vector<int> v(10000), w(10000);
       ...
       swap(v, w);
     \end{cppcode*}
@@ -59,7 +59,7 @@
     \begin{itemize}
     \item one unnecessary allocation and one release for 10k \mintinline{cpp}{int}s
     \item unnecessary copy of 10k \mintinline{cpp}{int}s
-    \item The compiler may optimize the copy away, but there is no guarantee
+    \item The compiler may optimize the copy away, but there is no guarantee (before \cpp17)
     \end{itemize}
   \end{alertblock}
 \end{frame}
@@ -179,7 +179,7 @@
       \end{itemize}
     \item move assignment as \mintinline{cpp}{operator=(T source)}
       \begin{itemize}
-      \item by value parameter, caller can move or copy into it
+      \item parameter passed by value; caller can move or copy into it
       \item swap parameter with \mintinline{cpp}{*this}
       \item end of scope: parameter destroys former content of \mintinline{cpp}{*this}
       \end{itemize}
