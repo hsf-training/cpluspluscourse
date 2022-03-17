@@ -42,7 +42,7 @@ Cheat sheet is only for mentors, with roadmap, solutions and key points to discu
 
 Readmes are for students. These host the basic building instructions, give the name of the main program file, and possibly give a summary of the exercise goals and steps.
 
-Inside the code, one get more precise help on what should/could be done and also where (when the code is long and only one part needs to be worked on).
+Inside the code, one gets more precise help on what should/could be done and also where (e.g. when the code is long and only one part needs to be worked on).
 
 ### About solutions
 
