@@ -53,8 +53,6 @@ Each exercice should provide a solution in the `solution` subdirectory. For any 
 For the time being, we maintain both a raw `Makefile` and a `CMakeLists.txt`.
 
 The `make` command should work directly on any linux-like system. The `make solution` command should build the solution.
-- Do we require gmake ?
-- Do we require bash shell ?
 
 The `cmake` tool adds support for building on Windows. It is meant to be used in a `build` subdirectory:
 ```
