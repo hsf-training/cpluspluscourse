@@ -274,11 +274,11 @@
         struct B {
           int a;
           float b;
-          // no constructor declared!
+          // no constructor
         };
       \end{cppcode*}
     \end{multicols}
-    \begin{cppcode*}{gobble=2, firstnumber=12}
+    \begin{cppcode*}{gobble=2, firstnumber=13}
       A a{1,2};       // A::A(int, int)
       A a{1};         // A::A(int)
       A a{};          // A::A()
@@ -307,11 +307,11 @@
         struct B {
           int a;
           float b;
-          // no constructor declared!
+          // no constructor
         };
       \end{cppcode*}
     \end{multicols}
-    \begin{cppcode*}{gobble=2, firstnumber=12}
+    \begin{cppcode*}{gobble=2, firstnumber=13}
       A a(1,2);       // A::A(int, int)
       A a(1);         // A::A(int)
       A a();          // declaration of a function !
