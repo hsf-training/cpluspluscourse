@@ -121,6 +121,28 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[98]{Floating-point literals}
+  \begin{cppcode}
+    double d = 12.34;
+    double d = 12.;
+    double d = .34;
+    double d = 12e34;           // 12 * 10^34
+    double d = 12E34;           // 12 * 10^34
+    double d = 12e-34;          // 12 * 10^-34
+    double d = 12.34e34;        // 12.34 * 10^34
+
+    double d = 123'456.789'101; // digit separators, C++14
+
+    double d = 0x4d2.1E6p3; // hexfloat, 0x4d2.1E6 * 2^3
+                            // = 1234.12 * 2^3 = 9872.95
+
+    3.14f, 3.14F // float
+    3.14,  3.14  // double
+    3.14l, 3.14L // long double
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[98]{Useful aliases}
     \alert{Requires inclusion of headers}
   \begin{cppcode}
