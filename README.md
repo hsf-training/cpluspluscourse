@@ -30,10 +30,35 @@ pre-commit hook on every commit. To ignore words you can put them in the
 `codespell.txt` file. This file should list the supposedly misspelled words with
 one word per line and is case-sensitive.
 
-## Exercises guidelines
+## C++ guidelines
 
 - Prefer "east const" for new stuff.
-- For the time being, maintain both a `Makefile` and a `CMakeLists.txt`.
-- Each exercise should have a `solution` subdirectory.
-- `CheatSheet` file(s) is/are a roadmap for mentors.
-- Instructions for students stay in `README.md` files and/or directly in the main exercise file.
+
+## Exercises guidelines
+
+### About instructions for mentors and students
+
+The [cheat sheet](code/ExercisesCheatSheet_All.md) is only for mentors, with roadmap, solutions and key points to discuss.
+
+Readmes are for students. These host the basic building instructions, give the name of the main program file, and possibly give a summary of the exercise goals and steps.
+
+Inside the code, one gets more precise help on what should/could be done and also where (e.g. when the code is long and only one part needs to be worked on).
+
+### About solutions
+
+Each exercice should provide a solution in the `solution` subdirectory. For any `<name>.cpp` exercise, the solution should be called `solution/<name>.sol.cpp`.
+
+### About building
+
+For the time being, we maintain both a raw `Makefile` and a `CMakeLists.txt`.
+
+The `make` command should work directly on any linux-like system. The `make solution` command should build the solution.
+
+The `cmake` tool adds support for building on Windows. It is meant to be used in a `build` subdirectory:
+```
+mkdir build
+cd build
+cmake ..
+make
+make solution
+```
