@@ -1,0 +1,5 @@
+
+# From markdown to latex, with vscode replace
+
+`(.*?)` -> {\it $1}
+\*(.*?)\* -> \\textbf{$1}

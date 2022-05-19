@@ -1,0 +1,242 @@
+\subsection[concepts]{The three-way comparison operator}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Motivation}
+    \begin{itemize}
+    \item There are frequent situations where one need some {\it <} operator for a home-made class. Typically, if you want to make a {\it std::vector} of such objects, and sort it. But also if you want to use it as a key for some {\it std::set} or {\it std::map}.
+    \item For completeness, one will also add {\it >}, {\it >=}, and {\it <=}, implemented as a reuse of either {\it <} and {\it ==}, or {\it <} and {\it >}.
+    \item Those operators will be defined as an external functions, optionally friends, so that left and right arguments will be similarly convertibles.
+    \item Much boilerplate code to write. Too much..
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item C++20 introduce the new \textbf{spaceship} operator : {\it <=>}. Well, the real official name is \textbf{three-way comparison operator}.
+    \item It is provided by default for all predefined types, and return \textbf{something} which can be compared to {\it 0} (such as the {\it std::strcmp}), meaning \textbf{lower than} if this \textbf{something} is lower than {\it 0}, \textbf{greater than} if it is greater than {\it 0}, and \textbf{equivalent} if it is equal {\it 0}:
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+#include <iostream>
+
+template <typename T>
+void three_way_compare( T lhs, T rhs )
+ {
+  auto result = (lhs<=>rhs) ;
+  std::cout
+    <<lhs<<" <=> "<<rhs<<": "<<'<'
+    <<(result<0)<<'|'<<(result==0)<<'|'<<(result>0)
+    <<'>'<<std::endl ;
+ }
+
+int main()
+ {
+  three_way_compare(1,2) ;
+  three_way_compare(2,2) ;
+  three_way_compare(2,1) ;
+ }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Different kinds of ordering}
+    \begin{itemize}
+    \item The real return type of {\it <=>} for integers is {\it std::strong_ordering} : whatever the values, you will always get {\it true} for exactly one test among {\it <0}, {\it ==0}, and {\it >0}.
+    \item On the contrary, the return type of {\it <=>} for floating point numbers is {\it std::partial_ordering}, because sometimes the tree tests may return {\it false}, typically if one one the number is {\it NaN}.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+#include <iostream>
+
+template <typename T>
+void three_way_compare( T lhs, T rhs )
+ {
+  auto result = (lhs<=>rhs) ;
+  std::cout
+    <<lhs<<" <=> "<<rhs<<": "<<'<'
+    <<(result<0)<<'|'<<(result==0)<<'|'<<(result>0)
+    <<'>'<<std::endl ;
+ }
+
+int main()
+ {
+  three_way_compare(+0.,-0.) ;
+  three_way_compare(0./1.,1./0.) ;
+  three_way_compare(0.,0./0.) ;
+ }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Different kinds of ordering}
+    \begin{itemize}
+      \item The type {\it std::strong_ordering} is convertible to {\it std::partial_ordering}, but not the contrary.
+      \item Between the two, we have a class {\it std::weak_ordering}, where {\it ==0} mean that the two compared values are equivalent from a ranking point of view, but not necessarily \textbf{equal}. In a given expression, one cannot substitutes one value for the other and be sure to have the same result.
+      \item I am not aware of some predefined type whose {\it <=>} would return an instance of {\it std::weak_ordering}, but it may make sense for some home-made class, such as the following.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Home-made class}
+    \begin{itemize}
+    \item In the example below, we define a very basic class for positive rational numbers, and provide an implementation of {\it <=>}.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+#include <iostream>
+#include <compare>
+
+struct Rational
+ {
+  unsigned n, d ;
+
+  std::weak_ordering operator<=>( Rational const & other ) const
+   { return (n*other.d)<=>(other.n*d) ; }
+ } ;
+
+std::ostream & operator<<( std::ostream & os, std::weak_ordering cmp )
+ { return (os<<'<'<<(cmp<0)<<'|'<<(cmp==0)<<'|'<<(cmp>0)<<'>') ; }
+
+std::ostream & operator<<( std::ostream & os, Rational const & r )
+ { return (os<<r.n<<'/'<<r.d) ; }
+
+template <typename T>
+void compare( T lhs, T rhs )
+ {
+  std::cout<<std::endl ;
+  //std::cout<<lhs<<" ==  "<<rhs<<": "<<(lhs==rhs)<<std::endl ;
+  //std::cout<<lhs<<" !=  "<<rhs<<": "<<(lhs!=rhs)<<std::endl ;
+  std::cout<<lhs<<" <=> "<<rhs<<": "<<(lhs<=>rhs)<<std::endl ;
+  std::cout<<lhs<<" <   "<<rhs<<": "<<(lhs<  rhs)<<std::endl ;
+  std::cout<<lhs<<" <=  "<<rhs<<": "<<(lhs<= rhs)<<std::endl ;
+  std::cout<<lhs<<" >   "<<rhs<<": "<<(lhs>  rhs)<<std::endl ;
+  std::cout<<lhs<<" >=  "<<rhs<<": "<<(lhs>= rhs)<<std::endl ;
+ }
+
+int main()
+ {
+  compare<Rational>({ 3, 4 },{ 2, 3 }) ;
+  compare<Rational>({ 3, 6 },{ 2, 3 }) ;
+  compare<Rational>({ 1, 2 },{ 2, 4 }) ;
+ }
+     \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Home-made class}
+    \begin{itemize}
+      \item Despites the {\it <=>} for {\it unsigned} returns some instance of {\it std::strong_ordering}, we prefer here to cast it to {\it std::weak_ordering}. This way, we emphasize that if {\it a<=>b} is equal to {\it 0}, it only means that {\it a} and {\it b} are logically equivalent, but may lead to different results in some expressions.
+      \item As one can check in the code, we have defined {\it <=>}, and the compiler has added, for free, some default implementations for {\it <}, {\it >}, {\it <=} and {\it =>}. Of course, one can overload them with home-made implementations.
+      \item It has NOT added a default implementation for {\it ==} and {\it !=}. Those operators are generally expected to mean \textbf{equal}, rather than \textbf{equivalent}. If {\it <=>} does not enable a strong order, the operator {\it ==}generally deserves a separate implementation.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Default {\it <=>} implementation}
+    \begin{itemize}
+      \item One can ask the compiler to provide some default implementation for {\it <=>}. Logically enough, it will compare the first member variable of the two objects, and goes on to the next member variable as long as the current ones are equivalent.
+      \item In the previous example, that would not be relevant, because it will compare the numerators first, and conclude that {\it 3/6} is greater than {\it 2/3}:
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+#include <iostream>
+
+struct Rational
+ {
+  unsigned n, d ;
+  std::strong_ordering operator<=>( Rational const & other ) const = default ;
+ } ;
+
+std::ostream & operator<<( std::ostream & os, std::weak_ordering cmp )
+ { return (os<<'<'<<(cmp<0)<<'|'<<(cmp==0)<<'|'<<(cmp>0)<<'>') ; }
+
+std::ostream & operator<<( std::ostream & os, Rational const & r )
+ { return (os<<r.n<<'/'<<r.d) ; }
+
+int main()
+ {
+  Rational r1 { 3, 6 }, r2 { 2, 3 } ;
+  std::cout<<r1<<" <=> "<<r2<<": "<<(r1<=>r2)<<std::endl ;
+ }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Default {\it <=>} implementation}
+    \begin{itemize}
+    \item On the contrary, for some tuple-like class, it may make sense.
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+#include <iostream>
+#include <string>
+#include <set>
+
+struct Grade
+ {
+  double number ;
+  char letter ;
+  std::string name ;
+
+  auto operator<=>( Grade const & other ) const = default ;
+ } ;
+
+std::ostream & operator<<( std::ostream & os, Grade const & g )
+ { return (os<<g.letter<<", "<<g.number<<", "<<g.name) ; }
+
+int main()
+ {
+  std::set<Grade> grades
+   {
+     { 19, 'A', "Djamila" },
+     { 12, 'C', "Charles" },
+     { 16.5, 'A', "Marc" },
+   } ;
+
+  for ( auto const & grade : grades )
+   { std::cout<<grade<<std::endl ; }
+ }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Default {\it <=>} implementation}
+    \begin{itemize}
+      \item We see above that the definition of {\it <=>} has been completed by the compiler with a default implementation of {\it <} (among others), which has been used by {\it std::set} so to sorts its elements.
+      \item Worth to note : if you use the \textbf{default} implementation of {\it <=>}, you will also get additional {\it ==} and {\it !=}. Not sure this special behavior is such a good idea...
+          \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{The three-way comparison operator}
+    \begin{block}{What to retain}
+      \begin{itemize}
+        \item Defining {\it <=>} brings you a free default implementation of {\it <}, {\it >}, {\it <=}, and {\it >=}.
+        \item The standard library defines few different kinds of order (strong, weak and partial).
+        \item Do not confuse equivalence ({\it (a<=>b)==0}) with equality ({\it a==b}).      \end{itemize}
+    \end{block}
+\end{frame}
