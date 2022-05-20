@@ -226,7 +226,7 @@ int main()
   \begin{block}{Default {\it <=>} implementation}
     \begin{itemize}
       \item We see above that the definition of {\it <=>} has been completed by the compiler with a default implementation of {\it <} (among others), which has been used by {\it std::set} so to sorts its elements.
-      \item Worth to note : if you use the \textbf{default} implementation of {\it <=>}, you will also get additional {\it ==} and {\it !=}. Not sure this special behavior is such a good idea...
+      \item If {\it <=>} is defaulted and no {\it ==} is defined, then the compiler also provides a defaulted {\it ==}.
           \end{itemize}
   \end{block}
 \end{frame}
