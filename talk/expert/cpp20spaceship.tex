@@ -5,7 +5,7 @@
   \begin{block}{Motivation}
     \begin{itemize}
     \item There are frequent situations where one needs {\it <} operator for a home-made class. Typically, if you want to make a {\it std::vector} of such objects, and sort it. But also if you want to use it as a key for e.g. {\it std::set} or {\it std::map}.
-    \item For completeness, one will also add {\it >}, {\it >=}, and {\it <=}, implemented as a reuse of either {\it <} and {\it ==}, or {\it <} and {\it >}.
+    \item For completeness, one should also add {\it >}, {\it >=}, and {\it <=}, implemented reusing either {\it <} and {\it ==}, or {\it <} and {\it >}.
     \item Those operators will be defined as an external functions, optionally friends, so that left and right arguments will be similarly convertibles.
     \item Much boilerplate code to write. Too much..
     \end{itemize}
