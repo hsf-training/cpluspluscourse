@@ -80,7 +80,6 @@
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Different kinds of ordering}
     \begin{itemize}
-      \item The type \mintinline{cpp}{std::strong_ordering} is convertible to \mintinline{cpp}{std::partial_ordering}, but not the contrary.
       \item Between the two, we have a class \mintinline{cpp}{std::weak_ordering}, where \mintinline{cpp}{==0} mean that the two compared values are equivalent from a ranking point of view, but not necessarily \textbf{equal}. In a given expression, one cannot substitutes one value for the other and be sure to have the same result.
       \item I am not aware of some predefined type whose \mintinline{cpp}{<=>} would return an instance of \mintinline{cpp}{std::weak_ordering}, but it may make sense for some home-made class, such as the following.
     \end{itemize}
@@ -142,7 +141,7 @@
     \begin{itemize}
       \item Despites \mintinline{cpp}{<=>} for \mintinline{cpp}{unsigned} returning a \mintinline{cpp}{std::strong_ordering}, we prefer here to convert it to \mintinline{cpp}{std::weak_ordering}. This way, we emphasize that if \mintinline{cpp}{a<=>b} is equal to \mintinline{cpp}{0}, it only means that \mintinline{cpp}{a} and \mintinline{cpp}{b} are logically equivalent, but may lead to different results in other expressions (e.g. printing them).
       \item As one can see from the code, we have defined only \mintinline{cpp}{<=>}, but \mintinline{cpp}{<}, \mintinline{cpp}{>}, \mintinline{cpp}{<=} and \mintinline{cpp}{=>} work as well. The compiler can express the latter operators in terms of \mintinline{cpp}{<=>}. Of course, one can also provide own implementations.
-      \item It has NOT added a default implementation for \mintinline{cpp}{==} and \mintinline{cpp}{!=}. Those operators are generally expected to mean \textbf{equal}, rather than \textbf{equivalent}. If \mintinline{cpp}{<=>} does not enable a strong order, the operator \mintinline{cpp}{==}generally deserves a separate implementation.
+      \item It has NOT added a default implementation for \mintinline{cpp}{==} and \mintinline{cpp}{!=}. Those operators are generally expected to mean \textbf{equal}, rather than \textbf{equivalent}. If \mintinline{cpp}{<=>} does not provides a strong order, it is generally advised not to define \mintinline{cpp}{==}.
     \end{itemize}
   \end{block}
 \end{frame}
@@ -236,9 +235,9 @@ int main()
     \begin{alertblock}{Summary}
       \begin{itemize}
         \item Defining \mintinline{cpp}{<=>} allows you to use \mintinline{cpp}{<}, \mintinline{cpp}{>}, \mintinline{cpp}{<=}, and \mintinline{cpp}{>=} as well.
-        \item Defaulting \mintinline{cpp}{<=>} additionally allows \mintinline{cpp}{==} and  \mintinline{cpp}{!=}.
         \item The standard library defines a few different kinds of order (strong, weak and partial).
-        \item Do not confuse equivalence (\mintinline{cpp}{(a<=>b)==0}) with equality (\mintinline{cpp}{a==b}).      \end{itemize}
+        \item If \mintinline{cpp}{<=>} does not define a strong order, avoid to define and/or use \mintinline{cpp}{==}.
+      \end{itemize}
     \end{block}
     \begin{block}{Resources}
       \begin{itemize}
