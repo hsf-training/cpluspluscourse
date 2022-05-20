@@ -4,8 +4,8 @@
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Motivation}
     \begin{itemize}
-    \item There are frequent situations where one needs {\it <} operator for a home-made class. Typically, if you want to make a {\it std::vector} of such objects, and sort it. But also if you want to use it as a key for e.g. {\it std::set} or {\it std::map}.
-    \item For completeness, one should also add {\it >}, {\it >=}, and {\it <=}, implemented reusing either {\it <} and {\it ==}, or {\it <} and {\it >}.
+    \item There are frequent situations where one needs \mintinline{cpp}{<} operator for a home-made class. Typically, if you want to make a \mintinline{cpp}{std::vector} of such objects, and sort it. But also if you want to use it as a key for e.g. \mintinline{cpp}{std::set} or \mintinline{cpp}{std::map}.
+    \item For completeness, one should also add \mintinline{cpp}{>}, \mintinline{cpp}{>=}, and \mintinline{cpp}{<=}, implemented reusing either \mintinline{cpp}{<} and \mintinline{cpp}{==}, or \mintinline{cpp}{<} and \mintinline{cpp}{>}.
     \item Those operators should be defined as free functions, optionally friends, so that left and right arguments will be similarly convertible.
     \item Much boilerplate code to write. Too much..
     \end{itemize}
@@ -16,8 +16,8 @@
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Idea}
     \begin{itemize}
-    \item C++20 introduces the \textbf{spaceship} operator: {\it <=>}. Well, the real official name is \textbf{three-way comparison operator}.
-    \item It is provided by default for all predefined types, and returns \textbf{something} which can be compared to {\it 0} (similar to {\it std::strcmp}), meaning \textbf{lower than} if this \textbf{something} is lower than {\it 0}, \textbf{greater than} if it is greater than {\it 0}, and \textbf{equivalent} if it is equal {\it 0}:
+    \item C++20 introduces the \textbf{spaceship} operator: \mintinline{cpp}{<=>}. Well, the real official name is \textbf{three-way comparison operator}.
+    \item It is provided by default for all predefined types, and returns \textbf{something} which can be compared to \mintinline{cpp}{0} (similar to \mintinline{cpp}{std::strcmp}), meaning \textbf{lower than} if this \textbf{something} is lower than \mintinline{cpp}{0}, \textbf{greater than} if it is greater than \mintinline{cpp}{0}, and \textbf{equivalent} if it is equal \mintinline{cpp}{0}:
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
@@ -48,8 +48,8 @@ int main()
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Different kinds of ordering}
     \begin{itemize}
-    \item The real return type of {\it <=>} for integers is {\it std::strong_ordering}: whatever the values, you will always get {\it true} for exactly one test among {\it <0}, {\it ==0}, and {\it >0}.
-    \item On the contrary, the return type of {\it <=>} for floating point numbers is {\it std::partial_ordering}, because sometimes all tests may return {\it false}, typically if one one the number is {\it NaN}.
+    \item The real return type of \mintinline{cpp}{<=>} for integers is \mintinline{cpp}{std::strong_ordering}: whatever the values, you will always get \mintinline{cpp}{true} for exactly one test among \mintinline{cpp}{<0}, \mintinline{cpp}{==0}, and \mintinline{cpp}{>0}.
+    \item On the contrary, the return type of \mintinline{cpp}{<=>} for floating point numbers is \mintinline{cpp}{std::partial_ordering}, because sometimes all tests may return \mintinline{cpp}{false}, typically if one one the number is \mintinline{cpp}{NaN}.
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
@@ -80,9 +80,9 @@ int main()
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Different kinds of ordering}
     \begin{itemize}
-      \item The type {\it std::strong_ordering} is convertible to {\it std::partial_ordering}, but not the contrary.
-      \item Between the two, we have a class {\it std::weak_ordering}, where {\it ==0} mean that the two compared values are equivalent from a ranking point of view, but not necessarily \textbf{equal}. In a given expression, one cannot substitutes one value for the other and be sure to have the same result.
-      \item I am not aware of some predefined type whose {\it <=>} would return an instance of {\it std::weak_ordering}, but it may make sense for some home-made class, such as the following.
+      \item The type \mintinline{cpp}{std::strong_ordering} is convertible to \mintinline{cpp}{std::partial_ordering}, but not the contrary.
+      \item Between the two, we have a class \mintinline{cpp}{std::weak_ordering}, where \mintinline{cpp}{==0} mean that the two compared values are equivalent from a ranking point of view, but not necessarily \textbf{equal}. In a given expression, one cannot substitutes one value for the other and be sure to have the same result.
+      \item I am not aware of some predefined type whose \mintinline{cpp}{<=>} would return an instance of \mintinline{cpp}{std::weak_ordering}, but it may make sense for some home-made class, such as the following.
     \end{itemize}
   \end{block}
 \end{frame}
@@ -91,7 +91,7 @@ int main()
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Home-made class}
     \begin{itemize}
-    \item In the example below, we define a very basic class for positive rational numbers, and provide an implementation of {\it <=>}.
+    \item In the example below, we define a very basic class for positive rational numbers, and provide an implementation of \mintinline{cpp}{<=>}.
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
@@ -140,19 +140,19 @@ int main()
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Home-made class}
     \begin{itemize}
-      \item Despites {\it <=>} for {\it unsigned} returning a {\it std::strong_ordering}, we prefer here to convert it to {\it std::weak_ordering}. This way, we emphasize that if {\it a<=>b} is equal to {\it 0}, it only means that {\it a} and {\it b} are logically equivalent, but may lead to different results in other expressions (e.g. printing them).
-      \item As one can see from the code, we have defined only {\it <=>}, but {\it <}, {\it >}, {\it <=} and {\it =>} work as well. The compiler can express the latter operators in terms of {\it <=>}. Of course, one can also provide own implementations.
-      \item It has NOT added a default implementation for {\it ==} and {\it !=}. Those operators are generally expected to mean \textbf{equal}, rather than \textbf{equivalent}. If {\it <=>} does not enable a strong order, the operator {\it ==}generally deserves a separate implementation.
+      \item Despites \mintinline{cpp}{<=>} for \mintinline{cpp}{unsigned} returning a \mintinline{cpp}{std::strong_ordering}, we prefer here to convert it to \mintinline{cpp}{std::weak_ordering}. This way, we emphasize that if \mintinline{cpp}{a<=>b} is equal to \mintinline{cpp}{0}, it only means that \mintinline{cpp}{a} and \mintinline{cpp}{b} are logically equivalent, but may lead to different results in other expressions (e.g. printing them).
+      \item As one can see from the code, we have defined only \mintinline{cpp}{<=>}, but \mintinline{cpp}{<}, \mintinline{cpp}{>}, \mintinline{cpp}{<=} and \mintinline{cpp}{=>} work as well. The compiler can express the latter operators in terms of \mintinline{cpp}{<=>}. Of course, one can also provide own implementations.
+      \item It has NOT added a default implementation for \mintinline{cpp}{==} and \mintinline{cpp}{!=}. Those operators are generally expected to mean \textbf{equal}, rather than \textbf{equivalent}. If \mintinline{cpp}{<=>} does not enable a strong order, the operator \mintinline{cpp}{==}generally deserves a separate implementation.
     \end{itemize}
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{The three-way comparison operator}
-  \begin{block}{Default {\it <=>} implementation}
+  \begin{block}{Default \mintinline{cpp}{<=>} implementation}
     \begin{itemize}
-      \item One can ask the compiler to provide a default implementation for {\it <=>} and/or  {\it ==}. Logically enough, it will compare the first member variable of the two objects, and goes on to the next member variable as long as the current ones are equivalent.
-      \item In the previous example, that would not be relevant, because it will compare the numerators first, and conclude that {\it 3/6} is greater than {\it 2/3}:
+      \item One can ask the compiler to provide a default implementation for \mintinline{cpp}{<=>} and/or  \mintinline{cpp}{==}. Logically enough, it will compare the first member variable of the two objects, and goes on to the next member variable as long as the current ones are equivalent.
+      \item In the previous example, that would not be relevant, because it will compare the numerators first, and conclude that \mintinline{cpp}{3/6} is greater than \mintinline{cpp}{2/3}:
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
@@ -182,7 +182,7 @@ int main()
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{The three-way comparison operator}
-  \begin{block}{Default {\it <=>} implementation}
+  \begin{block}{Default \mintinline{cpp}{<=>} implementation}
     \begin{itemize}
     \item On the contrary, for some tuple-like class, it may make sense.
     \end{itemize}
@@ -223,10 +223,10 @@ int main()
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{The three-way comparison operator}
-  \begin{block}{Default {\it <=>} implementation}
+  \begin{block}{Default \mintinline{cpp}{<=>} implementation}
     \begin{itemize}
-      \item We see above that the definition of {\it <=>} has been provided by the compiler, and the use of {\it <}  by {\it std::set} to sorts its elements has been rewritten by the compiler in terms of {\it <=>}.
-      \item If {\it <=>} is defaulted and no {\it ==} is defined, then the compiler also provides a defaulted {\it ==}.
+      \item We see above that the definition of \mintinline{cpp}{<=>} has been provided by the compiler, and the use of \mintinline{cpp}{<}  by \mintinline{cpp}{std::set} to sorts its elements has been rewritten by the compiler in terms of \mintinline{cpp}{<=>}.
+      \item If \mintinline{cpp}{<=>} is defaulted and no \mintinline{cpp}{==} is defined, then the compiler also provides a defaulted \mintinline{cpp}{==}.
           \end{itemize}
   \end{block}
 \end{frame}
@@ -235,9 +235,9 @@ int main()
     \frametitlecpp[20]{The three-way comparison operator}
     \begin{block}{Summary}
       \begin{itemize}
-        \item Defining {\it <=>} allows you to use {\it <}, {\it >}, {\it <=}, and {\it >=} as well.
-        \item Defaulting {\it <=>} additionally allows {\it ==} and  {\it !=}.
+        \item Defining \mintinline{cpp}{<=>} allows you to use \mintinline{cpp}{<}, \mintinline{cpp}{>}, \mintinline{cpp}{<=}, and \mintinline{cpp}{>=} as well.
+        \item Defaulting \mintinline{cpp}{<=>} additionally allows \mintinline{cpp}{==} and  \mintinline{cpp}{!=}.
         \item The standard library defines a few different kinds of order (strong, weak and partial).
-        \item Do not confuse equivalence ({\it (a<=>b)==0}) with equality ({\it a==b}).      \end{itemize}
+        \item Do not confuse equivalence (\mintinline{cpp}{(a<=>b)==0}) with equality (\mintinline{cpp}{a==b}).      \end{itemize}
     \end{block}
 \end{frame}
