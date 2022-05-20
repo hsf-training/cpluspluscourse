@@ -140,7 +140,7 @@ int main()
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Home-made class}
     \begin{itemize}
-      \item Despites the {\it <=>} for {\it unsigned} returns some instance of {\it std::strong_ordering}, we prefer here to cast it to {\it std::weak_ordering}. This way, we emphasize that if {\it a<=>b} is equal to {\it 0}, it only means that {\it a} and {\it b} are logically equivalent, but may lead to different results in some expressions.
+      \item Despites {\it <=>} for {\it unsigned} returning a {\it std::strong_ordering}, we prefer here to convert it to {\it std::weak_ordering}. This way, we emphasize that if {\it a<=>b} is equal to {\it 0}, it only means that {\it a} and {\it b} are logically equivalent, but may lead to different results in other expressions (e.g. printing them).
       \item As one can check in the code, we have defined {\it <=>}, and the compiler has added, for free, some default implementations for {\it <}, {\it >}, {\it <=} and {\it =>}. Of course, one can overload them with home-made implementations.
       \item It has NOT added a default implementation for {\it ==} and {\it !=}. Those operators are generally expected to mean \textbf{equal}, rather than \textbf{equivalent}. If {\it <=>} does not enable a strong order, the operator {\it ==}generally deserves a separate implementation.
     \end{itemize}
