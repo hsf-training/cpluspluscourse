@@ -151,7 +151,7 @@ int main()
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Default {\it <=>} implementation}
     \begin{itemize}
-      \item One can ask the compiler to provide some default implementation for {\it <=>}. Logically enough, it will compare the first member variable of the two objects, and goes on to the next member variable as long as the current ones are equivalent.
+      \item One can ask the compiler to provide a default implementation for {\it <=>} and/or  {\it ==}. Logically enough, it will compare the first member variable of the two objects, and goes on to the next member variable as long as the current ones are equivalent.
       \item In the previous example, that would not be relevant, because it will compare the numerators first, and conclude that {\it 3/6} is greater than {\it 2/3}:
     \end{itemize}
   \end{block}
