@@ -156,25 +156,25 @@
   \end{block}
   \begin{exampleblock}{Example}
     \begin{cppcode*}{}
-#include <iostream>
+    #include <iostream>
 
-struct Rational
- {
-  unsigned n, d ;
-  friend std::strong_ordering operator<=>( Rational const &, Rational const & ) = default ;
- } ;
+    struct Rational
+     {
+      unsigned n, d ;
+      friend std::strong_ordering operator<=>( Rational const &, Rational const & ) = default ;
+     } ;
 
-std::ostream & operator<<( std::ostream & os, std::weak_ordering cmp )
- { return (os<<'<'<<(cmp<0)<<'|'<<(cmp==0)<<'|'<<(cmp>0)<<'>') ; }
+    std::ostream & operator<<( std::ostream & os, std::weak_ordering cmp )
+     { return (os<<'<'<<(cmp<0)<<'|'<<(cmp==0)<<'|'<<(cmp>0)<<'>') ; }
 
-std::ostream & operator<<( std::ostream & os, Rational const & r )
- { return (os<<r.n<<'/'<<r.d) ; }
+    std::ostream & operator<<( std::ostream & os, Rational const & r )
+     { return (os<<r.n<<'/'<<r.d) ; }
 
-int main()
- {
-  Rational r1 { 3, 6 }, r2 { 2, 3 } ;
-  std::cout<<r1<<" <=> "<<r2<<": "<<(r1<=>r2)<<std::endl ;
- }
+    int main()
+     {
+      Rational r1 { 3, 6 }, r2 { 2, 3 } ;
+      std::cout<<r1<<" <=> "<<r2<<": "<<(r1<=>r2)<<std::endl ;
+     }
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -231,20 +231,20 @@ int main()
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitlecpp[20]{The three-way comparison operator}
-    \begin{alertblock}{Summary}
-      \begin{itemize}
-        \item Defining \mintinline{cpp}{<=>} allows you to use \mintinline{cpp}{<}, \mintinline{cpp}{>}, \mintinline{cpp}{<=}, and \mintinline{cpp}{>=} as well.
-        \item The standard library defines a few different kinds of order (strong, weak and partial).
-        \item If \mintinline{cpp}{<=>} does not define a strong order, avoid to define and/or use \mintinline{cpp}{==}.
-      \end{itemize}
-    \end{block}
-    \begin{block}{Resources}
-      \begin{itemize}
-        \item https://blog.tartanllama.xyz/spaceship-operator/
-        \item https://iq.opengenus.org/spaceship-operator-cpp/
-        \item https://www.jonathanmueller.dev/talk/meetingcpp2019/
-        \item https://quuxplusone.github.io/blog/2021/10/22/hidden-friend-outlives-spaceship/    \end{block}
-      \end{itemize}
-    \end{block}
-  \end{frame}
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{alertblock}{Summary}
+    \begin{itemize}
+      \item Defining \mintinline{cpp}{<=>} allows you to use \mintinline{cpp}{<}, \mintinline{cpp}{>},\mintinline{cpp}{<=}, and \mintinline{cpp}{>=} as well.
+      \item The standard library defines a few different kinds of order (strong, weak and partial).
+      \item If \mintinline{cpp}{<=>} does not define a strong order, avoid to define and/or use \mintinlin{cpp}{==}.
+    \end{itemize}
+  \end{alertblock}
+  \begin{block}{Resources}
+    \begin{itemize}
+      \item https://blog.tartanllama.xyz/spaceship-operator/
+      \item https://iq.opengenus.org/spaceship-operator-cpp/
+      \item https://www.jonathanmueller.dev/talk/meetingcpp2019/
+      \item https://quuxplusone.github.io/blog/2021/10/22/hidden-friend-outlives-spaceship/    \end{block}
+    \end{itemize}
+  \end{block}
+\end{frame}
