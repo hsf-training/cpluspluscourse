@@ -49,7 +49,7 @@ int main()
   \begin{block}{Different kinds of ordering}
     \begin{itemize}
     \item The real return type of {\it <=>} for integers is {\it std::strong_ordering}: whatever the values, you will always get {\it true} for exactly one test among {\it <0}, {\it ==0}, and {\it >0}.
-    \item On the contrary, the return type of {\it <=>} for floating point numbers is {\it std::partial_ordering}, because sometimes the tree tests may return {\it false}, typically if one one the number is {\it NaN}.
+    \item On the contrary, the return type of {\it <=>} for floating point numbers is {\it std::partial_ordering}, because sometimes all tests may return {\it false}, typically if one one the number is {\it NaN}.
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
