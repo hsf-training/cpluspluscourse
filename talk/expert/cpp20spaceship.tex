@@ -162,7 +162,7 @@ int main()
 struct Rational
  {
   unsigned n, d ;
-  std::strong_ordering operator<=>( Rational const & other ) const = default ;
+  friend std::strong_ordering operator<=>( Rational const &, Rational const & ) = default ;
  } ;
 
 std::ostream & operator<<( std::ostream & os, std::weak_ordering cmp )
