@@ -103,8 +103,8 @@ struct Rational
  {
   unsigned n, d ;
 
-  std::weak_ordering operator<=>( Rational const & other ) const
-   { return (n*other.d)<=>(other.n*d) ; }
+  friend std::weak_ordering operator<=>( Rational const & a, Rational const & b )
+   { return (a.n*b.d)<=>(a.n*b.d) ; }
  } ;
 
 std::ostream & operator<<( std::ostream & os, std::weak_ordering cmp )
