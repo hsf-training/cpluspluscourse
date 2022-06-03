@@ -80,7 +80,7 @@
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Different kinds of ordering}
     \begin{itemize}
-      \item Between the two, we have a class \mintinline{cpp}{std::weak_ordering}, where \mintinline{cpp}{==0} mean that the two compared values are equivalent from a ranking point of view, but not necessarily \textbf{equal}. In a given expression, one cannot substitutes one value for the other and be sure to have the same result.
+      \item Between the two, we have a class \mintinline{cpp}{std::weak_ordering}, where \mintinline{cpp}{==0} means that the two compared values are \textbf{equivalent} from a ranking point of view, but not necessarily \textbf{equal}. In any given expression, one cannot substitutes one value for the other and be sure to have the same result.
       \item I am not aware of some predefined type whose \mintinline{cpp}{<=>} would return an instance of \mintinline{cpp}{std::weak_ordering}, but it may make sense for some home-made class, such as the following.
     \end{itemize}
   \end{block}
