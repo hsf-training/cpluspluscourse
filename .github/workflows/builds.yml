@@ -5,6 +5,11 @@ name: Build Exercises
 # Perform the builds on every push and pull request.
 on: [ push, pull_request ]
 
+# Cancel running jobs on force-push
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
 # All the different build/test jobs.
 jobs:
 
