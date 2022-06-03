@@ -151,7 +151,7 @@
   \begin{block}{Default \mintinline{cpp}{<=>} implementation}
     \begin{itemize}
       \item One can ask the compiler to provide a default implementation for \mintinline{cpp}{<=>} and/or \mintinline{cpp}{==}. Logically enough, it will compare the first member variable of the two objects, and goes on to the next member variable as long as the current ones are equivalent.
-      \item In the previous example, that would not be relevant, because it will compare the numerators first, and conclude that \mintinline{cpp}{3/6} is greater than \mintinline{cpp}{2/3}:
+      \item In the previous example, that would be wrong, because it will compare the numerators first, and conclude that \mintinline{cpp}{3/6} is greater than \mintinline{cpp}{2/3}:
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
