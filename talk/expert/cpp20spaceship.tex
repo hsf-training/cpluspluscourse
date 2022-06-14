@@ -154,7 +154,7 @@
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Home-made class}
     \begin{itemize}
-      \item As one can see from the code above, we have defined only \mintinline{cpp}{<=>}, but \mintinline{cpp}{<}, \mintinline{cpp}{>}, \mintinline{cpp}{<=} and \mintinline{cpp}{=>} work as well. The compiler can express the latter operators in terms of \mintinline{cpp}{<=>}. Of course, one can also provide own implementations.
+      \item As one can see from previous code, we have defined only \mintinline{cpp}{<=>}, but \mintinline{cpp}{<}, \mintinline{cpp}{>}, \mintinline{cpp}{<=} and \mintinline{cpp}{=>} work as well. The compiler can express the latter operators in terms of \mintinline{cpp}{<=>}. Of course, one can also provide own implementations.
       \item It has NOT added a default implementation for \mintinline{cpp}{==} and \mintinline{cpp}{!=}. Those operators are generally expected to mean \textbf{equal}, rather than \textbf{equivalent}. If \mintinline{cpp}{<=>} does not provides a strong order, it is generally advised not to define \mintinline{cpp}{==}.
     \end{itemize}
   \end{block}
@@ -166,7 +166,7 @@
     \begin{itemize}
       \item One can ask the compiler to provide a default implementation for \mintinline{cpp}{<=>} and/or \mintinline{cpp}{==}. Logically enough, it will compare the first member variable of the two objects, and goes on to the next member variable as long as the current ones are equivalent.
       \item In the previous example, that would be wrong, because it will compare the numerators first, and conclude that \mintinline{cpp}{3/6} is greater than \mintinline{cpp}{2/3}:
-      \item On the contrary, for some tuple-like class, it may make sense.
+      \item On the contrary, for some tuple-like class like the next example, it makes sense.
     \end{itemize}
   \end{block}
 \end{frame}
@@ -182,19 +182,14 @@
       char letter ;
       std::string name ;
       auto operator<=>( Grade const & other ) const = default ;
+      std::ostream & operator<<( std::ostream & os, Grade const & g )
+      { return (os<<g.letter<<", "<<g.number<<", "<<g.name) ; }
     } ;
-
-    std::ostream & operator<<( std::ostream & os, Grade const & g )
-    { return (os<<g.letter<<", "<<g.number<<", "<<g.name) ; }
 
     int main()
     {
       std::set<Grade> grades
-      {
-         { 19, 'A', "Djamila" },
-         { 12, 'C', "Charles" },
-         { 16.5, 'A', "Marc" },
-      } ;
+      { { 19,'A',"Djamila"}, {12,'C',"Charles"}, {16.5,'A',"Marc"} } ;
       for ( auto const & grade : grades )
       { std::cout<<grade<<std::endl ; }
     }
