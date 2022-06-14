@@ -31,8 +31,10 @@
     template <typename T>
     void three_way_compare( T lhs, T rhs )
      {
-      auto result = (lhs<=>rhs) ;
-      std::cout<<lhs<<" <=> "<<rhs<<": <"<<(result<0)<<"|"<<(result==0)<<"|"<<(result>0)<<">\n" ;
+      std::cout
+        <<"("<lhs<<"<=>"<<rhs<<") <0 ==0 >0 :"
+        <<" "<<((lhs<=>rhs))<0)<<" "<<((lhs<=>rhs))==0)<<" "<<((lhs<=>rhs))>0)
+        <<std::endl ;
      }
 
     three_way_compare(1,2) ;
