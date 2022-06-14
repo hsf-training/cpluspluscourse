@@ -31,11 +31,10 @@
     template <typename T>
     void three_way_compare( T lhs, T rhs )
     {
+      auto res = (lhs<=>rhs) ;
       std::cout
-        <<"("<<lhs<<"<=>"<<rhs<<") <0 ==0 >0 :"
-        <<" "<<(((lhs<=>rhs)<0)?"true ":"false")
-        <<" "<<(((lhs<=>rhs)==0)?"true ":"false")
-        <<" "<<(((lhs<=>rhs)>0)?"true ":"false")
+        <<"("<<lhs<<"<=>"<<rhs<<") : "
+        <<(res<0)<<(res==0)<<(res>0)
         <<std::endl ;
     }
 
@@ -49,9 +48,9 @@
   \end{exampleblock}
   \scriptsize
   \begin{Verbatim}
-    (1<=>2) <0 ==0 >0 : true  false false
-    (2<=>2) <0 ==0 >0 : false true  false
-    (2<=>1) <0 ==0 >0 : false false true
+(1<=>2): 100
+(2<=>2): 010
+(2<=>1): 001
   \end{Verbatim}
 \end{frame}
 
@@ -63,17 +62,26 @@
     \item On the contrary, the return type of \mintinline{cpp}{<=>} for floating point numbers is \mintinline{cpp}{std::partial_ordering}, because sometimes all tests may return \mintinline{cpp}{false}, typically if one one the number is \mintinline{cpp}{NaN}.
     \end{itemize}
   \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \scriptsize
   \begin{exampleblock}{Example}
-    \scriptsize
     \begin{cppcode*}{}
     int main()
-     {
+    {
       three_way_compare(+0.,-0.) ;
       three_way_compare(0./1.,1./0.) ;
       three_way_compare(0.,0./0.) ;
-     }
+    }
     \end{cppcode*}
   \end{exampleblock}
+  \begin{Verbatim}
+(0<=>-0)   : 010
+(0<=>inf)  : 100
+(0<=>-nan) : 000
+  \end{Verbatim}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -96,9 +104,6 @@
   \begin{exampleblock}{Example}
     \scriptsize
     \begin{cppcode*}{}
-    #include <iostream>
-    #include <compare>
-
     struct Rational
      {
       unsigned n, d ;
