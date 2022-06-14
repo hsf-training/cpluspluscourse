@@ -1,4 +1,4 @@
-\subsection[spaceship]{The three-way operator}
+\subsection[spaceship]{The <=> operator}
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{The three-way comparison operator}
@@ -204,7 +204,7 @@ A, 19, Djamila
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{The three-way comparison operator}
-  \begin{block}{Default \mintinline{cpp}{<=>} implementation}
+  \begin{block}{Default <=> implementation}
     \begin{itemize}
       \item We see above that the definition of \mintinline{cpp}{<=>} has been provided by the compiler, and the use of \mintinline{cpp}{<} by \mintinline{cpp}{std::set} to sorts its elements has been rewritten by the compiler in terms of \mintinline{cpp}{<=>}.
       \item If \mintinline{cpp}{<=>} is defaulted and no \mintinline{cpp}{==} is defined, then the compiler also provides a defaulted \mintinline{cpp}{==}.
