@@ -25,8 +25,8 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{The three-way comparison operator}
+  \scriptsize
   \begin{exampleblock}{Example}
-    \scriptsize
     \begin{cppcode*}{}
     template <typename T>
     void three_way_compare( T lhs, T rhs )
@@ -46,7 +46,6 @@
     }
     \end{cppcode*}
   \end{exampleblock}
-  \scriptsize
   \begin{Verbatim}
 (1<=>2): 100
 (2<=>2): 010
@@ -90,62 +89,72 @@
     \begin{itemize}
       \item Between the two, we have a class \mintinline{cpp}{std::weak_ordering}, where \mintinline{cpp}{==0} means that the two compared values are \textbf{equivalent} from a ranking point of view, but not necessarily \textbf{equal}. In any given expression, one cannot substitutes one value for the other and be sure to have the same result.
       \item I am not aware of some predefined type whose \mintinline{cpp}{<=>} would return an instance of \mintinline{cpp}{std::weak_ordering}, but it may make sense for some home-made class, such as the following.
+      \item In the next example, we define a very basic class for positive rational numbers, and provide an implementation of \mintinline{cpp}{<=>}.
     \end{itemize}
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{The three-way comparison operator}
-  \begin{block}{Home-made class}
-    \begin{itemize}
-    \item In the example below, we define a very basic class for positive rational numbers, and provide an implementation of \mintinline{cpp}{<=>}.
-    \end{itemize}
-  \end{block}
   \begin{exampleblock}{Example}
     \scriptsize
     \begin{cppcode*}{}
-    struct Rational
-     {
+    struct Ratio
+    {
       unsigned n, d ;
-
-      friend std::weak_ordering operator<=>( Rational const & a, Rational const & b )
-       { return (a.n*b.d)<=>(a.d*b.n) ; }
-     } ;
+      friend std::weak_ordering operator<=>( Ratio const & a, Ratio const & b )
+      { return (a.n*b.d)<=>(a.d*b.n) ; }
+      friend std::ostream & operator<<( std::ostream & os, Ratio const & r )
+      { return (os<<r.n<<'/'<<r.d) ; }
+    } ;
 
     std::ostream & operator<<( std::ostream & os, std::weak_ordering cmp )
-     { return (os<<'<'<<(cmp<0)<<'|'<<(cmp==0)<<'|'<<(cmp>0)<<'>') ; }
+    { return (os<<(cmp<0)<<(cmp==0)<<(cmp>0)) ; }
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{block}{Home-made class}
+    \begin{itemize}
+      \item Despites \mintinline{cpp}{<=>} for \mintinline{cpp}{unsigned} returning a \mintinline{cpp}{std::strong_ordering}, we prefer here to convert it to \mintinline{cpp}{std::weak_ordering}. This way, we emphasize that if \mintinline{cpp}{a<=>b} is equal to \mintinline{cpp}{0}, it only means that \mintinline{cpp}{a} and \mintinline{cpp}{b} are logically equivalent, but may lead to different results in other expressions (e.g. printing them).
+    \end{itemize}
+  \end{block}
+\end{frame}
 
-    std::ostream & operator<<( std::ostream & os, Rational const & r )
-     { return (os<<r.n<<'/'<<r.d) ; }
-
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{exampleblock}{Example}
+    \scriptsize
+    \begin{cppcode*}{}
     template <typename T>
     void compare( T lhs, T rhs )
      {
-      std::cout<<std::endl ;
-      //std::cout<<lhs<<" ==  "<<rhs<<": "<<(lhs==rhs)<<std::endl ;
-      //std::cout<<lhs<<" !=  "<<rhs<<": "<<(lhs!=rhs)<<std::endl ;
-      std::cout<<lhs<<" <=> "<<rhs<<": "<<(lhs<=>rhs)<<std::endl ;
-      std::cout<<lhs<<" <   "<<rhs<<": "<<(lhs<  rhs)<<std::endl ;
-      std::cout<<lhs<<" <=  "<<rhs<<": "<<(lhs<= rhs)<<std::endl ;
-      std::cout<<lhs<<" >   "<<rhs<<": "<<(lhs>  rhs)<<std::endl ;
-      std::cout<<lhs<<" >=  "<<rhs<<": "<<(lhs>= rhs)<<std::endl ;
+      //std::cout<<lhs<<" == != "<<rhs<<": "<<(lhs==rhs)<<std::endl ;
+      //  <<(lhs==rhs)<<" "<<(lhs!=rhs)
+      //  <<std::endl ;
+      std::cout<<lhs<<" <=> "<<rhs<<" (< <= > >=) : "<<(lhs<=>rhs)
+        <<" ("<<(lhs<rhs)<<" "<<(lhs<=rhs)
+        <<" "<<(lhs>rhs)<<" "<<(lhs>=rhs)<<")"
+        <<std::endl ;
      }
 
     int main()
      {
-      compare<Rational>({ 3, 4 },{ 2, 3 }) ;
-      compare<Rational>({ 3, 6 },{ 2, 3 }) ;
-      compare<Rational>({ 1, 2 },{ 2, 4 }) ;
+      compare<Ratio>({ 3, 4 },{ 2, 3 }) ;
+      compare<Ratio>({ 3, 6 },{ 2, 3 }) ;
+      compare<Ratio>({ 1, 2 },{ 2, 4 }) ;
      }
      \end{cppcode*}
   \end{exampleblock}
+  \begin{Verbatim}
+3/4 <=> 2/3 (< <= > >=) : 001 (0 0 1 1)
+3/6 <=> 2/3 (< <= > >=) : 100 (1 1 0 0)
+1/2 <=> 2/4 (< <= > >=) : 010 (0 1 0 1)
+  \end{Verbatim}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Home-made class}
     \begin{itemize}
-      \item Despites \mintinline{cpp}{<=>} for \mintinline{cpp}{unsigned} returning a \mintinline{cpp}{std::strong_ordering}, we prefer here to convert it to \mintinline{cpp}{std::weak_ordering}. This way, we emphasize that if \mintinline{cpp}{a<=>b} is equal to \mintinline{cpp}{0}, it only means that \mintinline{cpp}{a} and \mintinline{cpp}{b} are logically equivalent, but may lead to different results in other expressions (e.g. printing them).
       \item As one can see from the code, we have defined only \mintinline{cpp}{<=>}, but \mintinline{cpp}{<}, \mintinline{cpp}{>}, \mintinline{cpp}{<=} and \mintinline{cpp}{=>} work as well. The compiler can express the latter operators in terms of \mintinline{cpp}{<=>}. Of course, one can also provide own implementations.
       \item It has NOT added a default implementation for \mintinline{cpp}{==} and \mintinline{cpp}{!=}. Those operators are generally expected to mean \textbf{equal}, rather than \textbf{equivalent}. If \mintinline{cpp}{<=>} does not provides a strong order, it is generally advised not to define \mintinline{cpp}{==}.
     \end{itemize}
