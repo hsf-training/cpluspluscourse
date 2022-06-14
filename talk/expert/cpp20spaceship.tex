@@ -1,4 +1,4 @@
-\subsection[spaceship]{The three-way comparison operator}
+\subsection[spaceship]{The three-way operator}
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{The three-way comparison operator}
@@ -17,10 +17,16 @@
   \begin{block}{Idea}
     \begin{itemize}
     \item C++20 introduces the \textbf{spaceship} operator: \mintinline{cpp}{<=>}. Well, the real official name is \textbf{three-way comparison operator}.
-    \item It is provided by default for all predefined types, and returns \textbf{something} which can be compared to \mintinline{cpp}{0} (similar to \mintinline{cpp}{std::strcmp}), meaning \textbf{lower than} if this \textbf{something} is lower than \mintinline{cpp}{0}, \textbf{greater than} if it is greater than \mintinline{cpp}{0}, and \textbf{equivalent} if it is equal \mintinline{cpp}{0}:
+    \item It is provided by default for all predefined types, and returns \textbf{something} which can be compared to \mintinline{cpp}{0} (similar to \mintinline{cpp}{std::strcmp}).
+    \item Greater, lower or equal to \mintinline{cpp}{0} means respectively \textbf{lower than} , \textbf{greater than} and \textbf{equivalent to}.
     \end{itemize}
   \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
   \begin{exampleblock}{Example}
+    \scriptsize
     \begin{cppcode*}{}
     #include <iostream>
 
@@ -53,6 +59,7 @@
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
+    \scriptsize
     \begin{cppcode*}{}
     #include <iostream>
 
@@ -94,6 +101,7 @@
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
+    \scriptsize
     \begin{cppcode*}{}
     #include <iostream>
     #include <compare>
@@ -155,6 +163,7 @@
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
+    \scriptsize
     \begin{cppcode*}{}
     #include <iostream>
 
@@ -187,6 +196,7 @@
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
+    \scriptsize
     \begin{cppcode*}{}
     #include <iostream>
     #include <string>
