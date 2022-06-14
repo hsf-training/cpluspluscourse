@@ -30,18 +30,28 @@
     \begin{cppcode*}{}
     template <typename T>
     void three_way_compare( T lhs, T rhs )
-     {
+    {
       std::cout
-        <<"("<lhs<<"<=>"<<rhs<<") <0 ==0 >0 :"
-        <<" "<<((lhs<=>rhs))<0)<<" "<<((lhs<=>rhs))==0)<<" "<<((lhs<=>rhs))>0)
+        <<"("<<lhs<<"<=>"<<rhs<<") <0 ==0 >0 :"
+        <<" "<<(((lhs<=>rhs)<0)?"true ":"false")
+        <<" "<<(((lhs<=>rhs)==0)?"true ":"false")
+        <<" "<<(((lhs<=>rhs)>0)?"true ":"false")
         <<std::endl ;
-     }
+    }
 
-    three_way_compare(1,2) ;
-    three_way_compare(2,2) ;
-    three_way_compare(2,1) ;
+    int main()
+    {
+      three_way_compare(1,2) ;
+      three_way_compare(2,2) ;
+      three_way_compare(2,1) ;
+    }
     \end{cppcode*}
   \end{exampleblock}
+  \begin{Verbatim}
+    (1<=>2) <0 ==0 >0 : true  false false
+    (2<=>2) <0 ==0 >0 : false true  false
+    (2<=>1) <0 ==0 >0 : false false true
+  \end{Verbatim}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -55,18 +65,6 @@
   \begin{exampleblock}{Example}
     \scriptsize
     \begin{cppcode*}{}
-    #include <iostream>
-
-    template <typename T>
-    void three_way_compare( T lhs, T rhs )
-     {
-      auto result = (lhs<=>rhs) ;
-      std::cout
-        <<lhs<<" <=> "<<rhs<<": "<<'<'
-        <<(result<0)<<'|'<<(result==0)<<'|'<<(result>0)
-        <<'>'<<std::endl ;
-     }
-
     int main()
      {
       three_way_compare(+0.,-0.) ;
