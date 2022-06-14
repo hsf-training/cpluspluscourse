@@ -28,24 +28,16 @@
   \begin{exampleblock}{Example}
     \scriptsize
     \begin{cppcode*}{}
-    #include <iostream>
-
     template <typename T>
     void three_way_compare( T lhs, T rhs )
      {
       auto result = (lhs<=>rhs) ;
-      std::cout
-        <<lhs<<" <=> "<<rhs<<": "<<'<'
-        <<(result<0)<<'|'<<(result==0)<<'|'<<(result>0)
-        <<'>'<<std::endl ;
+      std::cout<<lhs<<" <=> "<<rhs<<": <"<<(result<0)<<"|"<<(result==0)<<"|"<<(result>0)<<">\n" ;
      }
 
-    int main()
-     {
-      three_way_compare(1,2) ;
-      three_way_compare(2,2) ;
-      three_way_compare(2,1) ;
-     }
+    three_way_compare(1,2) ;
+    three_way_compare(2,2) ;
+    three_way_compare(2,1) ;
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
