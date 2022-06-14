@@ -47,6 +47,7 @@
     }
     \end{cppcode*}
   \end{exampleblock}
+  \scriptsize
   \begin{Verbatim}
     (1<=>2) <0 ==0 >0 : true  false false
     (2<=>2) <0 ==0 >0 : false true  false
@@ -103,7 +104,7 @@
       unsigned n, d ;
 
       friend std::weak_ordering operator<=>( Rational const & a, Rational const & b )
-       { return (a.n*b.d)<=>(a.n*b.d) ; }
+       { return (a.n*b.d)<=>(a.d*b.n) ; }
      } ;
 
     std::ostream & operator<<( std::ostream & os, std::weak_ordering cmp )
