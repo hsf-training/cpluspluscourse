@@ -1,6 +1,6 @@
 
 # Set up the project.
-cmake_minimum_required( VERSION 3.1 )
+cmake_minimum_required( VERSION  3.12 )
 project( spaceship LANGUAGES CXX )
 
 set(CMAKE_CXX_STANDARD 20)
