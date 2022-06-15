@@ -6,7 +6,7 @@ Here we explore:
 
 ## Prerequisites
 
-* Being able to redefine an operator, especially `==` and `<=>`.
+* Being able to overload an operator, especially `==` and `<=>`.
 
 ## Instructions
 
