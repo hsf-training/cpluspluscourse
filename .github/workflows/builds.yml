@@ -72,6 +72,9 @@ jobs:
           - NAME: "race"
             BUILD_DEFAULT: true
             BUILD_SOLUTION: true
+          - NAME: "spaceship"
+            BUILD_DEFAULT: true
+            BUILD_SOLUTION: true
           - NAME: "smartPointers"
             BUILD_DEFAULT: true
             BUILD_SOLUTION: true
