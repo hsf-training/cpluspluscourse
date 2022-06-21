@@ -21,77 +21,35 @@ jobs:
       matrix:
         EXERCISE:
           - NAME: "asan"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "atomic"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "callgrind"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "condition_variable"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "constness"
-            BUILD_DEFAULT: false
-            BUILD_SOLUTION: false
+            SKIP_DEFAULT: true
+            SKIP_SOLUTION: true
           - NAME: "control"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "cppcheck"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "debug"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "functions"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "helgrind"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "hello"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: false
+            SKIP_SOLUTION: true
           - NAME: "loopsRefsAuto"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "memcheck"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "modern_oo"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "move"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "operators"
-            BUILD_DEFAULT: false
-            BUILD_SOLUTION: true
+            SKIP_DEFAULT: true
           - NAME: "polymorphism"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "python"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: false
+            SKIP_SOLUTION: true
           - NAME: "race"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "smartPointers"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "stl"
-            BUILD_DEFAULT: false
-            BUILD_SOLUTION: true
+            SKIP_DEFAULT: true
           - NAME: "templates"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "valgrind"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
           - NAME: "virtual_inheritance"
-            BUILD_DEFAULT: true
-            BUILD_SOLUTION: true
         PLATFORM:
           - OS: "ubuntu-latest"
             GENERATOR: -G "Unix Makefiles"
@@ -102,29 +60,24 @@ jobs:
         exclude:
           - EXERCISE:
               NAME: "helgrind"
-              BUILD_DEFAULT: true
-              BUILD_SOLUTION: true
             PLATFORM:
               OS: "windows-latest"
               GENERATOR:
           - EXERCISE:
               NAME: "python"
-              BUILD_DEFAULT: true
-              BUILD_SOLUTION: false
+              SKIP_SOLUTION: true
             PLATFORM:
               OS: "windows-latest"
               GENERATOR:
           - EXERCISE:
               NAME: "stl"
-              BUILD_DEFAULT: false
-              BUILD_SOLUTION: true
+              SKIP_DEFAULT: true
             PLATFORM:
               OS: "windows-latest"
               GENERATOR:
           - EXERCISE:
               NAME: "stl"
-              BUILD_DEFAULT: false
-              BUILD_SOLUTION: true
+              SKIP_DEFAULT: true
             PLATFORM:
               OS: "macos-latest"
               GENERATOR: -G "Xcode"
@@ -148,19 +101,19 @@ jobs:
     # Perform the build of the "main exercise" with CMake.
     - name: CMake Build Main
       run: cmake --build build
-      if: matrix.EXERCISE.BUILD_DEFAULT
+      if: ${{ !matrix.EXERCISE.SKIP_DEFAULT || false }}
     # Perform the build of the "solution" with CMake.
     - name: CMake Build Solution
       run: cmake --build build --target solution
-      if: matrix.EXERCISE.BUILD_SOLUTION
+      if: ${{ !matrix.EXERCISE.SKIP_SOLUTION || false }}
     # Perform the build of the "main exercise" with GNU Make.
     - name: GNU Make Build Main
       run: make -C ${{ github.workspace }}/code/${{ matrix.EXERCISE.NAME }}
       if: ${{ matrix.PLATFORM.OS != 'windows-latest' &&
-              matrix.EXERCISE.BUILD_DEFAULT }}
+              (!matrix.EXERCISE.SKIP_DEFAULT || false) }}
     # Perform the build of the "solution" with GNU Make.
     - name: GNU Make Build Solution
       run: make -C ${{ github.workspace }}/code/${{ matrix.EXERCISE.NAME }}
                 solution
       if: ${{ matrix.PLATFORM.OS != 'windows-latest' &&
-              matrix.EXERCISE.BUILD_SOLUTION }}
+              (!matrix.EXERCISE.SKIP_SOLUTION || false) }}
