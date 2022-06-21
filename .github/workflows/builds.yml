@@ -53,6 +53,8 @@ jobs:
         PLATFORM:
           - OS: "ubuntu-22.04"
             GENERATOR: -G "Unix Makefiles"
+            env:
+              CXX: g++-11
           - OS: "macos-latest"
             GENERATOR: -G "Xcode"
           - OS: "windows-latest"
