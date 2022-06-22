@@ -48,6 +48,7 @@ code/stl/randomize.nostl
 code/templates/playwithsort
 code/valgrind/randomize
 code/virtual_inheritance/trymultiherit
+code/smartPointers/smartPointers
 
 # tools
 CMakeCache.txt

@@ -1,0 +1,232 @@
+\subsection[spaceship]{The <=> operator}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Motivation}
+    \begin{itemize}
+    \item There are frequent situations where one needs \mintinline{cpp}{<} operator for a home-made class. Typically, if you want to sort a \mintinline{cpp}{std::vector} of such objects, or use them as a key for e.g. \mintinline{cpp}{std::set} or \mintinline{cpp}{std::map}.
+    \item For completeness, one should also add \mintinline{cpp}{>}, \mintinline{cpp}{>=}, and \mintinline{cpp}{<=}, implemented reusing either \mintinline{cpp}{<} and \mintinline{cpp}{==}, or \mintinline{cpp}{<} and \mintinline{cpp}{>}.
+    \item Those operators should be defined as free functions, optionally friends, so that left and right arguments will be similarly convertible.
+    \item Much boilerplate code to write. Too much...
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Idea}
+    \begin{itemize}
+    \item C++20 introduces the \textbf{spaceship} operator: \mintinline{cpp}{<=>}. Well, the real official name is \textbf{three-way comparison operator}.
+    \item It is provided by default for all predefined types, and returns \textbf{something} which can be compared to \mintinline{cpp}{0} (similar to \mintinline{cpp}{std::strcmp}).
+    \item Greater, lower or equal to \mintinline{cpp}{0} means respectively \textbf{lower than} , \textbf{greater than} and \textbf{equivalent to}.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \scriptsize
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+    template <typename T>
+    void three_way_compare( T lhs, T rhs )
+    {
+      auto res = (lhs<=>rhs) ;
+      std::cout
+        <<"("<<lhs<<"<=>"<<rhs<<") : "
+        <<(res<0)<<(res==0)<<(res>0)
+        <<std::endl ;
+    }
+
+    int main()
+    {
+      three_way_compare(1,2) ;
+      three_way_compare(2,2) ;
+      three_way_compare(2,1) ;
+    }
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{Verbatim}
+(1<=>2): 100
+(2<=>2): 010
+(2<=>1): 001
+  \end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Different kinds of ordering}
+    \begin{itemize}
+    \item The real return type of \mintinline{cpp}{<=>} for integers is \mintinline{cpp}{std::strong_ordering}: whatever the values, you will always get \mintinline{cpp}{true} for exactly one test among \mintinline{cpp}{<0}, \mintinline{cpp}{==0}, and \mintinline{cpp}{>0}.
+    \item On the contrary, the return type of \mintinline{cpp}{<=>} for floating point numbers is \mintinline{cpp}{std::partial_ordering}, because sometimes all tests may return \mintinline{cpp}{false}, typically if one one the number is \mintinline{cpp}{NaN}.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \scriptsize
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+    int main()
+    {
+      three_way_compare(+0.,-0.) ;
+      three_way_compare(0./1.,1./0.) ;
+      three_way_compare(0.,0./0.) ;
+    }
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{Verbatim}
+(0<=>-0)   : 010
+(0<=>inf)  : 100
+(0<=>-nan) : 000
+  \end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Different kinds of ordering}
+    \begin{itemize}
+      \item Between the two, we have a class \mintinline{cpp}{std::weak_ordering}, where \mintinline{cpp}{==0} means that the two compared values are \textbf{equivalent} from a ranking point of view, but not necessarily \textbf{equal}. In any given expression, one cannot substitutes one value for the other and be sure to have the same result.
+      \item I am not aware of some predefined type whose \mintinline{cpp}{<=>} would return an instance of \mintinline{cpp}{std::weak_ordering}, but it may make sense for some home-made class, such as the following.
+      \item In the next example, we define a very basic class for positive rational numbers, and provide an implementation of \mintinline{cpp}{<=>}.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{exampleblock}{Example}
+    \scriptsize
+    \begin{cppcode*}{}
+    struct Ratio
+    {
+      unsigned n, d ;
+      friend std::weak_ordering operator<=>( Ratio const & a, Ratio const & b )
+      { return (a.n*b.d)<=>(a.d*b.n) ; }
+      friend std::ostream & operator<<( std::ostream & os, Ratio const & r )
+      { return (os<<r.n<<'/'<<r.d) ; }
+    } ;
+
+    std::ostream & operator<<( std::ostream & os, std::weak_ordering cmp )
+    { return (os<<(cmp<0)<<(cmp==0)<<(cmp>0)) ; }
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{block}{Home-made class}
+    \begin{itemize}
+      \item We convert above the result of \mintinline{cpp}{<=>} to \mintinline{cpp}{std::weak_ordering}, so to emphasize that \mintinline{cpp}{(a<=>b)==0} means that \mintinline{cpp}{a} and \mintinline{cpp}{b} are logically equivalent, but may lead to different results in other expressions (e.g. printing them).
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \scriptsize
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+    template <typename T>
+    void compare( T lhs, T rhs )
+    {
+      //std::cout<<lhs<<" == != "<<rhs<<": "<<(lhs==rhs)<<std::endl ;
+      //  <<(lhs==rhs)<<" "<<(lhs!=rhs)
+      //  <<std::endl ;
+      std::cout<<lhs<<" <=> "<<rhs<<" (< <= > >=) : "<<(lhs<=>rhs)
+        <<" ("<<(lhs<rhs)<<" "<<(lhs<=rhs)
+        <<" "<<(lhs>rhs)<<" "<<(lhs>=rhs)<<")"
+        <<std::endl ;
+    }
+    int main()
+    {
+      compare<Ratio>({ 3, 4 },{ 2, 3 }) ;
+      compare<Ratio>({ 3, 6 },{ 2, 3 }) ;
+      compare<Ratio>({ 1, 2 },{ 2, 4 }) ;
+    }
+     \end{cppcode*}
+  \end{exampleblock}
+  \begin{Verbatim}
+3/4 <=> 2/3 (< <= > >=) : 001 (0 0 1 1)
+3/6 <=> 2/3 (< <= > >=) : 100 (1 1 0 0)
+1/2 <=> 2/4 (< <= > >=) : 010 (0 1 0 1)
+  \end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Home-made class}
+    \begin{itemize}
+      \item As one can see from previous code, we have defined only \mintinline{cpp}{<=>}, but \mintinline{cpp}{<}, \mintinline{cpp}{>}, \mintinline{cpp}{<=} and \mintinline{cpp}{=>} work as well. The compiler can express the latter operators in terms of \mintinline{cpp}{<=>}. Of course, one can also provide own implementations.
+      \item It has NOT added a default implementation for \mintinline{cpp}{==} and \mintinline{cpp}{!=}. Those operators are generally expected to mean \textbf{equal}, rather than \textbf{equivalent}. If \mintinline{cpp}{<=>} does not provides a strong order, it is generally advised not to define \mintinline{cpp}{==}.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Default \mintinline{cpp}{<=>} implementation}
+    \begin{itemize}
+      \item One can ask the compiler to provide a default implementation for \mintinline{cpp}{<=>} and/or \mintinline{cpp}{==}. Logically enough, it will compare the first member variable of the two objects, and goes on to the next member variable as long as the current ones are equivalent.
+      \item In the previous example, that would be wrong, because it will compare the numerators first, and conclude that \mintinline{cpp}{3/6} is greater than \mintinline{cpp}{2/3}:
+      \item On the contrary, for some tuple-like class like the next example, it makes sense.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \scriptsize
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+    struct Grade
+    {
+      double number ;
+      char letter ;
+      std::string name ;
+      auto operator<=>( Grade const & other ) const = default ;
+      std::ostream & operator<<( std::ostream & os, Grade const & g )
+      { return (os<<g.letter<<", "<<g.number<<", "<<g.name) ; }
+    } ;
+
+    int main()
+    {
+      std::set<Grade> grades
+      { { 19,'A',"Djamila"}, {12,'C',"Charles"}, {16.5,'A',"Marc"} } ;
+      for ( auto const & grade : grades )
+      { std::cout<<grade<<std::endl ; }
+    }
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{Verbatim}
+C, 12, Charles
+A, 16.5, Marc
+A, 19, Djamila
+  \end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{block}{Default <=> implementation}
+    \begin{itemize}
+      \item We see above that the definition of \mintinline{cpp}{<=>} has been provided by the compiler, and the use of \mintinline{cpp}{<} by \mintinline{cpp}{std::set} to sorts its elements has been rewritten by the compiler in terms of \mintinline{cpp}{<=>}.
+      \item If \mintinline{cpp}{<=>} is defaulted and no \mintinline{cpp}{==} is defined, then the compiler also provides a defaulted \mintinline{cpp}{==}.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{The three-way comparison operator}
+  \begin{alertblock}{Summary}
+    \begin{itemize}
+      \item Defining \mintinline{cpp}{<=>} allows you to use \mintinline{cpp}{<}, \mintinline{cpp}{>},\mintinline{cpp}{<=}, and \mintinline{cpp}{>=} as well.
+      \item The standard library defines a few different kinds of order (strong, weak and partial).
+      \item If \mintinline{cpp}{<=>} does not define a strong order, avoid to define and/or use \mintinline{cpp}{==}.
+    \end{itemize}
+  \end{alertblock}
+  \begin{block}{Resources}
+    \begin{itemize}
+      \item https://blog.tartanllama.xyz/spaceship-operator/
+      \item https://iq.opengenus.org/spaceship-operator-cpp/
+      \item https://www.jonathanmueller.dev/talk/meetingcpp2019/
+      \item https://quuxplusone.github.io/blog/2021/10/22/hidden-friend-outlives-spaceship/
+    \end{itemize}
+  \end{block}
+\end{frame}

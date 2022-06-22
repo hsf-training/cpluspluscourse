@@ -45,6 +45,7 @@ jobs:
             SKIP_SOLUTION: true
           - NAME: "race"
           - NAME: "smartPointers"
+          - NAME: "spaceship"
           - NAME: "stl"
             SKIP_DEFAULT: true
           - NAME: "templates"

@@ -1,0 +1,11 @@
+
+# From markdown to latex, with vscode replace
+
+`(.*?)` -> \\mintinline{cpp}{$1}
+\*(.*?)\* -> \\textbf{$1}
+
+# Other
+
+## Replace {\it <=} with \mintinline{cpp}{<=}
+
+\{\\it (.*?)\} -> \\mintinline{cpp}{$1}
