@@ -20,7 +20,7 @@ jobs:
       - name: Commit to repo
         run: |
           set -x
-          cd download-slides
+          cd download-slides/talk
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git add C++-Course.pdf
