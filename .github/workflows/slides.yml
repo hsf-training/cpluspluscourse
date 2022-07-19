@@ -23,7 +23,7 @@ jobs:
           cd download-slides
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git add talk/C++-Course.pdf
+          git add C++-Course.pdf
           if (git diff --quiet) || (git diff --staged --quiet)
           then
             git commit -m "Update C++-Course.pdf"
