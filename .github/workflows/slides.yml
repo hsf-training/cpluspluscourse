@@ -1,18 +1,34 @@
-name: GitHub Actions Demo
+name: Produce a stable download link for the slides
 on: [push]
+
 jobs:
-  Explore-GitHub-Actions:
+  produce-slides:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
+      - uses: actions/checkout@v2
+      - name: clone download-slides
         run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
-
+          git clone -b download-slides https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download-slides
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: C++Course.tex
+          latexmk_use_xelatex: true
+          args: -f -pdf -interaction=nonstopmode -shell-escape
+          # working_directory: talk
+          extra_system_packages: "py-pygments"
+      - name: Commit to repo
+        run: |
+          set -x
+          cd download-slides
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git add C++-Course.pdf
+          if (git diff --quiet) || (git diff --staged --quiet)
+          then
+            git commit -m "Update C++-Course.pdf"
+            git push origin download-slides
+          else
+            echo "No changes to commit"
+          fi
+          git push
