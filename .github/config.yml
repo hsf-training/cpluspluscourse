@@ -1,0 +1,36 @@
+# === IMPORTANT: CENTRALLY MAINTAINED FILE ===
+# This file was automatically added via the scripts at maintenance-snippets.
+# Please do not change it. Rather, update the blueprint in maintenance-snippets/add-common-files and propagate
+# the changes from there.
+# IF YOU REALLY WANT TO MAKE REPOSITORY SPECIFIC CHANGES TO THIS FILE, PLEASE REMOVE THIS NOTICE!
+# Tag @klieret for any questions.
+# ======
+# Configuration for welcome - https://github.com/behaviorbot/welcome
+
+# Configuration for new-issue-welcome - https://github.com/behaviorbot/new-issue-welcome
+
+# Comment to be posted to on first time issues
+newIssueWelcomeComment: >
+  Thanks for opening your first issue here! If you have any questions, feel free
+  to mention one of the conveners, previous contributors, or attend our weekly meeting (see
+  https://hepsoftwarefoundation.org/workinggroups/training.html).
+  Also, sometimes issues go unnoticed, so don't hesitate to @mention some of
+  us, if we do not come back to you within a few days.
+
+# Configuration for new-pr-welcome - https://github.com/behaviorbot/new-pr-welcome
+
+# Comment to be posted to on PRs from first time contributors in your repository
+newPRWelcomeComment: >
+  Thanks for opening your first pull request here! If you have any questions, feel free
+  to mention one of the conveners, previous contributors, or attend our weekly meeting (see
+  https://hepsoftwarefoundation.org/workinggroups/training.html).
+  Also, sometimes PRs go unnoticed, so don't hesitate to @mention some of
+  us, if we do not come back to you within a few days.
+
+# Configuration for first-pr-merge - https://github.com/behaviorbot/first-pr-merge
+
+# Comment to be posted to on pull requests merged by a first time user
+firstPRMergeComment: >
+  Congrats on merging your first pull request! We at HSF are proud of you!
+
+# It is recommended to include as many gifs and emojis as possible!
