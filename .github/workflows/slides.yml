@@ -1,0 +1,47 @@
+name: Publish slides
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish-slides:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [ essentials, full ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup essentials course
+        if: matrix.version == 'essentials'
+        run: echo '\setboolean{onlybasics}{true}' > talk/onlybasics.tex
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: C++Course.tex
+          latexmk_use_xelatex: true
+          args: -f -pdf -interaction=nonstopmode -shell-escape
+          working_directory: talk
+          extra_system_packages: "py-pygments"
+      - name: Commit to download repository
+        run: |
+          set -x
+          git clone -b download https://${GITHUB_ACTOR}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git download
+          cd download
+          mkdir -p talk
+          cp ../C++Course.pdf "talk/C++Course_${{ matrix.version }}.pdf"
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add -f "talk/C++Course_${{ matrix.version }}.pdf"
+          if (git diff --quiet) || (git diff --staged --quiet)
+          then
+            git commit -m "Update C++Course_${{ matrix.version }}.pdf"
+            while : ; do
+              git pull --rebase origin download
+              git push origin download
+              [[ $1 != 0 ]] || break
+            done
+          else
+            echo "No changes to commit"
+          fi
+          git push
