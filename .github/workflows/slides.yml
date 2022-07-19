@@ -15,7 +15,7 @@ jobs:
           root_file: C++Course.tex
           latexmk_use_xelatex: true
           args: -f -pdf -interaction=nonstopmode -shell-escape
-          # working_directory: talk
+          working_directory: talk
           extra_system_packages: "py-pygments"
       - name: Commit to repo
         run: |
@@ -23,7 +23,7 @@ jobs:
           cd download-slides
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git add C++-Course.pdf
+          git add talk/C++-Course.pdf
           if (git diff --quiet) || (git diff --staged --quiet)
           then
             git commit -m "Update C++-Course.pdf"
@@ -31,4 +31,4 @@ jobs:
           else
             echo "No changes to commit"
           fi
-          git push  
+          git push
