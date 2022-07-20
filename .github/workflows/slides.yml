@@ -15,11 +15,13 @@ jobs:
           root_file: C++Course.tex
           latexmk_use_xelatex: true
           args: -f -pdf -interaction=nonstopmode -shell-escape
-          working_directory: download-slides/talk
+          working_directory: talk
           extra_system_packages: "py-pygments"
       - name: Commit to repo
         run: |
           set -x
+          mkdir download-slides/talk
+          cp talk/C++Course.pdf download-slides/talk
           cd download-slides
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
@@ -31,4 +33,4 @@ jobs:
           else
             echo "No changes to commit"
           fi
-          git push 
+          git push
