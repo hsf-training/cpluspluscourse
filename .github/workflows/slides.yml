@@ -15,7 +15,7 @@ jobs:
         run: |
           git clone -b emptyrepo https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git emptyrepo
           git checkout -B download emptyrepotag
-          git push -set-upstream origin download
+          git push --set-upstream origin download
   produce-slides:
     needs: setup-download-repo
     runs-on: ubuntu-latest
