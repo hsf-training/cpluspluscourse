@@ -1,5 +1,9 @@
 name: Produce a stable download link for the slides
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '55 23 * * 0'
 
 jobs:
   produce-slides:
@@ -27,7 +31,7 @@ jobs:
       - name: Commit to repository
         run: |
           set -x
-          mkdir download/talk
+          mkdir -p download/talk
           cp talk/C++Course.pdf "download/talk/C++Course_${{ matrix.version }}"
           cd download
           git config --global user.email "action@github.com"
