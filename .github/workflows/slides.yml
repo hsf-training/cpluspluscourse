@@ -6,9 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: clone download-slides
+      - name: clone download
         run: |
-          git clone -b download-slides https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download-slides
+          git clone -b download https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
@@ -20,16 +20,16 @@ jobs:
       - name: Commit to repo
         run: |
           set -x
-          mkdir download-slides/talk
-          cp talk/C++Course.pdf download-slides/talk
-          cd download-slides
+          mkdir download/talk
+          cp talk/C++Course.pdf download/talk
+          cd download
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git add -f talk/C++Course.pdf
           if (git diff --quiet) || (git diff --staged --quiet)
           then
             git commit -m "Update C++Course.pdf"
-            git push origin download-slides
+            git push origin download
           else
             echo "No changes to commit"
           fi
