@@ -32,7 +32,7 @@ jobs:
         run: |
           set -x
           mkdir -p download/talk
-          cp talk/C++Course.pdf "download/talk/C++Course_${{ matrix.version }}"
+          cp talk/C++Course.pdf "download/talk/C++Course_${{ matrix.version }}.pdf"
           cd download
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
