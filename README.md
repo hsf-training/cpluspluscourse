@@ -1,6 +1,6 @@
 # C++ course
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![gh actions](https://github.com/hsf-training/cpluspluscourse/actions/workflows/workflow.yml/badge.svg)](https://github.com/hsf-training/cpluspluscourse/actions)
@@ -81,9 +81,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/chavid"><img src="https://avatars.githubusercontent.com/u/4421289?v=4?s=100" width="100px;" alt=""/><br /><sub><b>David Chamont</b></sub></a><br /><a href="#content-chavid" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/eguiraud"><img src="https://avatars.githubusercontent.com/u/10999034?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Enrico Guiraud</b></sub></a><br /><a href="#content-eguiraud" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/graeme-a-stewart"><img src="https://avatars.githubusercontent.com/u/8511620?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Graeme A Stewart</b></sub></a><br /><a href="#content-graeme-a-stewart" title="Content">🖋</a></td>
-    <td align="center"><a href="https://github.com/sponce"><img src="https://avatars.githubusercontent.com/u/731524?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sebastien Ponce</b></sub></a><br /><a href="#content-sponce" title="Content">🖋</a></td>
+    <td align="center"><a href="https://www.lieret.net/"><img src="https://avatars.githubusercontent.com/u/13602468?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kilian Lieret</b></sub></a><br /><a href="#infra-klieret" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
   </tr>
   <tr>
+    <td align="center"><a href="https://github.com/sponce"><img src="https://avatars.githubusercontent.com/u/731524?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sebastien Ponce</b></sub></a><br /><a href="#content-sponce" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/roiser"><img src="https://avatars.githubusercontent.com/u/807095?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Stefan Roiser</b></sub></a><br /><a href="#content-roiser" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/hageboeck"><img src="https://avatars.githubusercontent.com/u/16205615?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Stephan Hageboeck</b></sub></a><br /><a href="#content-hageboeck" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/bcouturi"><img src="https://avatars.githubusercontent.com/u/7208288?v=4?s=100" width="100px;" alt=""/><br /><sub><b>bcouturi</b></sub></a><br /><a href="#content-bcouturi" title="Content">🖋</a></td>
