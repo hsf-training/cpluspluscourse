@@ -73,6 +73,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "graeme-a-stewart",
+      "name": "Graeme A Stewart",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8511620?v=4",
+      "profile": "https://github.com/graeme-a-stewart",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7
