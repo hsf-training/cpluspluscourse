@@ -46,6 +46,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "roiser",
+      "name": "Stefan Roiser",
+      "avatar_url": "https://avatars.githubusercontent.com/u/807095?v=4",
+      "profile": "https://github.com/roiser",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7
