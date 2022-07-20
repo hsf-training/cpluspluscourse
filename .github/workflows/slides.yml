@@ -1,4 +1,4 @@
-name: Produce a stable download link for the slides
+name: Produce a stable download link for the slides  
 on:
   push:
   pull_request:
