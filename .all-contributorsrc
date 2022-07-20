@@ -37,6 +37,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "eguiraud",
+      "name": "Enrico Guiraud",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10999034?v=4",
+      "profile": "https://github.com/eguiraud",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7
