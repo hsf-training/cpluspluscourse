@@ -1,14 +1,18 @@
 name: Produce a stable download link for the slides
-on: [push]
+on: [push, pull_request]
 
 jobs:
   produce-slides:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [ essentials, full ]
     steps:
-      - uses: actions/checkout@v2
-      - name: clone download
-        run: |
-          git clone -b download https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download
+      - name: Setup repository
+        uses: actions/checkout@v2
+      - name: Setup essentials course
+        if: matrix.version == 'essentials'
+        run: echo '\setboolean{onlybasics}{true}' > talk/onlybasics.tex
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
@@ -17,20 +21,23 @@ jobs:
           args: -f -pdf -interaction=nonstopmode -shell-escape
           working_directory: talk
           extra_system_packages: "py-pygments"
-      - name: Commit to repo
+      - name: Clone download
+        run: |
+          git clone -b download https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download
+      - name: Commit to repository
         run: |
           set -x
           mkdir download/talk
-          cp talk/C++Course.pdf download/talk
+          cp talk/C++Course.pdf "download/talk/C++Course_${{ matrix.version }}"
           cd download
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git add -f talk/C++Course.pdf
+          git add -f "talk/C++Course_${{ matrix.version }}.pdf"
           if (git diff --quiet) || (git diff --staged --quiet)
           then
-            git commit -m "Update C++Course.pdf"
+            git commit -m "Update C++Course_${{ matrix.version }}.pdf"
             git push origin download
           else
             echo "No changes to commit"
           fi
-          git push 
+          git push
