@@ -1,4 +1,4 @@
-name: Produce a stable download link for the slides  
+name: Produce a stable download link for the slides
 on:
   push:
   pull_request:
@@ -6,7 +6,16 @@ on:
     - cron: '55 23 * * 0'
 
 jobs:
+  setup-download-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reset download branch based on emptyrepo branch
+        run: |
+          git clone -b emptyrepo https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git emtpyrepo
+          git checkout -B download emptyrepo
+          git push -set-upstream origin download
   produce-slides:
+    needs: setup-download-repo
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -44,4 +53,4 @@ jobs:
           else
             echo "No changes to commit"
           fi
-          git push 
+          git push
