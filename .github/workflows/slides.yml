@@ -9,20 +9,18 @@ jobs:
       - name: clone download-slides
         run: |
           git clone -b download-slides https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download-slides
-          pwd
-          ls -l 
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
           root_file: C++Course.tex
           latexmk_use_xelatex: true
           args: -f -pdf -interaction=nonstopmode -shell-escape
-          working_directory: talk
+          working_directory: download-slides/talk
           extra_system_packages: "py-pygments"
       - name: Commit to repo
         run: |
           set -x
-          cd download-slides/talk
+          cd download-slides
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git status
