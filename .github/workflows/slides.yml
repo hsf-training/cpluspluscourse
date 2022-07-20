@@ -9,6 +9,8 @@ jobs:
       - name: clone download-slides
         run: |
           git clone -b download-slides https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download-slides
+          pwd
+          ls -l 
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
