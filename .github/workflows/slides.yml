@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Reset download branch based on emptyrepo branch
         run: |
-          git clone -b emptyrepo https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git emtpyrepo
+          git clone -b emptyrepo https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git emptyrepo
           git checkout -B download emptyrepo
           git push -set-upstream origin download
   produce-slides:
