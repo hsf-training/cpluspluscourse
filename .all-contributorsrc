@@ -3,6 +3,7 @@
   "projectOwner": "hsf-training",
   "repoType": "github",
   "repoHost": "https://github.com",
+  "contributorsSortAlphabetically": true,
   "files": [
     "README.md"
   ],
