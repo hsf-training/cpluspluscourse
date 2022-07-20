@@ -55,6 +55,15 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "sponce",
+      "name": "Sebastien Ponce",
+      "avatar_url": "https://avatars.githubusercontent.com/u/731524?v=4",
+      "profile": "https://github.com/sponce",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7
