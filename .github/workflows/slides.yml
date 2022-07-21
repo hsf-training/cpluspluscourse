@@ -9,15 +9,13 @@ jobs:
   setup-download-repo:
     runs-on: ubuntu-latest
     steps:
-      # - name: Setup repository
-      #   uses: actions/checkout@v2
       - name: Reset download branch based on emptyrepo branch
         run: |
           git clone -b emptyrepo https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download
           cd download
           git checkout download
           git reset --hard emptyrepo
-          git push --force # https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download
+          git push --force
   produce-slides:
     needs: setup-download-repo
     runs-on: ubuntu-latest
