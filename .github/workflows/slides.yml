@@ -13,9 +13,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Reset download branch based on emptyrepo branch
         run: |
-          git clone -b emptyrepo https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git emptyrepo
-          git checkout -B download 7e24b39ec580559e4dfa6c75cbc65401cb8b317e # emptyrepotag
-          git push --set-upstream origin download
+          git clone -b download https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download
+          git reset --hard emptyrepo
+          git push --force https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download
   produce-slides:
     needs: setup-download-repo
     runs-on: ubuntu-latest
