@@ -16,6 +16,8 @@ jobs:
           git clone -b download https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download
           cd download
           # git fetch https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git
+          git checkout emptyrepo
+          git checkout download
           git branch -av
           git reset --hard emptyrepo
           git push --force https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download
