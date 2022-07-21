@@ -14,10 +14,8 @@ jobs:
       - name: Reset download branch based on emptyrepo branch
         run: |
           git clone -b download https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download
-          pwd
-          ls -l
           cd download
-          git fetch https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git
+          # git fetch https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git
           git branch -av
           git reset --hard emptyrepo
           git push --force https://x-access-token:${{secrets.github_token}}@github.com/${{github.repository}}.git download
