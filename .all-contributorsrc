@@ -1,0 +1,115 @@
+{
+  "projectName": "cpluspluscourse",
+  "projectOwner": "hsf-training",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "contributorsSortAlphabetically": true,
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "gitmoji",
+  "contributors": [
+    {
+      "login": "chavid",
+      "name": "David Chamont",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4421289?v=4",
+      "profile": "https://github.com/chavid",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "hageboeck",
+      "name": "Stephan Hageboeck",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16205615?v=4",
+      "profile": "https://github.com/hageboeck",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "bernhardmgruber",
+      "name": "Bernhard Manfred Gruber",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1224051?v=4",
+      "profile": "https://github.com/bernhardmgruber",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "eguiraud",
+      "name": "Enrico Guiraud",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10999034?v=4",
+      "profile": "https://github.com/eguiraud",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "roiser",
+      "name": "Stefan Roiser",
+      "avatar_url": "https://avatars.githubusercontent.com/u/807095?v=4",
+      "profile": "https://github.com/roiser",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "sponce",
+      "name": "Sebastien Ponce",
+      "avatar_url": "https://avatars.githubusercontent.com/u/731524?v=4",
+      "profile": "https://github.com/sponce",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "theanalyst",
+      "name": "Abhishek L",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1433152?v=4",
+      "profile": "http://includeio.stream/",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "graeme-a-stewart",
+      "name": "Graeme A Stewart",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8511620?v=4",
+      "profile": "https://github.com/graeme-a-stewart",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "krasznaa",
+      "name": "Attila Krasznahorkay",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30694331?v=4",
+      "profile": "https://github.com/krasznaa",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "bcouturi",
+      "name": "bcouturi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7208288?v=4",
+      "profile": "https://github.com/bcouturi",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "klieret",
+      "name": "Kilian Lieret",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13602468?v=4",
+      "profile": "https://www.lieret.net/",
+      "contributions": [
+        "infra"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}

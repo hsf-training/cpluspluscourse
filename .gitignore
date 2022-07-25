@@ -55,3 +55,8 @@ CMakeCache.txt
 CMakeFiles
 cmake_install.cmake
 callgrind.out.*
+
+# just for the allcontributors cli installation...
+package-lock.json
+package.json
+node_modules/**
