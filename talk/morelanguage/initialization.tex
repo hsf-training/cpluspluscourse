@@ -1,0 +1,199 @@
+\subsection[Init]{Initialization}
+
+\begin{frame}[fragile]
+  \frametitle{Initialization}
+  \begin{block}{Initialization}
+    \begin{itemize}
+      \item \href{https://imgur.com/3wlxtI0}{Obligatory meme}
+      \pause
+      \item And the following were even missing:
+      \begin{itemize}
+        \item ordered, unordered, and partially ordered initialization
+        \item direct-non-list-initialization
+        \item non-vacuous initialization
+        \item See \href{https://twitter.com/timur_audio/status/1004017362381795329}{this tweet}
+      \end{itemize}
+      \item Most of this is for language lawyers
+      \item In the following we will discuss some practical implications
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Initialization}
+  \begin{block}{Initializing scalars}
+    \begin{cppcode}
+      int i(42);    // direct initialization
+      int i{42};    // direct list initialization (C++11)
+      int i = 42;   // copy initialization
+      int i = {42}; // copy list initialization (C++11)
+    \end{cppcode}
+    \begin{itemize}
+      \item All of the above have the same effect: \mintinline{cpp}{i == 42}
+    \end{itemize}
+  \end{block}
+  \begin{block}{Narrowing conversions}
+    \begin{cppcode}
+      int i(42.3);    // i == 42
+      int i{42.3};    // compilation error
+      int i = 42.3;   // i == 42
+      int i = {42.3}; // compilation error
+    \end{cppcode}
+    \begin{itemize}
+      \item Braced initialization prevents narrowing conversions
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile,shrink=10]
+  \frametitle{Initialization}
+  \begin{block}{Initializing class types with constructors}
+    \begin{cppcode}
+      struct C {
+        C(int i);
+        C(int i, int j);
+      };
+
+      C c(42);    // calls C(42)
+      C c{42};    // same
+      C c = 42;   // calls C(42) in C++17, before C(C(42))
+      C c = {42}; // same
+
+      C c(1, 2);    // calls C(1, 2)
+      C c{1, 2};    // calls C(1, 2)
+      C c = (1, 2); // calls C(2), comma operator
+      C c = {1, 2}; // calls C(1, 2) in C++17, before C(C(1, 2))
+
+      C c(1.1, 2.2); // calls C(1, 2)
+      C c{1.1, 2.2}; // compilation error
+    \end{cppcode}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile,shrink=10]
+  \frametitle{Initialization}
+  \begin{block}{std::initializer\_list}
+    \begin{cppcode}
+      struct C {
+        C(int i, int j);
+        C(std::initializer_list<int> l);
+      };
+
+      C c(1, 2);    // calls C(1, 2)
+      C c{1, 2};    // calls C(std::initializer_list<int>{1, 2})
+      C c = (1, 2); // calls C(2), comma operator, error
+      C c = {1, 2}; // calls C(std::initializer_list<int>{1, 2})
+    \end{cppcode}
+    \begin{itemize}
+      \item A constructor with a \mintinline{cpp}{std::initializer_list} parameter takes precedence over other overloads.
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{Beware}
+    \begin{cppcode}
+      std::vector<int> v1(4, 5); // {5, 5, 5, 5}
+      std::vector<int> v2{4, 5}; // {4, 5}
+    \end{cppcode}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Initialization}
+  \begin{block}{Type deduction}
+    \begin{cppcode}
+      auto i(42);    // int
+      auto i{42};    // C++11: std::initializer_list<int>
+                     // since C++14: int
+      auto i = 42;   // int
+      auto i = {42}; // std::initializer_list<int>
+    \end{cppcode}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Initialization}
+  \begin{block}{Default initialization}
+    \begin{cppcode*}{linenos=false}
+      T t;
+    \end{cppcode*}
+    \begin{itemize}
+      \item If \mintinline{cpp}{T} has a default constructor (including compiler generated), calls it
+      \item Otherwise \mintinline{cpp}{t} is left uninitialized (undefined value)
+      \item If \mintinline{cpp}{T} is an array, default initializes all members
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Initialization}
+  \begin{block}{Value initialization}
+    \begin{cppcode}
+      T t{};    // value initialization
+      T t = {}; // same
+      f(T());   // passes value-initialized temporary
+      f(T{});   // same
+      T t();    // function declaration
+    \end{cppcode}
+    \begin{itemize}
+      \item Basically zero-initializes \mintinline{cpp}{t} (or the temporary), unless \mintinline{cpp}{T} has a user defined constructor
+      \item Details on \href{https://en.cppreference.com/w/cpp/language/value_initialization}{cppreference}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile,shrink=10]
+  \frametitlecpp[11]{Initialization}
+  \begin{block}{Aggregate initialization}
+    \begin{cppcode}
+      struct S { int i; double d; };
+
+      S s{1, 2.3};             // s.i == 1, s.d == 2.3
+      S s = {1, 2.3};          // same
+      S s{.i = 1, .d = 2.3}    // same, designated init. (C++20)
+      S s = {.i = 1, .d = 2.3} // same
+      S s{1};        // s.i == 1, s.d == 0.0
+      S s = {1};     // same
+      S s{.i = 1}    // same (C++20)
+      S s = {.i = 1} // same (C++20)
+      S s{}; // value init, s.i == 0, s.d == 0.0
+      S s;   // default init, undefined values
+    \end{cppcode}
+    \begin{itemize}
+      \item An aggregate is a class with no constructors, only public base classes (\cpp17) and members, no virtual functions, no default member initializers (until \cpp14)
+      \item Details on \href{https://en.cppreference.com/w/cpp/language/aggregate_initialization}{cppreference}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Initialization}
+  \begin{exampleblock}{Best practices}
+    \begin{itemize}
+      \item In generic code, for a generic type \mintinline{cpp}{T}:
+      \begin{itemize}
+        \item \mintinline{cpp}{T t;} performs the minimally necessary initialization
+        \item \mintinline{cpp}{T t{};} performs full and deterministic initialization
+      \end{itemize}
+      \item Prefer \mintinline{cpp}{T t{};} over \mintinline{cpp}{T t; memset(&t, 0, sizeof(t));}
+      \item Prefer braces over parentheses to avoid accidental narrowing conversions
+      \begin{itemize}
+        \item Unless \mintinline{cpp}{T} has a \mintinline{cpp}{std::initializer_list} constructor that you do not want to call!
+        \item Be wary of \mintinline{cpp}{std::vector}!
+      \end{itemize}
+      \item The STL value initializes when creating new user objects
+      \begin{itemize}
+        \item E.g. \mintinline{cpp}{vec.resize(vec.size() + 10);}
+      \end{itemize}
+      \item Aggregates are very flexible. If your class does not need special initialization, make it an aggregate
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Initialization}
+  \begin{block}{Further resources}
+    \begin{itemize}
+      \item \href{https://www.youtube.com/watch?v=7DTlWPgX6zs}{CppCon 2018: Nicolai Josuttis “The Nightmare of Initialization in C++”}
+      \item \href{https://www.youtube.com/watch?v=ZfP4VAK21zc}{Initialization in modern C++ - Timur Doumler - Meeting C++ 2018}
+    \end{itemize}
+  \end{block}
+\end{frame}

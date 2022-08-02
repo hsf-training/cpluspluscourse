@@ -259,32 +259,20 @@
 \begin{frame}[fragile]
   \frametitlecpp[11]{Calling constructors}
   \begin{block}{After object declaration, arguments within \{\}}
-    \begin{multicols}{2}
-      \begin{cppcode*}{gobble=4}
-        struct A {
-          int a;
-          float b;
-          A();
-          A(int);
-          A(int, int);
-        };
-      \end{cppcode*}
-      \columnbreak
-      \begin{cppcode*}{gobble=4,firstnumber=8}
-        struct B {
-          int a;
-          float b;
-          // no constructor
-        };
-      \end{cppcode*}
-    \end{multicols}
-    \begin{cppcode*}{gobble=2, firstnumber=13}
-      A a{1,2};       // A::A(int, int)
-      A a{1};         // A::A(int)
-      A a{};          // A::A()
-      A a;            // A::A()
-      A a = {1,2};    // A::A(int, int)
-      B b = {1, 2.3}; // aggregate initialization
+    \begin{cppcode*}{gobble=2}
+      struct A {
+        int a;
+        float b;
+        A();
+        A(int);
+        A(int, int);
+      };
+
+      A a{1,2};    // A::A(int, int)
+      A a{1};      // A::A(int)
+      A a{};       // A::A()
+      A a;         // A::A()
+      A a = {1,2}; // A::A(int, int)
     \end{cppcode*}
   \end{block}
 \end{frame}
@@ -292,32 +280,21 @@
 \begin{frame}[fragile]
   \frametitlecpp[98]{Calling constructors the old way}
   \begin{block}{Arguments are given within (), aka \cpp98 nightmare}
-    \begin{multicols}{2}
-      \begin{cppcode*}{gobble=4}
-        struct A {
-          int a;
-          float b;
-          A();
-          A(int);
-          A(int, int);
-        };
-      \end{cppcode*}
-      \columnbreak
-      \begin{cppcode*}{gobble=4,firstnumber=8}
-        struct B {
-          int a;
-          float b;
-          // no constructor
-        };
-      \end{cppcode*}
-    \end{multicols}
-    \begin{cppcode*}{gobble=2, firstnumber=13}
-      A a(1,2);       // A::A(int, int)
-      A a(1);         // A::A(int)
-      A a();          // declaration of a function !
-      A a;            // A::A()
-      A a = {1,2};    // not allowed
-      B b = {1, 2.3}; // OK
+    \begin{cppcode*}{gobble=2}
+      struct A {
+        int a;
+        float b;
+        A();
+        A(int);
+        A(int, int);
+      };
+
+      A a(1,2);    // A::A(int, int)
+      A a(1);      // A::A(int)
+      A a();       // declaration of a function !
+      A a;         // A::A()
+      A a = (1,2); // A::A(int), comma operator !
+      A a = {1,2}; // not allowed
     \end{cppcode*}
   \end{block}
 \end{frame}
