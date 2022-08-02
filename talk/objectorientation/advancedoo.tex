@@ -86,9 +86,9 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Method overriding}
-  \begin{block}{the problem}
+  \begin{block}{the idea}
     \begin{itemize}
-    \item a given method of the parent can be overridden in a child
+    \item a method of the parent class can be replaced in a derived class
     \item but which one is called?
     \end{itemize}
   \end{block}
@@ -121,8 +121,9 @@
   \begin{block}{the concept}
     \begin{itemize}
     \item methods can be declared \mintinline{cpp}{virtual}
-    \item for these, the most derived object is always considered
-    \item for others, the type of the variable decides
+    \item for these, the most derived object's implementation is used.
+          (i.e. the dynamic type behind a pointer/reference)
+    \item for non-virtual methods, the static type of the variable decides
     \end{itemize}
   \end{block}
   \begin{overprint}
