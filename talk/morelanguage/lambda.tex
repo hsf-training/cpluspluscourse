@@ -193,6 +193,33 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[11]{Capture list - this}
+  \begin{block}{}
+    Inside a (non-static) member function, we can capture \mintinline{cpp}{this}.
+  \end{block}
+  \begin{block}{}
+    \begin{cppcode*}{gobble=2}
+      [this](...) { use(*this); };
+      [&](...) { use(*this); };
+      [&, this](...) { use(*this); };
+      [=](...) { use(*this); };       // deprecated in C++20
+      [=, this](...) { use(*this); }; // allowed in C++20
+    \end{cppcode*}
+    Since the captured \mintinline{cpp}{this} is a pointer, \mintinline{cpp}{*this} refers to the object by reference.
+  \end{block}
+  \pause
+  \begin{block}{}
+    \begin{cppcode*}{gobble=2}
+      [*this](...) { use(*this); };    // C++17
+      [&, *this](...) { use(*this); }; // C++17
+      [=, *this](...) { use(*this); }; // C++17
+    \end{cppcode*}
+    The object at \mintinline{cpp}{*this} is captured by value (the lambda gets a copy).
+  \end{block}
+  Details in  \href{https://www.nextptr.com/tutorial/ta1430524603/capture-this-in-lambda-expression-timeline-of-change}{this blog post}.
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[11]{Anatomy of a lambda}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
