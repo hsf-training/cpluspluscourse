@@ -345,12 +345,12 @@
   \end{block}
   \begin{cppcode*}{gobble=0}
     struct BaseClass {
-      int foo(std::string);
-      int foo(int);
+      virtual int foo(std::string);
+      virtual int foo(int);
     };
     struct DerivedClass : BaseClass {
       using BaseClass::foo;
-      int foo(std::string);
+      int foo(std::string) override;
     };
     DerivedClass dc;
     dc.foo(4);      // error if no using
