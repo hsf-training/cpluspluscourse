@@ -1,0 +1,87 @@
+\subsection[doxygen]{Doxygen}
+
+\begin{frame}[fragile]
+  \frametitle{Doxygen}
+  \begin{block}{Doxygen}
+    \begin{itemize}
+      \item Generates documentation from source code comments
+      \item Output formats: HTML, LaTeX, XML, ...
+      \begin{itemize}
+        \item May be input for further generators, e.g.\ Sphinx
+      \end{itemize}
+      \item Doxygen uses a config file, usually called Doxyfile
+      \item Run \mintinline{bash}{doxygen -g} to generate an initial Doxyfile
+      \item Edit Doxyfile (e.g.\ output format, source code location, etc.)
+      \item Run \mintinline{bash}{doxygen} to (re-)generate documentation
+      \item View e.g.\ HTML documentation using a standard web browser
+      \item More on the \href{https://doxygen.nl/manual/starting.html}{doxygen website}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Doxygen}
+  \begin{block}{Comment blocks}
+    \begin{columns}
+      \begin{column}{.35\textwidth}
+        \begin{cppcode*}{gobble=6}
+          /**
+           * text/directives ...
+           */
+          some_cpp_entity
+
+          /*!
+           * text/directives ...
+           */
+          some_cpp_entity
+        \end{cppcode*}
+      \end{column}
+      \begin{column}{.35\textwidth}
+        \begin{cppcode*}{gobble=6,firstnumber=10}
+          ///
+          /// text/directives ...
+          ///
+          some_cpp_entity
+
+          //!
+          //! text/directives ...
+          //!
+          some_cpp_entity
+        \end{cppcode*}
+      \end{column}
+    \end{columns}
+    \begin{itemize}
+      \item More details available \href{https://www.doxygen.nl/manual/docblocks.html}{here}
+    \end{itemize}
+  \end{block}
+  \begin{block}{Comment blocks for members}
+    \begin{cppcode*}{linenos=false}
+      int a_class_member; ///< trailing documentation
+    \end{cppcode*}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Doxygen}
+  \begin{block}{Comment directives}
+    \begin{cppcode*}{}
+      /**
+       * Long description here. May include HTML etc.
+       *
+       * \brief Checks whether i is odd
+       * \tparam Integral The integral type of the input
+       * \param i Input value
+       * \return True if i is odd, otherwise false
+       * \throw std::out_of_range if i is larger than 100
+       * \see isEven
+       */
+      template <typename Integral>
+      bool isOdd(Integral i);
+    \end{cppcode*}
+    \begin{itemize}
+      \item All directives can also start with @ instead of \textbackslash
+      \item A list of all commands can be found \href{https://doxygen.nl/manual/commands.html}{here}
+    \end{itemize}
+  \end{block}
+\end{frame}
