@@ -1,32 +1,31 @@
 \subsection[cstexpr]{Constant Expressions}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Generalized Constant Expressions}
+  \frametitlecpp[14]{Generalized Constant Expressions}
   \begin{block}{Reason of being}
     \begin{itemize}
-    \item compute constant expressions at compile time
-    \item even if non trivial
+    \item use functions to compute constant expressions at compile time
     \end{itemize}
   \end{block}
   \pause
   \begin{exampleblock}{Example}
     \begin{cppcode*}{}
       constexpr int f(int x) {
-        return x > 1 ? x * f(x - 1) : 1;
-      }
-      constexpr int a = f(5); // computed at compile time
-    \end{cppcode*}
-  \end{exampleblock}
-  \pause
-  \begin{exampleblock}{Example with \cpp14}
-    \begin{cppcode*}{}
-      constexpr int f(int x) {
         if (x > 1) return x * f(x - 1);
         return 1;
       }
       constexpr int a = f(5); // computed at compile time
+      int b = f(n); // computed at runtime
     \end{cppcode*}
   \end{exampleblock}
+  \pause
+  \begin{block}{\cpp11 allowed only a single return statement}
+    \begin{cppcode*}{}
+      constexpr int f(int x) {
+        return x > 1 ? x * f(x - 1) : 1;
+      }
+    \end{cppcode*}
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -34,10 +33,9 @@
   \begin{block}{static\_assert declaration}
     \begin{itemize}
     \item Performs compile time assertions; meaning a failed assertion stops compilation
-    \item The expression has to be a constexpr boolean expression
+    \item The expression has to be a constant boolean expression
     \item Purely evaluated at compile time, no effect at runtime
-    \item Often used in template programming to make assertion on types, can be
-      used to validate boolean compile time expressions
+    \item Often used in template programming to make assertions on types
     \end{itemize}
   \end{block}
   \pause
@@ -47,29 +45,65 @@
         return x > 1 ? x * f(x - 1) : 1;
       }
       static_assert(f(5)==120,"Expected f(5) to be 120!");
+      static_assert(f(5)==120); // C++17
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[14]{Generalized Constant Expressions(2)}
-   \begin{alertblock}{Few limitations in C++14 (more in C++11)}
-    \begin{itemize}
-    \item function's body cannot contain try-catch, uninitialized or static variables - details on \href{https://en.cppreference.com/w/cpp/language/constexpr}{cppreference}
-    \item arguments should be constexpr or literals in order to benefit from compile time computation
-    \end{itemize}
-  \end{alertblock}
   \begin{block}{Notes}
     \begin{itemize}
-    \item classes can have constexpr member functions
-    \item objects can be constexpr
+    \item A \mintinline{cpp}{constexpr} function \emph{may} be executed at compile time.
+    \begin{itemize}
+      \item Arguments must be \mintinline{cpp}{constexpr} or literals in order to benefit from compile time computation
+      \item Function body must be visible to the compiler
+    \end{itemize}
+    \item A \mintinline{cpp}{constexpr} function can also be used at runtime
+    \item A \mintinline{cpp}{constexpr} variable must be initialized at compile time
+    \item Classes can have \mintinline{cpp}{constexpr} member functions
+    \item Objects used in constant expressions must be of \emph{literal type}:
       \begin{itemize}
-      \item if the constructor of their class is
+      \item an integral, floating-point, enum, reference, pointer type
+      \item a union (of at least one) or array of literal types
+      \item a class type with a \mintinline{cpp}{constexpr} constructor and
+            the destructor is trivial (or \mintinline{cpp}{constexpr} since C++20)
       \end{itemize}
-    \item a constexpr function can also be used normally
-    \item but a constexpr variable has to be evaluated at compile time
+    \item A constexpr function is implicitly \mintinline{cpp}{inline} (header files)
     \end{itemize}
   \end{block}
+\end{frame}
+
+\begin{frame}[fragile,shrink=15]
+  \frametitlecpp[11]{Limitations of constexpr functions}
+   \begin{alertblock}{C++11}
+     \begin{itemize}
+     \item Non-virtual function with a single return statement
+     \end{itemize}
+   \end{alertblock}
+   \begin{alertblock}{C++14/C++17}
+    \begin{itemize}
+    \item no try-catch, goto or asm statements
+    \item no uninitialized/static/thread\_local/non-literal-type variables
+    \end{itemize}
+  \end{alertblock}
+   \begin{alertblock}{C++20}
+    \begin{itemize}
+    \item no coroutines or static/thread\_local/non-literal-type variables
+    \item throw and asm statements allowed, but may not be executed
+    \item transient memory allocation
+          (memory allocated at compile-time must be freed again at compile-time)
+    \item virtual functions and uninitialized variables allowed
+    \end{itemize}
+  \end{alertblock}
+  \begin{alertblock}{C++23}
+    \begin{itemize}
+    \item no coroutines, or execution of throw and asm statements
+    \item transient memory allocation
+    \item everything else allowed
+    \end{itemize}
+  \end{alertblock}
+  Further details on \href{https://en.cppreference.com/w/cpp/language/constexpr}{cppreference}
 \end{frame}
 
 \begin{frame}[fragile]
