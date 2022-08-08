@@ -14,18 +14,12 @@
         if (x > 1) return x * f(x - 1);
         return 1;
       }
-      constexpr int a = f(5); // computed at compile time
-      int b = f(n); // computed at runtime
+      constexpr int a = f(5); // computed at compile-time
+      int b = f(5); // maybe computed at compile-time
+      int n = ...;  // runtime value
+      int c = f(n); // computed at runtime
     \end{cppcode*}
   \end{exampleblock}
-  \pause
-  \begin{block}{\cpp11 allowed only a single return statement}
-    \begin{cppcode*}{}
-      constexpr int f(int x) {
-        return x > 1 ? x * f(x - 1) : 1;
-      }
-    \end{cppcode*}
-  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -147,4 +141,28 @@
     constexpr float km_i = km.get('i');
     static_assert(km_y == 1093, "expected km == 1093 yards!");
   \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Immediate functions}
+  \begin{block}{Motivation}
+    \begin{itemize}
+    \item Force a function to be executed at compile-time
+    \item Runtime evaluation is forbidden
+    \item Same restrictions as \mintinline{cpp}{constexpr} functions
+    \item New keyword: \mintinline{cpp}{consteval}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode*}{}
+      consteval int f(int x) {
+        if (x > 1) return x * f(x - 1);
+        return 1;
+      }
+      constexpr int a = f(5); // computed at compile-time
+      int b = f(5); // computed at compile-time
+      int n = ...;  // runtime value
+      int c = f(n); // compilation error
+    \end{cppcode*}
+  \end{exampleblock}
 \end{frame}
