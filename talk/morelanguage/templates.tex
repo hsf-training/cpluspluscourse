@@ -168,6 +168,78 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[17]{Class Template Argument Deduction (CTAD)}
+  \begin{block}{CTAD}
+    \begin{itemize}
+    \item Deduce the template arguments for a class template
+    \item Based on construction arguments
+    \item Only when no template arguments provided
+    \item Since \cpp20: CTAD for aggregates (no constructor needed)
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    template<typename A, typename B, typename C = double>
+    struct Triple {
+      Triple(A a, B b, C c) : a(a), b(b), c(c) {} // C++17
+      A a; B b; C c;
+    };
+
+    Triple t{42, true, 3.14}; // Triple<int, bool, double>
+    Triple<int> t{42, true, 3.14}; // compilation error
+    Triple<int, bool> t{42, true, 3.14}; // not CTAD
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Class Template Argument Deduction (CTAD)}
+  \begin{block}{Deduction guides}
+    \begin{itemize}
+    \item Describe how constructor argument types are mapped to class template arguments
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    template<typename A, typename B>
+    struct Pair {
+     Pair(A a, B b) : a(a), b(b) {}
+     A a; B b;
+    };
+  \end{cppcode}
+  \begin{overprint}[\columnwidth]
+    \onslide<1>
+    \begin{cppcode*}{gobble=2,firstnumber=6}
+
+
+
+      Pair p{42, "hello"}; // Pair<int, const char*>
+    \end{cppcode*}
+    \onslide<2>
+    \begin{cppcode*}{gobble=2,firstnumber=6}
+      template<typename A>
+      Pair(A, const char*) -> Pair<A, std::string>;
+
+      Pair p{42, "hello"}; // Pair<int, std::string>
+    \end{cppcode*}
+  \end{overprint}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Class Template Argument Deduction (CTAD)}
+  \begin{block}{Standard library examples}
+    \begin{cppcode*}{}
+      std::pair p{1.2, true}; // std::pair<double, bool>
+      std::tuple t{1.2, true, 32};
+                        // std::tuple<double, bool, int>
+      std::vector v{1, 2, 3}; // std::vector<int>
+      std::list l{v.begin(), v.end()}; // std::list<int>
+      std::array a{1, 2, 3}; // std::array<int, 3>
+
+      std::mutex m;
+      std::lock_guard l(m); // std::lock_guard<std::mutex>
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[98]{The full power of templates}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
