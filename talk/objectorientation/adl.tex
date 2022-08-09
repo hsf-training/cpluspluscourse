@@ -144,3 +144,27 @@
     \end{columns}
   \end{block}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{ADL and Hidden Friends}
+  \begin{block}{Hidden friend declarations participate in ADL}
+    \begin{itemize}
+      \item Friend functions defined in class scope are ``hidden friends''
+      \item They are \emph{not} member functions (no access to \mintinline{cpp}{this})
+      \item They participate in ADL, e.g.\ \mintinline{cpp}{std::cout << complex}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{\texttt{operator<<} as hidden friend}
+    \begin{cppcode*}{gobble=2}
+      class Complex {
+        float m_real, m_imag; public: Complex(float, float);
+        friend
+        std::ostream & operator<<(std::ostream & os,
+                                  Complex const & c) {
+          return os << c.m_real << " + " << c.m_imag << "i";
+        }
+      };
+      std::cout << Complex{2.f, 3.f}; // Prints 2 + 3i
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
