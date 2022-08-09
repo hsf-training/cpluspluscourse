@@ -1,0 +1,643 @@
+\subsection[modules]{Modules}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Modules}
+  \begin{block}{Motivation}
+    \begin{itemize}
+      \item Modules allow for sharing declarations and definitions across translation units
+      \item Header files do the same, but modules have benefits:
+      \begin{itemize}
+        \item Better isolation. No cross-talk between multiple pieces of included code, and also not between included code and your code.
+        \item Better control over public interface of your library. Avoid leaking library dependencies into user code.
+        \item Faster compilation
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{Textual includes}
+    \begin{cppcode}
+      #include "math.h"
+    \end{cppcode}
+  \end{alertblock}
+  \begin{exampleblock}{Module importation}
+    \begin{cppcode}
+      import math;
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Writing modules}
+  \begin{exampleblock}{ratio.cpp}
+    \begin{cppcode*}{gobble=2}
+      export module math;
+      import <string>;
+      namespace utils { // ns. and module names orthogonal
+        export struct Ratio { float num, denom; };
+        export std::string toString(const Ratio& r) { ... }
+        void normalize(Ratio& r) { ... } // not exported
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{exampleblock}{main.cpp}
+    \begin{cppcode*}{gobble=2}
+      import <iostream>;
+      import math;
+      int main() {
+        auto r = utils::Ratio{1, 3};
+        std::cout << utils::toString(r);
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Writing modules}
+  \begin{block}{Exporting declarations}
+    \begin{itemize}
+      \item By default, everything inside a module is internal
+      \item Declarations become visible when declared with \mintinline{cpp}{export} in the primary module interface
+      \item You can only export entities at namespace scope (including the global scope)
+      \item You cannot export entities with internal linkage (declared static or inside anonymous namespace)
+      \item You cannot export aliases to non-exported types
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Writing modules}
+  \begin{exampleblock}{What to export}
+    \begin{cppcode*}{gobble=2}
+      export module math;
+
+      export void f();           // function
+      export float pi = 3.14f;   // variable
+      export namespace utils {   // namespace
+        enum Status { Yes, No }; // enum (exported)
+      }
+      namespace utils {
+        export struct Ratio { ... }; // class
+        export using R = Ratio;      // alias
+        float e = 2.71f;             // (not exported)
+      }
+      export { // content of export block
+        void h();
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Writing modules}
+  \begin{alertblock}{What not to export}
+    \begin{cppcode*}{gobble=2}
+      export module math;
+
+      namespace {
+        export void f();              // error
+        export float pi = 3.14f;      // error
+        export struct Ratio { ... };  // error
+      }
+
+      export static void f();         // error
+      export static float pi = 3.14f; // error
+
+      class C { ... };
+      export using D = C;             // error
+    \end{cppcode*}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Visibility and reachability}
+  \begin{exampleblock}{ratio.cpp}
+    \begin{cppcode*}{gobble=2}
+      export module math;
+      struct Ratio { float num, denom; };
+      export Ratio golden() { ... } // golden is visible
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{exampleblock}{main.cpp}
+    \begin{cppcode*}{gobble=2}
+      import math;
+      import <iostream>;
+      int main() {
+        Ratio r = golden(); // error (Ratio not visible)
+        auto r = golden();  // ok: (Ratio is reachable)
+        std::cout << r.num; // ok: members of reachable
+                            // class types become visible
+        using R = decltype(r);
+        R r2{1.f, 3.f};     // ok
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Module structure}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{gobble=2}
+      module;
+      #include <cassert>       // global module fragment
+      // ...                   //   only preprocessor
+                               //   statements allowed
+
+      export module math;      // exported module name
+
+      import <string>;         // module preamble
+      // ...                   //   only imports allowed
+
+      export struct S { ... }; // module purview
+      export S f() { ... }     //  starts at first
+      std::string h() { ... }  //  non-import
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Module structure}
+  \begin{alertblock}{Pitfall}
+    \begin{cppcode*}{gobble=2}
+      export module math;
+      #include <header.h>
+      import <string>;
+      // ...
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{block}{}
+    \begin{itemize}
+    \item Headers included after \mintinline{cpp}{export module} add to the module's preamble and purview
+    \item This is usually not what you want
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Put includes into global module fragment}
+    \begin{cppcode*}{gobble=2}
+      module;
+      #include <vector>
+      export module math;
+      import <string>;
+      // ...
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile,shrink=5]
+  \frametitlecpp[20]{Module structure}
+  \begin{block}{}
+    Like with header files, we can split interface and implementation:
+  \end{block}
+  \begin{exampleblock}{Interface}
+    \begin{cppcode*}{gobble=2}
+      export module math;
+
+      export struct S { ... };
+      export S f();
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{exampleblock}{Implementation}
+    \begin{cppcode*}{gobble=2}
+      module;
+      #include <cassert>
+      module math;
+      import <string>;
+
+      S f() { ... }
+      std::string b() { ... }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile,shrink=5]
+  \frametitlecpp[20]{Module partitions}
+  \begin{block}{}
+    We can split a module's interface into multiple files:
+  \end{block}
+  \vspace{-5mm}
+  \begin{columns}[t]
+    \begin{column}{.4\textwidth}
+      \begin{exampleblock}{Primary module interface}
+        \begin{cppcode*}{gobble=6}
+          export module math;
+          export import :structs;
+
+          export S f();
+        \end{cppcode*}
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{.5\textwidth}
+      \begin{exampleblock}{Module interface partition}
+        \begin{cppcode*}{gobble=6}
+
+          export module math:structs;
+
+          export struct S { ... };
+        \end{cppcode*}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+  \begin{exampleblock}{Implementation}
+    \begin{cppcode*}{gobble=2}
+      module math;
+      import <string>;
+
+      S f() { ... }
+      std::string b() { ... }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile,shrink=5]
+  \frametitlecpp[20]{Module implementation units}
+  \begin{block}{}
+    We can split a module's implementation into multiple files:
+  \end{block}
+  \begin{exampleblock}{Interface}
+    \begin{cppcode*}{gobble=2}
+      export module math;
+      import :foo; // no export
+      import :bar; // no export
+      import <string>;
+
+      export struct S { ... };
+      export S f();
+      std::string b();
+    \end{cppcode*}
+  \end{exampleblock}
+  \vspace{-5mm}
+  \begin{columns}[t]
+    \begin{column}{.45\textwidth}
+      \begin{exampleblock}{Implementation unit foo}
+        \begin{cppcode*}{gobble=6}
+          module math:foo;
+
+          S f() { ... }
+        \end{cppcode*}
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{.45\textwidth}
+      \begin{exampleblock}{Implementation unit bar}
+        \begin{cppcode*}{gobble=6}
+          module math:bar;
+
+          std::string b() { ... }
+        \end{cppcode*}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile,shrink=5]
+  \frametitlecpp[20]{Submodules and re-exporting}
+  \begin{block}{}
+    Modules can (re-)export other modules:
+  \end{block}
+  \vspace{-5mm}
+  \begin{columns}[t]
+    \begin{column}{.45\textwidth}
+      \begin{exampleblock}{Module base}
+        \begin{cppcode*}{gobble=6}
+          export module base;
+
+          export struct S { ... };
+        \end{cppcode*}
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{.45\textwidth}
+      \begin{exampleblock}{Module bar}
+        \begin{cppcode*}{gobble=6}
+          export module bar;
+          import <string>;
+
+          export std::string b()
+            { ... }
+        \end{cppcode*}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+  \begin{columns}[t]
+    \begin{column}{.45\textwidth}
+      \begin{exampleblock}{Module foo}
+        \begin{cppcode*}{gobble=6}
+          export module foo;
+          import export module base;
+          import bar;
+
+          export S f() { ... }
+        \end{cppcode*}
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{.45\textwidth}
+      \begin{exampleblock}{Module math}
+        \begin{cppcode*}{gobble=6}
+          export module math;
+          export import foo;
+        \end{cppcode*}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[23]{Standard library modules}
+  % see: Minimal module support for the standard library http://wg21.link/P2412
+  \begin{block}{Standard library modules}
+    \begin{itemize}
+      \item Use \mintinline{cpp}|import std;| for the entire C++ standard library. Basically everything in namespace \mintinline{cpp}|std|.
+      \begin{itemize}
+        \item E.g.\ \mintinline{cpp}{memcpy(a, b, n);}, \mintinline{cpp}{sqrt(val);}, \mintinline{cpp}{uint32_t i;} will not compile. You need to prefix \mintinline{cpp}{std::}.
+      \end{itemize}
+      \item Use \mintinline{cpp}|import std.compat;| for the entire C and C++ standard library
+      \item No macros are exported. For these, you still need to include the corresponding headers.
+      \begin{cppcode*}{gobble=4}
+        import std;        // everything C++
+        #include <cassert> // for assert()
+        #include <climits> // for e.g. CHAR_BIT
+      \end{cppcode*}
+      \item Definition of further, smaller modules of the standard library is in progress (e.g.\ fundamentals, containers, networking, etc.)
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Header units}
+    \begin{block}{Purpose}
+      \begin{itemize}
+      \item For easier transition from header-based projects to modules
+      \item Allows to import any header file as if it was a module
+      \item Can be mixed with regular header inclusion
+      \end{itemize}
+    \end{block}
+    \begin{cppcode}
+      #include <set>
+      import <vector>;
+
+      #include "header.hpp"
+      import "otherheader.hpp";
+    \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Header units}
+    \begin{block}{Effect}
+      \begin{itemize}
+      \item All declarations in the imported header will be exported
+      \item An imported header is not affected by the preprocessor state.
+            Thus, you cannot ``configure'' the header by defining a macro before importing.
+            This allows the header to be precompiled.
+      \item An imported header may still provide preprocessor macros
+      \end{itemize}
+    \end{block}
+    \begin{cppcode}
+      #define MY_MACRO 1
+      #include "header.hpp" // may be affected by MY_MACRO
+      import "otherheader.hpp"; // ignores MY_MACRO
+    \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Automatic include to import translation}
+    \begin{block}{Importable headers}
+      \begin{itemize}
+      \item A header file which can successfully be either included or imported is called ``importable''
+      \begin{itemize}
+        \item I.e.\ the header does not require setup of preprocessor state before inclusion
+      \end{itemize}
+      \item All \cpp20 headers are importable
+      \item C wrapper headers (\mintinline{cpp}{<c*>}) are not
+      \end{itemize}
+    \end{block}
+    \begin{block}{Include translation}
+      \begin{itemize}
+        \item Allows the compiler to automatically turn includes into imports
+        \item Controlled via compiler flags and the build system
+        \item Basically a standard replacement for precompiled headers
+      \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Build system}
+  \begin{columns}
+    \begin{column}{.35\textwidth}
+      \begin{block}{h.hpp}
+        \begin{cppcode*}{gobble=6,linenos=false}
+          #include <vector>
+          ...
+        \end{cppcode*}
+      \end{block}
+      \begin{block}{a.cpp}
+        \begin{cppcode*}{gobble=6,linenos=false}
+          #include "h.hpp"
+          ...
+        \end{cppcode*}
+      \end{block}
+      \begin{block}{b.cpp}
+        \begin{cppcode*}{gobble=6,linenos=false}
+          #include <vector>
+          #include "h.hpp"
+          ...
+        \end{cppcode*}
+      \end{block}
+      \begin{block}{c.cpp}
+        \begin{cppcode*}{gobble=6,linenos=false}
+          #include <vector>
+          ...
+        \end{cppcode*}
+      \end{block}
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \begin{block}{Traditional workflow}
+        \center
+        \begin{tikzpicture}
+          \draw [->](5,6) -- (5,0)  node [midway,right] {t};
+          \draw[thick]
+            node (vec)  at(3,6)   [rectangle,draw] {vector}
+            node (hpp)  at(1,4.5) [rectangle,draw] {h.hpp}
+            node (acpp) at(0,3)   [rectangle,draw] {a.cpp}
+            node (bcpp) at(2,3)   [rectangle,draw] {b.cpp}
+            node (ccpp) at(4,3)   [rectangle,draw] {c.cpp}
+            node (ao)   at(0,1.5) [rectangle,draw] {a.o}
+            node (bo)   at(2,1.5) [rectangle,draw] {b.o}
+            node (co)   at(4,1.5) [rectangle,draw] {c.o}
+            node (bin)  at(2,0)   [rectangle,draw] {binary};
+          \draw[very thick,dotted,->] (vec)  -- (hpp)  node [midway,fill=white,rounded rectangle] {\#};
+          \draw[very thick,dotted,->] (vec)  -- (bcpp) node [midway,fill=white,rounded rectangle] {\#};
+          \draw[very thick,dotted,->] (vec)  -- (ccpp) node [midway,fill=white,rounded rectangle] {\#};
+          \draw[very thick,dotted,->] (hpp)  -- (acpp) node [midway,fill=white,rounded rectangle] {\#};
+          \draw[very thick,dotted,->] (hpp)  -- (bcpp) node [midway,fill=white,rounded rectangle] {\#};
+          \draw[very thick,->] (acpp) -- (ao)   node [midway,fill=white,rounded rectangle] {Compiler};
+          \draw[very thick,->] (bcpp) -- (bo)   node [midway,fill=white,rounded rectangle] {Compiler};
+          \draw[very thick,->] (ccpp) -- (co)   node [midway,fill=white,rounded rectangle] {Compiler};
+          \draw[very thick,->] (ao)   -- (bin)  node [midway] {};
+          \draw[very thick,->] (bo)   -- (bin)  node [midway,fill=white,rounded rectangle] {Linker};
+          \draw[very thick,->] (co)   -- (bin)  node [midway] {};
+
+        \end{tikzpicture}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Build system}
+  \begin{columns}
+    \begin{column}{.35\textwidth}
+      \small
+      \begin{block}{h.cpp}
+        \begin{cppcode*}{gobble=6,linenos=false}
+          export module foo;
+          import <vector>;
+          ...
+        \end{cppcode*}
+      \end{block}
+      \begin{block}{a.cpp}
+        \begin{cppcode*}{gobble=6,linenos=false}
+          import foo;
+          ...
+        \end{cppcode*}
+      \end{block}
+      \begin{block}{b.cpp}
+        \begin{cppcode*}{gobble=6,linenos=false}
+          import <vector>;
+          import foo;
+          ...
+        \end{cppcode*}
+      \end{block}
+      \begin{block}{c.cpp}
+        \begin{cppcode*}{gobble=6,linenos=false}
+          #include <vector>
+          ...
+        \end{cppcode*}
+      \end{block}
+    \end{column}
+    \begin{column}{.6\textwidth}
+      \begin{block}{New workflow}
+        \center
+        \resizebox{0.8\textwidth}{!}{%
+        \begin{tikzpicture}
+          \draw [->](7,10) -- (7,0)  node [midway,right] {t};
+          \draw[thick] node at(3, 10) [fill=white,rounded rectangle] {build dependencies};
+          \draw[thick]
+          node (vec)    at(5,9)   [rectangle,draw] {\textless{}vector\textgreater{}}
+          node (vecbmi) at(4,7.5) [rectangle,draw] {vector.bmi}
+          node (hcpp)   at(2,6)   [rectangle,draw] {h.cpp}
+          node (ho)     at(0,4.5) [rectangle,draw] {h.o}
+          node (hbmi)   at(2,4.5) [rectangle,draw] {foo.bmi}
+          node (acpp)   at(2,3)   [rectangle,draw] {a.cpp}
+          node (bcpp)   at(4,3)   [rectangle,draw] {b.cpp}
+          node (ccpp)   at(6,6)   [rectangle,draw] {c.cpp}
+          node (ao)     at(2,1.5) [rectangle,draw] {a.o}
+          node (bo)     at(4,1.5) [rectangle,draw] {b.o}
+          node (co)     at(6,4.5) [rectangle,draw] {c.o}
+          node (bin)    at(3,0)   [rectangle,draw] {binary};
+          \draw[very thick,dotted,->] (vec) -- (ccpp) node [midway,fill=white,rounded rectangle] {\#};
+          \draw[very thick,->] (vec) -- (vecbmi) node [midway,fill=white,rounded rectangle] {Compiler};
+          \draw[very thick,dotted,->] (vecbmi) -- (hcpp) node [midway,fill=white,rounded rectangle] {imp};
+          \draw[very thick,->] (hcpp) -- (hbmi) node [midway,fill=white,rounded rectangle] {};
+          \draw[very thick,->] (hcpp) -- (ho) node [midway,right,fill=white,rounded rectangle] {Compiler};
+          \draw[very thick,dotted,->] (vecbmi) -- (bcpp) node [midway,fill=white,rounded rectangle] {imp};
+          \draw[very thick,dotted,->] (hbmi) -- (acpp) node [midway,fill=white,rounded rectangle] {imp};
+          \draw[very thick,dotted,->] (hbmi) -- (bcpp) node [midway,fill=white,rounded rectangle] {imp};
+          \draw[very thick,->] (acpp) -- (ao) node [midway,fill=white,rounded rectangle] {Compiler};
+          \draw[very thick,->] (bcpp) -- (bo) node [midway,fill=white,rounded rectangle] {Compiler};
+          \draw[very thick,->] (ccpp) -- (co) node [midway,fill=white,rounded rectangle] {Compiler};
+          \draw[very thick,->] (ho) to [bend right=30] (bin) node [midway] {};
+          \draw[very thick,->] (ao) -- (bin) node [midway] {};
+          \draw[very thick,->] (bo) -- (bin) node [midway,left,fill=white,rounded rectangle] {Linker};
+          \draw[very thick,->] (co) to [bend left=30] (bin) node [midway] {};
+        \end{tikzpicture}
+        }
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Build system}
+    \begin{block}{New challenges}
+      \begin{itemize}
+        \item Resolving a module name to the file name building it
+        \item Translation units no longer independent
+        \begin{itemize}
+          \item Extra tool needs to infer dependency graph before building
+          \item This graph needs to be communicated to the build system
+          \item We will likely need a \href{https://wg21.link/P1689}{standard dependency file format}
+          \item Parallel and distributed builds need synchronization
+        \end{itemize}
+        \item Compilation of module translation units produces binary module interface (BMI) and object file
+        \begin{itemize}
+          \item BMIs need to be maintained/shared between multiple compiler instances
+        \end{itemize}
+        \item Tools beside the compiler need to build/read binary module interface (static analysis, auto completion, etc.)
+        \item The C++ standard specifies very little on how this works
+        \begin{itemize}
+          \item We may experience large implementation divergence
+        \end{itemize}
+      \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Build system}
+    \begin{block}{Status}
+      \begin{itemize}
+        \item build2 supports everything g++ does
+        \item MSBuild figures out dependencies and build order automatically (Windows/Visual Studio only)
+        \item \mintinline{cpp}{g++ a.cpp b.cpp ...} ``just works'', must be one line though
+        \item GCC uses a \href{https://wg21.link/P1184}{module mapper} to resolve imports, which specifies a protocol and uses a central server for module maintenance
+        \item \href{https://wg21.link/p1602}{Experimental extensions to GNU make} exist to grow dependency graph on the fly while modules are discovered
+        \item No support in cmake (3.23) yet
+      \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Building modules (g++)}
+    \begin{block}{Case study: g++}
+      \begin{itemize}
+        \item By default, g++ caches compiled module interfaces (CMI, i.e.\ BMI) in subdirectory \texttt{./gcm.cache}
+        \item Each module needs to be built before it can be imported
+        \begin{itemize}
+          \item {\footnotesize \mintinline{cpp}{g++ -std=c++20 -fmodules-ts -c ratio.cpp -o ratio.o}}
+          \item Generates \texttt{ratio.o} and \texttt{./gcm.cache/ratio.gcm} (CMI)
+        \end{itemize}
+        \item Each header unit needs to be built before it can be imported
+        \begin{itemize}
+          \item {\footnotesize \mintinline{cpp}{g++ -std=c++20 -fmodules-ts -x c++-system-header vector}}
+          \item Generates e.g.\ \texttt{./gcm.cache/usr/include/c++/11/vector.gcm} (CMI)
+          \item {\footnotesize \mintinline{cpp}{g++ -std=c++20 -fmodules-ts -x c++-header ratio.h}}
+          \item Generates e.g.\ \texttt{./gcm.cache/,/ratio.h.gcm} (CMI)
+        \end{itemize}
+      \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Modules}
+    \begin{exampleblock}{Guidance for today}
+      \begin{itemize}
+        \item Start writing importable headers (no macro dependencies)
+        \begin{itemize}
+          \item This allows dual use: \mintinline{cpp}{#include} before \cpp20 and \mintinline{cpp}{import} with \cpp20
+        \end{itemize}
+        \item Watch progress on module support in your build system
+      \end{itemize}
+    \end{exampleblock}
+    \begin{exampleblock}{Guidance for tomorrow}
+      \begin{itemize}
+        \item Start importing headers when \cpp20 is available
+        \item Start writing modules when all users of your code have \cpp20
+        \item Start using \mintinline{cpp}{import std;} when \cpp23 is available
+      \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Modules}
+    \begin{block}{Resources}
+      \begin{itemize}
+      \item \href{https://www.youtube.com/watch?v=szHV6RdQdg8}{Practical C++ Modules - Boris Kolpackov - CppCon 2019}
+      \item \href{https://www.youtube.com/watch?v=nP8QcvPpGeM}{A (Short) Tour of C++ Modules - Daniela Engert - CppCon 2021} (very technical)
+      \item Understanding C++ Modules: \href{https://vector-of-bool.github.io/2019/03/10/modules-1.html}{Part1}, \href{https://vector-of-bool.github.io/2019/03/31/modules-2.html}{Part2} and \href{https://vector-of-bool.github.io/2019/10/07/modules-3.html}{Part3}.
+      \end{itemize}
+    \end{block}
+\end{frame}
