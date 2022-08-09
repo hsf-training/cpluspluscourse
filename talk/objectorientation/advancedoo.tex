@@ -86,9 +86,9 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Method overriding}
-  \begin{block}{the problem}
+  \begin{block}{the idea}
     \begin{itemize}
-    \item a given method of the parent can be overridden in a child
+    \item a method of the parent class can be replaced in a derived class
     \item but which one is called?
     \end{itemize}
   \end{block}
@@ -121,8 +121,9 @@
   \begin{block}{the concept}
     \begin{itemize}
     \item methods can be declared \mintinline{cpp}{virtual}
-    \item for these, the most derived object is always considered
-    \item for others, the type of the variable decides
+    \item for these, the most derived object's implementation is used
+          (i.e.\ the dynamic type behind a pointer/reference)
+    \item for non-virtual methods, the static type of the variable decides
     \end{itemize}
   \end{block}
   \begin{overprint}
@@ -303,6 +304,66 @@
       \draw[very thick,-Triangle] (Shape) -- (Drawable);
     \end{tikzpicture}
   \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Polymorphism and destruction}
+  \begin{block}{Owning base pointers}
+    We sometimes need to maintain owning pointers to base classes:
+  \end{block}
+  \begin{overprint}
+    \onslide<1>
+  \begin{cppcode}
+    struct Drawable {
+       virtual void draw() = 0;
+    };
+    Drawable* getImpl();
+
+    Drawable* p = getImpl();
+    p->draw();
+    delete p;
+  \end{cppcode}
+    \onslide<2>
+  \begin{cppcode}
+    struct Drawable {
+       virtual void draw() = 0;
+    };
+    std::unique_ptr<Drawable> getImpl(); // better API
+
+    auto p = getImpl();
+    p->draw();
+  \end{cppcode}
+  \end{overprint}
+  \begin{block}{}
+    \begin{itemize}
+      \item What happens when \mintinline{cpp}{p} is deleted?
+      \item What if a class deriving from \mintinline{cpp}{Drawable} has a destructor?
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Polymorphism and destruction}
+  \begin{block}{Virtual destructors}
+    \begin{itemize}
+    \item We can mark a destructor as \mintinline{cpp}{virtual}
+    \item This selects the right destructor based on the runtime type
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    struct Drawable {
+       virtual ~Drawable() = default;
+       virtual void draw() = 0;
+    };
+    Drawable* p = getImpl(); // returns derived obj.
+    p->draw();
+    delete p; // dynamic dispatch to right destructor
+  \end{cppcode}
+  \begin{exampleblock}{Best practice}
+    \begin{itemize}
+      \item If you expect users to inherit from your class and override methods (i.e.\ use your class polymorphically), declare its destructor \mintinline{cpp}{virtual}
+    \end{itemize}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -500,9 +561,6 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Virtual inheritance}
-  \begin{exampleblock}{Good practice}
-    if you write a class and expect users to inherit from it, declare its destructor \mintinline{cpp}{virtual}
-  \end{exampleblock}
   \begin{alertblock}{Warning}
     in case of virtual inheritance it is the most derived class that calls the virtual base class's constructor
   \end{alertblock}
