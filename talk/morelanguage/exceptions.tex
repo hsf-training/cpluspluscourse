@@ -21,23 +21,21 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
-      #include <stdexcept>
-      ...
+    \begin{cppcode*}{fontsize=\small,gobble=2}
       try {
-        process_stream_data(s);
-      } catch (const range_error& e) {
-        cerr << e.what() << endl;
+        process_data(f);
+      } catch (const
+        std::out_of_range& e) {
+        std::cerr << e.what();
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
-      void process_stream_data(stream &s) {
+    \begin{cppcode*}{fontsize=\small,gobble=2}
+      void process_data(file &f) {
         ...
-        if (data_location >= buffer.length()) {
-          throw range_error{"buf overflow"};
-        }
-        ...
+        if (i >= buffer.size())
+          throw std::out_of_range{
+            "buf overflow"};
       }
     \end{cppcode*}
   \end{multicols}
@@ -45,35 +43,164 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Exceptions}
-  \begin{block}{Rules and behavior}
+  \begin{block}{Throwing exceptions}
     \begin{itemize}
-      \item objects of any type can be thrown
+      \item objects of any type can be thrown (even e.g.\ \mintinline{cpp}{int})
       \begin{itemize}
-        \item prefer standard exception types from the \texttt{<stdexcept>} header
-        \item define your own subclass of \mintinline{cpp}{std::exception} if needed
+        \item prefer standard exception classes
       \end{itemize}
-      \item an exception will be caught if the type in the catch clause matches or is a base class of the thrown object's static type
+      \item throw objects by value
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    void process_data(file& f) {
+      if (!f.open())
+        throw std::invalid_argument{"stream is not open"};
+
+      auto header = read_line(f); // may throw an IO error
+      if (!header.starts_with("BEGIN"))
+        throw std::runtime_error{"invalid file content"};
+
+      std::string body(f.size()); // may throw std::bad_alloc
+      ...
+    }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Exceptions}
+  \begin{block}{Catching exceptions}
+    \begin{itemize}
+      \item a catch clause catches an exception of the same or derived type
+      \item multiple catch clauses will be matched in order
+      \item if no catch clause matches, the exception propagates
+      \item if the exception is never caught, \mintinline{cpp}{std::terminate} is called
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    try {
+      process_data(f);
+    } catch (const std::invalid_argument& e) {
+      bad_files.push_back(f);
+    } catch (const std::exception& e) {
+      std::cerr << "Failed to process file: " << e.what();
+    }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Exceptions}
+  \begin{block}{Rethrowing exceptions}
+    \begin{itemize}
+      \item a caught exception can be rethrown
+      \item useful when we want to act on an error, but cannot handle and want to propagate it
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+    try {
+      process_data(f);
+    } catch (const std::bad_alloc& e) {
+      std::cerr << "Insufficient memory for " << f.name();
+      throw; // rethrow
+    }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Exceptions}
+  \begin{block}{Catching everything}
+    \begin{itemize}
+    \item sometimes we need to catch all possible exceptions
+    \item e.g.\ in \mintinline{cpp}{main}, a thread, a destructor, interfacing with C, \ldots
+    \end{itemize}
+  \end{block}
+  \begin{cppcode}
+
+    try {
+      callUnknownFramework();
+    } catch(const std::exception& e) {
+      // catches std::exception and all derived types
+      std::cerr << "Exception: " << e.what() << std::endl;
+    } catch(...) {
+      // catches everything else
+      std::cerr << "Unknown exception type" << std::endl;
+    }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Exceptions}
+  \begin{block}{Stack unwinding}
+    \begin{itemize}
+      \item all objects on the stack between a \mintinline{cpp}{throw} and the matching \mintinline{cpp}{catch} are destructed automatically
+      \item this should cleanly release intermediate resources
+      \item make sure you are using the RAII idiom for your own classes
+    \end{itemize}
+  \end{block}
+  \begin{multicols}{2}
+    \begin{cppcode*}{gobble=2}
+      class C { ... };
+      void f() {
+        C c1;
+        throw exception{};
+          // start unwinding
+        C c2; // not run
+      }
+      void g() {
+        C c3; f();
+      }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{gobble=2,firstnumber=11}
+      int main() {
+        try {
+          C c5;
+          g();
+          cout << "done"; // not run
+        } catch(const exception&) {
+          // c1, c3 and c5 have been
+          // destructed
+        }
+      }
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Exceptions}
+  \begin{block}{Standard exceptions}
+    \begin{itemize}
+      \item \mintinline{cpp}{std::exception}, defined in header \mintinline{cpp}{<exception>}
       \begin{itemize}
-          \item if no one catches an exception then \mintinline{cpp}{std::terminate} is called
+        \item Base class of all standard exceptions
+        \item Get error message: \mintinline{cpp}{virtual const char* what() const;}
+        \item Please derive your own exception classes from this one
       \end{itemize}
-      \item you can have multiple catch clauses, will be matched in order
-      \item all objects on the stack between the \mintinline{cpp}{throw} and the \mintinline{cpp}{catch} are destructed automatically during stack unwinding
+      \item From \mintinline{cpp}{<stdexcept>}:
       \begin{itemize}
-        \item this should cleanly release intermediate resources
-        \item make sure you are using the RAII idiom for your own classes
+        \item \mintinline{cpp}{std::runtime_error}, \mintinline{cpp}{std::logic_error}, \mintinline{cpp}{std::out_of_range}, \mintinline{cpp}{std::invalid_argument}, ...
+        \item Store a string: \mintinline{cpp}{throw std::runtime_error{"msg"}}
+        \item You should use these the most
       \end{itemize}
+      \item \mintinline{cpp}{std::bad_alloc}, defined in header \mintinline{cpp}{<new>}
+      \begin{itemize}
+        \item Thrown by standard allocation functions (e.g.\ \mintinline{cpp}{new})
+        \item Signals failure to allocate
+        \item Carries no message
+      \end{itemize}
+      \item ...
     \end{itemize}
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{Exceptions}
-  \begin{block}{Advice}
+  \begin{exampleblock}{Advice}
     \begin{itemize}
       \item throw exceptions by value, catch them by (const) reference
       \item use exceptions for \textit{unlikely} runtime errors outside the program's control
       \begin{itemize}
-        \item  bad inputs, files unexpectedly not found, DB connection, \ldots
+        \item bad inputs, files unexpectedly not found, DB connection, \ldots
       \end{itemize}
       \item \textit{don't} use exceptions for logic errors in your code
       \begin{itemize}
@@ -84,9 +211,10 @@
         \item you can use \mintinline{cpp}{std::optional} or \mintinline{cpp}{std::variant}
         \item avoid using the global C-style \mintinline{cpp}{errno}
       \end{itemize}
-      \item See also the \href{https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-errors}{\cpp core guidelines} and the \href{https://isocpp.org/wiki/faq/exceptions}{ISO \cpp FAQ}
+      \item never throw in destructors
+      \item see also the \href{https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-errors}{\cpp core guidelines} and the \href{https://isocpp.org/wiki/faq/exceptions}{ISO \cpp FAQ}
     \end{itemize}
-  \end{block}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -131,29 +259,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Exceptions}
-  \begin{block}{Catching everything}
-    \begin{itemize}
-    \item sometimes we need to catch all possible exceptions
-    \item e.g. in \mintinline{cpp}{main}, a thread, a destructor, interfacing with C, \ldots
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-
-    try {
-      callUnknownFramework();
-    } catch(const std::exception& e) {
-      // catches std::exception and all derived types
-      std::cerr << "Exception: " << e.what() << std::endl;
-    } catch(...) {
-      // catches everything else
-      std::cerr << "Unknown exception type" << std::endl;
-    }
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlecpp[98]{Error Handling and Exceptions}
-  \begin{block}{}
+  \begin{block}{Cost}
     \begin{itemize}
       \item exceptions have little cost if no exception is thrown
       \begin{itemize}
@@ -197,7 +303,6 @@
   \end{multicols}
 \end{frame}
 
-
 \begin{frame}[fragile]
   \frametitlecpp[11]{noexcept specifier}
   \begin{block}{}
@@ -219,7 +324,6 @@
     \end{itemize}
   \end{block}
 \end{frame}
-
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{noexcept operator}
@@ -243,5 +347,70 @@
         f();
       }
     \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Exceptions}
+  \begin{block}{Exception Safety Guarantees}
+    A function can offer the following guarantees:
+    \begin{itemize}
+      \item No guarantee
+      \begin{itemize}
+        \item An exception will lead to undefined program state
+      \end{itemize}
+      \item Basic exception safety guarantee
+      \begin{itemize}
+        \item An exception will leave the program in a defined state
+        \begin{itemize}
+          \item At least destructors must be able to run
+          \item This is similar to the moved from state
+        \end{itemize}
+        \item No resources are leaked
+      \end{itemize}
+      \item Strong exception safety guarantee
+      \begin{itemize}
+        \item The operation either succeeds or has no effect
+        \item When an exception occurs, the original state must be restored
+        \item This is hard to do, possibly expensive, maybe impossible
+      \end{itemize}
+      \item No-throw guarantee
+      \begin{itemize}
+        \item The function never throws (e.g.\ is marked \mintinline{cpp}{noexcept})
+        \item Errors may occur internally, but are always handled successfully
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Exceptions}
+  \begin{block}{Alternatives to exceptions}
+    \begin{itemize}
+      \item The global variable \mintinline{cpp}{errno} (avoid)
+      \item Return an error code (e.g.\ an \mintinline{cpp}{int} or an \mintinline{cpp}{enum})
+      \item Return a \mintinline{cpp}{std::error_code} (\cpp11)
+      \item If failing to produce a value is not a hard error, consider returning \mintinline{cpp}{std::optional<T>} (\cpp17)
+      \item Return \mintinline{cpp}{std::expected<T, E>} (\cpp23), where \mintinline{cpp}{T} is the return type on success and \mintinline{cpp}{E} is the type on failure
+      \item Terminate the program, e.g.\ by calling \mintinline{cpp}{std::terminate()} or  \mintinline{cpp}{std::abort()}
+      \item Contracts: Specify function pre- and postconditions. Planned for \cpp20, but removed. Will come back in the future
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Further resources}
+  \begin{block}{}
+    \begin{itemize}
+      \item ISO C++ FAQ: \href{https://isocpp.org/wiki/faq/exceptions}{Exceptions and Error Handling}
+      \item \href{https://www.youtube.com/watch?v=0ojB8c0xUd8&t=1505s}{Back to Basics: Exceptions - Klaus Iglberger - CppCon 2020}
+      \item \href{https://www.youtube.com/watch?v=fOV7I-nmVXw}{CppCon 2015: Fedor Pikus “The Unexceptional Exceptions"}
+      \item \href{https://www.youtube.com/watch?v=ZUH8p1EQswA}{The Dawn of a New Error, (C++ error-handling and exceptions) - Phil Nash - CppCon 2019} (alternatives)
+      \item \href{https://www.youtube.com/watch?v=mkkaAWNE-Ig}{Exceptions the Other Way Round - Sean Parent - CppNow 2022} (theoretical approach to errors)
+      \item \href{https://wg21.link/P0709}{P0709}: Zero-overhead deterministic exceptions: Throwing values - Herb Sutter (proposal - distant future)
+      \begin{itemize}
+        \item \href{https://www.youtube.com/watch?v=ARYP83yNAWk}{De-fragmenting C++: Making Exceptions and RTTI More Affordable and Usable - Herb Sutter CppCon 2019}
+      \end{itemize}
+    \end{itemize}
   \end{block}
 \end{frame}
