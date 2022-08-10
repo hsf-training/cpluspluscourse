@@ -117,17 +117,17 @@
     \scriptsize
     \begin{Verbatim}[commandchars=\\\{\}]
     \ttfamily
-\textcolor{green}{==34015==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x7ffee93ed968 at pc 0x000106812df4 bp 0x7ffee93ed930 sp 0x7ffee93ed928}
+\textcolor{teal}{==34015==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x7ffee93ed968 at pc 0x000106812df4 bp 0x7ffee93ed930 sp 0x7ffee93ed928}
 \textcolor{blue}{WRITE of size 1 at 0x7ffee93ed968 thread T0}
     #0 0x106812df3 in foo() asan.cpp:4
     #1 0x106812ed8 in main asan.cpp:9
     #2 0x7fff6d3923d4 in start (libdyld.dylib:x86_64+0x163d4)
 
-\textcolor{green}{Address 0x7ffee93ed968 is located in stack of thread T0 at offset 40 in frame}
+\textcolor{teal}{Address 0x7ffee93ed968 is located in stack of thread T0 at offset 40 in frame}
     #0 0x106812cdf in foo() asan.cpp:1
 
   This frame has 2 object(s):
-    [32, 40) 'a' (line 2) \textcolor{green}{<== Memory access at offset 40 overflows this variable}
+    [32, 40) 'a' (line 2) \textcolor{teal}{<== Memory access at offset 40 overflows this variable}
     [64, 72) 'b' (line 3)
 Shadow bytes around the buggy address:
 =>0x1fffdd27db20: 00 00 00 00 00 00 00 00 \textcolor{red}{f1 f1 f1 f1} 00[\textcolor{red}{f2}]\textcolor{red}{f2 f2}
