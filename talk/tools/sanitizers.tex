@@ -1,4 +1,4 @@
-\subsection[asan]{Address Sanitizer}
+\subsection[sani]{Address Sanitizer \& Co}
 
 \begin{frame}[fragile]
   \frametitle{Address Sanitizer (asan)}
@@ -209,4 +209,54 @@ SUMMARY: AddressSanitizer: 54 byte(s) leaked in 2 allocation(s).
     \end{itemize}
   \end{alertblock}
 
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Thread sanitizer (tsan)}
+  \begin{block}{TSan}
+    \begin{itemize}
+      \item Thread sanitizer detects many data races in MT programs
+      \item Recompile your program with e.g.\ \mintinline{shell}{clang++ -fsanitize=thread -g -O1 datarace.cpp}
+    \end{itemize}
+  \end{block}
+
+  \footnotesize
+  \begin{verbatim}
+% ./a.out
+WARNING: ThreadSanitizer: data race (pid=19219)
+Write of size 4 at 0x7fcf47b21bc0 by thread T1:
+  #0 Thread1 datarace.c:4 (exe+0x00000000a360)
+
+Previous write of size 4 at 0x7fcf47b21bc0 by main thread:
+  #0 main datarace.c:10 (exe+0x00000000a3b4)
+
+Thread T1 (running) created at:
+  #0 pthread_create tsan_interceptors.cc:705 (exe+0x00000000c790)
+  #1 main datarace.c:9 (exe+0x00000000a3a4)
+  \end{verbatim}
+
+  \begin{block}{}
+    \scriptsize
+    \url{https://github.com/google/sanitizers/wiki/ThreadSanitizerCppManual}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Undefined Behaviour Sanitizer (UBSan)}
+  \begin{block}{UBSan}
+    \begin{itemize}
+      \item Tracks uninitialised memory, broken arithmetic, wrong array indexing and other undefined behaviour
+      \item Recompile your program with e.g.\ \mintinline{bash}{clang++ -fsanitize=undefined -g -O1 ub.cpp}
+    \end{itemize}
+  \end{block}
+  \small
+  \begin{verbatim}
+% ./a.out
+up.cpp:3:5: runtime error: signed integer overflow:
+            2147483647 + 1 cannot be represented in type 'int'
+  \end{verbatim}
+  \begin{block}{}
+    \footnotesize
+    \url{https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html}
+  \end{block}
 \end{frame}
