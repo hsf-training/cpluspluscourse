@@ -13,7 +13,7 @@
  */
 using namespace std::chrono_literals; // We can write 1s
 
-std::mutex cout_mutex{}; // We need this to synchronise printing
+std::mutex cout_mutex; // We need this to synchronise printing
 
 // Print contents of the stream to cout in a thread-safe manner.
 // This class consumes stream inputs, buffers them, and writes them
@@ -61,7 +61,7 @@ bool process(unsigned int threadIdx, Data const & data) {
 
   // Burn some CPU cycles to simulate intensive data processing.
   const auto startTime = std::chrono::high_resolution_clock::now();
-  int dummyCounter = 0;
+  unsigned dummyCounter = 0;
   while (std::chrono::high_resolution_clock::now() - startTime < 5s) {
     ++dummyCounter;
   }

@@ -1,9 +1,9 @@
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <cstdlib>
 
-#define LEN 1000
-#define STEP 7
+constexpr auto LEN = 1000;
+constexpr auto STEP = 7;
 
 void randomize(int* v, unsigned int len) {
     // we randomize via len random inversions
@@ -37,7 +37,7 @@ int main() {
         sumsq += diffs[i]*diffs[i];
     }
     float mean = sum/LEN;
-    float stddev = sqrt(sumsq/LEN - mean*mean) ;
+    float stddev = std::sqrt(sumsq/LEN - mean*mean) ;
     std::cout << "Range = [0, " << STEP*LEN << "]\n"
               << "Mean = " << mean
               << "\nStdDev = " << stddev << '\n';

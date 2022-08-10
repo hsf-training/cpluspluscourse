@@ -5,7 +5,7 @@
 class Drawable {
 public:
     Drawable(int id);
-    void draw();
+    void draw() const;
 private:
     int m_id;
 };

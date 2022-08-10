@@ -1,13 +1,13 @@
 #include <iostream>
-#include <cstdlib>
-#include <math.h>
-#include <string.h>
+#include <cstring>
 #include <sstream>
-#include <time.h>
+#include <thread>
+#include <chrono>
+#include <random>
 
-#define NBITERATIONS 5
-#define MIN 22
-#define MAX 25
+constexpr auto NBITERATIONS = 5;
+constexpr auto MIN = 22;
+constexpr auto MAX = 25;
 
 struct WorkToDo {
     char* title;
@@ -22,34 +22,29 @@ unsigned int fibo(unsigned a) {
     }
 }
 
-void * computation(void* arg) {
-    WorkToDo *work = (WorkToDo*) arg;
-    unsigned long f = fibo(work->a);
-    free(work->title);
-    work->title = 0;
-    return (void*)f;
+void computation(WorkToDo* work, unsigned long* result) {
+    *result = fibo(work->a);
+    std::free(work->title);
+    work->title = nullptr;
 }
 
 void launchFibo(const char* title, int a) {
-    pthread_t t;
     WorkToDo w;
     w.title = strdup(title);
     w.a = a;
-    if (pthread_create(&t, NULL, computation, &w)) {
-        std::cerr << "Error creating thread\n";
-        return;
-    }
-    struct timespec sl = {.tv_sec = 0, .tv_nsec=1000};
-    nanosleep(&sl, NULL);
+    unsigned long result;
+    std::thread t{computation, &w, &result};
+    std::this_thread::sleep_for(std::chrono::microseconds{1});
     std::cout << "Computing " << w.title << '\n';
-    void *result;
-    pthread_join(t, &(result));
+    t.join();
     std::cout << title << " = " << (unsigned long)result << '\n';
 }
 
 int main() {
+    std::default_random_engine e;
+    std::uniform_int_distribution d{MIN, MAX};
     for (unsigned int i = 0; i < NBITERATIONS; i++) {
-        unsigned int a = MIN+rand()%(MAX-MIN);
+        unsigned int a = d(e);
         std::stringstream ss;
         ss << "Fibo(" << a << ")";
         launchFibo(ss.str().c_str(), a);

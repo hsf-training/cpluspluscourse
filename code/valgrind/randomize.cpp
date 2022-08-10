@@ -1,9 +1,9 @@
 #include <iostream>
-#include <math.h>
-#include <cstdlib>
+#include <cmath>
+#include <random>
 
-#define LEN 1000
-#define STEP 7
+constexpr auto LEN = 1000;
+constexpr auto STEP = 7;
 
 void swap(int *a, int*b) {
     int c = *a;
@@ -12,10 +12,12 @@ void swap(int *a, int*b) {
 }
 
 void randomize(int* v, unsigned int len) {
+    std::default_random_engine e;
+    std::uniform_int_distribution d{0u, len};
     // we randomize via len random inversions
     for (unsigned int i = 0; i < len; i++) {
-        int a = rand()%len;
-        int b = rand()%len;
+        int a = d(e);
+        int b = d(e);
         swap(v+a, v+b);
     }
 }
@@ -46,7 +48,7 @@ int main() {
         sumsq += diffs[i]*diffs[i];
     }
     float mean = sum/LEN;
-    float stddev = sqrt(sumsq/LEN - mean*mean) ;
+    float stddev = std::sqrt(sumsq/LEN - mean*mean) ;
     std::cout << "Range = [0, " << STEP*LEN << "]\n"
               << "Mean = " << mean
               << "\nStdDev = " << stddev << '\n';

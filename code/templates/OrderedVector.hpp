@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include <stdexcept>
 
 template<typename ElementType>
@@ -9,7 +8,7 @@ public:
     OrderedVector(const OrderedVector&) = delete;
     OrderedVector& operator=(const OrderedVector&) = delete;
     bool add(ElementType value);
-    ElementType& get(unsigned int n);
+    ElementType& at(unsigned int n);
     ElementType& operator[](unsigned int n);
 private:
     unsigned int m_len;
@@ -19,7 +18,7 @@ private:
 
 template<typename ElementType>
 OrderedVector<ElementType>::~OrderedVector() {
-    delete[](m_data);
+    delete[] m_data;
 }
 
 template<typename ElementType>
@@ -41,7 +40,7 @@ bool OrderedVector<ElementType>::add(ElementType value) {
     unsigned int index = m_len;
     while (index > insertIndex) {
         m_data[index] = m_data[index-1];
-            index--;
+        index--;
     }
     // actual insertion
     m_data[index] = value;
@@ -50,7 +49,7 @@ bool OrderedVector<ElementType>::add(ElementType value) {
 }
 
 template<typename ElementType>
-ElementType& OrderedVector<ElementType>::get(unsigned int n) {
+ElementType& OrderedVector<ElementType>::at(unsigned int n) {
     if (n >= m_len) {
         throw std::out_of_range("too big");
     }
@@ -59,5 +58,5 @@ ElementType& OrderedVector<ElementType>::get(unsigned int n) {
 
 template<typename ElementType>
 ElementType& OrderedVector<ElementType>::operator[](unsigned int n) {
-    return get(n);
+    return at(n);
 }

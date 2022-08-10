@@ -20,8 +20,8 @@ void compute(int len, T initial, T step) {
     adjacent_difference(...);
 
     // compute standard deviation of it
-    T sum = accumulate(...);
-    T sumsq = accumulate(..., [](...) { ...; });
+    T sum = reduce(...);
+    T sumsq = reduce(..., [](...) { ...; });
     T mean = sum/len;
     T variance = sumsq/len - mean*mean;
 

@@ -1,13 +1,10 @@
 #include <ostream>
-#include <assert.h>
 #include <algorithm>
 #include <numeric>
 
 template <int N, typename T=float>
 class NVector {
 public:
-    typedef T BaseType;
-
     NVector();
     NVector(T initialValue, T inc);
     NVector(const NVector &other);
@@ -16,7 +13,6 @@ public:
     NVector& operator-() const;
     NVector& operator+(const NVector other) const;
     NVector& operator-(const NVector other) const;
-    NVector& operator*(const NVector other) const;
     NVector& operator*(const T factor) const;
     NVector& operator/(const T dividend) const;
     NVector& operator=(const NVector other);
@@ -52,7 +48,7 @@ NVector<N,T>::NVector(const NVector<N,T>& other) {
 
 template <int N, typename T>
 NVector<N,T>::~NVector() {
-    if (m_data) delete[](m_data);
+    delete[] m_data;
 }
 
 template <int N, typename T>
@@ -99,7 +95,7 @@ NVector<N,T>& NVector<N,T>::operator/(const T dividend) const {
 
 template <int N, typename T>
 NVector<N,T>& NVector<N,T>::operator=(const NVector<N,T> other) {
-    if (m_data) delete[](m_data);
+    delete[] m_data;
     m_data = new T[N];
     std::copy(other.m_data, other.m_data+N, m_data);
     return *this;
