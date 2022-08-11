@@ -1,8 +1,8 @@
 \subsection[sani]{Address Sanitizer \& Co}
 
 \begin{frame}[fragile]
-  \frametitle{Address Sanitizer (asan)}
-  \begin{block}{asan introduction}
+  \frametitle{Address Sanitizer (ASan)}
+  \begin{block}{ASan introduction}
     \begin{itemize}
     \item Compiler instrumentation
     \item Program stops on invalid memory access, e.g.\
@@ -26,7 +26,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Address Sanitizer (asan)}
+  \frametitle{Address Sanitizer (ASan)}
   \begin{block}{How it works}
     \begin{itemize}
       \item Compiler adds run-time checks ($\sim$2x slow down)
@@ -56,14 +56,14 @@
 
 
 \begin{frame}[fragile]
-  \begin{block}{asan red zones}
+  \begin{block}{ASan red zones}
     \begin{itemize}
       \item If adjacent data blocks are owned by the process, the operating system will allow an access
-      \item<2> asan surrounds blocks of memory by poisoned red zones
+      \item<2> ASan surrounds blocks of memory by poisoned red zones
       \item<2> Program stops when accessing a red zone
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{Illegal access (not detected without asan)}
+  \begin{exampleblock}{Illegal access (not detected without ASan)}
     \begin{multicols}{2}
       \begin{overprint}
         \onslide<1>
@@ -150,9 +150,9 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 \begin{frame}[fragile]
   \begin{columns}
     \column{\textwidth+1cm}
-    \begin{block}{Finding memory leaks with asan}
+    \begin{block}{Finding memory leaks with ASan}
       \begin{itemize}
-        \item On linux, asan can display memory leaks
+        \item On linux, ASan can display memory leaks
         \item Start executable with \mintinline{bash}{ASAN_OPTIONS=detect_leaks=1 ./myProgram}
       \end{itemize}
     \end{block}
@@ -181,7 +181,7 @@ SUMMARY: AddressSanitizer: 54 byte(s) leaked in 2 allocation(s).
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Address sanitizer (asan)}
+  \frametitle{Address sanitizer (ASan)}
   \begin{block}{Wrap up}
     \begin{itemize}
       \item If a program crashes, run it with asan
@@ -200,7 +200,7 @@ SUMMARY: AddressSanitizer: 54 byte(s) leaked in 2 allocation(s).
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Address sanitizer (asan)}
+  \frametitle{Address sanitizer (ASan)}
   \begin{alertblock}{Hands on}
     \begin{itemize}
       \item Go to \texttt{code/asan}
@@ -212,7 +212,7 @@ SUMMARY: AddressSanitizer: 54 byte(s) leaked in 2 allocation(s).
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Thread sanitizer (tsan)}
+  \frametitle{Thread sanitizer (TSan)}
   \begin{block}{TSan}
     \begin{itemize}
       \item Thread sanitizer detects many data races in MT programs
