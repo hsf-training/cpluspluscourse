@@ -92,7 +92,7 @@
     \begin{itemize}
     \item usually in .cpp, outside of class declaration
     \item using the class name as namespace
-    \item when reference to the object is needed, use {\it this} keyword
+    \item when reference/pointer to the object is needed, use \mintinline{cpp}{this} keyword
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -108,21 +108,26 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{{\ttfamily this} keyword}
-  \begin{block}{}
+  \begin{block}{How to know an object's address?}
     \begin{itemize}
-    \item {\ttfamily this} is a hidden parameter to all class methods
-    \item it points to the current object
-    \item so it is of type {\ttfamily T*} in the methods of class {\ttfamily T}
+    \item Sometimes we need to know where our class data is located
+    \item For example to implement operators, see later
+    \item All class methods can use the keyword \mintinline{cpp}{this}
+      \begin{itemize}
+        \item It returns the address of the current object
+        \item Its type is \mintinline{cpp}{T*} in the methods of a struct/class {\ttfamily T}
+      \end{itemize}
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    void ext_func(MyFirstClass& c) {
-      ... do something with c ...
-    }
+    struct MyStruct {
+      MyStruct * whereAreYou() {
+        return this;
+      }
+    };
 
-    int MyFirstClass::some_method(...) {
-      ext_func(*this);
-    }
+    MyStruct c;
+    c.whereAreYou(); // (MyStruct *) 0x10340e0f8
   \end{cppcode}
 \end{frame}
 
