@@ -38,7 +38,7 @@
     \end{itemize}
   \end{block}
   \pause
-  \begin{alertblock}{Is ++ operator atomic ?}
+  \begin{alertblock}{Is \texttt{++} operator atomic ?}
     \pause
     Usually not. It behaves like :
     \begin{cppcode*}{}
@@ -92,7 +92,7 @@
   \pause
   \begin{block}{The objects}
     \begin{description}[labelwidth=1.8cm]
-    \item[std::mutex] in the mutex header. \textbf{Mut}ual \textbf{ex}clusion
+    \item[std::mutex] in the \mintinline{cpp}{mutex} header. \textbf{Mut}ual \textbf{ex}clusion
     \item[std::scoped\_lock] RAII to lock and unlock automatically
     \item[std::unique\_lock] same, but can be released/relocked explicitly
     \end{description}
@@ -114,9 +114,9 @@
   \frametitlecpp[17]{Mutexes and Locks}
   \begin{block}{Good practice}
     \begin{itemize}
-      \item Generally use \texttt{scoped\_lock} (\cpp11: \texttt{lock\_guard})
-      \item Hold as short as possible, wrap critical section in "\texttt{\string{  \string}}"
-      \item Only if manual control needed, use \texttt{unique\_lock}
+      \item Generally, use \mintinline{cpp}{std::scoped_lock}. Before \cpp17 use \mintinline{cpp}{std::lock_guard}.
+      \item Hold as short as possible, consider wrapping critical section in block statement \mintinline{cpp}|{ }|
+      \item Only if manual control needed, use \mintinline{cpp}{std::unique_lock}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{}
@@ -187,7 +187,7 @@
     \item Respect a strict order in the locking across all threads
     \item Do not use locks
       \begin{itemize}
-      \item Use other techniques, e.g. queues
+      \item Use other techniques, e.g. lock-free queues
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -197,9 +197,9 @@
   \frametitlecpp[17]{Shared mutex / locks}
   \begin{block}{Sharing a mutex}
     \begin{itemize}
-      \item Normal \texttt{mutex} objects cannot be shared
-      \item \texttt{shared\_mutex} to the rescue, but can be slower
-      \item \textit{Either} exclusive \textit{or} shared locking; never both
+      \item Normal \mintinline{cpp}{std::mutex} objects cannot be shared
+      \item \mintinline{cpp}{std::shared_mutex} to the rescue, but can be slower
+      \item \emph{Either} exclusive \emph{or} shared locking; never both
     \end{itemize}
   \end{block}
   \begin{exampleblock}{}

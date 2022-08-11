@@ -60,7 +60,7 @@
   \begin{block}{Use built-in atomic functions}
     \begin{itemize}
       \item The built-in atomic functions are thread safe
-      \item \texttt{fetch\_add} (\mintinline{cpp}{operator+=()}): atomically \{ load; add; store \}
+      \item \mintinline{cpp}{fetch_add} and \mintinline{cpp}{operator+=}: atomic \{ load; add; store \}
       \item But don't confuse ``\mintinline{cpp}{a += 2}'' and ``\mintinline{cpp}{a + 2}''
     \end{itemize}
   \end{block}
@@ -68,7 +68,7 @@
     \begin{cppcode*}{}
       std::atomic<int> a{0};
       std::thread t1([&]{ a.fetch_add(2); });
-      std::thread t2([&]{ a.fetch_add(2); });
+      std::thread t2([&]{ a += 2; });
     \end{cppcode*}
   \end{exampleblock}
   \begin{block}{Sequence diagram}
@@ -79,7 +79,7 @@
         \umlobject[x=6]{Thread 2}
         \begin{umlcall}[op=fetch\_add]{Thread 1}{atomic}
         \end{umlcall}
-        \begin{umlcall}[op=fetch\_add, dt=9]{Thread 2}{atomic}
+        \begin{umlcall}[op=\texttt{+=}, dt=9]{Thread 2}{atomic}
         \end{umlcall}
       \end{umlseqdiag}
       \draw[-triangle 60](9,0) -- (9,-2) node[right, pos=0.5]{time};

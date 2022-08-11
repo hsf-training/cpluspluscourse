@@ -5,8 +5,8 @@
   \begin{block}{5 types of casts in \cpp}
     \begin{itemize}
     \item \mintinline{c++}{static_cast<Target>(arg)}: Convert type if the static types allow it
-    \item \mintinline{c++}{dynamic_cast<Target>(arg)}: Check if object at address of ``\mintinline{c++}{arg}'' is compatible with the type \mintinline{c++}{Target}.
-          \alt<1>{Throw \mintinline{c++}{std::bad_cast} if it's not.}{Return \mintinline{c++}{nullptr} if it's not.}
+    \item \mintinline{c++}{dynamic_cast<Target>(arg)}: Check if object at address of ``\mintinline{c++}{arg}'' is convertible to type \mintinline{c++}{Target}.
+          \alt<1>{Throws \mintinline{c++}{std::bad_cast} if it's not.}{Return \mintinline{c++}{nullptr} if it's not.}
     \end{itemize}
   \end{block}
 
@@ -47,9 +47,9 @@
   \frametitlecpp[98]{Type casting}
   \begin{block}{5 types of casts in \cpp}
     \begin{itemize}
-    \item \mintinline{c++}{const_cast}: Remove constness from a type. If you think you need this, first try to improve the design!
-    \item \mintinline{c++}{reinterpret_cast<Target>(arg)}: Change type irrespective of what `arg` is. \emph{Almost never} a good idea!
-    \item C-style: \mintinline{c++}{(Target)arg}: Force-change type in C-style. No checks. Don't use this.
+    \item \mintinline{c++}{const_cast}: Removes constness from a type. If you think you need this, first try to improve the design!
+    \item \mintinline{c++}{reinterpret_cast<Target>(arg)}: Changes type irrespective of what `arg` is. \emph{Almost never} a good idea!
+    \item C-style: \mintinline{c++}{(Target)arg}: Force-changes type in C-style. No checks. Don't use this.
     \end{itemize}
   \end{block}
   \begin{alertblock}{Casts to avoid}

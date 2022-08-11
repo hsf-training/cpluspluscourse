@@ -145,7 +145,7 @@
   \frametitlecpp[17]{Using \texttt{void\_t}}
   \begin{block}{Concept}
     \begin{itemize}
-    \item Maps a sequence of given types to void
+    \item Maps a sequence of given types to \mintinline{cpp}{void}
     \item Introduced in \cpp17 though trivial to implement in \cpp11
     \item Can be used in specializations to check the validity of an expression
     \end{itemize}
@@ -191,15 +191,15 @@
       using enable_if_t = typename enable_if<B,T>::type;
     \end{cppcode*}
     \begin{itemize}
-    \item If B is true, has a alias \texttt{type} to type T
-    \item otherwise, has no \texttt{type} alias
+    \item If \mintinline{cpp}{B} is true, has a alias \mintinline{cpp}{type} to type \mintinline{cpp}{T}
+    \item otherwise, has no \mintinline{cpp}{type} alias
     \end{itemize}
   \end{block}
   \begin{block}{is\_*$<T>$/is\_*\_v$<T>$ (float/signed/object/final/abstract/...)}
     \begin{itemize}
-    \item Standard type traits in header \texttt{type\_traits}
-    \item Checks at compile time whether T is ...
-    \item Result in boolean member \texttt{value}
+    \item Standard type traits in header \mintinline{cpp}{<type_traits>}
+    \item Checks at compile time whether \mintinline{cpp}{T} is ...
+    \item Result in boolean member \mintinline{cpp}{value}
     \end{itemize}
   \end{block}
 \end{frame}

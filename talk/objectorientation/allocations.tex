@@ -87,24 +87,25 @@
   \frametitlecpp[98]{Object allocation on the heap}
   \begin{block}{On the heap}
     \begin{itemize}
-    \item object are created by calling \mintinline{cpp}{new} (constructor is called)
-    \item object are destructed by calling \mintinline{cpp}{delete} (destructor is called)
+    \item objects are created by calling \mintinline{cpp}{new} (constructor is called)
+    \item objects are destructed by calling \mintinline{cpp}{delete} (destructor is called)
     \end{itemize}
   \end{block}
   \begin{cppcode}
     {
       // default constructor called
       MyFirstClass *a = new MyFirstClass;
-      ...
       delete a; // destructor is called
     }
 
     int f() {
       // constructor called
       MyFirstClass *a = new MyFirstClass(3);
-      ...
     } // memory leak !!!
   \end{cppcode}
+  \begin{alertblock}{}
+    Prefer smart pointers to manage objects (discussed later)
+  \end{alertblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -125,4 +126,7 @@
       delete[] a; // destructor called 10 times
     }
   \end{cppcode}
+  \begin{alertblock}{}
+    Prefer containers to manage collections of objects (discussed later)
+  \end{alertblock}
 \end{frame}

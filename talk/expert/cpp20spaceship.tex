@@ -1,4 +1,4 @@
-\subsection[spaceship]{The <=> operator}
+\subsection[spaceship]{The \texttt{<=>} operator}
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{The three-way comparison operator}
@@ -114,7 +114,9 @@
   \end{exampleblock}
   \begin{block}{Home-made class}
     \begin{itemize}
-      \item We convert above the result of \mintinline{cpp}{<=>} to \mintinline{cpp}{std::weak_ordering}, so to emphasize that \mintinline{cpp}{(a<=>b)==0} means that \mintinline{cpp}{a} and \mintinline{cpp}{b} are logically equivalent, but may lead to different results in other expressions (e.g. printing them).
+      \item Above, we convert the result of \mintinline{cpp}{<=>} to \mintinline{cpp}{std::weak_ordering}
+      \item This emphasizes that \mintinline{cpp}{(a<=>b)==0} means that \mintinline{cpp}{a} and \mintinline{cpp}{b} are only logically equivalent
+      \item They may lead to different results in other expressions (e.g. printing them)
     \end{itemize}
   \end{block}
 \end{frame}
@@ -155,14 +157,14 @@
   \begin{block}{Home-made class}
     \begin{itemize}
       \item As one can see from previous code, we have defined only \mintinline{cpp}{<=>}, but \mintinline{cpp}{<}, \mintinline{cpp}{>}, \mintinline{cpp}{<=} and \mintinline{cpp}{=>} work as well. The compiler can express the latter operators in terms of \mintinline{cpp}{<=>}. Of course, one can also provide own implementations.
-      \item It has NOT added a default implementation for \mintinline{cpp}{==} and \mintinline{cpp}{!=}. Those operators are generally expected to mean \textbf{equal}, rather than \textbf{equivalent}. If \mintinline{cpp}{<=>} does not provides a strong order, it is generally advised not to define \mintinline{cpp}{==}.
+      \item It has NOT added a default implementation for \mintinline{cpp}{==} and \mintinline{cpp}{!=}. Those operators are generally expected to mean \textbf{equal}, rather than \textbf{equivalent}. If \mintinline{cpp}{<=>} does not provide a strong order, it is generally advised not to define \mintinline{cpp}{==}.
     \end{itemize}
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{The three-way comparison operator}
-  \begin{block}{Default \mintinline{cpp}{<=>} implementation}
+  \begin{block}{Default \texttt{<=>} implementation}
     \begin{itemize}
       \item One can ask the compiler to provide a default implementation for \mintinline{cpp}{<=>} and/or \mintinline{cpp}{==}. Logically enough, it will compare the first member variable of the two objects, and goes on to the next member variable as long as the current ones are equivalent.
       \item In the previous example, that would be wrong, because it will compare the numerators first, and conclude that \mintinline{cpp}{3/6} is greater than \mintinline{cpp}{2/3}:
@@ -204,7 +206,7 @@ A, 19, Djamila
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{The three-way comparison operator}
-  \begin{block}{Default <=> implementation}
+  \begin{block}{Default \texttt{<=>} implementation}
     \begin{itemize}
       \item We see above that the definition of \mintinline{cpp}{<=>} has been provided by the compiler, and the use of \mintinline{cpp}{<} by \mintinline{cpp}{std::set} to sorts its elements has been rewritten by the compiler in terms of \mintinline{cpp}{<=>}.
       \item If \mintinline{cpp}{<=>} is defaulted and no \mintinline{cpp}{==} is defined, then the compiler also provides a defaulted \mintinline{cpp}{==}.
@@ -217,16 +219,16 @@ A, 19, Djamila
   \begin{alertblock}{Summary}
     \begin{itemize}
       \item Defining \mintinline{cpp}{<=>} allows you to use \mintinline{cpp}{<}, \mintinline{cpp}{>},\mintinline{cpp}{<=}, and \mintinline{cpp}{>=} as well.
-      \item The standard library defines a few different kinds of order (strong, weak and partial).
+      \item The standard library defines a few kinds of orderings (strong, weak and partial).
       \item If \mintinline{cpp}{<=>} does not define a strong order, avoid to define and/or use \mintinline{cpp}{==}.
     \end{itemize}
   \end{alertblock}
   \begin{block}{Resources}
     \begin{itemize}
-      \item https://blog.tartanllama.xyz/spaceship-operator/
-      \item https://iq.opengenus.org/spaceship-operator-cpp/
-      \item https://www.jonathanmueller.dev/talk/meetingcpp2019/
-      \item https://quuxplusone.github.io/blog/2021/10/22/hidden-friend-outlives-spaceship/
+      \item \url{https://blog.tartanllama.xyz/spaceship-operator/}
+      \item \url{https://iq.opengenus.org/spaceship-operator-cpp/}
+      \item \url{https://www.jonathanmueller.dev/talk/meetingcpp2019/}
+      \item \url{https://quuxplusone.github.io/blog/2021/10/22/hidden-friend-outlives-spaceship/}
     \end{itemize}
   \end{block}
 \end{frame}
