@@ -7,11 +7,11 @@
     \begin{cppcode*}{xleftmargin=20pt}
       char *s;
       try {
-        callThatThrows();
-        s = (char*) malloc(...);
-        strncpy(s, ...);
+        foo(); // may throw
+        s = new char[100];
+        read_line(s);
       } catch (...) { ... }
-      bar(s);
+      process_line(s);
     \end{cppcode*}
   \end{exampleblock}
   \pause
@@ -20,11 +20,11 @@
   \begin{exampleblock}{They need to be released
       \hfill \onslide<4->{\textcolor{orange}{\bf Memory leak}}}
     \begin{cppcode*}{xleftmargin=20pt}
-      char *s = (char*) malloc(...);
-      strncpy(s, ...);
-      if (0 != strncmp(s, ...)) return;
-      foo(s);
-      free(s);
+      char *s = new char[100];
+      read_line(s);
+      if (s[0] == '#') return;
+      process_line(s);
+      delete[] s;
     \end{cppcode*}
   \end{exampleblock}
   \pause
@@ -33,12 +33,12 @@
   \begin{exampleblock}{They need clear ownership
       \hfill \onslide<6->{\textcolor{orange}{\bf Who should release ?}}}
     \begin{cppcode*}{xleftmargin=20pt}
-      char *s = (char*) malloc(...);
-      strncpy(s, ...);
-      someVector.push_back(s);
-      someSet.add(s);
-      std::thread t1(vecConsumer, someVector);
-      std::thread t2(setConsumer, someSet);
+      char *s = new char[100];
+      read_line(s);
+      vec.push_back(s);
+      set.add(s);
+      std::thread t1(func1, vec);
+      std::thread t2(func2, set);
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -47,16 +47,19 @@
   \frametitlecpp[11]{This problem exists for any resource}
   \begin{exampleblock}{For example with a file}
     \begin{cppcode*}{}
-      try {
-        FILE *handle = std::fopen(path, "w+");
-        if (nullptr == handle) { throw ... }
-        if (std::fputs(str, handle) == EOF) {
-          throw ...
-        }
-        fclose(handle);
-      } catch (...) { ... }
+      std::FILE *handle = std::fopen(path, "w+");
+      if (nullptr == handle) { throw ... }
+      std::vector v(100, 42);
+      write(handle, v);
+      if (std::fputs("end", handle) == EOF) {
+        return;
+      }
+      std::fclose(handle);
     \end{cppcode*}
   \end{exampleblock}
+  \begin{block}{}
+    Which problems do you spot in the above snippet?
+  \end{block}
 \end{frame}
 
 \begin{frame}
@@ -80,17 +83,17 @@
       class File {
       public:
         File(const char* filename) :
-          m_file_handle(std::fopen(filename, "w+")) {
-          if (m_file_handle == NULL) { throw ... }
+          m_handle(std::fopen(filename, "w+")) {
+          if (m_handle == nullptr) { throw ... }
         }
-        ~File() { std::fclose(m_file_handle); }
+        ~File() { std::fclose(m_handle); }
         void write (const char* str) {
-          if (std::fputs(str, m_file_handle) == EOF) {
+          if (std::fputs(str, m_handle) == EOF) {
             throw ...
           }
         }
       private:
-        FILE* m_file_handle;
+        std::FILE* m_handle;
       };
     \end{cppcode*}
   \end{exampleblock}
@@ -113,9 +116,7 @@
     \end{cppcode*}
   \end{exampleblock}
   \begin{alertblock}{}
-    \begin{itemize}
-      \item on real projects, use \mintinline{cpp}{std::fstream} to handle files
-    \end{itemize}
+     The standard library provides \mintinline{cpp}{std::fstream} to handle files, use it!
   \end{alertblock}
 \end{frame}
 
@@ -200,7 +201,7 @@ of 'std::unique_ptr<Foo>'
   \frametitlecpp[11]{RAII or raw pointers}
   \begin{block}{When to use what ?}
     \begin{itemize}
-    \item Always use RAII for all resources, in particular allocations
+    \item Always use RAII for resources, in particular allocations
     \item You thus never have to release / deallocate yourself
     \item Use raw pointers as non-owning, re-bindable observers
     \item Remember that \mintinline{cpp}{unique_ptr} is move only
