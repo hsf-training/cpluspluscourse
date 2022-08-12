@@ -58,7 +58,7 @@
   \begin{block}{Different kinds of ordering}
     \begin{itemize}
     \item The real return type of \mintinline{cpp}{<=>} for integers is \mintinline{cpp}{std::strong_ordering}: whatever the values, you will always get \mintinline{cpp}{true} for exactly one test among \mintinline{cpp}{<0}, \mintinline{cpp}{==0}, and \mintinline{cpp}{>0}.
-    \item On the contrary, the return type of \mintinline{cpp}{<=>} for floating point numbers is \mintinline{cpp}{std::partial_ordering}, because sometimes all tests may return \mintinline{cpp}{false}, typically if one one the number is \mintinline{cpp}{NaN}.
+    \item On the contrary, the return type of \mintinline{cpp}{<=>} for floating point numbers is \mintinline{cpp}{std::partial_ordering}, because sometimes all tests may return \mintinline{cpp}{false}, typically if one of the numbers is \mintinline{cpp}{NaN}.
     \end{itemize}
   \end{block}
 \end{frame}
@@ -87,7 +87,7 @@
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Different kinds of ordering}
     \begin{itemize}
-      \item Between the two, we have a class \mintinline{cpp}{std::weak_ordering}, where \mintinline{cpp}{==0} means that the two compared values are \textbf{equivalent} from a ranking point of view, but not necessarily \textbf{equal}. In any given expression, one cannot substitutes one value for the other and be sure to have the same result.
+      \item Between the two, we have a class \mintinline{cpp}{std::weak_ordering}, where \mintinline{cpp}{==0} means that the two compared values are \textbf{equivalent} from a ranking point of view, but not necessarily \textbf{equal}. In any given expression, one cannot substitute one value for the other and be sure to have the same result.
       \item I am not aware of some predefined type whose \mintinline{cpp}{<=>} would return an instance of \mintinline{cpp}{std::weak_ordering}, but it may make sense for some home-made class, such as the following.
       \item In the next example, we define a very basic class for positive rational numbers, and provide an implementation of \mintinline{cpp}{<=>}.
     \end{itemize}
@@ -99,15 +99,15 @@
   \begin{exampleblock}{Example}
     \scriptsize
     \begin{cppcode*}{}
-    struct Ratio
-    {
+    struct Ratio {
       unsigned n, d ;
-      friend std::weak_ordering operator<=>( Ratio const & a, Ratio const & b )
+      friend
+      std::weak_ordering operator<=>( Ratio const & a, Ratio const & b )
       { return (a.n*b.d)<=>(a.d*b.n) ; }
-      friend std::ostream & operator<<( std::ostream & os, Ratio const & r )
+      friend
+      std::ostream & operator<<( std::ostream & os, Ratio const & r )
       { return (os<<r.n<<'/'<<r.d) ; }
     } ;
-
     std::ostream & operator<<( std::ostream & os, std::weak_ordering cmp )
     { return (os<<(cmp<0)<<(cmp==0)<<(cmp>0)) ; }
     \end{cppcode*}
@@ -115,8 +115,8 @@
   \begin{block}{Home-made class}
     \begin{itemize}
       \item Above, we convert the result of \mintinline{cpp}{<=>} to \mintinline{cpp}{std::weak_ordering}
-      \item This emphasizes that \mintinline{cpp}{(a<=>b)==0} means that \mintinline{cpp}{a} and \mintinline{cpp}{b} are only logically equivalent
-      \item They may lead to different results in other expressions (e.g. printing them)
+      \item This emphasizes that \mintinline{cpp}{(a<=>b)==0} means that \mintinline{cpp}{a} and \mintinline{cpp}{b} are logically equivalent, but distinguishable
+      \item They may lead to different results in other expressions (e.g.\ printing them)
     \end{itemize}
   \end{block}
 \end{frame}
@@ -129,9 +129,6 @@
     template <typename T>
     void compare( T lhs, T rhs )
     {
-      //std::cout<<lhs<<" == != "<<rhs<<": "<<(lhs==rhs)<<std::endl ;
-      //  <<(lhs==rhs)<<" "<<(lhs!=rhs)
-      //  <<std::endl ;
       std::cout<<lhs<<" <=> "<<rhs<<" (< <= > >=) : "<<(lhs<=>rhs)
         <<" ("<<(lhs<rhs)<<" "<<(lhs<=rhs)
         <<" "<<(lhs>rhs)<<" "<<(lhs>=rhs)<<")"
@@ -139,9 +136,9 @@
     }
     int main()
     {
-      compare<Ratio>({ 3, 4 },{ 2, 3 }) ;
-      compare<Ratio>({ 3, 6 },{ 2, 3 }) ;
-      compare<Ratio>({ 1, 2 },{ 2, 4 }) ;
+      compare(Ratio{ 3, 4 }, Ratio{ 2, 3 }) ;
+      compare(Ratio{ 3, 6 }, Ratio{ 2, 3 }) ;
+      compare(Ratio{ 1, 2 }, Ratio{ 2, 4 }) ;
     }
      \end{cppcode*}
   \end{exampleblock}
@@ -157,7 +154,7 @@
   \begin{block}{Home-made class}
     \begin{itemize}
       \item As one can see from previous code, we have defined only \mintinline{cpp}{<=>}, but \mintinline{cpp}{<}, \mintinline{cpp}{>}, \mintinline{cpp}{<=} and \mintinline{cpp}{=>} work as well. The compiler can express the latter operators in terms of \mintinline{cpp}{<=>}. Of course, one can also provide own implementations.
-      \item It has NOT added a default implementation for \mintinline{cpp}{==} and \mintinline{cpp}{!=}. Those operators are generally expected to mean \textbf{equal}, rather than \textbf{equivalent}. If \mintinline{cpp}{<=>} does not provide a strong order, it is generally advised not to define \mintinline{cpp}{==}.
+      \item It will \emph{NOT} add a default implementation for \mintinline{cpp}{==} and \mintinline{cpp}{!=}. Those operators are generally expected to mean \textbf{equal}, rather than \textbf{equivalent}. If \mintinline{cpp}{<=>} does not provide a strong order, it is generally advised not to define \mintinline{cpp}{==}.
     \end{itemize}
   \end{block}
 \end{frame}
@@ -208,7 +205,7 @@ A, 19, Djamila
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Default \texttt{<=>} implementation}
     \begin{itemize}
-      \item We see above that the definition of \mintinline{cpp}{<=>} has been provided by the compiler, and the use of \mintinline{cpp}{<} by \mintinline{cpp}{std::set} to sorts its elements has been rewritten by the compiler in terms of \mintinline{cpp}{<=>}.
+      \item We see above that the definition of \mintinline{cpp}{<=>} has been provided by the compiler, and the use of \mintinline{cpp}{<} by \mintinline{cpp}{std::set} to sort its elements has been rewritten by the compiler in terms of \mintinline{cpp}{<=>}.
       \item If \mintinline{cpp}{<=>} is defaulted and no \mintinline{cpp}{==} is defined, then the compiler also provides a defaulted \mintinline{cpp}{==}.
     \end{itemize}
   \end{block}
