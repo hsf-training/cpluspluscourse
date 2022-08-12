@@ -1,9 +1,8 @@
-#include <iostream>
-#include <cstdlib>
-#include <math.h>
+#include <random>
+#include <cmath>
 
-#define NBITERATIONS 20
-#define MAX 40
+constexpr auto NBITERATIONS = 20;
+constexpr auto MAX = 40u;
 
 unsigned int add(unsigned int a, unsigned int b) {
     return a + b;
@@ -28,13 +27,15 @@ unsigned int fibo(int a) {
 }
 
 unsigned int fibo2(int n) {
-    return static_cast<unsigned int>((1/sqrt(5)) * (pow(((1 + sqrt(5)) / 2), n) - pow(((1 - sqrt(5)) / 2), n)));
+    return static_cast<unsigned int>((1/std::sqrt(5)) * (std::pow(((1 + std::sqrt(5)) / 2), n) - std::pow(((1 - std::sqrt(5)) / 2), n)));
 }
 
 int main() {
+    std::default_random_engine e;
+    std::uniform_int_distribution d{0u, MAX};
     for (unsigned int i = 0; i < NBITERATIONS; i++) {
-        unsigned int a = rand()%MAX;
-        unsigned int b = rand()%MAX;
+        unsigned int a = d(e);
+        unsigned int b = d(e);
         add(a, b);
         mul(a, b);
         power(a, b);

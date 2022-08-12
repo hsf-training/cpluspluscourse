@@ -3,7 +3,7 @@
 
 Drawable::Drawable(int id) : m_id(id) {};
 
-void Drawable::draw() {
+void Drawable::draw() const {
     std::cout << "Drawing " << m_id << '\n';
 };
 

@@ -1,23 +1,20 @@
 #include "Structs.h"
 
-#include <cstring>
-#include <cstdio>
+#include <iostream>
 #include <chrono>
 #include <thread>
+#include <cstring>
 
 /// Construct a new instance of SlowToCopy.
-SlowToCopy::SlowToCopy() {
-    strncpy(data, "Large type", sizeof(data));
-}
+SlowToCopy::SlowToCopy() : name("Large type") {}
 
 /// Construct a new instance of SlowToCopy.
-SlowToCopy::SlowToCopy(const char* string) {
-    strncpy(data, string, sizeof(data));
-}
+SlowToCopy::SlowToCopy(const std::string& name) : name(name) {}
 
 /// Construct a new instance of SlowToCopy, copying the data from 'other'.
 SlowToCopy::SlowToCopy(const SlowToCopy& other) {
-    printf("%s: Please don't copy me. This is slow.\n", __func__);
+    std::cout << __func__ << ": Please don't copy me. This is slow.\n";
     std::this_thread::sleep_for(std::chrono::seconds(3));
-    memcpy(data, other.data, sizeof(data));
+    name = other.name;
+    std::memcpy(bigdata, other.bigdata, sizeof(bigdata));
 }

@@ -75,7 +75,7 @@ int main() {
     std::cout << "\n\n";
 
     std::cout << "Int Complex\n";
-    typedef Complex_t<int> IComplex;
+    using IComplex = Complex_t<int>;
     OrderedVector<IComplex> vci(5);
     vci.add(IComplex(2,0));
     vci.add(IComplex(1,1));
@@ -87,7 +87,7 @@ int main() {
     std::cout << "\n\n";
 
     std::cout << "Very Complex\n";
-    typedef Complex_t<Complex> VComplex;
+    using VComplex = Complex_t<Complex>;
     OrderedVector<VComplex> vcv(5);
     vcv.add(VComplex(Complex(2,0),Complex(1,0)));
     vcv.add(VComplex(Complex(2,0),Complex(0,2)));

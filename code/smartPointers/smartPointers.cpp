@@ -34,7 +34,7 @@ double sumEntries(const double* data, std::size_t size) {
     if (size > 200)
         throw std::invalid_argument("I only want to sum 200 numbers or less.");
 
-    return std::reduce(data, data + size, 0);
+    return std::reduce(data, data + size, 0.);
 }
 
 // Often, data are owned by one entity, and only used by others. Fix the leak.
@@ -51,7 +51,7 @@ void doStuffWithData() {
 void problem1() {
    try {
        doStuffWithData();
-   } catch (std::exception& e) {
+   } catch (const std::exception& e) {
        std::cerr << "problem1(): Do stuff with data terminated with exception:\n" << e.what()
                << "\n We may have a memory leak now.\n";
    }
@@ -81,7 +81,7 @@ struct LargeObject {
 // A factory function to create large objects.
 LargeObject* createLargeObject() {
     auto object = new LargeObject();
-    // Do more setting up of object here
+    // Do more setup of object here
     // ...
 
     return object;
@@ -131,7 +131,7 @@ void removeMiddle(std::vector<LargeObject*>& collection) {
     auto middlePosition = collection.begin() + collection.size()/2;
 
     // Must not delete element when erasing from collection, because it's also in the copy ...
-    collection.erase(middlePosition, middlePosition+1);
+    collection.erase(middlePosition);
 }
 
 // This removes a random element.
@@ -140,7 +140,7 @@ void removeMiddle(std::vector<LargeObject*>& collection) {
 void removeRandom(std::vector<LargeObject*>& collection) {
     auto pos = collection.begin() + time(nullptr) % collection.size();
 
-    collection.erase(pos, pos+1);
+    collection.erase(pos);
 }
 
 // Do something with an element.
@@ -252,7 +252,7 @@ private:
 void problem4_1() {
     std::vector<Owner> owners;
 
-    for (unsigned int i=0; i < 5; ++i) {
+    for (int i=0; i < 5; ++i) {
         Owner owner;
         owners.push_back(owner);
     }

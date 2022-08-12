@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <random>
 #include "NVector.hpp"
 
 template<typename T>
@@ -13,9 +14,11 @@ template<typename T>
 void randomize(std::vector<T> &v) {
     // we randomize via len random inversions
     std::size_t len = v.size();
+    std::default_random_engine e;
+    std::uniform_int_distribution<std::size_t> d{0, len};
     for (std::size_t i = 0; i < len; i++) {
-        int a = rand()%len;
-        int b = rand()%len;
+        int a = d(e);
+        int b = d(e);
         swap(v, a, b);
     }
 }

@@ -49,7 +49,7 @@ void doStuffWithData() {
 void problem1() {
    try {
        doStuffWithData();
-   } catch (std::exception& e) {
+   } catch (const std::exception& e) {
        std::cerr << "problem1(): Do stuff with data terminated with exception:\n" << e.what() << '\n';
    }
 }
@@ -78,7 +78,7 @@ struct LargeObject {
 // A factory function to create large objects.
 std::unique_ptr<LargeObject> createLargeObject() {
     auto object = std::make_unique<LargeObject>();
-    // Do more setting up of object here
+    // Do more setup of object here
     // ...
 
     return object;
@@ -131,7 +131,7 @@ void removeMiddle(std::vector<std::shared_ptr<LargeObject>>& collection) {
     auto middlePosition = collection.begin() + collection.size()/2;
 
     // Must not delete element when erasing from collection, because it's also in the copy ...
-    collection.erase(middlePosition, middlePosition+1);
+    collection.erase(middlePosition);
 }
 
 // This removes a random element.
@@ -140,7 +140,7 @@ void removeMiddle(std::vector<std::shared_ptr<LargeObject>>& collection) {
 void removeRandom(std::vector<std::shared_ptr<LargeObject>>& collection) {
     auto pos = collection.begin() + time(nullptr) % collection.size();
 
-    collection.erase(pos, pos+1);
+    collection.erase(pos);
 }
 
 // Do something with an element.
@@ -182,11 +182,11 @@ void problem3() {
  * 4: Smart pointers as class members.
  *
  * Class members that are pointers can quickly become a problem.
- * Firstly, if only raw pointers are used, the intended ownerships are unclear.
+ * Firstly, if only raw pointers are used, the intended ownership is unclear.
  * Secondly, it's easy to overlook that a member has to be deleted.
- * Thirdly, pointer members usually require to implement copy or move constructors or assignment
- * operators.
- * Since C++-11, one can solve those problems using smart pointers.
+ * Thirdly, pointer members usually require you to implement copy or move constructors and assignment
+ * operators (--> rule of 3, rule of 5).
+ * Since C++-11, one can solve a few of those problems using smart pointers.
  *
  * 4.1:
  * The class "Owner" owns some data, but it is broken. If you copy it like in
@@ -209,7 +209,8 @@ void problem3() {
  * To do this, we use a weak pointer.
  *
  * Tasks:
- * - Comment in the line in problem4_2() that crashes the program.
+ * - Comment in problem4_2() in main().
+ * - Investigate the crash. Use a debugger, run in valgrind, compile with -fsanitize=address ...
  * - Rewrite the interface of Owner::getData() such that the observer can see the shared_ptr to the large object.
  * - Set up the Observer such that it stores a weak pointer that observes the large object.
  * - In Observer::processData(), access the weak pointer, and use the data *only* if the memory is still alive.
@@ -235,7 +236,7 @@ private:
 void problem4_1() {
     std::vector<Owner> owners;
 
-    for (unsigned int i=0; i < 5; ++i) {
+    for (int i=0; i < 5; ++i) {
         Owner owner;
         owners.push_back(owner);
     }
@@ -250,7 +251,7 @@ public:
         _largeObj(owner.getData()) { }
 
     double processData() const {
-        if (auto data = _largeObj.lock(); data) { // Needs c++-17
+        if (auto data = _largeObj.lock(); data) { // Needs C++-17
             return data->fData[0];
         }
 
@@ -280,9 +281,6 @@ void problem4_2() {
         observer.processData();
     }
 }
-
-
-
 
 
 int main() {

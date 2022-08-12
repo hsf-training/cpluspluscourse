@@ -1,4 +1,4 @@
-#include <cstdio>
+#include <iostream>
 
 struct DontCopyMe {
    int resultA;
@@ -9,7 +9,7 @@ struct DontCopyMe {
    DontCopyMe(const DontCopyMe& other) :
        resultA(other.resultA),
        resultB(other.resultB)
-   { printf("Please don't copy me\n"); }
+   { std::cout << "Please don't copy me\n"; }
 };
 
 int main() {
@@ -32,9 +32,7 @@ int main() {
       resultA += item.resultA;
       resultB += item.resultB;
    }
-
-
-   printf("resultA = %d\tresultB = %d\n", resultA, resultB);
+   std::cout << "resultA = " << resultA << "\tresultB = " << resultB << "\n";
 
    return 0;
 }

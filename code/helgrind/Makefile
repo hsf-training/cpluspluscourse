@@ -5,7 +5,7 @@ clean:
 	rm -f *o fiboMT *~ fiboMT.sol core
 
 fiboMT : fiboMT.cpp
-	${CXX} -g -O0 -Wall -Wextra -pthread -o $@ $<
+	${CXX} -std=c++17 -g -O0 -Wall -Wextra -o $@ $<
 
 fiboMT.sol : solution/fiboMT.sol.cpp
-	${CXX} -g -O0 -Wall -Wextra -pthread -o $@ $<
+	${CXX} -std=c++17 -g -O0 -Wall -Wextra -o $@ $<

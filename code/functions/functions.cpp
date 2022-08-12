@@ -9,17 +9,17 @@
  * 3. Try passing by copy and passing by reference, see the difference.
  * 4. When passing by reference, ensure that your "printFiveCharacters" cannot inadvertently modify the original object.
  *    To test its const correctness, try adding something like
- *      argument.data[0] = 'a';
+ *      argument.name[0] = 'a';
  *    to your print function.
  *    Try both with and without const attributes in your print function's signature.
  */
 
 #include "Structs.h" // The data structs we will work with
 
-#include <cstdio> // For printing
+#include <iostream> // For printing
 
 void printFiveCharacters(FastToCopy argument) {
-    printf("The first five characters are '%.5s'\n", argument.data);
+    std::cout << argument.name << "\n";
 }
 
 int main() {
