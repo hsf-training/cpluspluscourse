@@ -139,7 +139,7 @@
     \end{cppcode*}
   \end{block}
   \begin{itemize}
-    \item Next to a template parameter, \mintinline{cpp}{&&} is not an rvalue, but a ``forwarding reference'' (aka. ``universal reference'')
+    \item Next to a template parameter, \mintinline{cpp}{&&} is not an rvalue, but a ``forwarding reference'' (aka.\ ``universal reference'')
     \item \mintinline{cpp}{T&&} actual type depends on the arguments passed to func
     \begin{itemize}
       \item if an lvalue of type U is given, T is deduced to \mintinline{cpp}{U&}
