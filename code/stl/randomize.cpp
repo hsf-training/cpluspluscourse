@@ -5,25 +5,23 @@
 #include <random>
 #include "Complex.hpp"
 
-using namespace std;
-
 template<typename T>
 void compute(int len, T initial, T step) {
     // allocate vectors
     std::vector<T> v(len+1), diffs(len+1);
 
     // fill and randomize v
-    generate(, , [](...) { ...; });
-    shuffle(..., std::default_random_engine{});
+    std::generate(, , [](...) { ...; });
+    std::shuffle(..., std::default_random_engine{});
 
     // compute differences
-    adjacent_difference(...);
+    std::adjacent_difference(...);
 
     // compute standard deviation of it
-    T sum = reduce(...);
-    T sumsq = reduce(..., [](...) { ...; });
-    T mean = sum/len;
-    T variance = sumsq/len - mean*mean;
+    const T sum = std::reduce(...);
+    const T sumsq = std::reduce(..., [](...) { ...; });
+    const T mean = sum/len;
+    const T variance = sumsq/len - mean*mean;
 
     std::cout << "Range = [" << initial << ", " << step*len << "]\n"
               << "Mean = " << mean << '\n'

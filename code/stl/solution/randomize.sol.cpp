@@ -5,8 +5,6 @@
 #include <random>
 #include "Complex.hpp"
 
-using namespace std;
-
 template<typename T>
 struct Generator {
     T m_value, m_step;
@@ -29,17 +27,27 @@ void compute(int len, T initial, T step) {
     std::vector<T> v(len+1), diffs(len+1);
 
     // fill and randomize v
-    generate(v.begin(), v.end(), Generator<T>(initial, step));
-    shuffle(v.begin(), v.end(), std::default_random_engine{});
+    std::generate(v.begin(), v.end(), Generator<T>(initial, step));
+    // Alternatively:
+    // std::generate(v.begin(), v.end(), [value = initial, step]() mutable {
+    //     const T cur = value;
+    //     value += step;
+    //     return cur;
+    // });
+
+    std::shuffle(v.begin(), v.end(), std::default_random_engine{});
 
     // compute differences
-    adjacent_difference(v.begin(), v.end(), diffs.begin());
+    std::adjacent_difference(v.begin(), v.end(), diffs.begin());
 
     // compute standard deviation of it
-    T sum = reduce(diffs.begin()+1, diffs.end(), T());
-    T sumsq = reduce(diffs.begin()+1, diffs.end(), T(), sumsquare<T>());
-    T mean = sum/len;
-    T variance = sumsq/len - mean*mean;
+    const T sum = std::reduce(diffs.begin()+1, diffs.end(), T());
+    const T sumsq = std::reduce(diffs.begin()+1, diffs.end(), T(), sumsquare<T>());
+    // Alternatively:
+    // const T sumsq = std::reduce(diffs.begin()+1, diffs.end(), T(),
+    //                             [](const T& s, const T& a) { return s + a * a; });
+    const T mean = sum/len;
+    const T variance = sumsq/len - mean*mean;
 
     std::cout << "Range = [" << initial << ", " << step*len << "]\n"
               << "Mean = " << mean << '\n'
