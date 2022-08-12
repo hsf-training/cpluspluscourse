@@ -17,7 +17,7 @@ void compute(int len, T initial, T step) {
     // compute differences
     std::adjacent_difference(...);
 
-    // compute standard deviation of it
+    // compute standard deviation of all differences
     const T sum = std::reduce(...);
     const T sumsq = std::reduce(..., [](...) { ...; });
     const T mean = sum/len;
