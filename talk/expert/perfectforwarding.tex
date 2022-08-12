@@ -31,9 +31,12 @@
       }
     \end{cppcode*}
   \end{block}
-  \begin{alertblock}{What about references ?}
-    what if func takes references to avoid copies ?\\
-    wrapper would force a copy and we fail to use references
+  \begin{alertblock}{What about references?}
+    \begin{itemize}
+      \item what if \mintinline{cpp}{func} takes a reference to avoid copies?
+      \item wrapper would force a copy and we fail to use references
+    \end{itemize}
+
   \end{alertblock}
 \end{frame}
 
@@ -60,7 +63,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{The solution: cover all cases}
+  \frametitlecpp[11]{Solution: cover all cases}
   \begin{block}{}
     \begin{cppcode*}{}
       template <typename T>
@@ -135,22 +138,23 @@
       void func(T&& t) {}
     \end{cppcode*}
   \end{block}
-  Next to a template parameter, \mintinline{cpp}{&&} is not an rvalue, but a ``forwarding reference'' (aka. ``universal reference'')\\
-  \mintinline{cpp}{T&&} actual type depends on the arguments passed to func
   \begin{itemize}
-  \item if an lvalue of type U is given, T is deduced to \mintinline{cpp}{U&}
-  \item otherwise, collapse references normally
+    \item Next to a template parameter, \mintinline{cpp}{&&} is not an rvalue, but a ``forwarding reference'' (aka.\ ``universal reference'')
+    \item \mintinline{cpp}{T&&} actual type depends on the arguments passed to func
+    \begin{itemize}
+      \item if an lvalue of type U is given, T is deduced to \mintinline{cpp}{U&}
+      \item otherwise, collapse references normally
+    \end{itemize}
   \end{itemize}
   \begin{block}{}
     \begin{cppcode*}{firstnumber=3}
-      func(4);        // rvalue -> T&& is int&&
+      func(4);            // rvalue -> T&& is int&&
       double d = 3.14;
-      func(d);        // lvalue -> T&& is double&
+      func(d);            // lvalue -> T&& is double&
       float f() {...}
-      func(f());      // rvalue -> T&& is float&&
-      int foo(int i) {
-        func(i);      // lvalue -> T&& is int&
-      }
+      func(f());          // rvalue -> T&& is float&&
+      std::string s = "hello";
+      g(std::move(s)); // rvalue -> T&& is std::string&&
     \end{cppcode*}
   \end{block}
 \end{frame}

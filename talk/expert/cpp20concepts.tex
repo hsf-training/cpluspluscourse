@@ -13,7 +13,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[20]{The world before concepts}
+  \frametitlecpp[17]{The world before concepts}
   \begin{block}{\cpp17 work around : SFINAE}
     \begin{itemize}
     \item Unsuited arguments can be avoided by inserting fake template arguments,
@@ -53,10 +53,10 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
   \frametitlecpp[20]{Basic requirements}
   \begin{block}{A new keyword}
     \begin{itemize}
-      \item The keyword {\it requires} let us define various constraints.
+      \item The keyword \mintinline{cpp}{requires} let us define various constraints.
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{\cpp20 code}
+  \begin{exampleblock}{With concepts}
     \scriptsize
     \begin{cppcode*}{}
     template<typename T>
@@ -134,7 +134,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \begin{block}{Concepts as template parameters}
       \begin{itemize}
       \item concepts can be used in template parameter lists
-      \item replacing {\it typename}
+      \item replacing \mintinline{cpp}{typename}
       \end{itemize}
     \end{block}
     \begin{exampleblock}{}
@@ -148,7 +148,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \end{exampleblock}
     \begin{block}{Concepts in abbreviated function arguments}
       \begin{itemize}
-        \item concepts can be used together with {\it auto} in abbreviated function templates
+        \item concepts can be used together with \mintinline{cpp}{auto} in abbreviated function templates
       \end{itemize}
     \end{block}
     \begin{exampleblock}{}
@@ -188,7 +188,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \begin{block}{Concepts as boolean operators}
       \begin{itemize}
         \item Concepts can be used wherever a boolean is expected
-        \item they can appear in {\it if constexpr} conditions
+        \item they can appear in \mintinline{cpp}{if constexpr} conditions
           \begin{itemize}
           \item since they are evaluated at compile-time
           \end{itemize}
@@ -212,8 +212,8 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
 
 \begin{frame}[fragile]
     \frametitlecpp[20]{Advanced requirements overview}
-    \begin{block}{{\it requires} as an expression}
-        {\it requires} can express more than basic requirements. It can
+    \begin{block}{\texttt{requires} as an expression}
+        \mintinline{cpp}{requires} can express more than basic requirements. It can
         \begin{itemize}
             \item include other basic requirements
             \item list expressions that must be valid
@@ -239,9 +239,9 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \frametitlecpp[20]{Requirements and concepts}
     \begin{block}{To be remembered}
       \begin{itemize}
-      \item A template can now {\it requires} properties of its parameters
+      \item A template can now \emph{require} properties of its parameters
       \item Compiler error messages clearly state which argument does not fulfill which requirement
-      \item A set of requirements can be gathered in a {\it concept}
+      \item A set of requirements can be gathered in a \emph{concept}
       \item Overload resolution takes requirements into account
       \item The standard library provides many ready-to-use concepts
       \item Writing a new good concept is an expert topic

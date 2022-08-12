@@ -20,7 +20,7 @@
         // Parse Input
         float r, i;
         if (!PyArg_ParseTuple(args, "ff", &r, &i))
-          return NULL;
+          return nullptr;
         // Call C++ function
         int result = mandel(Complex(r, i));
         // Build returned objects
@@ -38,14 +38,14 @@
       PyMethodDef mandelMethods[] = {
           {"mandel", mandel_wrapper, METH_VARARGS,
           "computes nb of iterations for mandelbrot set"},
-          {NULL, NULL, 0, NULL}
+          {nullptr, nullptr, 0, nullptr}
       };
       // declare the module
       struct PyModuleDef mandelModule = {
         PyModuleDef_HEAD_INIT,
-        "mandel", NULL, -1, mandelMethods
+        "mandel", nullptr, -1, mandelMethods
       };
-      PyMODINIT_FUNC PyInit_mandel(void) {
+      PyMODINIT_FUNC PyInit_mandel() {
         return PyModule_Create(&mandelModule);
       }
     \end{cppcode*}
@@ -57,7 +57,7 @@
   \begin{block}{First compile the module}
     \begin{itemize}
     \item as a regular shared library
-    \item with '-I \$(PYTHON\_INCLUDE)'
+    \item with '\mintinline{bash}{-I \$(PYTHON\_INCLUDE)}'
     \end{itemize}
   \end{block}
   \begin{block}{mandel.py - see code/python exercise}

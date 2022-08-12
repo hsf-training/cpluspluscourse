@@ -4,20 +4,20 @@
   \frametitlecpp[11]{Basic concurrency}
   \begin{block}{Threading}
     \begin{itemize}
-    \item new object std::thread in \textless{}thread\textgreater{} header
+    \item new object \mintinline{cpp}{std::thread} in \mintinline{cpp}{<thread>} header
     \item takes a function as argument of its constructor
     \item must be detached or joined before the main thread terminates
-    \item \cpp20: std::jthread automatically joins at destruction
+    \item \cpp20: \mintinline{cpp}{std::jthread} automatically joins at destruction
     \end{itemize}
   \end{block}
   \pause
   \begin{exampleblock}{Example code}
     \begin{cppcode*}{}
-      void doSth() {...}
-      void doSthElse() {...}
+      void foo() {...}
+      void bar() {...}
       int main() {
-        std::thread t1(doSth);
-        std::thread t2(doSthElse);
+        std::thread t1(foo);
+        std::thread t2(bar);
         for (auto t: {&t1,&t2}) t->join();
       }
     \end{cppcode*}
@@ -53,38 +53,38 @@
   \begin{block}{Concept}
     \begin{itemize}
     \item separation of the specification of what should be done and the retrieval of the results
-    \item ``start working on this, and ping me when it's ready''
+    \item ``start working on this, and let me check if it's done''
     \end{itemize}
   \end{block}
   \pause
   \begin{block}{Practically}
     \begin{itemize}
-    \item std::async function launches an asynchronous task
-    \item std::future template allows to handle the result
+    \item \mintinline{cpp}{std::async} function launches an asynchronous task
+    \item \mintinline{cpp}{std::future<T>} allows to retrieve the result
     \end{itemize}
   \end{block}
   \pause
   \begin{exampleblock}{Example code}
     \begin{cppcode*}{}
-      int computeSth() {...}
-      std::future<int> res = std::async(computeSth);
-      std::cout << res->get() << std::endl;
+      int f() {...}
+      std::future<int> res = std::async(f);
+      std::cout << res->get();
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Mixing the two}
-  \begin{block}{Is async running concurrent code ?}
+  \begin{block}{Is async running concurrently ?}
     \begin{itemize}
     \item it depends!
     \item you can control this with a launch policy argument
       \begin{description}
-      \item[std::launch::async] spawns a thread for immediate execution
+      \item[std::launch::async] start executing immediately on a separate thread (may be a new thread, a thread pool, ...)
       \item[std::launch::deferred] causes lazy execution in current thread
       \end{description}
       \begin{itemize}
-      \item execution starts when get() is called
+      \item execution starts when \mintinline{cpp}{get()} is called on the returned future
       \end{itemize}
     \item default is not specified!
     \end{itemize}
@@ -92,23 +92,21 @@
   \pause
   \begin{exampleblock}{Usage}
     \begin{cppcode*}{}
-      int computeSth() {...}
-      auto res = std::async(std::launch::async,
-                            computeSth);
-      auto res2 = std::async(std::launch::deferred,
-                             computeSth);
+      int f() {...}
+      auto res1 = std::async(std::launch::async, f);
+      auto res2 = std::async(std::launch::deferred, f);
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Fine grained control on asynchronous execution}
-  \begin{block}{std::packaged\_task template}
+  \begin{block}{\texttt{std::packaged\_task} template}
     \begin{itemize}
     \item creates an asynchronous version of any function-like object
       \begin{itemize}
       \item identical arguments
-      \item returns a std::future
+      \item returns a \mintinline{cpp}{std::future}
       \end{itemize}
     \item provides access to the returned future
     \item associated with threads, gives full control on execution
@@ -117,10 +115,10 @@
   \pause
   \begin{exampleblock}{Usage}
     \begin{cppcode*}{}
-      int task() { return 42; }
-      std::packaged_task<int()> pckd_task(task);
-      auto future = pckd_task.get_future();
-      pckd_task();
+      int f() { return 42; }
+      std::packaged_task<int()> task(f);
+      auto future = task.get_future();
+      task();
       std::cout << future.get() << std::endl;
     \end{cppcode*}
   \end{exampleblock}

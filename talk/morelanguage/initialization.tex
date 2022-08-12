@@ -102,7 +102,7 @@
     \begin{cppcode}
       auto i(42);    // int
       auto i{42};    // C++11: std::initializer_list<int>
-                     // since C++14: int
+                     // since C++17: int
       auto i = 42;   // int
       auto i = {42}; // std::initializer_list<int>
     \end{cppcode}
@@ -134,7 +134,7 @@
       T t();    // function declaration
     \end{cppcode}
     \begin{itemize}
-      \item Basically zero-initializes \mintinline{cpp}{t} (or the temporary), unless \mintinline{cpp}{T} has a user defined constructor
+      \item Basically zero-initializes \mintinline{cpp}{t} (or the temporary), unless \mintinline{cpp}{T} has a user defined constructor, which is run in this case
       \item Details on \href{https://en.cppreference.com/w/cpp/language/value_initialization}{cppreference}
     \end{itemize}
   \end{block}

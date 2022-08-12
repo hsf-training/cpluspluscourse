@@ -70,11 +70,11 @@ int l = *pak;
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{nullptr}
-  \begin{block}{Finally a \cpp~NULL pointer}
+  \begin{block}{A pointer to nothing}
     \begin{itemize}
     \item if a pointer doesn't point to anything, set it to \mintinline{cpp}{nullptr}
-    \item works like 0 or NULL in standard cases
-    \item triggers compilation error when mapped to integer
+    \item same as setting it to 0 or \mintinline{cpp}{NULL} (before \cpp11)
+    \item triggers compilation error when assigned to integer
     \end{itemize}
   \end{block}
   \pause

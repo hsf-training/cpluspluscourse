@@ -108,16 +108,15 @@
   \begin{cppcode*}{}
     template<typename KeyType=int, typename ValueType=KeyType>
     struct Map {
-      void set(const KeyType &key, ValueType value);
+      // declaration and inline definition
+      void set(const KeyType &key, ValueType value) {
+        ...
+      }
+      // just declaration
       ValueType get(const KeyType &key);
     }
 
-    template<typename KeyType, typename ValueType>
-    void Map<KeyType, ValueType>::set
-       (const KeyType &key, ValueType value) {
-      ...
-    }
-
+    // out-of-line definition
     template<typename KeyType, typename ValueType>
     ValueType Map<KeyType, ValueType>::get
        (const KeyType &key) {
