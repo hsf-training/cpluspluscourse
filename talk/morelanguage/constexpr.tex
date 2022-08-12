@@ -23,28 +23,6 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Static Assertions}
-  \begin{block}{static\_assert declaration}
-    \begin{itemize}
-    \item Performs compile time assertions; meaning a failed assertion stops compilation
-    \item The expression has to be a constant boolean expression
-    \item Purely evaluated at compile time, no effect at runtime
-    \item Often used in template programming to make assertions on types
-    \end{itemize}
-  \end{block}
-  \pause
-  \begin{exampleblock}{Example}
-    \begin{cppcode*}{}
-      constexpr int f(int x) {
-        return x > 1 ? x * f(x - 1) : 1;
-      }
-      static_assert(f(5)==120,"Expected f(5) to be 120!");
-      static_assert(f(5)==120); // C++17
-    \end{cppcode*}
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}[fragile]
   \frametitlecpp[14]{Generalized Constant Expressions(2)}
   \begin{block}{Notes}
     \begin{itemize}
