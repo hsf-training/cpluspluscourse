@@ -4,9 +4,18 @@
 
 \input{setup}
 
-\newboolean{onlybasics}
-\setboolean{onlybasics}{false}
+% setup for the basic/advanced course switch
+% create a new latex if called basic (false by default)
+\newif\ifbasic
+%\basictrue % uncomment to make basic true
 \IfFileExists{onlybasics.tex}{\input{onlybasics}}{}
+
+% create a comment environment advanced. depending on the value of basic, we exclude or include it.
+\ifbasic
+\excludecomment{advanced}
+\else
+\includecomment{advanced}
+\fi
 
 \newunicodechar{σ}{$\sigma$}
 \newunicodechar{µ}{$\mu$}
@@ -99,19 +108,7 @@
 \input{basicconcepts/inline}
 \input{basicconcepts/assert}
 
-% basic version has subset of tools at this stage
-\ifthenelse{\boolean{onlybasics}}{
-  \section[Tool]{Useful tools}
-  \input{tools/editors}
-  \input{tools/vcs}
-  \input{tools/formatting}
-  \input{tools/compiling}
-  \input{tools/debugging}
-}{}
-
-% basic version only keeps a subset of these 2 chapters
 \section[OO]{Object orientation (OO)}
-\ifthenelse{\boolean{onlybasics}}{
 \input{objectorientation/objectsclasses}
 \input{objectorientation/inheritance}
 \input{objectorientation/constructors}
@@ -121,53 +118,44 @@
 \input{objectorientation/typecasting}
 \input{objectorientation/operators}
 \input{objectorientation/functors}
-} {
-\input{objectorientation/objectsclasses}
-\input{objectorientation/inheritance}
-\input{objectorientation/constructors}
-\input{objectorientation/static}
-\input{objectorientation/allocations}
-\input{objectorientation/advancedoo}
-\input{objectorientation/typecasting}
-\input{objectorientation/operators}
-\input{objectorientation/functors}
-\input{objectorientation/adl}
-}
+\begin{advanced}
+  \input{objectorientation/adl}
+\end{advanced}
 
 \section[More]{Core modern \cpp}
-\ifthenelse{\boolean{onlybasics}}{
 \input{morelanguage/constness}
-\input{morelanguage/exceptions}
-\input{morelanguage/templates}
-\input{morelanguage/lambda}
-\input{morelanguage/stl}
-\input{morelanguage/raii}
-} {
-\input{morelanguage/constness}
-\input{morelanguage/constexpr}
-\input{morelanguage/exceptions}
-\input{morelanguage/move}
-\input{morelanguage/copyelision}
-\input{morelanguage/templates}
-\input{morelanguage/lambda}
-\input{morelanguage/stl}
-\input{morelanguage/morestl}
-\input{morelanguage/random}
-\input{morelanguage/ranges}
-\input{morelanguage/raii}
-\input{morelanguage/initialization}
-}
+\begin{advanced}
+  \input{morelanguage/constexpr}
+\end{advanced}
 
-% do not include these chapters in basic version
-\ifthenelse{\boolean{onlybasics}}{}{
-\section[exp]{Expert \cpp}
-\input{expert/variadictemplate}
-\input{expert/perfectforwarding}
-\input{expert/sfinae}
-\input{expert/cpp20concepts}
-\input{expert/cpp20spaceship}
-\input{expert/modules}
-\input{expert/coroutines}
+\input{morelanguage/exceptions}
+\begin{advanced}
+  \input{morelanguage/move}
+  \input{morelanguage/copyelision}
+\end{advanced}
+\input{morelanguage/templates}
+\input{morelanguage/lambda}
+\input{morelanguage/stl}
+\begin{advanced}
+  \input{morelanguage/morestl}
+  \input{morelanguage/random}
+  \input{morelanguage/ranges}
+\end{advanced}
+\input{morelanguage/raii}
+\begin{advanced}
+  \input{morelanguage/initialization}
+\end{advanced}
+
+\begin{advanced}
+  \section[exp]{Expert \cpp}
+  \input{expert/variadictemplate}
+  \input{expert/perfectforwarding}
+  \input{expert/sfinae}
+  \input{expert/cpp20concepts}
+  \input{expert/cpp20spaceship}
+  \input{expert/modules}
+  \input{expert/coroutines}
+\end{advanced}
 
 \section[Tool]{Useful tools}
 \input{tools/editors}
@@ -176,24 +164,25 @@
 \input{tools/compiling}
 \input{tools/webtools}
 \input{tools/debugging}
-\input{tools/sanitizers}
-\input{tools/valgrind}
-\input{tools/staticanalysis}
-\input{tools/profiling}
-\input{tools/doxygen}
+\begin{advanced}
+  \input{tools/sanitizers}
+  \input{tools/valgrind}
+  \input{tools/staticanalysis}
+  \input{tools/profiling}
+  \input{tools/doxygen}
 
-\section[conc]{Concurrency}
-\input{concurrency/threadsasync}
-\input{concurrency/mutexes}
-\input{concurrency/atomic}
-\input{concurrency/condition}
+  \section[conc]{Concurrency}
+  \input{concurrency/threadsasync}
+  \input{concurrency/mutexes}
+  \input{concurrency/atomic}
+  \input{concurrency/condition}
 
-\section[py]{\cpp and python}
-\input{python/modulewriting}
-\input{python/marryingcandcpp}
-\input{python/ctypes}
-\input{python/cppyy}
-}
+  \section[py]{\cpp and python}
+  \input{python/modulewriting}
+  \input{python/marryingcandcpp}
+  \input{python/ctypes}
+  \input{python/cppyy}
+\end{advanced}
 
 \begin{frame}
   \frametitle{This is the end}

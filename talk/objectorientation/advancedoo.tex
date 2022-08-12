@@ -241,11 +241,8 @@
   \end{itemize}
 \end{frame}
 
-\ifthenelse{\boolean{onlybasics}}{%
-\begin{frame}<handout:0|beamer:0>[fragile]
-}{%
+\begin{advanced}
 \begin{frame}[fragile]
-}
   \frametitlecpp[11]{{\texttt final} keyword}
   \begin{block}{Idea}
     \begin{itemize}
@@ -267,6 +264,7 @@
     \end{cppcode}
   \end{exampleblock}
 \end{frame}
+\end{advanced}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Pure Virtual methods}

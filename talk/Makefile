@@ -5,7 +5,7 @@ essentials:
 
 %.pdf: *.tex **/*.tex
 ifdef ESSENTIALS
-	echo "\setboolean{onlybasics}{true}" > onlybasics.tex
+	echo "\basictrue" > onlybasics.tex
 else
 	rm -f onlybasics.tex
 endif
