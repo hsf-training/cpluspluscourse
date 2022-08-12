@@ -1,0 +1,94 @@
+\subsection[assert]{Assertions}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Assertions}
+  \begin{block}{Checking invariants in a program}
+    \begin{itemize}
+      \item An invariant is a property that is guaranteed to be true during certain phases of a program, and the program might crash or yield wrong results if it is violated
+      \begin{itemize}
+        \item ``Here, `a' should always be positive''
+      \end{itemize}
+      \item This can be checked using \mintinline{cpp}{assert}
+      \item The program will be aborted if the assertion fails
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{assert in practice}
+    \begin{overprint}
+    \onslide<1>
+    \begin{cppcode*}{}
+      #include <cassert>
+      double f(double a) {
+        // [...] do stuff with a
+        // [...] that should leave it positive
+        assert(a > 0.);
+        return std::sqrt(a);
+      }
+    \end{cppcode*}
+    \onslide<2>
+    \begin{Verbatim}
+% ./testAssert
+Assertion failed: (a > 0.), function f,
+                  file testAssert.cpp, line 5.
+Abort trap: 6
+    \end{Verbatim}
+    \end{overprint}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Assertions}
+  \begin{block}{Good practices}
+    \begin{itemize}
+      \item Assertions are mostly for developers and debugging
+      \item Use them to check important invariants of your program
+      \item Prefer handling user-facing errors with helpful error messages/exceptions
+      \item Assertions can impact the speed of a program
+      \begin{itemize}
+        \item Assertions are disabled when the macro \mintinline{cpp}{NDEBUG} is defined
+        \item Decide if you want to disable them when you release code
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Disabling assertions}
+    \small
+    Compile a program with NDEBUG defined:\\
+    \texttt{g++ \textcolor{blue}{-DNDEBUG} -O2 -W[...] test.cpp -o test.exe}
+
+    \begin{cppcode*}{}
+      double f(double a) {
+        assert(a > 0.); // no effect
+        return std::sqrt(a);
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Static Assert}
+  \begin{block}{Checking invariants at compile time}
+    \begin{itemize}
+      \item To check invariants at compile time, use \mintinline{cpp}{static_assert}
+      \item The assertion can be any constant expression (see later)
+      \item No runtime penalty!
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{\texttt{static\_assert}}
+    \small
+    \begin{cppcode*}{}
+      double f(UserType a) {
+        static_assert(
+          std::is_floating_point_v<UserType>,
+          "This function expects floating-point types.");
+        return std::sqrt(a);
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+  \scriptsize
+  \begin{Verbatim}[commandchars=\\\{\}]
+a.cpp: In function 'double f(UserType)':
+\textcolor{blue}{a.cpp:3:9:} \textcolor{red}{error:} \textcolor{blue}{static assertion failed: This function expects floating-point types.}
+   2 | static_assert(
+     |   \textcolor{red}{std::is_floating_point_v<UserType>},
+     |   \textcolor{red}{~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~}
+  \end{Verbatim}
+\end{frame}
