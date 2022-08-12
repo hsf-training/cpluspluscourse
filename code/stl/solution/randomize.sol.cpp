@@ -40,7 +40,8 @@ void compute(int len, T initial, T step) {
     // compute differences
     std::adjacent_difference(v.begin(), v.end(), diffs.begin());
 
-    // compute standard deviation of it
+    // compute standard deviation of all differences.
+    // Note that the first element is just the original element itself, so we need to skip it.
     const T sum = std::reduce(diffs.begin()+1, diffs.end(), T());
     const T sumsq = std::reduce(diffs.begin()+1, diffs.end(), T(), sumsquare<T>());
     // Alternatively:
