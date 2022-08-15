@@ -36,10 +36,8 @@ jobs:
           if (git diff --quiet) || (git diff --staged --quiet)
           then
             git commit -m "Update C++Course_${{ matrix.version }}.pdf"
-            while : ; do
+            until git push origin download; do
               git pull --rebase origin download
-              git push origin download
-              [[ $1 != 0 ]] || break
             done
           else
             echo "No changes to commit"
