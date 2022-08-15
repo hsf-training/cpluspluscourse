@@ -447,29 +447,36 @@
     \begin{column}{.6\textwidth}
       \begin{block}{Traditional workflow}
         \center
-        \begin{tikzpicture}
-          \draw [->](5,6) -- (5,0)  node [midway,right] {t};
-          \draw[thick]
-            node (vec)  at(3,6)   [rectangle,draw] {vector}
-            node (hpp)  at(1,4.5) [rectangle,draw] {h.hpp}
-            node (acpp) at(0,3)   [rectangle,draw] {a.cpp}
-            node (bcpp) at(2,3)   [rectangle,draw] {b.cpp}
-            node (ccpp) at(4,3)   [rectangle,draw] {c.cpp}
-            node (ao)   at(0,1.5) [rectangle,draw] {a.o}
-            node (bo)   at(2,1.5) [rectangle,draw] {b.o}
-            node (co)   at(4,1.5) [rectangle,draw] {c.o}
-            node (bin)  at(2,0)   [rectangle,draw] {binary};
-          \draw[very thick,dotted,->] (vec)  -- (hpp)  node [midway,fill=white,rounded rectangle] {\#};
-          \draw[very thick,dotted,->] (vec)  -- (bcpp) node [midway,fill=white,rounded rectangle] {\#};
-          \draw[very thick,dotted,->] (vec)  -- (ccpp) node [midway,fill=white,rounded rectangle] {\#};
-          \draw[very thick,dotted,->] (hpp)  -- (acpp) node [midway,fill=white,rounded rectangle] {\#};
-          \draw[very thick,dotted,->] (hpp)  -- (bcpp) node [midway,fill=white,rounded rectangle] {\#};
-          \draw[very thick,->] (acpp) -- (ao)   node [midway,fill=white,rounded rectangle] {Compiler};
-          \draw[very thick,->] (bcpp) -- (bo)   node [midway,fill=white,rounded rectangle] {Compiler};
-          \draw[very thick,->] (ccpp) -- (co)   node [midway,fill=white,rounded rectangle] {Compiler};
-          \draw[very thick,->] (ao)   -- (bin)  node [midway] {};
-          \draw[very thick,->] (bo)   -- (bin)  node [midway,fill=white,rounded rectangle] {Linker};
-          \draw[very thick,->] (co)   -- (bin)  node [midway] {};
+        \begin{tikzpicture} [
+            -Triangle,
+            very thick
+          ]
+          \draw [-Latex](5,6) -- (5,0)  node [midway,right] {t};
+          \path[thick]
+            node (vec)  at(3,6)   [draw, rectangle] {\textless{}vector\textgreater{}}
+            node (hpp)  at(1,4.5) [draw, rectangle] {h.hpp}
+            node (acpp) at(0,3)   [draw, rectangle] {a.cpp}
+            node (bcpp) at(2,3)   [draw, rectangle] {b.cpp}
+            node (ccpp) at(4,3)   [draw, rectangle] {c.cpp}
+            node (ao)   at(0,1.5) [draw, rectangle] {a.o}
+            node (bo)   at(2,1.5) [draw, rectangle] {b.o}
+            node (co)   at(4,1.5) [draw, rectangle] {c.o};
+
+          \node[below= 0.5 cm of bo,fill=white,rounded rectangle] (link) {Linker};
+          \node[below= 0.2 cm of link,rectangle,draw] (bin) {binary};
+
+          \draw[very thick,dotted] (vec)  -- (hpp)  node [midway,fill=white,rounded rectangle] {\scriptsize \#};
+          \draw[very thick,dotted] (vec)  -- (bcpp) node [midway,fill=white,rounded rectangle] {\scriptsize \#};
+          \draw[very thick,dotted] (vec)  -- (ccpp) node [midway,fill=white,rounded rectangle] {\scriptsize \#};
+          \draw[very thick,dotted] (hpp)  -- (acpp) node [midway,fill=white,rounded rectangle] {\scriptsize \#};
+          \draw[very thick,dotted] (hpp)  -- (bcpp) node [midway,fill=white,rounded rectangle] {\scriptsize \#};
+          \draw[very thick] (acpp) -- (ao)   node [pos=0.4,fill=white,rounded rectangle] {\scriptsize \texttt{Compiler}};
+          \draw[very thick] (bcpp) -- (bo)   node [pos=0.4,fill=white,rounded rectangle] {\scriptsize \texttt{Compiler}};
+          \draw[very thick] (ccpp) -- (co)   node [pos=0.4,fill=white,rounded rectangle] {\scriptsize \texttt{Compiler}};
+          \draw[very thick] (ao)   -- (link);
+          \draw[very thick] (bo)   -- (link);
+          \draw[very thick] (co)   -- (link);
+          \draw[thick] (link) -- (bin);
 
         \end{tikzpicture}
       \end{block}
@@ -513,10 +520,13 @@
       \begin{block}{New workflow}
         \center
         \resizebox{0.8\textwidth}{!}{%
-        \begin{tikzpicture}
-          \draw [->](7,10) -- (7,0)  node [midway,right] {t};
+        \begin{tikzpicture}[
+              -Triangle,
+              very thick
+            ]
+          \draw [-Latex](7,10) -- (7,0)  node [midway,right] {t};
           \draw[thick] node at(3, 10) [fill=white,rounded rectangle] {build dependencies};
-          \draw[thick]
+          \path[thick]
           node (vec)    at(5,9)   [rectangle,draw] {\textless{}vector\textgreater{}}
           node (vecbmi) at(4,7.5) [rectangle,draw] {vector.bmi}
           node (hcpp)   at(2,6)   [rectangle,draw] {h.cpp}
@@ -528,22 +538,25 @@
           node (ao)     at(2,1.5) [rectangle,draw] {a.o}
           node (bo)     at(4,1.5) [rectangle,draw] {b.o}
           node (co)     at(6,4.5) [rectangle,draw] {c.o}
+          node (link)   at(3,0.7) [fill=white, rounded rectangle] {\small Linker}
           node (bin)    at(3,0)   [rectangle,draw] {binary};
-          \draw[very thick,dotted,->] (vec) -- (ccpp) node [midway,fill=white,rounded rectangle] {\#};
-          \draw[very thick,->] (vec) -- (vecbmi) node [midway,fill=white,rounded rectangle] {Compiler};
-          \draw[very thick,dotted,->] (vecbmi) -- (hcpp) node [midway,fill=white,rounded rectangle] {imp};
-          \draw[very thick,->] (hcpp) -- (hbmi) node [midway,fill=white,rounded rectangle] {};
-          \draw[very thick,->] (hcpp) -- (ho) node [midway,right,fill=white,rounded rectangle] {Compiler};
-          \draw[very thick,dotted,->] (vecbmi) -- (bcpp) node [midway,fill=white,rounded rectangle] {imp};
-          \draw[very thick,dotted,->] (hbmi) -- (acpp) node [midway,fill=white,rounded rectangle] {imp};
-          \draw[very thick,dotted,->] (hbmi) -- (bcpp) node [midway,fill=white,rounded rectangle] {imp};
-          \draw[very thick,->] (acpp) -- (ao) node [midway,fill=white,rounded rectangle] {Compiler};
-          \draw[very thick,->] (bcpp) -- (bo) node [midway,fill=white,rounded rectangle] {Compiler};
-          \draw[very thick,->] (ccpp) -- (co) node [midway,fill=white,rounded rectangle] {Compiler};
-          \draw[very thick,->] (ho) to [bend right=30] (bin) node [midway] {};
-          \draw[very thick,->] (ao) -- (bin) node [midway] {};
-          \draw[very thick,->] (bo) -- (bin) node [midway,left,fill=white,rounded rectangle] {Linker};
-          \draw[very thick,->] (co) to [bend left=30] (bin) node [midway] {};
+          \draw[very thick,dotted] (vec) -- (ccpp) node [midway,fill=white,rounded rectangle] {\scriptsize \#};
+          \draw[very thick] (vec) -- (vecbmi) node [midway,fill=white,rounded rectangle] {\scriptsize Compiler};
+          \draw[very thick,dotted] (vecbmi) -- (hcpp) node [midway,fill=white,rounded rectangle] {\scriptsize imp};
+          \draw[very thick] (hcpp) -- (ho) node [pos=0.4] (hoLeft) {};
+          \draw[very thick] (hcpp) -- (hbmi) node [pos=0.4] (hoRight) {};
+          \path (hoLeft) -- (hoRight) node[midway,fill=white,rounded rectangle] {\scriptsize Compiler};
+          \draw[very thick,dotted] (vecbmi) -- (bcpp) node [midway,fill=white,rounded rectangle] {\scriptsize imp};
+          \draw[very thick,dotted] (hbmi) -- (acpp) node [pos=0.4,fill=white,rounded rectangle] {\scriptsize imp};
+          \draw[very thick,dotted] (hbmi) -- (bcpp) node [pos=0.4,fill=white,rounded rectangle] {\scriptsize imp};
+          \draw[very thick] (acpp) -- (ao) node [pos=0.4,fill=white,rounded rectangle] {\scriptsize \texttt{Compiler}};
+          \draw[very thick] (bcpp) -- (bo) node [pos=0.4,fill=white,rounded rectangle] {\scriptsize \texttt{Compiler}};
+          \draw[very thick] (ccpp) -- (co) node [pos=0.4,fill=white,rounded rectangle] {\scriptsize \texttt{Compiler}};
+          \draw[very thick] (ho) to [bend right=40] (link);
+          \draw[very thick] (ao) -- (link);
+          \draw[very thick] (bo) -- (link);
+          \draw[very thick] (co) to [bend left=40] (link);
+          \draw[thick] (link) -- (bin);
         \end{tikzpicture}
         }
       \end{block}
