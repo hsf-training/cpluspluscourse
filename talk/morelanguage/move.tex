@@ -44,42 +44,67 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Move semantics: the problem}
-  \begin{exampleblock}{Another potentially non efficient code}
-    \begin{cppcode*}{}
-      MyVector<int> vrandom(unsigned int n) {
-        MyVector<int> result(n);
-        ... // fill result
-        return result;
-      }
-      MyVector<int> v = vrandom(10000);
-    \end{cppcode*}
-  \end{exampleblock}
-  \pause
-  \begin{alertblock}{What could happen on line 4 and 6}
-    \begin{itemize}
-    \item one unnecessary allocation and one release for 10k \mintinline{cpp}{int}s
-    \item unnecessary copy of 10k \mintinline{cpp}{int}s
-    \item The compiler may optimize the copy away, but there is no guarantee (before \cpp17)
-    \end{itemize}
-  \end{alertblock}
-\end{frame}
+  \begin{exampleblock}{Another potentially inefficient code}
+    \begin{overprint}
+      \onslide<1-2>
+      \begin{cppcode*}{gobble=4}
+        T consumeVector(std::vector<int> input) {
+          // ... change elements, compute result
+          return result;
+        }
 
-\begin{frame}[fragile]
-  \frametitlecpp[98]{Move semantics: the problem}
-  \begin{exampleblock}{Dedicated efficient way before C++11}
-    \begin{cppcode*}{}
-      void vrandom(unsigned int n, MyVector<int> &v) {
-        v.resize(n);
-        ... // fill result
-      }
-      MyVector<int> v;
-      vrandom(10000, v);
-    \end{cppcode*}
+        std::vector<int> values{...};
+        consumeVector(values); // being copied now
+      \end{cppcode*}
+      \onslide<3-4>
+      \begin{cppcode*}{gobble=4}
+        T consumeVector(std::vector<int> const & input) {
+          std::vector tmp{input};
+          // ... change elements, compute result
+          return result;
+        }
+        std::vector<int> values{...};
+        consumeVector(values); // maybe copied internally?
+      \end{cppcode*}
+      \onslide<5->
+      \begin{cppcode*}{gobble=4}
+        T consumeVector(std::vector<int> & input) {
+          // ... change elements, compute result
+          return result;
+        }
+
+        std::vector<int> values{...};
+        consumeVector(values); // maybe modified?
+        somethingElse(values); // safe to use values now???
+      \end{cppcode*}
+    \end{overprint}
   \end{exampleblock}
-  \pause
-  \begin{block}{The ideal situation}
-    Have a way to express that we move the vector's content
-  \end{block}
+  \begin{overprint}
+    \onslide<2>
+    \begin{alertblock}{Pass by copy}
+      \begin{itemize}
+      \item One unnecessary (large?) allocation and release
+      \item Unnecessary copy of the \mintinline{cpp}{int}s
+      \end{itemize}
+    \end{alertblock}
+    \onslide<4>
+    \begin{alertblock}{Use references to avoid copies?}
+      \begin{itemize}
+      \item Working with pass by reference only moves allocation and copy to a different place
+      \end{itemize}
+    \end{alertblock}
+    \onslide<5>
+    \begin{alertblock}{So non-const references?}
+      \begin{itemize}
+      \item Non-\mintinline{cpp}{const} references could work, but does the outside know that we're changing the vector?
+      \item Could lead to bugs
+      \end{itemize}
+    \end{alertblock}
+    \onslide<6>
+    \begin{block}{The ideal situation}
+      Have a way to express that we move the vector's content
+    \end{block}
+  \end{overprint}
 \end{frame}
 
 \begin{frame}[fragile]
