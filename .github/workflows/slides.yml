@@ -35,8 +35,8 @@ jobs:
           git add -f "talk/C++Course_${{ matrix.version }}.pdf"
           if (git diff --quiet) || (git diff --staged --quiet)
           then
-            git commit -m "Update C++Course_${{ matrix.version }}.pdf"
-            until git push origin download; do
+            git commit --amend -m "Update C++Course.pdf"
+            until git push --force-with-lease origin download; do
               git pull --rebase origin download
             done
           else
