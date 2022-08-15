@@ -1,8 +1,4 @@
-
-# Name for this "action".
-name: Build Exercises
-
-# Perform the builds on every push and pull request.
+name: Build exercises
 on: [ push, pull_request ]
 
 # Cancel running jobs on force-push
