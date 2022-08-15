@@ -174,7 +174,7 @@
         \item \mintinline{cpp}{T t{};} performs full and deterministic initialization
       \end{itemize}
       \item Prefer \mintinline{cpp}{T t{};} over \mintinline{cpp}{T t; memset(&t, 0, sizeof(t));}
-      \item Prefer braces over parentheses to avoid accidental narrowing conversions
+      \item Prefer braces over parentheses to avoid accidental narrowing conversions. E.g.\ \mintinline{cpp}{T t{1, 2};}
       \begin{itemize}
         \item Unless \mintinline{cpp}{T} has a \mintinline{cpp}{std::initializer_list} constructor that you do not want to call!
         \item Be wary of \mintinline{cpp}{std::vector}!
@@ -183,7 +183,7 @@
       \begin{itemize}
         \item E.g. \mintinline{cpp}{vec.resize(vec.size() + 10);}
       \end{itemize}
-      \item Aggregates are very flexible. If your class does not need special initialization, make it an aggregate
+      \item Aggregates are very flexible. If your class does not need special initialization, make it an aggregate (rule of zero)
     \end{itemize}
   \end{exampleblock}
 \end{frame}
