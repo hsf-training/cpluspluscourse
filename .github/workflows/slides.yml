@@ -29,7 +29,7 @@ jobs:
           git clone -b download https://${GITHUB_ACTOR}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git download
           cd download
           mkdir -p talk
-          cp ../C++Course.pdf "talk/C++Course_${{ matrix.version }}.pdf"
+          cp ../talk/C++Course.pdf "talk/C++Course_${{ matrix.version }}.pdf"
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add -f "talk/C++Course_${{ matrix.version }}.pdf"
