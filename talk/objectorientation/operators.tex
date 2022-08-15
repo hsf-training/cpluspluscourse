@@ -97,19 +97,20 @@
       \item Avoid unexpected modifications of class state in a friend
     \end{itemize}
   \end{block}
-  \begin{block}{\texttt{operator+} as a friend}
-    \small
+  \begin{exampleblock}{\texttt{operator+} as a friend}
+    \footnotesize
     \begin{cppcode*}{gobble=2}
       class Complex {
-        float m_real, m_imag;
-        friend
-        Complex operator+(Complex const & a, Complex const & b);
+        float m_r, m_i;
+        friend Complex operator+(Complex const & a, Complex const & b);
+      public:
+        Complex ( float r, float i ) : m_r(r), m_i(i) {}
       };
       Complex operator+(Complex const & a, Complex const & b) {
-        return Complex{ a.m_real+b.m_real, a.m_imag+b.m_imag };
+        return Complex{ a.m_r+b.m_r, a.m_i+b.m_i };
       }
     \end{cppcode*}
-  \end{block}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
