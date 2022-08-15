@@ -1,4 +1,4 @@
-name: Publish slides
+name: Publish LaTeX slides
 on:
   push:
     branches:

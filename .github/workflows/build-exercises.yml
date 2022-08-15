@@ -1,8 +1,4 @@
-
-# Name for this "action".
-name: Build Exercises
-
-# Perform the builds on every push and pull request.
+name: Build exercises
 on: [ push, pull_request ]
 
 # Cancel running jobs on force-push
@@ -10,12 +6,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: true
 
-# All the different build/test jobs.
 jobs:
-
   # Native (non-container) build jobs.
   native:
-
     # The "build matrix".
     strategy:
       matrix:
