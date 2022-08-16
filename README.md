@@ -6,9 +6,9 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/hsf-training/cpluspluscourse/master.svg)](https://results.pre-commit.ci/latest/github/hsf-training/cpluspluscourse/master)
-[![gh actions](https://github.com/hsf-training/cpluspluscourse/actions/workflows/workflow.yml/build-slides.svg)](https://github.com/hsf-training/cpluspluscourse/actions)
-[![gh actions](https://github.com/hsf-training/cpluspluscourse/actions/workflows/workflow.yml/build-exercises.svg)](https://github.com/hsf-training/cpluspluscourse/actions)
-[![gh actions](https://github.com/hsf-training/cpluspluscourse/actions/workflows/workflow.yml/publish-slides.svg)](https://github.com/hsf-training/cpluspluscourse/actions)
+[![gh actions](https://github.com/hsf-training/cpluspluscourse/actions/workflows/build-slides.yml/badge.svg)](https://github.com/hsf-training/cpluspluscourse/actions)
+[![gh actions](https://github.com/hsf-training/cpluspluscourse/actions/workflows/build-exercises.yml/badge.svg)](https://github.com/hsf-training/cpluspluscourse/actions)
+[![gh actions](https://github.com/hsf-training/cpluspluscourse/actions/workflows/publish-slides.yml/badge.svg)](https://github.com/hsf-training/cpluspluscourse/actions)
 
 This repository contains all material for the C++ Course taught at CERN from
 Sebastien Ponce (LHCb).
