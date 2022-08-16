@@ -110,7 +110,7 @@
   \frametitlecpp[98]{{\ttfamily this} keyword}
   \begin{block}{How to know an object's address?}
     \begin{itemize}
-    \item Sometimes we need to know where our class data is located
+    \item Sometimes we need to pass a reference to ourself to a different entity
     \item For example to implement operators, see later
     \item All class methods can use the keyword \mintinline{cpp}{this}
       \begin{itemize}
@@ -120,14 +120,13 @@
     \end{itemize}
   \end{block}
   \begin{cppcode}
+    void externalFunc(MyStruct & s);
+
     struct MyStruct {
-      MyStruct * whereAreYou() {
-        return this;
+      void invokeExternalFunc() {
+        externalFunc(*this); // Pass a reference to ourself
       }
     };
-
-    MyStruct c;
-    c.whereAreYou(); // (MyStruct *) 0x10340e0f8
   \end{cppcode}
 \end{frame}
 
