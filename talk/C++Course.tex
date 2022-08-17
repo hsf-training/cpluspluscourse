@@ -78,8 +78,23 @@
   \end{tiny}
 \end{frame}
 
-\include{introduction/introduction}
-\include{basicconcepts/basicconcepts}
+\section[Intro]{History and goals}
+\input{introduction/history}
+\input{introduction/goals}
+
+\section[base]{Language basics}
+\input{basicconcepts/coresyntax}
+\input{basicconcepts/arrayspointers}
+\input{basicconcepts/scopesnamespaces}
+\input{basicconcepts/classenum}
+\input{basicconcepts/references}
+\input{basicconcepts/functions}
+\input{basicconcepts/operators}
+\input{basicconcepts/control}
+\input{basicconcepts/headersinterfaces}
+\input{basicconcepts/auto}
+\input{basicconcepts/inline}
+\input{basicconcepts/assert}
 
 % basic version has subset of tools at this stage
 \ifthenelse{\boolean{onlybasics}}{
@@ -92,36 +107,86 @@
 }{}
 
 % basic version only keeps a subset of these 2 chapters
+\section[OO]{Object orientation (OO)}
 \ifthenelse{\boolean{onlybasics}}{
-  \section[OO]{Object orientation (OO)}
-  \input{objectorientation/objectsclasses}
-  \input{objectorientation/inheritance}
-  \input{objectorientation/constructors}
-  \input{objectorientation/static}
-  \input{objectorientation/allocations}
-  \input{objectorientation/advancedoo}
-  \input{objectorientation/typecasting}
-  \input{objectorientation/operators}
-  \input{objectorientation/functors}
-
-  \section[More]{Core modern \cpp}
-  \input{morelanguage/constness}
-  \input{morelanguage/exceptions}
-  \input{morelanguage/templates}
-  \input{morelanguage/stl}
-  \input{morelanguage/lambda}
-  \input{morelanguage/raii}
+\input{objectorientation/objectsclasses}
+\input{objectorientation/inheritance}
+\input{objectorientation/constructors}
+\input{objectorientation/static}
+\input{objectorientation/allocations}
+\input{objectorientation/advancedoo}
+\input{objectorientation/typecasting}
+\input{objectorientation/operators}
+\input{objectorientation/functors}
 } {
-  \include{objectorientation/objectorientation}
-  \include{morelanguage/morelanguage}
+\input{objectorientation/objectsclasses}
+\input{objectorientation/inheritance}
+\input{objectorientation/constructors}
+\input{objectorientation/static}
+\input{objectorientation/allocations}
+\input{objectorientation/advancedoo}
+\input{objectorientation/typecasting}
+\input{objectorientation/operators}
+\input{objectorientation/functors}
+\input{objectorientation/adl}
+}
+
+\section[More]{Core modern \cpp}
+\ifthenelse{\boolean{onlybasics}}{
+\input{morelanguage/constness}
+\input{morelanguage/exceptions}
+\input{morelanguage/templates}
+\input{morelanguage/stl}
+\input{morelanguage/lambda}
+\input{morelanguage/raii}
+} {
+\input{morelanguage/constness}
+\input{morelanguage/constexpr}
+\input{morelanguage/exceptions}
+\input{morelanguage/move}
+\input{morelanguage/copyelision}
+\input{morelanguage/templates}
+\input{morelanguage/stl}
+\input{morelanguage/morestl}
+\input{morelanguage/lambda}
+\input{morelanguage/raii}
+\input{morelanguage/initialization}
 }
 
 % do not include these chapters in basic version
 \ifthenelse{\boolean{onlybasics}}{}{
-  \include{expert/expert}
-  \include{tools/tools}
-  \include{concurrency/concurrency}
-  \include{python/python}
+\section[exp]{Expert \cpp}
+\input{expert/variadictemplate}
+\input{expert/perfectforwarding}
+\input{expert/sfinae}
+\input{expert/cpp20concepts}
+\input{expert/cpp20spaceship}
+\input{expert/modules}
+
+\section[Tool]{Useful tools}
+\input{tools/editors}
+\input{tools/vcs}
+\input{tools/formatting}
+\input{tools/compiling}
+\input{tools/webtools}
+\input{tools/debugging}
+\input{tools/sanitizers}
+\input{tools/valgrind}
+\input{tools/staticanalysis}
+\input{tools/profiling}
+\input{tools/doxygen}
+
+\section[conc]{Concurrency}
+\input{concurrency/threadsasync}
+\input{concurrency/mutexes}
+\input{concurrency/atomic}
+\input{concurrency/condition}
+
+\section[py]{\cpp and python}
+\input{python/modulewriting}
+\input{python/marryingcandcpp}
+\input{python/ctypes}
+\input{python/cppyy}
 }
 
 \begin{frame}
