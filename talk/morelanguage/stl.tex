@@ -239,29 +239,6 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{STL and functors}
-  \begin{cppcode}
-    // Finds the first element in a list between 1 and 10.
-    list<int> l = ...;
-    ...
-    list<int>::iterator it =
-      find_if(l.begin(), l.end(),
-              compose2(logical_and<bool>(),
-                       bind2nd(greater_equal<int>(), 1),
-                       bind2nd(less_equal<int>(), 10)));
-
-    // Computes sin(x)/(x + DBL_MIN) for elements of a range.
-    transform(first, last, first,
-              compose2(divides<double>(), // non-standard
-                       ptr_fun(sin),
-                       bind2nd(plus<double>(), DBL_MIN)));
-  \end{cppcode}
-  \begin{alertblock}{Deprecation warning}
-  	Binders and function adaptors were removed in \cpp17 or \cpp20
-  \end{alertblock}
-\end{frame}
-
-\begin{frame}[fragile]
   \frametitlecpp[14]{STL and lambdas}
   \begin{cppcode}
     // Finds the first element in a list between 1 and 10.
