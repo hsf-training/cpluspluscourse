@@ -199,10 +199,10 @@
           return value + m_inc;
         }
       };
-      std::vector<int> v;
-      v.push_back(5); v.push_back(3); ...
+      std::vector<int> v{1, 2, 3};
+      const auto inc = 42;
       std::transform(v.begin(), v.end(), v.begin(),
-                     Incrementer{42});
+                     Incrementer{inc});
       \end{cppcode*}
     \end{block}
 \end{frame}
