@@ -207,6 +207,27 @@
     \end{block}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Prefer lambdas over functors}
+  \begin{exampleblock}{With lambdas}
+    \begin{cppcode*}{}
+      std::vector<int> v{1, 2, 3};
+      const auto inc = 42;
+      std::transform(begin(v), end(v), begin(v),
+                     [inc](int value) {
+                       return value + inc;
+                     });
+    \end{cppcode*}
+  \end{exampleblock}
+  \pause
+  \begin{exampleblock}{Good practice}
+    \begin{itemize}
+      \item Use STL algorithms with lambdas!
+      \item Avoid binders like \mintinline{cpp}{std::bind2nd}, \mintinline{cpp}{std::ptr_fun}, etc.
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
 \againframe{STLcode}
 
 \begin{frame}[fragile]
