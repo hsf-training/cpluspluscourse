@@ -248,40 +248,52 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Anatomy of a lambda}
-  \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
-      int sum = 0, off = 1;
-      auto l =
-        [&sum, off]
+  \begin{block}{Lambdas are pure syntactic sugar - \href{https://cppinsights.io/lnk?code=aW50IG1haW4oKSB7CiAgaW50IHN1bSA9IDAsIG9mZnNldCA9IDE7CiAgYXV0byBsID0gWyZzdW0sIG9mZnNldF0oaW50IHgpIHsKICAgIHN1bSArPSB4ICsgb2Zmc2V0OwogIH07Cn0=&insightsOptions=cpp17&std=cpp17&rev=1.0}{{\color{blue!50!white} see cppinsights.io}}}
+    \begin{itemize}
+    \item they are replaced by a functor during compilation
+    \end{itemize}
+    \begin{columns}
+      \scriptsize
+      \begin{column}{.25\textwidth}
+        \begin{cppcode*}{gobble=6}
+          int sum = 0, off = 1;
+          auto l =
+          [&sum, off]
 
 
 
+          (int x) {
+            sum += x + off;
+          };
 
-        (int x) {
-          sum += x + off;
-      };
 
-
-      l(42);
-    \end{cppcode*}
-    \columnbreak
-    \begin{cppcode*}{gobble=2}
-      int sum = 0, off = 1;
-      struct __lambda4 {
-        int& sum;
-        int off;
-        __lambda4(int& s, int o)
-          : sum(s), off(o) {}
-
-        auto operator()(int x)const{
-          sum += x + off;
-        }
-      };
-      auto l = __lambda4{sum, off};
-      l(42);
-    \end{cppcode*}
-  \end{multicols}
-  See also result on \href{https://cppinsights.io/lnk?code=aW50IG1haW4oKSB7CiAgaW50IHN1bSA9IDAsIG9mZnNldCA9IDE7CiAgYXV0byBsID0gWyZzdW0sIG9mZnNldF0oaW50IHgpIHsKICAgIHN1bSArPSB4ICsgb2Zmc2V0OwogIH07Cn0=&insightsOptions=cpp17&std=cpp17&rev=1.0}{cppinsights.io}.
+          l(42);
+        \end{cppcode*}
+      \end{column}
+      \begin{column}{.45\textwidth}
+        \begin{cppcode*}{gobble=6, firstnumber=21}
+          int sum = 0, off = 1;
+          struct __lambda4 {
+            int& sum;
+            int off;
+            __lambda4(int& s, int o)
+            : sum(s), off(o) {}
+            auto operator()(int x)const{
+              sum += x + off;
+            }
+          };
+          auto l = __lambda4{sum, off};
+          l(42);
+        \end{cppcode*}
+      \end{column}
+    \end{columns}
+  \end{block}
+  \begin{exampleblock}{Some nice consequence}
+    \begin{itemize}
+    \item lambda expressions create ordinary objects
+    \item they can in particular be inherited from!
+    \end{itemize}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -342,6 +354,37 @@
   \begin{alertblock}{Conclusion}
     Use the STL with lambdas!
   \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{lambdas and the visitor pattern}
+  \begin{exampleblock}{Idea}
+    \begin{itemize}
+    \item use lambda inheritance to group a set of lambdas
+    \item use the resulting functor with \mintinline{cpp}{std::visit}
+    \end{itemize}
+  \end{exampleblock}
+  \scriptsize
+  \begin{block}{Practically}
+    \begin{cppcode*}{}
+      // variadic templating is covered in expert part
+      template<typename... Ts> struct Overload :
+          Ts ... { using Ts::operator()...; };
+      template<typename... Ts> Overload(Ts...) -> Overload<Ts...>;
+
+      int main(){
+        std::variant<char, long, float, int> v = ...;
+        auto overloadSet = Overload {
+          [](char) { return "char"; },
+          [](long) { return "long"; },
+          [](float) { return "float"; },
+          [](int) { return "int"; },
+          [](auto) { return "unknown type"; },
+        };
+        std::visit(overloadSet, v);
+      }
+    \end{cppcode*}
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
