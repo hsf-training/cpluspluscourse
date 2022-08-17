@@ -87,8 +87,8 @@
     \begin{cppcode*}{firstnumber=4}
       int increment = 3;
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
-      transform(begin(data), end(data), begin(data),
-                [](int x) { return x+increment; });
+      std::transform(begin(data), end(data), begin(data),
+                     [](int x) { return x+increment; });
     \end{cppcode*}
   \end{block}
   \pause
@@ -114,10 +114,10 @@
     \begin{cppcode*}{}
       int increment = 3;
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
-      transform(begin(data), end(data), begin(data),
-                [increment](int x) {
-                  return x+increment;
-                });
+      std::transform(begin(data), end(data), begin(data),
+                     [increment](int x) {
+                       return x+increment;
+                     });
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -128,8 +128,8 @@
     \begin{cppcode}
       int sum = 0;
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
-      for_each(begin(data), end(data),
-              [sum](int x) { sum += x; });
+      std::for_each(begin(data), end(data),
+                   [sum](int x) { sum += x; });
     \end{cppcode}
   \end{exampleblock}
   \pause
@@ -152,8 +152,8 @@
     \begin{cppcode*}{}
       int sum = 0;
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
-      for_each(begin(data), end(data),
-              [&sum](int x) { sum += x; });
+      std::for_each(begin(data), end(data),
+                   [&sum](int x) { sum += x; });
     \end{cppcode*}
   \end{exampleblock}
   \pause
@@ -162,10 +162,10 @@
     \begin{cppcode*}{firstnumber=5}
       int sum = 0, offset = 1;
       std::vector<int> data{1,9,3,8,3,7,4,6,5};
-      for_each(begin(data), end(data),
-              [&sum, offset](int x) {
-                sum += x + offset;
-              });
+      std::for_each(begin(data), end(data),
+                   [&sum, offset](int x) {
+                     sum += x + offset;
+                   });
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -186,7 +186,7 @@
   \pause
   \begin{block}{mix}
     \begin{cppcode*}{linenos=false}
-      [&, b](...) { ... };
+      [&,  b](...) { ... };
       [=, &b](...) { ... };
     \end{cppcode*}
   \end{block}
@@ -199,10 +199,10 @@
   \end{block}
   \begin{block}{}
     \begin{cppcode*}{gobble=2}
-      [this](...) { use(*this); };
-      [&](...) { use(*this); };
+      [   this](...) { use(*this); };
+      [      &](...) { use(*this); };
       [&, this](...) { use(*this); };
-      [=](...) { use(*this); };       // deprecated in C++20
+      [      =](...) { use(*this); }; // deprecated in C++20
       [=, this](...) { use(*this); }; // allowed in C++20
     \end{cppcode*}
     Since the captured \mintinline{cpp}{this} is a pointer, \mintinline{cpp}{*this} refers to the object by reference.
@@ -210,7 +210,7 @@
   \pause
   \begin{block}{}
     \begin{cppcode*}{gobble=2}
-      [*this](...) { use(*this); };    // C++17
+      [   *this](...) { use(*this); }; // C++17
       [&, *this](...) { use(*this); }; // C++17
       [=, *this](...) { use(*this); }; // C++17
     \end{cppcode*}
@@ -271,7 +271,7 @@
         \end{cppcode*}
       \end{column}
       \begin{column}{.45\textwidth}
-        \begin{cppcode*}{gobble=6, firstnumber=21}
+        \begin{cppcode*}{gobble=6, firstnumber=13}
           int sum = 0, off = 1;
           struct __lambda4 {
             int& sum;
@@ -312,7 +312,7 @@
   \end{exampleblock}
   \begin{block}{How it works}
     \begin{itemize}
-      \item build\_incrementer returns a function object
+      \item \mintinline{cpp}{build_incrementer} returns a function object
       \item this function's behavior depends on a parameter
       \item note how \mintinline{cpp}{auto} is useful here!
     \end{itemize}
@@ -331,8 +331,9 @@
         };
       };
       std::vector<int> v{1, 2, 3};
+      const auto inc = 42;
       std::transform(begin(v), end(v), begin(v),
-                     Incrementer(1));
+                     Incrementer{inc});
       for (auto a : v) std::cout << a << " ";
       \end{cppcode*}
     \end{block}
@@ -343,9 +344,10 @@
   \begin{exampleblock}{With lambdas}
     \begin{cppcode*}{}
       std::vector<int> v{1, 2, 3};
+      const auto inc = 42;
       std::transform(begin(v), end(v), begin(v),
-                     [](int value) {
-                       return value + 1;
+                     [inc](int value) {
+                       return value + inc;
                      });
       for (auto a : v) std::cout << a << " ";
     \end{cppcode*}
