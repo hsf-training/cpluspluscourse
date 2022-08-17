@@ -2,12 +2,12 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{\texttt{std::string\_view}}
-  \begin{block}{Non owning view of a continuous char sequence}
+  \begin{block}{Non owning read-only view of a contiguous char sequence}
     \begin{itemize}
     \item Doesn't allocate memory
-    \item Similar interface to \mintinline{cpp}{std::string}
+    \item Similar interface to \mintinline{cpp}{std::string}, but read-only
     \item Easy to copy, faster for some calls eg. \texttt{substr} (O(1) vs O(n))
-    \item The data pointed to has to outlive the \mintinline{cpp}{string\_view}
+    \item The data pointed to has to outlive the \mintinline{cpp}{string_view}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Some example uses}
@@ -18,6 +18,68 @@
       std::string_view sv_str(some_string);
       char foo[3] = {'f','o','o'};
       std::string_view carr(foo, std::size(foo));
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{\texttt{std::span<T>} - Concept}
+  \begin{block}{Non owning view of a contiguous sequence of items}
+    \begin{itemize}
+    \item Doesn't allocate memory
+    \item Allows to modify items, but not the container itself
+      \begin{itemize}
+      \item no reallocation, push or pop
+      \end{itemize}
+    \item Provides container like interface
+      \begin{itemize}
+      \item iterators, \mintinline{cpp}{size}, \mintinline{cpp}{front}/\mintinline{cpp}{back}, \mintinline{cpp}{subspan}, ...
+      \end{itemize}
+    \item Standard contiguous containers convert to it automatically
+      \begin{itemize}
+      \item \mintinline{cpp}{std::vector}, \mintinline{cpp}{std::array}, C arrays, ...
+      \item not \mintinline{cpp}{std::list} or \mintinline{cpp}{std::deque} (no contiguous storage)
+      \item \mintinline{cpp}{span} should thus be preferred as function arguments
+      \end{itemize}
+    \item Simply a pair (pointer, size), so cheap to copy
+      \begin{itemize}
+      \item and thus to be passed by value
+      \end{itemize}
+    \item \mintinline{cpp}{span} can also have a \texttt{static extend}
+      \begin{itemize}
+      \item meaning the size is determined at compile time
+      \item and thus only a pointer is stored by \mintinline{cpp}{span}
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{\texttt{std::span<T>} - Usage}
+  \begin{exampleblock}{Some example - \href{https://godbolt.org/z/W81sjrbxK}{\color{blue!50!white} godbolt}}
+    \scriptsize
+    \begin{cppcode*}{}
+      void print(std::span<int> c) {
+        for (auto a : c) { std::cout << a << " "; }
+        std::cout << "\n";
+      }
+      void times2(std::span<int> c) {
+        for(auto &e : c) { e *= 2; }
+      }
+      int a[]{23, 45, 67, 89};
+      print(a);                 // 23 45 67 89
+
+      std::vector v{1, 2, 3, 4, 5};
+      std::span<int> sv = v;
+      print(sv.subspan(2, 2));  // 3 4
+
+      std::array a2{-14, 55, 24};
+      times2(a2);
+      print(a2);                // -28 110 48
+
+      std::span<int, 3> sa2 = a2;
+      std::cout << sizeof(sv) << " " << sizeof(sa2) << "\n";  // 16 8
+      std::span<int, 3> s2a2 = a; // compilation failure, invalid conversion
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
