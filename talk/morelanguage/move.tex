@@ -2,7 +2,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Move semantics: the problem}
-  \begin{exampleblock}{Non efficient code}
+  \begin{exampleblock}{Inefficient code}
     \begin{cppcode*}{}
       void swap(std::vector<int> &a,
                 std::vector<int> &b) {
@@ -26,7 +26,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Move semantics: the problem}
-  \begin{exampleblock}{Dedicated efficient code}
+  \begin{exampleblock}{Vector's built-in efficient swap}
     \begin{cppcode*}{}
       std::vector<int> v(10'000), w(10'000);
       ...
