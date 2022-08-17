@@ -7,7 +7,7 @@
     \tikzstyle{new}=[rectangle,draw=black,fill=green!50,thick,inner sep=2pt]
     \tikzstyle{direct}=[<-,semithick]
     \tikzstyle{transverse}=[<-,dotted,semithick]
-    \begin{tikzpicture}[->, node distance=.75cm, font=\tiny, scale=0.9, every node/.style={scale=0.9}]
+    \begin{tikzpicture}[->, node distance=.75cm, font=\tiny, scale=0.8, every node/.style={scale=0.8}]
       \node[old] (Simula)      {Simula};
       \node[left of=Simula,node distance=1.5cm] {1967};
       \node[old] (BCPL) [right of=Simula, node distance=2cm] {BCPL};
@@ -58,6 +58,9 @@
       \node[new] (C++20) [below of=C++17] {\cpp20}
       edge[direct] (C++17);
       \node[left of=C++20,node distance=1.5cm] {2020};
+      \node[new] (C++23) [below of=C++20] {\cpp23}
+      edge[direct] (C++20);
+      \node[left of=C++23,node distance=1.5cm] {2023};
     \end{tikzpicture}
   \end{minipage}
   \begin{minipage}{0.57\linewidth}
@@ -71,7 +74,7 @@
       \item Both C and \cpp are born in Bell Labs
       \item \cpp {\it almost} embeds C
       \item C and \cpp are still under development
-      \item We will discuss all \cpp specs but \cpp20
+      \item We will discuss all \cpp specs up to \cpp20 (only partially)
       \item Each slide will be marked with first spec introducing the feature
       }
     \end{itemize}
