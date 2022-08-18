@@ -31,6 +31,9 @@
   \end{beamercolorbox}%
 }
 
+\setbeamercolor{goodpractice head}{fg=white,bg=orange!85!black}
+\setbeamercolor{goodpractice body}{fg=black,bg=orange!25}
+
 %%%%%%%%%%%%
 % packages %
 %%%%%%%%%%%%
@@ -83,6 +86,14 @@
 \newcommand{\cpp}{C$^{++}$}
 \newcommand{\deprecated}{\textcolor{red}{\bf Deprecated}}
 \newcommand{\removed}{\textcolor{red}{\bf Removed}}
+
+\newenvironment{goodpractice}[1]
+{%
+  \begin{beamerboxesrounded}[upper=goodpractice head,lower=goodpractice body,shadow=true]{Good practice: #1}
+}%
+{%
+  \end{beamerboxesrounded}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % frametitle with C++ version %
