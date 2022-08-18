@@ -216,14 +216,14 @@ void fWrite(T &value);     fWrite(a); // non-const ref
 \begin{frame}[fragile]
   \frametitlecpp[98]{Functions: good practices}
   \begin{onlyenv}<1>
-    \begin{block}{Ensure good readability/maintainability:}
+    \begin{goodpractice}{Write readable functions}
       \begin{itemize}
         \item Keep functions short
         \item Do one logical thing (single-responsibility principle)
         \item Use expressive names
         \item Document non-trivial functions
       \end{itemize}
-    \end{block}
+    \end{goodpractice}
     \begin{exampleblock}{Example: Good}
       \begin{cppcode*}{gobble=2}
         /// Count number of dilepton events in data.

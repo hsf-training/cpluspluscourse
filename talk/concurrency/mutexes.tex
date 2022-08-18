@@ -112,13 +112,13 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{Mutexes and Locks}
-  \begin{block}{Good practice}
+  \begin{goodpractice}{Locking}
     \begin{itemize}
       \item Generally, use \mintinline{cpp}{std::scoped_lock}. Before \cpp17 use \mintinline{cpp}{std::lock_guard}.
       \item Hold as short as possible, consider wrapping critical section in block statement \mintinline{cpp}|{ }|
       \item Only if manual control needed, use \mintinline{cpp}{std::unique_lock}
     \end{itemize}
-  \end{block}
+  \end{goodpractice}
   \begin{exampleblock}{}
     \begin{cppcode*}{gobble=2}
       void function(...) {
