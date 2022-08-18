@@ -359,11 +359,11 @@
     p->draw();
     delete p; // dynamic dispatch to right destructor
   \end{cppcode}
-  \begin{exampleblock}{Best practice}
+  \begin{goodpractice}{Virtual destructors}
     \begin{itemize}
       \item If you expect users to inherit from your class and override methods (i.e.\ use your class polymorphically), declare its destructor \mintinline{cpp}{virtual}
     \end{itemize}
-  \end{exampleblock}
+  \end{goodpractice}
 \end{frame}
 
 \begin{frame}[fragile]

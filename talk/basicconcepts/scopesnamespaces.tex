@@ -36,9 +36,14 @@ int a = 1;
     \begin{itemize}
       \item Variables are (statically) allocated when defined
       \item Variables are freed at the end of a scope
-      \item Good practice: initialise variables when allocating them!
     \end{itemize}
   \end{block}
+  \begin{goodpractice}{Initialisation}
+    \begin{itemize}
+      \item Initialise variables when allocating them!
+      \item This prevents bugs reading uninitialised memory
+    \end{itemize}
+  \end{goodpractice}
   \begin{multicols}{2}
     \begin{overprint}[\columnwidth]
     \onslide<1>
