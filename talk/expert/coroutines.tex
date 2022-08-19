@@ -1,0 +1,561 @@
+\subsection{Coroutines}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Why do we need coroutines?}
+  \begin{block}{The generator use case (one of several)}
+    In python one can write
+    {\scriptsize
+      \begin{pythoncode*}{gobble=2}
+        for i in range(0, 10):
+          print(i)
+      \end{pythoncode*}
+    }
+    What about it in \cpp?
+    {\scriptsize
+      \begin{cppcode*}{gobble=2, firstnumber=3}
+        someType range(int first, int last) { ... }
+        for (auto i : range(0, 10)) {
+          std::cout << i << "\n";
+        }
+      \end{cppcode*}
+    }
+    How can we implement range?
+  \end{block}
+  \begin{exampleblock}{Requirements}
+    \begin{itemize}
+    \item \mintinline{cpp}{someType} needs to be some iterable type
+    \item \mintinline{cpp}{range} should execute lazily, only creating values on demand
+    \item meaning \mintinline{cpp}{range} should be suspended and resumed
+    \end{itemize}
+    That's what coroutines are for!
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{What \cpp20 allows}
+  \begin{exampleblock}{Interesting part of the implementation (see \href{https://en.cppreference.com/w/cpp/coroutine/coroutine\_handle\#Example}{\color{blue!50!white}cppreference})}
+    {\scriptsize
+      \begin{cppcode*}{gobble=2}
+        template<std::integral T>
+        Generator<T> range(T first, const T last) {
+          while (first < last) {
+            co_yield first++;
+          }
+        }
+        for (const char i : range(65, 91)) {
+          std::cout << i << ' ';
+        }
+        std::cout << '\n';
+      \end{cppcode*}
+    }
+  \end{exampleblock}
+  \begin{alertblock}{The bad news}
+    \begin{itemize}
+    \item class \mintinline{cpp}{Generator} is not provided by the STL
+    \item and is ~80 lines of boiler plate code...
+    \item may be sorted out in \cpp23
+    \item in the meantime, we'll have to dive into some details!
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}
+  \frametitlecpp[20]{A few concepts first}
+  \begin{block}{Definition of a coroutine}
+    \begin{itemize}
+    \item a function which can be suspended and resumed
+      \begin{itemize}
+      \item potentially by another caller (even on a different thread)
+      \end{itemize}
+    \item practically a function using one of:
+      \begin{description}
+      \item[\mintinline{cpp}{co_await}] suspends execution
+      \item[\mintinline{cpp}{co_yield}] suspends execution and returns a value
+      \item[\mintinline{cpp}{co_return}] completes execution
+      \end{description}
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{Implications}
+    \begin{itemize}
+    \item on suspension, the state of the function needs to be preserved
+    \item the suspended function becomes pure data on the heap
+    \item access to this data is given via the returned value
+      \begin{itemize}
+      \item so the returned type must follow some convention
+      \item it needs to contain a \mintinline{cpp}{struct promise_type}
+      \end{itemize}
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Minimal code}
+  \begin{block}{Definition of an empty coroutine}
+    {\scriptsize
+      \begin{cppcode*}{gobble=2, firstnumber=3}
+        #include <coroutine>
+        struct Task {
+          struct promise_type {
+            Task get_return_object() { return {}; }
+            std::suspend_never initial_suspend() { return {}; }
+            std::suspend_never final_suspend() noexcept { return {}; }
+            void return_void() {}
+            void unhandled_exception() { throw; }
+          };
+        };
+        Task myCoroutine() { co_return; }
+        int main() { Task x = myCoroutine(); }
+      \end{cppcode*}
+    }
+  \end{block}
+  \begin{exampleblock}{\texttt{promise\_type} interface}
+    \begin{description}[\small \mintinline{cpp}{initial/final_suspend}]
+      \setlength{\itemsep}{0pt}
+    \item[\small \mintinline{cpp}{get_return_object}] builds a Task from the given promise
+    \item[\small \mintinline{cpp}{initial/final_suspend}] called before/after coroutine starts/ends
+    \item[\small \mintinline{cpp}{unhandled_exception}] called in case of exception in coroutine
+    \item[\small \mintinline{cpp}{return_void/value}] returns final value of the coroutine
+    \end{description}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Minimal sequence of events (nothing suspended)}
+  \begin{block}{Compiler generated set of calls when calling \mintinline{cpp}{myCoroutine}}
+    \center
+    \begin{tikzpicture}[->, node distance=.75cm, font=\tiny, scale=0.8, every node/.style={scale=0.8},xscale=6,-{Latex[length=1mm,width=1mm]}]
+      \tikzstyle{call}=[rectangle,draw=black,thick,inner sep=6pt,rounded corners,minimum width=4.5cm,minimum height=.6cm,fill=red!30]
+      \tikzstyle{comp}=[trapezium,trapezium left angle=70,trapezium right angle=110,draw=black,thick,inner sep=6pt,trapezium stretches=true,minimum width=4.5cm,minimum height=.6cm,fill=blue!30]
+      \tikzstyle{box}=[rectangle,draw=black,thick,inner sep=6pt,minimum width=4.5cm,minimum height=.6cm,fill=green!30]
+      \node[call] at (0, 0) (initCall) {call to coroutine};
+      \node[comp] at (0,-1) (allocState) {allocate coroutine state on the heap};
+      \node[comp] at (1,-1) (construct) {construct promise inside coroutine state};
+      \node[box]  at (0,-2) (getReturn) {\texttt{ro = promise.get\_return\_object()}};
+      \node[comp] at (1,-2) (localVar) {\texttt{ro} returned to caller};
+      \node[box]  at (0,-3) (initSuspend) {\texttt{promise.initial\_suspend()}};
+      \node[box] at (1,-3) (initWait) {\texttt{co\_await} on result};
+      \node[call] at (0,-4) (body) {coroutine body};
+      \node[box]  at (1,-4) (coreturn) {\texttt{co\_return}};
+      \node[box] at (1,-5) (finalSuspend) {\texttt{promise.final\_suspend()}};
+      \node[box]  at (0,-6) (finalWait) {\texttt{co\_await} on result};
+      \node[box]  at (0,-5) (return) {\texttt{promise.return\_void()}};
+      \node[comp]  at (1,-6) (destroyP) {destroy promise};
+      \node[call] at (0,-7) (caller) {caller};
+      \node[comp]  at (1,-7) (destroyC) {destroy coroutine};
+      \draw (initCall)      edge (allocState)
+            (allocState)    edge (construct)
+            (construct)     --   +(0,-.5) -| +(-1,-0.5) edge (getReturn)
+            (getReturn)     edge (localVar)
+            (localVar.east) --   +(0.1,0) |- (1,-7.5) -| (caller);
+      \draw (getReturn)    edge (initSuspend)
+            (initSuspend)  edge (initWait)
+            (initWait)     -- +(0,-.5) -| (body)
+            (body)         edge (coreturn)
+            (coreturn)     -- +(0,-.5) -| (return)
+            (return)       edge (finalSuspend)
+            (finalSuspend) -- +(0,-.5) -| (finalWait)
+            (finalWait)    edge (destroyP)
+            (destroyP)     edge (destroyC)
+            (destroyC)     edge (caller);
+      \node[call,minimum width=1cm] at (.7, 0) {user code};
+      \node[comp,minimum width=1cm] at (1, 0) {compiler};
+      \node[box, minimum width=1cm] at (1.3, 0) {promise};
+    \end{tikzpicture}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Suspending a coroutine}
+  \begin{block}{Main way to suspend a coroutine: \mintinline{cpp}{co_wait}}
+    \begin{itemize}
+    \item it's an expression taking an ``awaitable''/ ``awaiter''
+      \begin{itemize}
+      \item we'll ignore the distinction for now
+      \end{itemize}
+    \item 2 trivial awaiters are provided by the STL: \mintinline{cpp}{std::suspend_always} and \mintinline{cpp}{std::suspend_never}
+    \item obviously only the first one will trigger a suspension
+      \begin{itemize}
+      \item note the other one is used in the minimal code
+      \end{itemize}
+    \item more details on awaiters later
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Code}
+    {\scriptsize
+      \begin{cppcode*}{gobble=4}
+        Task myCoroutine() {
+          std::cout << "Step 1 of coroutine\n";
+          co_await std::suspend_always{};
+          std::cout << "Step 2 of coroutine\n";
+          co_await std::suspend_always{};
+          std::cout << "final step\n";
+        }
+      \end{cppcode*}
+    }
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Resuming a coroutine}
+  \begin{block}{Principles}
+    \begin{itemize}
+    \item one needs to call \mintinline{cpp}{resume()} on the \mintinline{cpp}{coroutine_handle}
+    \item BUT user code has no such handle
+      \begin{itemize}
+      \item only the coroutine return object (here a \mintinline{cpp}{Task} instance)
+      \end{itemize}
+    \item so one has to amend the Task class
+      \begin{itemize}
+      \item and the \mintinline{cpp}{promise_type} as it's building the \mintinline{cpp}{Task} instance
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Code}
+    {\scriptsize
+      \begin{cppcode*}{gobble=4}
+        struct Task {
+          struct promise_type {
+            Task get_return_object() {
+              // build Task with the coroutine handle
+              return {std::coroutine_handle<promise_type>::from_promise(*this)};
+            }
+            ... // rest is unchanged
+          };
+          std::coroutine_handle<promise_type> h_;
+          void resume() { h_.resume(); }
+        };
+      \end{cppcode*}
+    }
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Resuming a coroutine}
+  \scriptsize
+  \begin{block}{User code - \href{https://godbolt.org/z/qx46Pa4v3}{\color{blue!50}godbolt}}
+    \begin{cppcode*}{gobble=2}
+      Task myCoroutine() {
+        std::cout << "Step 1 of coroutine\n";
+        co_await std::suspend_always{};
+        std::cout << "Step 2 of coroutine\n";
+        co_await std::suspend_always{};
+        std::cout << "final step\n";
+      }
+      int main() {
+        auto c = myCoroutine(); // Step 1 runs
+        std::cout << "In main, between Step 1 and 2\n";
+        c.resume();             // Step 2 runs
+        std::cout << "In main, between Step 2 and final step\n";
+        c.resume();             // final Step runs
+        // c.resume(); // would segfault!
+      }
+    \end{cppcode*}
+  \end{block}
+  \begin{block}{}
+    \begin{minted}[gobble=4]{text}
+      Step 1 of coroutine
+      In main, between Step 1 and 2
+      Step 2 of coroutine
+      In main, between Step 2 and final step
+      final step
+    \end{minted}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{A few more details}
+  \begin{block}{About suspension of coroutines}
+    \begin{itemize}
+    \item \mintinline{cpp}{initial/final_suspend} methods allow to suspend a coroutine at the very start/end (after \mintinline{cpp}{co_return})
+    \item a suspended coroutine is not deallocated
+      \begin{itemize}
+      \item i.e.\ its state will stay on the heap
+      \item so you can leak coroutines!
+      \end{itemize}
+    \item one can directly call \mintinline{cpp}{coroutine_handle::destroy} if the execution of a suspended coroutine should be aborted
+      \begin{itemize}
+      \item which requires another piece of code in \mintinline{cpp}{Task}, e.g.
+        {\scriptsize
+          \begin{cppcode*}{gobble=8,linenos=false}
+            ~Task() { if (h_) h_.destroy(); }
+          \end{cppcode*}
+        }
+      \end{itemize}
+    \item the \mintinline{cpp}{Task} class should be move only
+     \end{itemize}
+  \end{block}
+  \begin{alertblock}{We need standard \mintinline{cpp}{Task} classes in the STL!}
+    \begin{itemize}
+    \item \mintinline{cpp}{std::generator} may come in \cpp23
+     \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{\texttt{co\_yield} - returning a value upon suspension}
+  \begin{block}{What \texttt{co\_yield} really is}
+    \begin{itemize}
+    \item an expression like \mintinline{cpp}{co_await}
+    \item a shortcut for \mintinline{cpp}{co_await promise.yield_value(expr)}
+    \item and we have to provide the \mintinline{cpp}{yield_value} method of \mintinline{cpp}{promise_type} and the \mintinline{cpp}{Task} accessor
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Typical code}
+    {\scriptsize
+      \begin{cppcode*}{gobble=4}
+        template<typename T> struct Task {
+          struct promise_type {
+            T value_;
+            std::suspend_always yield_value(T&& from) {
+              value_ = std::forward<T>(from); // caching the result
+              return {};
+            }
+            ... // rest is unchanged
+          };
+          T getValue() { return h_.promise().value_; } // accessor for user code
+        };
+      \end{cppcode*}
+    }
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{\texttt{co\_yield} - generator behavior}
+  \begin{block}{Generator behavior - more boiler plate code}
+    {\scriptsize
+      \begin{cppcode*}{gobble=4}
+        template<typename T>
+        struct Task {
+          struct iterator {
+            std::coroutine_handle<promise_type> handle;
+            auto &operator++() {
+              handle.resume();
+              if (handle.done()) { handle = nullptr; } // == end iterator
+              return *this;
+            }
+            auto operator++(int) { ++*this; }
+            T const& operator*() const { return handle.promise().value_; }
+            ...
+          };
+          iterator begin() { resume(); return {h_}; }
+          iterator end() { return {nullptr}; }
+          ... // plus error handling is missing
+        };
+      \end{cppcode*}
+    }
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{\texttt{co\_yield} - final usage}
+  \begin{exampleblock}{Finally, we can use the generator nicely - \href{https://godbolt.org/z/6bbrYrss5}{\color{blue!50}godbolt}}
+    {\scriptsize
+      \begin{cppcode*}{gobble=4}
+        Task range(int first, int last) {
+          while (first != last) {
+            co_yield first++;
+          }
+        }
+        for (int i : range(0, 10)) {
+          std::cout << i << "";
+        } // 1 2 3 4 5 6 7 8 9
+      \end{cppcode*}
+    }
+  \end{exampleblock}
+  \pause
+  \begin{alertblock}{Wait a minute: 0 is missing in the output!}
+    \begin{itemize}
+    \item resume called in \mintinline{cpp}{operator++} before 0 is printed
+    \item we should pause in \mintinline{cpp}{initial_suspend}
+    \end{itemize}
+     {\scriptsize
+      \begin{cppcode*}{gobble=4,firstnumber=10}
+        struct Task {
+          struct promise_type {
+            ...
+            std::suspend_always initial_suspend() { return {}; }
+            ...
+          }
+        };
+      \end{cppcode*}
+    }
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Lazyness allows for infinite ranges}
+  \begin{block}{Generators do not need to be finite - \href{https://godbolt.org/z/MP6qdGWYe}{\color{blue!50}godbolt}}
+    \begin{cppcode*}{gobble=2}
+      Task range(int first) {
+        while (true) {
+          co_yield first++;
+        }
+      }
+      for (int i : range(0) | std::views::take(10)) {
+        std::cout << i << "\n";
+      }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Real life example}
+  \begin{block}{A Fibonacci generator - \href{https://godbolt.org/z/3Pev1M8se}{\color{blue!50}godbolt}, from \href{https://en.cppreference.com/w/cpp/language/coroutines}{\color{blue!50}cppreference}}
+    \scriptsize
+     \begin{cppcode*}{gobble=2}
+       Task<long long int> fibonacci(unsigned n) {
+         if (n==0) co_return;
+         co_yield 0;
+         if (n==1) co_return;
+         co_yield 1;
+         if (n==2) co_return;
+         uint64_t a=0;
+         uint64_t b=1;
+         for (unsigned i = 2; i < n; i++) {
+           uint64_t s=a+b;
+           co_yield s;
+           a=b;
+           b=s;
+         }
+       }
+
+       int main() {
+         for (int i : fibonacci(10)) {
+           std::cout << i << "\n";
+         }
+       }
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitlecpp[20]{Coming back to awaitables/awaiters}
+  \begin{block}{awaitables vs awaiters}
+    \begin{itemize}
+    \item awaitable is the type required by \mintinline{cpp}{co_await}/\mintinline{cpp}{co_yield}
+      \begin{itemize}
+      \item or the expression given has to be convertible to awaitable
+      \item alternatively the \mintinline{cpp}{promise_type} can have an \mintinline{cpp}{await_transform} method returning an awaitable
+      \end{itemize}
+    \item an awaiter is retrieved from the awaitable by the compiler
+      \begin{itemize}
+      \item either by calling operator \mintinline{cpp}{co_wait} on it
+      \item or via direct conversion if no such operator exists
+      \end{itemize}
+    \item an awaiter has 3 main methods
+      \begin{itemize}
+      \item \mintinline{cpp}{await_ready}, \mintinline{cpp}{await_suspend} \mintinline{cpp}{and await_resume}
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{How awaiters work}
+  \begin{block}{Compiler generated set of calls}
+    \center
+    \begin{tikzpicture}[->, node distance=.75cm, font=\tiny, scale=0.8, every node/.style={scale=0.8},xscale=6,-{Latex[length=1mm,width=1mm]}]
+      \tikzstyle{call}=[rectangle,draw=black,thick,inner sep=6pt,rounded corners,minimum width=4.5cm,minimum height=.6cm,fill=red!30]
+      \tikzstyle{comp}=[trapezium,trapezium left angle=70,trapezium right angle=110,draw=black,thick,inner sep=6pt,trapezium stretches=true,minimum width=4.5cm,minimum height=.6cm,fill=blue!30]
+      \tikzstyle{box}=[rectangle,draw=black,thick,inner sep=6pt,minimum width=4.5cm,minimum height=.6cm,fill=green!30]
+      \tikzstyle{choice}=[diamond,draw=black,thick,inner sep=3pt,minimum width=4.5cm,minimum height=.6cm,fill=green!30,aspect=5]
+      \node[call]   at (0, 0) (co_await) {\texttt{co\_await} awaitable};
+      \node[choice] at (0,-1) (await_ready) {\texttt{awaiter.await\_ready()}};
+      \node[comp]   at (1,-1) (suspend) {coroutine suspended};
+      \node[choice] at (.5,-2.5) (await_suspend) {\texttt{awaiter.await\_suspend(handle)}};
+      \node[comp]   at (0,-4) (handleresume) {\texttt{handle.resume()}};
+      \node[call]   at (1,-4) (caller) {coroutine caller};
+      \node[comp]   at (0,-5) (corofin) {coroutine behind handle suspended or finished};
+      \node[call]   at (1,-5) (callresume) {caller calls \texttt{resume}};
+      \node[comp]   at (0,-6) (resumed) {coroutine resumed};
+      \node[box]    at (1,-6) (await_resume) {\texttt{awaiter.await\_resume()}};
+      \node[call]   at (1,-7) (body) {continue coroutine body};
+      \draw (co_await)      edge (await_ready)
+            (await_ready)   edge node[above] {false}  (suspend)
+            (await_ready.west) -- node[above] {true} +(-0.1,0) |- (body);
+      \draw (suspend)       -- +(0,-.5)  -|   (await_suspend);
+      \draw (await_suspend) -- node[above,pos=.1] {false} +(-.95,0) |- (resumed);
+      \draw (await_suspend) edge node[text width=1cm,left,pos=.3] {coroutine handle} (handleresume)
+            (handleresume)  edge (corofin)
+            (corofin)       edge (resumed)
+            (await_suspend) |- node[right,pos=0.1] {\texttt{true}}  (caller)
+            (caller)        edge (callresume)
+            (callresume)    --   +(0,-.5) -| (resumed)
+            (await_suspend) -|  node[right,pos=0.6] {\texttt{void}}  (caller)
+            (resumed)       edge (await_resume)
+            (await_resume)       edge (body);
+      \node[call,minimum width=1cm] at (.7, 0) {user code};
+      \node[comp,minimum width=1cm] at (1, 0) {compiler};
+      \node[box, minimum width=1cm] at (1.3, 0) {awaiter};
+    \end{tikzpicture}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{\texttt{awaiter} example}
+  \begin{block}{Switch to new thread - \href{https://godbolt.org/z/K7svE4P7s}{\color{blue!50}godbolt}, from \href{https://en.cppreference.com/w/cpp/language/coroutines}{\color{blue!50}cppreference}}
+    \scriptsize
+    \begin{cppcode*}{gobble=2}
+      auto switch_to_new_thread(std::jthread& out) {
+        struct awaiter {
+          std::jthread* th;
+          bool await_ready() { return false; }
+          void await_suspend(std::coroutine_handle<> h) {
+            *th = std::jthread([h] { h.resume(); });
+            std::cout << "New thread ID: " << th->get_id() << '\n';
+          }
+          void await_resume() {}
+        };
+        return awaiter{&out};
+      }
+      Task<int> resuming_on_new_thread(std::jthread& out) {
+        std::cout << "Started on " << std::this_thread::get_id() << '\n';
+        co_await switch_to_new_thread(out);
+        std::cout << "Resumed on " << std::this_thread::get_id() << std::endl;
+      }
+      int main() {
+        std::jthread out;
+        resuming_on_new_thread(out);
+      }
+     \end{cppcode*}
+  \end{block}
+  \pause
+  \vspace{-2.1cm}
+  \begin{columns}
+    \begin{column}{.45\textwidth}
+    \end{column}
+    \begin{column}{.55\textwidth}
+      \setlength{\textwidth}{5.4cm}
+      \raggedright
+      \begin{exampleblock}{Output}
+        \scriptsize
+        \begin{minted}[gobble=9]{text}
+          Started on thread: 140144191063872
+          New thread ID: 140144191059712
+          Resumed on thread: 140144191059712
+        \end{minted}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Summary on coroutines}
+  \begin{exampleblock}{Coroutines are usable in \cpp20}
+    \begin{itemize}
+    \item allow to have nice generators
+    \item also very useful for async/IO code
+      \begin{itemize}
+      \item another big use case which we did not touch
+      \end{itemize}
+    \end{itemize}
+  \end{exampleblock}
+  \begin{alertblock}{But library support is poor for now}
+    \begin{itemize}
+    \item standard Task/Generator classes are not provided
+    \item leading to \emph{lots of boiler plate code} for the end user
+    \item \mintinline{cpp}{std::generator} is part of \cpp23's draft
+    \item in the meantime, libraries exist, e.g. \href{https://github.com/lewissbaker/cppcoro}{CppCoro}
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
