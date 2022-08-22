@@ -16,6 +16,18 @@ For each commit, the slides are compiled as a PDF and uploaded as "artifact".
 The [GitHub docs](https://docs.github.com/en/actions/managing-workflow-runs/downloading-workflow-artifacts)
 explain how you can download the PDF.
 
+## 📹 Video recordings & events
+
+Video recordings are available in the past events.
+
+* [5th HEP C++ Course and Hands-on Training](https://indico.cern.ch/event/1172498/)
+* [4nd HEP C++ Course and Hands-on Training](https://indico.cern.ch/event/1119339/)
+* [3rd HEP C++ Course and Hands-on Training](https://indico.cern.ch/event/1019089/)
+* [2nd HEP C++ Course and Hands-on Training](https://indico.cern.ch/event/979067/)
+* [1st HEP C++ Course and Hands-on Training](https://indico.cern.ch/event/946584/)
+
+Check [this page](https://hepsoftwarefoundation.org/Schools/events.html) for announcements of upcoming training events (including those with this material).
+
 ## 🧰 Development setup
 
 Make sure to install the pre-commit hooks:
