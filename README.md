@@ -20,6 +20,18 @@ For each commit to master, the slides are compiled to a PDF and uploaded to the 
  - Latest [essentials course PDF](https://github.com/hsf-training/cpluspluscourse/raw/download/talk/C%2B%2BCourse_essentials.pdf).
  - Latest [full course PDF](https://github.com/hsf-training/cpluspluscourse/raw/download/talk/C%2B%2BCourse_full.pdf).
 
+## 📹 Video recordings & events
+
+Video recordings are available in the past events.
+
+* [5th HEP C++ Course and Hands-on Training](https://indico.cern.ch/event/1172498/)
+* [4nd HEP C++ Course and Hands-on Training](https://indico.cern.ch/event/1119339/)
+* [3rd HEP C++ Course and Hands-on Training](https://indico.cern.ch/event/1019089/)
+* [2nd HEP C++ Course and Hands-on Training](https://indico.cern.ch/event/979067/)
+* [1st HEP C++ Course and Hands-on Training](https://indico.cern.ch/event/946584/)
+
+Check [this page](https://hepsoftwarefoundation.org/Schools/events.html) for announcements of upcoming training events (including those with this material).
+
 ## 🧰 Development setup
 
 Make sure to install the pre-commit hooks:
