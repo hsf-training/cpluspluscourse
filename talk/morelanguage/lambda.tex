@@ -316,37 +316,6 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{lambdas and the visitor pattern}
-  \begin{exampleblock}{Idea}
-    \begin{itemize}
-    \item use lambda inheritance to group a set of lambdas
-    \item use the resulting functor with \mintinline{cpp}{std::visit}
-    \end{itemize}
-  \end{exampleblock}
-  \scriptsize
-  \begin{block}{Practically}
-    \begin{cppcode*}{}
-      // variadic templating is covered in expert part
-      template<typename... Ts> struct Overload :
-          Ts ... { using Ts::operator()...; };
-      template<typename... Ts> Overload(Ts...) -> Overload<Ts...>;
-
-      int main(){
-        std::variant<char, long, float, int> v = ...;
-        auto overloadSet = Overload {
-          [](char) { return "char"; },
-          [](long) { return "long"; },
-          [](float) { return "float"; },
-          [](int) { return "int"; },
-          [](auto) { return "unknown type"; },
-        };
-        std::visit(overloadSet, v);
-      }
-    \end{cppcode*}
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
   \frametitlecpp[11]{Lambdas}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
