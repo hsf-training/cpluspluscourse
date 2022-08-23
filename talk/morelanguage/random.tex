@@ -1,0 +1,122 @@
+%\subsection[rnd]{Random}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Pseudo-random number generators (PRNG)}
+  \begin{block}{Concept}
+    \begin{itemize}
+      \item For generating pseudo-random numbers the STL offers:
+      \begin{itemize}
+        \item engines and engine adaptors to generate pseudo random bits
+        \item distributions to shape these into numbers
+        \item access to (potential) hardware entropy
+      \end{itemize}
+      \item All found in header \mintinline{cpp}{<random>}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Example}
+    \begin{cppcode}
+      #include <random>
+      std::random_device rd;
+      std::default_random_engine engine{rd()};
+      std::normal_distribution dist(5.0, 1.5); // µ, σ
+      double r = dist(engine);
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Engines}
+  \begin{block}{Engines}
+    \begin{itemize}
+      \item Generate random bits (as integers), depending on algorithm
+      \item Can be seeded via constructor or \mintinline{cpp}{seed()}
+      \item Algorithms:
+        {\footnotesize \mintinline{cpp}{linear_congruential_engine}, \mintinline{cpp}{mersenne_twister_engine}, \mintinline{cpp}{subtract_with_carry_engine}}
+      \item Adaptors:
+        {\footnotesize \mintinline{cpp}{discard_block_engine}, \mintinline{cpp}{independent_bits_engine}, \mintinline{cpp}{shuffle_order_engine}}
+      \item Aliases:
+        {\footnotesize \mintinline{cpp}{minstd_rand0}, \mintinline{cpp}{minstd_rand}, \mintinline{cpp}{mt19937}, \mintinline{cpp}{mt19937_64}, \mintinline{cpp}{ranlux24}, \mintinline{cpp}{ranlux48}, \mintinline{cpp}{knuth_b}} (use these)
+      \item \mintinline{cpp}{std::default_random_engine} aliases one of the above
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Engine creation with seed}
+    \begin{cppcode}
+      std::default_random_engine engine{42}; // or empty
+      auto i = engine(); // operator(): random integer
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Determinism and random device}
+  \begin{block}{Engines / PRNGs}
+    \begin{itemize}
+      \item Are \emph{deterministic}
+      \item Will produce the same number sequence for the same seed
+      \item May be useful for reproducibility
+    \end{itemize}
+  \end{block}
+  \begin{block}{\texttt{std::random\_device}}
+    \begin{itemize}
+      \item Provides \emph{non-deterministic} random numbers
+      \item Uses hardware provided entropy, if available
+      \item May become slow when called too often,\\e.g.\ when hardware entropy pool is exhausted
+      \item Use only to seed engine, if \emph{non-deterministic} numbers needed
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Non-deterministic engine seeding}
+    \begin{cppcode}
+      std::random_device rd;
+      std::default_random_engine engine{rd()};
+    \end{cppcode}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Distributions}
+  \begin{block}{Distributions}
+    \begin{itemize}
+      \item Take random bits from engines and shape them into numbers
+      \item Standard library provides a lot of them
+      \begin{itemize}
+        \item Uniform, bernoulli, poisson, normal and sampling distributions
+        \item See \href{https://en.cppreference.com/w/cpp/numeric/random}{cppreference} for the full list
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Distributions sharing a non-deterministic engine}
+    \begin{cppcode*}{gobble=2}
+      std::random_device rd;
+      std::default_random_engine engine{rd()};
+      std::uniform_int_distribution<int> dist(2,7);//min,max
+      const int size = dist(engine); // gen. random number
+      std::vector<int> v(size);
+      std::normal_distribution<double> norm(5.0, 1.5); //µ,σ
+      std::generate(begin(v), end(v),
+                    [&]{ return norm(engine); });
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{C random library}
+  \begin{block}{C random library}
+    \begin{itemize}
+      \item The C library (\mintinline{cpp}{<cstdlib>}) offers a primitive PRNG:
+      \item \mintinline{cpp}{rand()} returns random int between 0 and \mintinline{cpp}{RAND_MAX} (incl.)
+      \item \mintinline{cpp}{srand(seed)} sets the global seed
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{Disadvantages}
+    \begin{itemize}
+      \item Seeding is not thread-safe; \mintinline{cpp}{rand()} may be.
+      \item Returned numbers have small, implementation-defined range
+      \item No guarantee on quality
+      \item Mapping a random number to a custom range is hard
+      \item E.g.: \mintinline{cpp}{rand() % 10} yields biased numbers and is wrong!
+    \end{itemize}
+  \end{alertblock}
+  \begin{goodpractice}{Strongly avoid the C random library}
+    Use the \cpp11 facilities from the \mintinline{cpp}{<random>} header
+  \end{goodpractice}
+\end{frame}
