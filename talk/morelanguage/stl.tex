@@ -260,16 +260,42 @@
 \begin{frame}[fragile]
   \frametitlecpp[14]{More examples}
   \begin{cppcode}
-    // Finds the first element in a list between 1 and 10.
     std::list<int> l = ...;
-    ...
+
+    // Finds the first element in a list between 1 and 10.
     const auto it =
       std::find_if(l.begin(), l.end(),
         [](int i) { return i >= 1 && i <= 10; });
+    if (it != l.end())
+      int element = *it;
 
     // Computes sin(x)/(x + DBL_MIN) for elements of a range.
-    std::transform(first, last, first,
+    std::vector<double> r(l.size());
+    std::transform(l.begin(), l.end(), r.begin(),
       [](auto x) { return sin(x)/(x + DBL_MIN); });
+
+    // reduce/fold (using addition)
+    const auto sum = std::reduce(v.begin(), v.end());
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[14]{More examples}
+  \begin{cppcode}
+    std::vector<int> v = ...;
+
+    // remove duplicates
+    std::sort(v.begin(), v.end());
+    auto newEndIt = std::unique(v.begin(), v.end());
+    v.erase(newEndIt, v.end());
+
+    // remove by predicate
+    auto p = [](int i) { return i > 42; };
+    auto newEndIt = std::remove_if(v.begin(), v.end(), p);
+    v.erase(newEndIt, v.end());
+
+    // remove by predicate (C++20)
+    std::erase_if(v, p);
   \end{cppcode}
 \end{frame}
 
