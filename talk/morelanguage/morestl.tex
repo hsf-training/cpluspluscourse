@@ -148,20 +148,48 @@
   \end{block}
   \begin{exampleblock}{Practically}
     \small
-    \begin{cppcode*}{}
-      using option_t = std::variant<int,float,string>;
+    \begin{cppcode*}{gobble=2}
       struct Visitor {
-        void operator() (int i) { std::cout<< "i32:"<< i;}
-        void operator() (float f) { std::cout<< "f32:"<< f;}
-        void operator() (string s) { std::cout<< "s:"<< s;}
+        void operator() (int i) { std::cout << "i32:" << i;}
+        void operator() (float f) { std::cout << "f32:" << f;}
+        void operator() (std::string s) { std::cout << s;}
+        template <typename T>
+        void operator() (T t) { return std::cout << "other"; }
       };
-      void print_opt(option_t opt) {
-        std::visit(Visitor{}, opt);
-        std::cout << "\n";
+      void print(std::variant<int, float, std::string, char> v) {
+        std::cout << std::visit(Visitor{}, v) << "\n;
       }
-      print_opt(100); print_opt(3.14f); print_opt("example");
+      print(100); print(42.0f); print("example"); print('A');
     \end{cppcode*}
   \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{std::variant and the lambda visitor pattern}
+  \begin{exampleblock}{Idea}
+    \begin{itemize}
+    \item use inheritance to group a set of lambdas
+    \end{itemize}
+  \end{exampleblock}
+  \begin{block}{Practically}
+    \small
+    \begin{cppcode*}{gobble=2}
+      template<typename... Ts> // covered in expert part
+      struct Overload : Ts ... { using Ts::operator()...; };
+      template<typename... Ts> Overload(Ts...) -> Overload<Ts...>;
+
+      int main(){
+        std::variant<int, float, std::string, char> v = ...;
+        auto overloadSet = Overload {
+          [](int i) { std::cout << "i32:" << i;},
+          [](float f) { std::cout << "f32:" << f;},
+          [](std::string s) { std::cout << s;},
+          [](auto a) { std::cout << "other"; },
+        };
+        std::visit(overloadSet, v);
+      }
+    \end{cppcode*}
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
