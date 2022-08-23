@@ -86,8 +86,8 @@
     T& t = v[1000];    // access element 1000, bug!
     T& t = v.at(1000); // throws std::out_of_range
     T& f = v.front();  // access first element
-    v.back() = 0;     // write to last element
-    T* v.data();       // pointer to underlying storage
+    v.back() = 0;      // write to last element
+    T* p = v.data();   // pointer to underlying storage
   \end{cppcode*}
 \end{frame}
 
