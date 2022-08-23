@@ -8,6 +8,9 @@
 \setboolean{onlybasics}{false}
 \IfFileExists{onlybasics.tex}{\input{onlybasics}}{}
 
+\DeclareUnicodeCharacter{3C3}{$\sigma$}
+\DeclareUnicodeCharacter{3BC}{$\mu$}
+
 \begin{document}
 
 \showboxdepth=\maxdimen
@@ -149,6 +152,7 @@
 \input{morelanguage/lambda}
 \input{morelanguage/stl}
 \input{morelanguage/morestl}
+\input{morelanguage/random}
 \input{morelanguage/ranges}
 \input{morelanguage/raii}
 \input{morelanguage/initialization}
