@@ -63,11 +63,11 @@
   \end{block}
   \begin{exampleblock}{Usage example}
     \begin{cppcode*}{firstnumber=4,gobble=2}
-      std::vector<int> data{1,2,3,4,5};
-      std::for_each(begin(data), end(data), [](int i) {
-        std::cout << "The square of " << i
-                  << " is " << i*i << std::endl;
-      });
+      int data[]{1,2,3,4,5};
+      auto f = [](int i) {
+        std::cout << i << " squared is " << i*i << std::endl;
+      };
+      for (int i : data) f(i);
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -86,9 +86,9 @@
   \begin{block}{First attempt in \cpp}
     \begin{cppcode*}{firstnumber=4}
       int increment = 3;
-      std::vector<int> data{1,9,3,8,3,7,4,6,5};
-      std::transform(begin(data), end(data), begin(data),
-                     [](int x) { return x+increment; });
+      int data[]{1,9,3,8,3,7,4,6,5};
+      auto f = [](int x) { return x+increment; };
+      for(int& i : data) i = f(i);
     \end{cppcode*}
   \end{block}
   \pause
@@ -113,11 +113,9 @@
   \begin{exampleblock}{Example}
     \begin{cppcode*}{}
       int increment = 3;
-      std::vector<int> data{1,9,3,8,3,7,4,6,5};
-      std::transform(begin(data), end(data), begin(data),
-                     [increment](int x) {
-                       return x+increment;
-                     });
+      int data[]{1,9,3,8,3,7,4,6,5};
+      auto f = [increment](int x) { return x+increment; };
+      for(int& i : data) i = f(i);
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -127,9 +125,9 @@
   \begin{exampleblock}{Code example}
     \begin{cppcode}
       int sum = 0;
-      std::vector<int> data{1,9,3,8,3,7,4,6,5};
-      std::for_each(begin(data), end(data),
-                   [sum](int x) { sum += x; });
+      int data[]{1,9,3,8,3,7,4,6,5};
+      auto f = [sum](int x) { sum += x; };
+      for (int i : data) f(i);
     \end{cppcode}
   \end{exampleblock}
   \pause
@@ -151,9 +149,9 @@
     In order to capture by reference, add '\&' before the variable
     \begin{cppcode*}{}
       int sum = 0;
-      std::vector<int> data{1,9,3,8,3,7,4,6,5};
-      std::for_each(begin(data), end(data),
-                   [&sum](int x) { sum += x; });
+      int data[]{1,9,3,8,3,7,4,6,5};
+      auto f = [&sum](int x) { sum += x; };
+      for (int i : data) f(i);
     \end{cppcode*}
   \end{exampleblock}
   \pause
@@ -161,11 +159,9 @@
     One can of course mix values and references
     \begin{cppcode*}{firstnumber=5}
       int sum = 0, offset = 1;
-      std::vector<int> data{1,9,3,8,3,7,4,6,5};
-      std::for_each(begin(data), end(data),
-                   [&sum, offset](int x) {
-                     sum += x + offset;
-                   });
+      int data[]{1,9,3,8,3,7,4,6,5};
+      auto f = [&sum, offset](int x) { sum += x + offset; };
+      for (int i : data) f(i);
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
