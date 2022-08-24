@@ -258,16 +258,16 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[14]{More examples}
+  \frametitlecpp[17]{More examples}
   \begin{cppcode}
     std::list<int> l = ...;
 
     // Finds the first element in a list between 1 and 10.
-    const auto it =
-      std::find_if(l.begin(), l.end(),
+    const auto it = std::find_if(l.begin(), l.end(),
         [](int i) { return i >= 1 && i <= 10; });
-    if (it != l.end())
-      int element = *it;
+    if (it != l.end()) {
+      int element = *it; ...
+    }
 
     // Computes sin(x)/(x + DBL_MIN) for elements of a range.
     std::vector<double> r(l.size());
@@ -280,7 +280,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[14]{More examples}
+  \frametitlecpp[11]{More examples}
   \begin{cppcode}
     std::vector<int> v = ...;
 

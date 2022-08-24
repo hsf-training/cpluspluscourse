@@ -65,7 +65,7 @@
     \begin{cppcode*}{firstnumber=4,gobble=2}
       int data[]{1,2,3,4,5};
       auto f = [](int i) {
-        std::cout << i << " squared is " << i*i << std::endl;
+        std::cout << i << " squared is " << i*i << '\n';
       };
       for (int i : data) f(i);
     \end{cppcode*}
@@ -160,7 +160,7 @@
     \begin{cppcode*}{firstnumber=5}
       int sum = 0, offset = 1;
       int data[]{1,9,3,8,3,7,4,6,5};
-      auto f = [&sum, offset](int x) { sum += x + offset; };
+      auto f = [&sum, offset](int x) { sum += x+offset; };
       for (int i : data) f(i);
     \end{cppcode*}
   \end{exampleblock}
