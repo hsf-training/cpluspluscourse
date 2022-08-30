@@ -41,7 +41,7 @@
         for (auto a : results) { ... } // 0, 4, 16
       \end{cppcode*}
     }
-  \end{exampleblock}  
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -73,12 +73,12 @@
     { \scriptsize
       \begin{cppcode*}{gobble=2}
         // print first 20 prime numbers above 1000000
-        for (int i: std::views::iota(1000000) | std::views::filter(odd) 
-                                              | std::views::filter(isPrime) 
+        for (int i: std::views::iota(1000000) | std::views::filter(odd)
+                                              | std::views::filter(isPrime)
                                               | std::views::take(20)) {
-          std::cout << i << " ";  
+          std::cout << i << " ";
         }
       \end{cppcode*}
     }
-  \end{exampleblock}  
+  \end{exampleblock}
 \end{frame}
