@@ -162,6 +162,8 @@
       \node[box, minimum width=1cm] at (1.3, 0) {promise};
     \end{tikzpicture}
   \end{block}
+  \vspace{-2mm}
+  \tiny Credits : original idea for this graph comes from \href{https://itnext.io/c-20-coroutines-complete-guide-7c3fc08db89d}{this web site}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -383,7 +385,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[20]{Lazyness allows for infinite ranges}
+  \frametitlecpp[20]{Laziness allows for infinite ranges}
   \begin{block}{Generators do not need to be finite - \href{https://godbolt.org/z/MP6qdGWYe}{\color{blue!50}godbolt}}
     \begin{cppcode*}{gobble=2}
       Task range(int first) {
