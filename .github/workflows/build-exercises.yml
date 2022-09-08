@@ -16,6 +16,7 @@ jobs:
           - NAME: "asan"
           - NAME: "atomic"
           - NAME: "callgrind"
+          - NAME: "concepts"
           - NAME: "condition_variable"
           - NAME: "constness"
             SKIP_DEFAULT: true
