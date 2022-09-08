@@ -8,15 +8,16 @@ In the code below, we provide two implementations of the function increment().
 The second one is optimized for the iterators which fulfill the requirements of
 the concept RandomAccessIterator.
 
-1. Complete the concept RandomAccessIterator : check that the class IterT has some operator +=.
+1. Uncomment and complete the concept RandomAccessIterator : check that the class IterT has some operator +=.
 2. Find an existing concept in the standard library, which can replace the previous user-defined concept.
 
 */
 
+/*
 
 template< typename IterT>
-concept RandomAccessIterator = requires( /* TO BE COMPLETED */ )
- { /* TO BE COMPLETED */ } ;
+concept RandomAccessIterator = requires( ... TO BE COMPLETED ... )
+ { ... TO BE COMPLETED ... } ;
 
 template< RandomAccessIterator IterT >
 void increment( IterT & iter, unsigned d )
@@ -24,6 +25,8 @@ void increment( IterT & iter, unsigned d )
   iter += d ;
   std::cout<<"(random)"<<std::endl ;
  }
+
+*/
 
 template< typename IterT >
 void increment( IterT & iter, unsigned d )
