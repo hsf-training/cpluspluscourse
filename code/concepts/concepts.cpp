@@ -12,6 +12,9 @@ the concept RandomAccessIterator.
    class IterT has operator +=.
 2. Find an existing concept in the standard library, which can replace the
    previous user-defined concept.
+3. If you comment out the default general implementation of `increment()`,
+   why the compiler refuse to use remaining implementation with the list ?
+   (which requirement is not fulfilled ?)
 
 */
 

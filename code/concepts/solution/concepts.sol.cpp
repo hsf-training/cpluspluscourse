@@ -2,7 +2,7 @@
 #include <list>
 #include <vector>
 
-// answer to question 1
+// Answer to question 1
 
 template <typename IterT>
 concept RandomAccessIterator = requires(IterT itr, unsigned d) {
@@ -22,7 +22,7 @@ void increment(IterT &iter, unsigned d) {
   std::cout << "(other)" << std::endl;
 }
 
-// answer to question 2
+// Answer to question 2
 
 #include <concepts>
 #include <iterator>
@@ -40,7 +40,7 @@ void increment_q2(IterT &iter, unsigned d) {
   std::cout << "(other_q2)" << std::endl;
 }
 
-// main
+// Main
 
 int main() {
   // question 1
@@ -67,3 +67,11 @@ int main() {
     increment_q2(v_itr, 2);
   }
 }
+
+// Answer to question 3
+//
+// The concept std::random_access_iterator<IterT>
+// requires that IterT has an internal tag type which is
+// std::random_access_iterator_tag, or inherits from it.
+// That's how the standard library express that a class
+// is a kind of "Random Access Iterator".
