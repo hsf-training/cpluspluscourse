@@ -23,6 +23,7 @@ the concept RandomAccessIterator.
 template <typename IterT>
 concept RandomAccessIterator = requires(... TO BE COMPLETED...) {
   ... TO BE COMPLETED...
+  (Only add what is necessary for this example)
 };
 
 template <RandomAccessIterator IterT>
