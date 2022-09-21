@@ -106,133 +106,183 @@
   \frametitlecpp[11]{Reference collapsing}
   \begin{block}{Reference to references}
   	\begin{itemize}
-  	\item They are forbidden, but some compilers allow them
+  	\item Are formally forbidden, but can occur sometimes
     \end{itemize}
   \end{block}
   \begin{block}{}
     \begin{cppcode*}{}
       template <typename T>
-      void foo(T t) { T& k = t; } // int& &
+      void foo(T t) { T& k = t; } //int& &, error in C++98
       int ii = 4;
-      foo<int&>(ii);
+      foo<int&>(ii); // want to pass by reference
     \end{cppcode*}
   \end{block}
-  \begin{block}{\cpp11 added rvalues}
+  \begin{block}{\cpp11 added rvalue-references}
     \begin{itemize}
-    \item what about \mintinline{cpp}{int&& &} ?
-    \item and int \mintinline{cpp}{&& &&} ?
+      \item More combinations possible, like: \mintinline{cpp}{int&& &}, or \mintinline{cpp}{int&& &&}
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{Rule}
-    \mintinline{cpp}{&} always wins\\
-    \mintinline{cpp}{&& &, & &&, & &} $\rightarrow$ \mintinline{cpp}{&}\\
-    \mintinline{cpp}{&& &&} $\rightarrow$ \mintinline{cpp}{&&}
+  \begin{exampleblock}{Reference collapsing}
+    \begin{itemize}
+      \item Rule: When multiple references are involved, \mintinline{cpp}{&} always wins
+      \item \mintinline{cpp}{T&& &, T& &&, T& &} $\rightarrow$ \mintinline{cpp}{T&}
+      \item \mintinline{cpp}{T&& &&} $\rightarrow$ \mintinline{cpp}{T&&}
+    \end{itemize}
   \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{rvalue in type-deducing context}
-  \begin{block}{}
+  \frametitlecpp[11]{Forwarding references}
+  \begin{exampleblock}{Rvalue reference in type-deducing context}
     \begin{cppcode*}{}
       template <typename T>
-      void func(T&& t) {}
+      void f(T&& t) { ... }
     \end{cppcode*}
-  \end{block}
-  \begin{itemize}
-    \item Next to a template parameter, \mintinline{cpp}{&&} is not an rvalue, but a ``forwarding reference'' (aka.\ ``universal reference'')
-    \item \mintinline{cpp}{T&&} actual type depends on the arguments passed to func
+  \end{exampleblock}
+  \begin{block}{Forwarding reference}
     \begin{itemize}
-      \item if an lvalue of type U is given, T is deduced to \mintinline{cpp}{U&}
-      \item otherwise, collapse references normally
+      \item Next to a template parameter, that can be deduced, \mintinline{cpp}{&&} is not an rvalue reference, but a ``forwarding reference''
+      \begin{itemize}
+        \item aka.\ ``universal reference''
+      	\item So, this applies only to functions
+      \end{itemize}
+      \item The template parameter is additionally allowed to be deduced as an lvalue reference, and reference collapsing proceeds:
+      \begin{itemize}
+        \item if an lvalue of type \mintinline{cpp}{U} is given, \mintinline{cpp}{T} is deduced as \mintinline{cpp}{U&} and the parameter type \mintinline{cpp}{U& &&} collapses to \mintinline{cpp}{U&}
+        \item otherwise (rvalue), T is deduced as \mintinline{cpp}{U}
+        \begin{itemize}
+          \item and forms the parameter type \mintinline{cpp}{U&&}
+        \end{itemize}
+      \end{itemize}
     \end{itemize}
-  \end{itemize}
-  \begin{block}{}
-    \begin{cppcode*}{firstnumber=3}
-      func(4);            // rvalue -> T&& is int&&
-      double d = 3.14;
-      func(d);            // lvalue -> T&& is double&
-      float f() {...}
-      func(f());          // rvalue -> T&& is float&&
-      std::string s = "hello";
-      g(std::move(s)); // rvalue -> T&& is std::string&&
-    \end{cppcode*}
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{std::remove\_reference}
-  Type trait to remove reference from a type
+  \frametitlecpp[11]{Forwarding references}
+  \begin{exampleblock}{Examples}
+    \begin{cppcode*}{}
+      template <typename T>
+      void f(T&& t) { ... }
+
+      f(4);            // rvalue -> T&& is int&&
+      double d = 3.14;
+      f(d);            // lvalue -> T&& is double&
+      float f() {...}
+      f(f());          // rvalue -> T&& is float&&
+      std::string s = "hello";
+      f(s);            // lvalue -> T&& is std::string&
+      f(std::move(s)); // rvalue -> T&& is std::string&&
+      f(std::string{"hello"}); // rvalue -> std::string&&
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Forwarding references}
+  \begin{alertblock}{Careful!}
+    \begin{cppcode*}{gobble=2}
+      template <typename T> struct S {
+        S(T&& t) { ... }       // rvalue references
+        void f(T&& t) { ... }  // NOT forwarding references
+      };
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{Correct version}
+    \begin{cppcode*}{gobble=2}
+      template <typename T> struct S {
+        template <typename U, std::enable_if_t<
+          std::is_same_v<std::decay_t<U>, T>, int> = 0>
+        S(U&& t) { ... } // deducing context -> fwd. ref.
+        template <typename U>
+        void f(U&& t)    // deducing context -> fwd. ref.
+          requires std::same_as<std::decay_t<U>, T> { ... }
+      };
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Perfect forwarding}
+  \begin{block}{\texttt{std::remove\_reference}}
+    \begin{itemize}
+    \item Type trait to remove reference from a type
+    \item If \mintinline{cpp}{T} is a reference type, \mintinline{cpp}{remove_reference_t<T>} is the type referred to by \mintinline{cpp}{T}, otherwise it is \mintinline{cpp}{T}.
+    \end{itemize}
+  \end{block}
   \begin{block}{}
     \begin{cppcode*}{}
       template <typename T>
       struct remove_reference      { using type = T; };
-
       template <typename T>
       struct remove_reference<T&>  { using type = T; };
-
       template <typename T>
       struct remove_reference<T&&> { using type = T; };
+
+      template <typename T>
+      using remove_reference_t =
+        typename remove_reference<T>::type; // C++14
     \end{cppcode*}
   \end{block}
-  If {\ttfamily T} is a reference type, \mintinline{cpp}{remove_reference_t<T>::type} is the type referred to by {\ttfamily T},
-  otherwise it is {\ttfamily T}.
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{std::forward}
-  Keeps references and maps non-reference types to rvalue references
+  \frametitlecpp[11]{Perfect forwarding}
+  \begin{block}{\texttt{std::forward}}
+    \begin{itemize}
+      \item Forward lvalue-/rvalueness
+      \item Keeps references and maps non-references to rvalue references
+    \end{itemize}
+  \end{block}
   \begin{block}{}
     \small
     \begin{cppcode*}{}
       template<typename T>
-      T&& forward(typename std::remove_reference<T>
-                  ::type& t) noexcept {
+      T&& forward(remove_reference_t<T>& t) noexcept {
         return static_cast<T&&>(t);
       }
       template<typename T>
-      T&& forward(typename std::remove_reference<T>
-                  ::type&& t) noexcept {
+      T&& forward(remove_reference_t<T>&& t) noexcept {
         return static_cast<T&&>(t);
       }
     \end{cppcode*}
   \end{block}
-  \begin{block}{How it works}
+  \begin{block}{}
     \begin{itemize}
-    \item if T is \mintinline{cpp}{int}, it returns \mintinline{cpp}{int&&}
-    \item if T is \mintinline{cpp}{int&}, it returns \mintinline{cpp}{int& &&} ie. \mintinline{cpp}{int&}
-    \item if T is \mintinline{cpp}{int&&}, it returns \mintinline{cpp}{int&& &&} ie. \mintinline{cpp}{int&&}
+    \item if \mintinline{cpp}{T} is \mintinline{cpp}{int}, it returns \mintinline{cpp}{int&&}
+    \item if \mintinline{cpp}{T} is \mintinline{cpp}{int&}, it returns \mintinline{cpp}{int& &&}, i.e.\ \mintinline{cpp}{int&}
+    \item if \mintinline{cpp}{T} is \mintinline{cpp}{int&&}, it returns \mintinline{cpp}{int&& &&}, i.e.\ \mintinline{cpp}{int&&}
     \end{itemize}
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Perfect forwarding}
-  Putting it all together
-  \begin{block}{}
-    \begin{cppcode*}{}
+    \begin{exampleblock}{Example - putting it all together}
+    \begin{cppcode}
       template <typename... T>
       void wrapper(T&&... args) {
         func(std::forward<T>(args)...);
       }
-    \end{cppcode*}
-  \end{block}
+    \end{cppcode}
+    \end{exampleblock}
   \begin{block}{}
     \begin{itemize}
-    \item if we pass an rvalue to wrapper (\mintinline{cpp}{U&&})
+    \item if we pass an rvalue reference \mintinline{cpp}{U&&} to wrapper
       \begin{itemize}
       \item arg will be of type \mintinline{cpp}{U&&}
       \item func will be called with a \mintinline{cpp}{U&&}
       \end{itemize}
-    \item if we pass an lvalue to wrapper (\mintinline{cpp}{U&})
+    \item if we pass an lvalue reference \mintinline{cpp}{U&} to wrapper
       \begin{itemize}
       \item arg will be of type \mintinline{cpp}{U&}
       \item func will be called with a \mintinline{cpp}{U&}
       \end{itemize}
-    \item if we pass a plain value (\mintinline{cpp}{U})
+    \item if we pass a plain \mintinline{cpp}{U} (rvalue) to wrapper
       \begin{itemize}
       \item arg will be of type \mintinline{cpp}{U&&} (no copy in wrapper)
       \item func will be called with a \mintinline{cpp}{U&&}
-      \item but func takes a \mintinline{cpp}{U&}, so copy happens there, as expected
+      \item if func takes a plain \mintinline{cpp}{U}, copy happens there, as expected
       \end{itemize}
     \end{itemize}
   \end{block}

@@ -57,11 +57,11 @@
       template<typename... Args>
       T sum1(Args... args) {
         return (args + ...);     // unary fold over +
-      }
+      }                          // parentheses mandatory
       template<typename... Args>
       T sum2(Args... args) {
         return (args + ... + 0); // binary fold over +
-      }
+      }                          // parentheses mandatory
       long sum = sum1(); // error
       long sum = sum2(); // ok
     \end{cppcode*}
