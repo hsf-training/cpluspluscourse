@@ -2,7 +2,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Atomic types in \cpp}
-  \begin{block}{std::atomic template}
+  \begin{block}{\texttt{std::atomic} template}
     \begin{itemize}
       \item Any trivially copyable type can be made atomic in C++
       \item Most useful for integral types
@@ -57,11 +57,11 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \begin{block}{Use built-in atomic functions}
+  \begin{block}{Use atomic member functions}
     \begin{itemize}
-      \item The built-in atomic functions are thread safe
+      \item The member functions of \mintinline{cpp}{std::atomic} are thread safe
       \item \mintinline{cpp}{fetch_add} and \mintinline{cpp}{operator+=}: atomic \{ load; add; store \}
-      \item But don't confuse ``\mintinline{cpp}{a += 2}'' and ``\mintinline{cpp}{a + 2}''
+      \item But don't confuse ``\mintinline{cpp}{a += 2}'' and ``\mintinline{cpp}{a = a + 2}''
     \end{itemize}
   \end{block}
   \begin{exampleblock}{}
@@ -85,6 +85,33 @@
       \draw[-triangle 60](9,0) -- (9,-2) node[right, pos=0.5]{time};
     \end{tikzpicture}
   \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Atomic references}
+  \begin{block}{\texttt{std::atomic\_ref} template}
+    \begin{itemize}
+      \item Wraps a \mintinline{cpp}{T&} and makes access to it atomic
+      \item Like \mintinline{cpp}{std::atomic<T>}, but does not contain the \mintinline{cpp}{T}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{gobble=2}
+      int a{0};
+      std::thread t1([&]{ std::atomic_ref<int> r{a}; r++;});
+      std::thread t2([&]{ std::atomic_ref{a}++; });
+      t1.join(); t2.join();
+      a += 2; // non-atomic (fine, threads joined before)
+      assert( a == 4 ); // Guaranteed to succeed
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{alertblock}{Don't mix concurrent atomic and non-atomic access}
+    \begin{cppcode*}{gobble=2}
+      std::thread t3([&]{ std::atomic_ref{a}++; });
+      a += 2; // data race
+      t3.join();
+    \end{cppcode*}
+  \end{alertblock}
 \end{frame}
 
 \begin{frame}[fragile]
