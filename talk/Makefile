@@ -13,7 +13,7 @@ endif
 	pdflatex -shell-escape C++Course.tex
 
 clean:
-	rm -rf *.aux */*.aux *.log *.nav *.out *.pyg *.snm *.vrb *.toc _minted-C++Course
+	rm -rf *.aux */*.aux *.log *.nav *.out *.pyg *.snm *.vrb *.toc C++Course.l* _minted-C++Course
 
 clobber: clean
 	rm -f C++Course.pdf
