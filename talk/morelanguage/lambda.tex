@@ -316,6 +316,33 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[20]{Lambda improvements}
+  \begin{block}{Lambda improvements in \cpp20}
+    \begin{itemize}
+      \item Allowed in unevaluated contexts,\\
+            e.g.\ within \mintinline{cpp}{decltype}, \mintinline{cpp}{sizeof}, \mintinline{cpp}{typeid}, etc.
+      \item Without captures, are default-constructible and assignable
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Examples}
+    \small
+    \begin{cppcode*}{gobble=2}
+      struct S {
+        decltype([](int i) { std::cout << i; }) f;
+      } s;
+      s.f(42); // prints "42"
+
+      template <typename T>
+      using CudaPtr = std::unique_ptr<T,
+                        decltype([](T* p){ cudaFree(p); })>;
+
+      std::set<T, decltype([](T a, T b) { ... })> s2;
+    \end{cppcode*}
+  \end{exampleblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[11]{Lambdas}
   \begin{alertblock}{Exercise Time}
     \begin{itemize}
