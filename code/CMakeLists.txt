@@ -35,6 +35,7 @@ add_subdirectory( race )
 add_subdirectory( smartPointers )
 add_subdirectory( templates )
 add_subdirectory( valgrind )
+add_subdirectory( variadic )
 add_subdirectory( virtual_inheritance )
 
 # Include the non-Windows-native exercises.
