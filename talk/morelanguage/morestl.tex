@@ -176,13 +176,12 @@
     \begin{cppcode*}{gobble=2}
       template<typename... Ts> // covered in expert part
       struct Overload : Ts ... { using Ts::operator()...; };
-      template<typename... Ts> Overload(Ts...) ->Overload<Ts...>;
-
+      template<typename... Ts>
+      Overload(Ts...) -> Overload<Ts...>; // obsolete in C++20
       int main(){
         std::variant<int, float, std::string, char> v{ ... };
         auto overloadSet = Overload {
           [](int i) { std::cout << "i32:" << i;},
-          [](float f) { std::cout << "f32:" << f;},
           [](std::string s) { std::cout << s;},
           [](auto a) { std::cout << "other"; },
         };
