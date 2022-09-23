@@ -246,25 +246,99 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{Structured Binding Declarations}
-  Helps with \mintinline{cpp}{std::tuple}, tuple-like or aggregate types.\\
-  Automatically creates variables and ties them.
-  \begin{alertblock}{\cpp14}
+  \frametitlecpp[11]{\texttt{std::tuple}}
+  \begin{exampleblock}{}
     \begin{cppcode*}{}
-      void foo(std::tuple<int, double, long> tuple) {
-        int a = 0;
-        double b = 0.0;
-        long c = 0;
-        // a, b, c need to be declared first
-        std::tie(a, b, c) = tuple;
+      #include <tuple>
+
+      std::tuple<int, float, bool> t{42, 3.14f, false};
+      auto t = std::make_tuple(42, 3.14f, false);
+      std::tuple t{42, 3.14f, false}; // C++17 CTAD
+
+      float& f = std::get<1>(t);   // get 1. member
+      bool& b = std::get<bool>(t); // get bool member
+
+      using Tup = decltype(t);
+      constexpr auto s = std::tuple_size_v<Tup>; // 3
+      using E2Type = std::tuple_element<2, Tup>; // bool
+
+      auto t2 = std::tuple_cat(t, std::tuple{'A'}, t);
+        // <int, float, bool, char, int, float, bool>
+      bool& b2 = std::get<bool>(t2); // error
     \end{cppcode*}
-  \end{alertblock}
-  \begin{exampleblock}{\cpp17}
-    \begin{cppcode*}{firstnumber=7}
-      void foo(std::tuple<int, double, long> tuple) {
-        auto [ a, b, c ] = tuple; ...
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{\texttt{std::tuple}}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{}
+      void f(std::tuple<int, float, bool> tuple) {
+        int a; float b; bool c;
+        std::tie(a, b, c) // tuple<int&, float&, bool&>
+          = tuple;
+        // Use structured bindings in C++17
       }
+
+      int& i = ...;
+      std::tuple{i};                // tuple<int>
+      std::make_tuple(i);           // tuple<int>
+      std::make_tuple(std::ref(i)); // tuple<int&>
+      std::tuple{std::ref(i)};
+        // C++17 CTAD, tuple<std::reference_wrapper<int>>
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Structured Binding Declarations}
+  \begin{block}{}
+    \begin{itemize}
+      \item Helps with \mintinline{cpp}{std::tuple}, tuple-like, array or aggregate types
+      \item Automatically creates variables and ties them
+      \item CV qualifiers and references allowed
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{}
+      std::tuple<int, double, long> tuple = ...;
+      auto [ a, b, c ] = tuple;
+
+      struct S { int i; float f; bool b; } s = ...;
+      auto&& [ a, b, c ] = std::move(s);
+
+      int arr[] = {1, 3, 4};
+      const auto& [ a, b, c ] = arr;
+
+      std::unordered_map<K, V> map = ...;
       for (const auto& [key, value] : map) { ... }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Structured Binding Declarations}
+  \begin{block}{``Tuple-like binding prototcol''}
+    \begin{itemize}
+      \item For a non-aggregates, you can opt-in to structured bindings
+      \item The compiler requires these hooks:
+      \begin{itemize}
+        \item Specialize \mintinline{cpp}{std::tuple_size}
+        \item Specialize \mintinline{cpp}{std::tuple_element}
+        \item Provide either \mintinline{cpp}{T::get<I>()} or \mintinline{cpp}{get<I>(T)}
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{}
+    \small
+    \begin{cppcode*}{gobble=2}
+      class C { ... }; // complex, cannot change
+      template <>
+      struct std::tuple_size<C> {static constexpr size_t = ...;};
+      template <std::size_t I>
+      struct std::tuple_element<I, C> { using type = ...; };
+      template <std::size_t I>
+      auto& get(C& c) { ... }; // -> std::tuple_element<I, C>&
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
