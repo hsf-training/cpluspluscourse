@@ -3,7 +3,7 @@
 #
 
 # Set up the project.
-cmake_minimum_required( VERSION 3.1 )
+cmake_minimum_required( VERSION 3.12 )
 project( cpluspluscourse LANGUAGES CXX )
 
 # Make sure that the project is built "out of source". As an "in source" build
