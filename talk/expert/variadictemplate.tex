@@ -111,3 +111,51 @@
     \end{cppcode*}
   \end{block}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[14]{\texttt{std::integer\_sequence}}
+  \begin{block}{Packs of values}
+    \begin{itemize}
+      \item We can also have non-type template parameter packs
+      \item Useful to pass lists of compile-time constants around
+      \item The standard library includes a few helpers
+    \end{itemize}
+  \end{block}
+  \begin{block}{}
+    \begin{cppcode*}{}
+      template<typename T, T... Is>
+      struct integer_sequence { ... };
+
+      template<size_t... Is>
+      using index_sequence =
+        integer_sequence<std::size_t, Is...>;
+
+      template<size_t N>
+      using make_index_sequence =
+        index_sequence</*0, 1, ..., N-1*/>;
+    \end{cppcode*}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[14]{\texttt{std::integer\_sequence}}
+  \begin{exampleblock}{Example - make\_from\_tuple}
+    \begin{cppcode*}{}
+      template<typename T,
+        typename... Args, std::size_t... Is>
+      T helper(std::tuple<Args...> args,
+        std::index_sequence<Is...>) {
+        return T(std::get<Is>(args)...);
+      }
+      template<typename T, typename... Args>
+      T make_from_tuple(std::tuple<Args...> args) {
+         return helper<T>(args,
+           std::make_index_sequence<sizeof...(Args)>{});
+      }
+
+      struct S { S(int, float, bool) { ... } };
+      std::tuple t{42, 3.14, false};
+      S s = make_from_tuple<S>(t);
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
