@@ -69,6 +69,30 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[17]{Fold expressions}
+  \begin{exampleblock}{Example - call a function on all arguments}
+    \begin{cppcode*}{}
+      template<typename T>
+      void print(const T& t) {
+        std::cout << t;
+      }
+      template<typename... Ts>
+      void printAll(const Ts&... ts) {
+         (print(ts),...); // fold over comma operator
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{alertblock}{\cpp11 workaround (don't use anymore)}
+    \begin{cppcode*}{}
+      template<typename... Ts>
+      void printAll(const Ts&... ts) {
+         int dummy[]{(print(ts),0)...};
+      }
+    \end{cppcode*}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[11]{Variadic class template}
   \begin{block}{The tuple example, simplified}
     \begin{cppcode*}{}
