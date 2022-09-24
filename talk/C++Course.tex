@@ -12,9 +12,14 @@
 
 % create a comment environment advanced. depending on the value of basic, we exclude or include it.
 \ifbasic
-\excludecomment{advanced}
+  \excludecomment{advanced}
 \else
-\includecomment{advanced}
+  % advanced slides have a different structure color
+  \specialcomment{advanced}{
+    \setbeamercolor{structure}{fg=beamer@blendedblue!60!violet}
+  }{
+    \setbeamercolor{structure}{fg=beamer@blendedblue}
+  }
 \fi
 
 \newunicodechar{σ}{$\sigma$}
