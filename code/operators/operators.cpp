@@ -30,7 +30,7 @@ int main() {
   // the printAndCheck function requires operator<< and operator==:
   printAndCheck("One third times two", athird * 2, Fraction{2, 3});
   // ensure symmetry
-  printAndCheck("One third times two", 2 * athird, Fraction{2, 3});
+  printAndCheck("Two times one third", 2 * athird, Fraction{2, 3});
 
   // multiply two fractions
   printAndCheck("Three times one third", three * athird, Fraction{1, 1});

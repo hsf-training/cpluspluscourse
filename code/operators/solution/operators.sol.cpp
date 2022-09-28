@@ -6,88 +6,77 @@
 class Fraction {
  public:
   explicit Fraction(int i) : m_num(i), m_denom(1) {}
-  Fraction(int num, int denom) : m_num(num), m_denom(denom) {}
+  Fraction(int num, int denom) : m_num(num), m_denom(denom) {
+    normalize();
+  }
 
-  int num() const { return m_num; }
-  int denom() const { return m_denom; }
+  friend std::ostream& operator<<(std::ostream& os, Fraction const & f) {
+    os << f.m_num << "/" << f.m_denom;
+    return os;
+  }
 
+  Fraction & operator*=(int i) {
+    m_num *= i;
+    normalize();
+    return *this;
+  }
+
+  Fraction & operator*=(Fraction const & o) {
+    m_num *= o.m_num;
+    m_denom *= o.m_denom;
+    normalize();
+    return *this;
+  }
+
+  friend Fraction operator*(Fraction f, int i) { return f *= i; }
+  friend Fraction operator*(int i, Fraction const & f) { return f * i; }
+  friend Fraction operator*(Fraction a, Fraction const & b) { return a *= b; }
+
+  Fraction & operator+=(int i) {
+    m_num += i * m_denom;
+    return *this;
+  }
+
+  Fraction & operator+=(Fraction o) {
+    m_num *= o.m_denom;
+    m_num += o.m_num * m_denom;
+    m_denom *= o.m_denom;
+    normalize();
+    return *this;
+  }
+
+  friend Fraction operator+(Fraction r, int i) { return r += i; }
+  friend Fraction operator+(int i, Fraction const & r) { return r + i; }
+  friend Fraction operator+(Fraction a, Fraction const & b) { return a += b; }
+
+  friend bool operator==(Fraction const & a, Fraction const & b) {
+    return a.m_num == b.m_num && a.m_denom == b.m_denom;
+  }
+
+  friend bool operator<(Fraction const & a, Fraction const & b) {
+    return a.m_num * b.m_denom < b.m_num * a.m_denom;
+  }
+
+  friend bool operator!=(Fraction const & a, Fraction const & b) { return !(a == b); }
+  friend bool operator>(Fraction const & a, Fraction const & b) { return b < a; }
+  friend bool operator<=(Fraction const & a, Fraction const & b) { return !(a > b); }
+  friend bool operator>=(Fraction const & a, Fraction const & b) { return !(a < b); }
+
+ private:
   void normalize() {
     const int gcd = std::gcd(m_num, m_denom);
     m_num /= gcd;
     m_denom /= gcd;
   }
 
-  Fraction& operator*=(int i) {
-    m_num *= i;
-    normalize();
-    return *this;
-  }
-
-  Fraction& operator*=(Fraction f) {
-    m_num *= f.num();
-    m_denom *= f.denom();
-    normalize();
-    return *this;
-  }
-
-  Fraction& operator+=(int i) {
-    m_num += i * m_denom;
-    return *this;
-  }
-
-  Fraction& operator+=(Fraction f) {
-    m_num *= f.denom();
-    m_num += f.num() * m_denom;
-    m_denom *= f.denom();
-    normalize();
-    return *this;
-  }
-
- private:
   int m_num, m_denom;
 };
 
-std::ostream& operator<<(std::ostream& os, Fraction r) {
-  os << r.num() << "/" << r.denom();
-  return os;
-}
-
-Fraction operator*(Fraction r, int i) { return r *= i; }
-
-Fraction operator*(int i, Fraction r) { return r * i; }
-
-Fraction operator*(Fraction a, Fraction b) { return a *= b; }
-
-Fraction operator+(Fraction r, int i) { return r += i; }
-
-Fraction operator+(int i, Fraction r) { return r + i; }
-
-Fraction operator+(Fraction a, Fraction b) { return a += b; }
-
-bool operator==(Fraction a, Fraction b) {
-  a.normalize();
-  b.normalize();
-  return a.num() == b.num() && a.denom() == b.denom();
-}
-
-bool operator<(Fraction a, Fraction b) {
-  return a.num() * b.denom() < b.num() * a.denom();
-}
-
-bool operator!=(Fraction a, Fraction b) { return !(a == b); }
-
-bool operator>(Fraction a, Fraction b) { return b < a; }
-
-bool operator<=(Fraction a, Fraction b) { return !(a > b); }
-
-bool operator>=(Fraction a, Fraction b) { return !(a < b); }
-
-
-void printAndCheck(const std::string & what, const Fraction & result, const Fraction & expected) {
+void printAndCheck(std::string const & what, Fraction const & result, Fraction const & expected) {
   const bool passed = result == expected;
   std::cout << std::left << std::setw(40) << what << ": " << (passed ? "PASS" : "** FAIL **") << "    " << result << "\n";
 }
-void printAndCheck(const std::string & what, bool result, bool expected) {
+void printAndCheck(std::string const & what, bool result, bool expected) {
   const bool passed = result == expected;
   std::cout << std::left << std::setw(40) << what << ": " << (passed ? "PASS" : "** FAIL **") << "    " << result << "\n";
 }
@@ -105,7 +94,7 @@ int main() {
   // the printAndCheck function requires operator<< and operator==:
   printAndCheck("One third times two", athird * 2, Fraction{2, 3});
   // ensure symmetry
-  printAndCheck("One third times two", 2 * athird, Fraction{2, 3});
+  printAndCheck("Two times one third", 2 * athird, Fraction{2, 3});
 
   // multiply two fractions
   printAndCheck("Three times one third", three * athird, Fraction{1, 1});
