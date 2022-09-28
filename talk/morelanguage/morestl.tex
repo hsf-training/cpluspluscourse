@@ -320,7 +320,7 @@
   \frametitlecpp[17]{Structured Binding Declarations}
   \begin{block}{``Tuple-like binding prototcol''}
     \begin{itemize}
-      \item For a non-aggregates, you can opt-in to structured bindings
+      \item For non-aggregates, you can opt-in to structured bindings
       \item The compiler requires these hooks:
       \begin{itemize}
         \item Specialize \mintinline{cpp}{std::tuple_size}
@@ -334,7 +334,9 @@
     \begin{cppcode*}{gobble=2}
       class C { ... }; // complex, cannot change
       template <>
-      struct std::tuple_size<C> {static constexpr size_t = ...;};
+      struct std::tuple_size<C> {
+        static constexpr std::size_t value = ...;
+      };
       template <std::size_t I>
       struct std::tuple_element<I, C> { using type = ...; };
       template <std::size_t I>
