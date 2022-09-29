@@ -7,7 +7,7 @@
       std::cout << std::endl;
     \end{cppcode}
   \end{exampleblock}
-  \begin{block}{How to find the declaration of a name ?}
+  \begin{block}{How to find the declaration of a name?}
     Mainly 2 cases :
     \begin{itemize}
     \item qualified lookup, for names preceded by `::'
@@ -76,12 +76,12 @@
     \vspace{.2cm}
     Advantages :
     \begin{itemize}
-    \item minimal change in user code, func still feels part of A class
-    \item makes sure func does not touch internal state of A
+    \item minimal change in user code, \mintinline{cpp}{func} still feels part of class \mintinline{cpp}{A}
+    \item makes sure \mintinline{cpp}{func} does not touch internal state of \mintinline{cpp}{A}
     \end{itemize}
     Notes :
     \begin{itemize}
-    \item non-member func has to be in same namespace as A
+    \item non-member \mintinline{cpp}{func} has to be in same namespace as \mintinline{cpp}{A}
     \item please avoid global namespace
     \end{itemize}
   \end{block}
@@ -129,7 +129,7 @@
     Advantages :
     \begin{itemize}
     \item allows to use \mintinline{cpp}{std::swap} by default
-    \item but also to benefit from any dedicated specialization
+    \item but benefits from any dedicated overload
     \end{itemize}
     \begin{columns}
       \begin{column}{.7\textwidth}
@@ -146,18 +146,23 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{ADL and Hidden Friends}
-  \begin{block}{Hidden friend declarations participate in ADL}
+  \frametitlecpp[98]{Hidden Friends}
+  \begin{block}{Hidden friends}
     \begin{itemize}
-      \item Friend functions defined in class scope are ``hidden friends''
+      \item Friend functions \emph{defined} in class scope are ``hidden friends''
+      \begin{itemize}
+        \item Without any declaration outside the class
+      \end{itemize}
       \item They are \emph{not} member functions (no access to \mintinline{cpp}{this})
-      \item They participate in ADL, e.g.\ \mintinline{cpp}{std::cout << complex}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{\texttt{operator<<} as hidden friend}
+    \small
     \begin{cppcode*}{gobble=2}
       class Complex {
-        float m_real, m_imag; public: Complex(float, float);
+        float m_real, m_imag;
+      public:
+        Complex(float, float) { ... }
         friend
         std::ostream & operator<<(std::ostream & os,
                                   Complex const & c) {
@@ -167,4 +172,63 @@
       std::cout << Complex{2.f, 3.f}; // Prints 2 + 3i
     \end{cppcode*}
   \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Hidden Friends and ADL}
+  \begin{block}{Advantages of hidden friends}
+    \begin{itemize}
+      \item Are \emph{only} found via ADL, e.g.\ \mintinline{cpp}{std::cout << complex;}
+      \item Compiler needs to consider less functions during ordinary name lookup (faster compilation)
+      \item Avoid accidental implicit conversions
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{Accidental conversions - two examples in one}
+    \footnotesize
+    \begin{cppcode*}{gobble=2}
+      std::ostream & operator<< // out-of-class definition
+        (std::ostream & os, Complex const & c) { ... }
+      struct Fraction {
+        int num, denom;
+        operator Complex() const { ... } // case 1: conversion op
+      };
+      Complex::Complex(Fraction f); // or case 2: converting ctor
+      std::cout << Fraction{2,4}; // Prints 0.5 + 0i, would call:
+      //case 1: operator<<(std::cout, Fraction{2,4}.operator Complex());
+      //case 2: operator<<(std::cout, Complex(Fraction{2, 3}));
+    \end{cppcode*}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Good practice for operator overloading}
+  \begin{goodpractice}{Operator overloading}
+    \begin{itemize}
+      \item Must declare in-class, as member operators:
+      \begin{itemize}
+        \item \mintinline{cpp}{operator=}, \mintinline{cpp}{operator()}, \mintinline{cpp}{operator[]}, \mintinline{cpp}{operator->}
+      \end{itemize}
+      \item Prefer in-class declaration, as member operators:
+      \begin{itemize}
+        \item compound assignment operators, e.g.\ \mintinline{cpp}{operator+=}
+        \item unary operators
+        \begin{itemize}
+          \item e.g.\ \mintinline{cpp}{operator++}, \mintinline{cpp}{operator--}, \mintinline{cpp}{operator!}, unary \mintinline{cpp}{operator-} (negate), dereference operator \mintinline{cpp}{operator*}
+        \end{itemize}
+      \end{itemize}
+      \item Prefer definition in-class as hidden friends:
+      \begin{itemize}
+        \item binary arithmetic operators, e.g.\ \mintinline{cpp}{operator+}, \mintinline{cpp}{operator|}
+        \item binary logical operators, e.g.\ \mintinline{cpp}{operator<}
+        \item stream operators, e.g.\ \mintinline{cpp}{operator<<}
+      \end{itemize}
+      \item Avoid overloading:
+      \begin{itemize}
+        \item Address-of \mintinline{cpp}{operator&}
+        \item Boolean logic operators, e.g.\ \mintinline{cpp}{operator||}
+        \item Comma operator \mintinline{cpp}{operator,}
+        \item Member dereference operators \mintinline{cpp}{operator->*}
+      \end{itemize}
+    \end{itemize}
+  \end{goodpractice}
 \end{frame}
