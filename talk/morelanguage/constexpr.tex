@@ -48,18 +48,18 @@
 
 \begin{frame}[fragile,shrink=15]
   \frametitlecpp[11]{Limitations of constexpr functions}
-   \begin{alertblock}{C++11}
+   \begin{block}{C++11}
      \begin{itemize}
      \item Non-virtual function with a single return statement
      \end{itemize}
-   \end{alertblock}
-   \begin{alertblock}{C++14/C++17}
+   \end{block}
+   \begin{block}{C++14/C++17}
     \begin{itemize}
     \item no try-catch, goto or asm statements
     \item no uninitialized/static/thread\_local/non-literal-type variables
     \end{itemize}
-  \end{alertblock}
-   \begin{alertblock}{C++20}
+  \end{block}
+   \begin{block}{C++20}
     \begin{itemize}
     \item no coroutines or static/thread\_local/non-literal-type variables
     \item throw and asm statements allowed, but may not be executed
@@ -67,14 +67,14 @@
           (memory allocated at compile-time must be freed again at compile-time)
     \item virtual functions and uninitialized variables allowed
     \end{itemize}
-  \end{alertblock}
-  \begin{alertblock}{C++23}
+  \end{block}
+  \begin{block}{C++23}
     \begin{itemize}
     \item no coroutines, or execution of throw and asm statements
     \item transient memory allocation
     \item everything else allowed
     \end{itemize}
-  \end{alertblock}
+  \end{block}
   Further details on \href{https://en.cppreference.com/w/cpp/language/constexpr}{cppreference}
 \end{frame}
 
