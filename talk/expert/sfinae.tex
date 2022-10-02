@@ -173,7 +173,7 @@
       struct A{}; struct B{ void foo(); };
       struct C{ int foo(); };
 
-      static_assert(!hasFoo<A>::value,"Unexpected foo()");
+      static_assert(!hasFoo<A>::value,"unexpected foo()");
       static_assert(hasFoo<B>::value, "expected foo()");
       static_assert(hasFoo<C>::value, "expected foo()");
       \end{cppcode*}
@@ -245,17 +245,17 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Back to variadic templated class}
+  \frametitlecpp[14]{Back to variadic templated class}
   \begin{block}{The tuple get function}
     \begin{cppcode*}{}
       template <size_t I, typename... Ts>
-      typename std::enable_if_t<I == 0,
+      std::enable_if_t<I == 0,
         typename elem_type<0, tuple<Ts...>>::type&>
       get(tuple<Ts...>& t) {
         return t.m_head;
       }
       template <size_t I, typename T, typename... Ts>
-      typename std::enable_if_t<I != 0,
+      std::enable_if_t<I != 0,
         typename elem_type<I - 1, tuple<Ts...>>::type&>
       get(tuple<T, Ts...>& t) {
         tuple<Ts...>& base = t;
@@ -268,13 +268,13 @@
 \begin{frame}[fragile]
   \frametitlecpp[17]{with if constexpr}
   \begin{block}{The tuple get function}
-    \begin{cppcode*}{}
+    \begin{cppcode*}{gobble=2}
       template <size_t I, typename T, typename... Ts>
       auto& get(tuple<T, Ts...>& t) {
         if constexpr(I == 0)
           return t.m_head;
         else
-          return get<I - 1>(static_cast<tuple<Ts...>>(t));
+          return get<I - 1>(static_cast<tuple<Ts...>&>(t));
       }
     \end{cppcode*}
   \end{block}

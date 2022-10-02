@@ -57,7 +57,7 @@
       ...
     } // destructor called
 
-    {
+    int g() {
       MyFirstClass a; // default constructor called
       ...
     }  // destructor called
@@ -92,20 +92,19 @@
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    {
+    int f() {
       // default constructor called
       MyFirstClass *a = new MyFirstClass;
       delete a; // destructor is called
     }
-
-    int f() {
+    int g() {
       // constructor called
       MyFirstClass *a = new MyFirstClass(3);
     } // memory leak !!!
   \end{cppcode}
-  \begin{alertblock}{}
+  \begin{goodpractice}{Prefer smart pointers over new/delete}
     Prefer smart pointers to manage objects (discussed later)
-  \end{alertblock}
+  \end{goodpractice}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -119,14 +118,14 @@
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    {
+    int f() {
       // default constructor called 10 times
       MyFirstClass *a = new MyFirstClass[10];
       ...
       delete[] a; // destructor called 10 times
     }
   \end{cppcode}
-  \begin{alertblock}{}
+  \begin{goodpractice}{Prefer containers over new-ed arrays}
     Prefer containers to manage collections of objects (discussed later)
-  \end{alertblock}
+  \end{goodpractice}
 \end{frame}
