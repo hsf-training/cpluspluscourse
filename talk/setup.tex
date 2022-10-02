@@ -97,13 +97,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \makeatletter
 \newcommand\listofgoodpractices{%
+  \addtocontents{lgp}{\end{enumerate}}
   \small
   \begin{multicols}{2}
-    \begin{enumerate}
-      \@starttoc{lgp}%
-    \end{enumerate}
+    \@starttoc{lgp}%
   \end{multicols}
 }
+\AtBeginDocument{ \addtocontents{lgp}{\begin{enumerate} } }
 
 \newcounter{gp@counter}
 \def\gp@lasttitle{None}
@@ -114,8 +114,8 @@
   % an entry for the first slide of the overlay set by saving the last title of the
   % good practice box.
   \ifthenelse{\equal{\gp@lasttitle}{#1}}{}{%
-    \hypertarget<\insertslidenumber>{goodpractice.\thegp@counter}{}
-    \addtocontents{lgp}{\protect\item \protect\hyperlink{goodpractice.\thegp@counter}{#1\protect\hfill\insertpagenumber}}
+    \hypertarget<1>{goodpractice.\thegp@counter}{}
+    \addtocontents{lgp}{\protect\item \protect\hyperlink{goodpractice.\thegp@counter}{#1\protect\hfill\insertframenumber}}
     \stepcounter{gp@counter}
     \gdef\gp@lasttitle{#1}
   }
@@ -125,6 +125,34 @@
 {%
   \end{beamerboxesrounded}
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% boxes with exercises                          %
+% Use \begin{exercise}{Title} to create one     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\listofexercises{%
+  \addtocontents{lex}{\end{enumerate}}
+  \small
+  \begin{multicols}{2}
+    \@starttoc{lex}%
+  \end{multicols}
+}
+\AtBeginDocument{ \addtocontents{lex}{\begin{enumerate} } }
+
+\newcounter{ex@counter}
+
+\newenvironment{exercise}[1]
+{%
+  \hypertarget<1>{exercise.\theex@counter}{}
+  \addtocontents{lex}{\protect\item \protect\hyperlink{exercise.\theex@counter}{#1\protect\hfill\insertframenumber}}
+  \stepcounter{ex@counter}
+  % The box that shows up on the slide
+  \begin{alertblock}{Exercise: #1}
+}%
+{%
+  \end{alertblock}
+}
+
 \makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
