@@ -1,4 +1,3 @@
-
 #include "hello.hpp"
 
 int main() {
@@ -6,5 +5,6 @@ int main() {
   for (int i = 0; i < n; i++) {
     printHello(i);
   }
+  checkCpp20();
   return 0;
 }
