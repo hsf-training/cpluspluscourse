@@ -1,7 +1,4 @@
+#pragma once
 
-#ifndef HELLO_HPP
-#define HELLO_HPP
-
-void printHello(int i) ;
-
-#endif
+void printHello(int i);
+void checkCpp20();
