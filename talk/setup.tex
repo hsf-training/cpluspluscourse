@@ -82,6 +82,7 @@
 
 \usepackage{booktabs}
 \usepackage{comment}
+\usepackage{totcount}
 
 %%%%%%%%%%%%%%%%%%%
 % useful commands %
@@ -140,6 +141,7 @@
 \AtBeginDocument{ \addtocontents{lex}{\begin{enumerate} } }
 
 \newcounter{ex@counter}
+\regtotcounter{ex@counter}
 
 \newenvironment{exercise}[1]
 {%
