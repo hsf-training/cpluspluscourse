@@ -3,7 +3,6 @@
 Here we explore:
 - how concepts helps to have some optimized implementation for a subset of possible type parameters.
 - benefits of using existing concepts from the standard library.
-- how to decipher compiling errors.
 
 ## Prerequisites
 
