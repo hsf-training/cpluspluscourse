@@ -11,7 +11,7 @@ std::optional<double> mysqrt( double d )
 std::optional<double> square( std::optional<double> d )
  {
   if (d) { return d.value()*d.value() ; }
-  else { return std::nullopt ; }
+  else { return {} ; }
  }
 
 template< typename A >
