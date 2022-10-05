@@ -1,4 +1,5 @@
 all: concepts
+solution: solution1 solution2
 solution1: concepts.sol1
 solution2: concepts.sol2
 
