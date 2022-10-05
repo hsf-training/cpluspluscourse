@@ -29,6 +29,7 @@ build
 *.o
 *.so
 *.sol
+*.sol?
 code/*aux
 code/callgrind/fibocrunch
 code/control/control

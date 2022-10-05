@@ -1,6 +1,9 @@
 /*
 
 In the code below, replace inheritance with the use of a std::variant.
+Two solutions are provided :
+1. with `std::get_if`,
+2. with `std::visit`.
 
 */
 
@@ -10,18 +13,18 @@ In the code below, replace inheritance with the use of a std::variant.
 
 struct Particle
  {
-  virtual void print() = 0 ;
+  virtual void print() const = 0 ;
   virtual ~Particle() = default ;
  } ;
 
 struct Electron : public Particle
- { virtual void print(){ std::cout<<"E"<<std::endl ; } } ;
+ { virtual void print() const { std::cout<<"E"<<std::endl ; } } ;
 
 struct Proton : public Particle
- { virtual void print(){ std::cout<<"P"<<std::endl ; } } ;
+ { virtual void print() const { std::cout<<"P"<<std::endl ; } } ;
 
 struct Neutron : public Particle
- { virtual void print(){ std::cout<<"N"<<std::endl ; } } ;
+ { virtual void print() const { std::cout<<"N"<<std::endl ; } } ;
 
 int main()
  {
