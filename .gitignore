@@ -48,6 +48,7 @@ code/race/racing
 code/stl/randomize.nostl
 code/templates/playwithsort
 code/valgrind/randomize
+code/variant/variant
 code/virtual_inheritance/trymultiherit
 code/smartPointers/smartPointers
 
