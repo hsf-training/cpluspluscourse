@@ -4,7 +4,7 @@
 
 std::optional<double> mysqrt( double d )
  {
-  if (d<0) { return std::nullopt ; }
+  if (d<0) { return {}; }
   else { return std::sqrt(d) ; }
  }
 
