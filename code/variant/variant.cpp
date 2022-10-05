@@ -1,7 +1,3 @@
-#include <iostream>
-#include <list>
-#include <vector>
-
 /*
 
 In the code below, replace inheritance with the use of a std::variant.
