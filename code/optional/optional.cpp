@@ -12,21 +12,26 @@ to modify `square`.
 #include <iostream>
 #include <optional>
 
-double mysqrt( double d )   // TO BE MODIFIED
- { return std::sqrt(d) ; }  // TO BE MODIFIED
+double mysqrt(double d) // TO BE MODIFIED
+{
+  return std::sqrt(d);  // TO BE MODIFIED
+}
 
-double square( double d )   // TO BE MODIFIED
- { return d*d ; }           // TO BE MODIFIED
+double square(double d) // TO BE MODIFIED
+{
+  return d * d;         // TO BE MODIFIED
+}
 
-template< typename A >
-std::ostream & operator<<( std::ostream & os, std::optional<A> const & opt )
- {
-  if (opt) { return os<<opt.value() ; }
-  else { return os<<"nothing" ; }
- }
+template <typename A>
+std::ostream &operator<<(std::ostream &os, std::optional<A> const &opt) {
+  if (opt) {
+    return os << opt.value();
+  } else {
+    return os << "nothing";
+  }
+}
 
-int main()
- {
-  std::cout<<square(mysqrt(10))<<std::endl ;
-  std::cout<<square(mysqrt(-10))<<std::endl ;
- }
+int main() {
+  std::cout << square(mysqrt(10)) << std::endl;
+  std::cout << square(mysqrt(-10)) << std::endl;
+}
