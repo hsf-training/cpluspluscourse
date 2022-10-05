@@ -28,13 +28,13 @@
 	\begin{itemize}
 		\item go to any example
 		\item format code with: \mintinline{bash}{clang-format --style=GNU -i <file.cpp>}
-		\item inspect changes, try \mintinline{bash}{git diff}
-		\item revert changes using \mintinline{bash}{git checkout -- <file.cpp>}
+		\item inspect changes, try \mintinline{bash}{git diff .}
+		\item revert changes using \mintinline{bash}{git checkout -- <file.cpp>} or \mintinline{bash}{git checkout .}
 		\item go to code directory and create a .clang-format file \\
 		  \mintinline{bash}{clang-format -style=LLVM -dump-config >} \\
 		  \mintinline{bash}{.clang-format}
-		\item run \mintinline{bash}{clang-format -i */*.cpp}
-		\item revert changes using \mintinline{bash}{git checkout .}
+		\item run \mintinline{bash}{clang-format -i <any_exercise>/*.cpp}
+		\item revert changes using \mintinline{bash}{git checkout <any_exercise>}
 	\end{itemize}
 \end{exercise}
 \end{frame}
