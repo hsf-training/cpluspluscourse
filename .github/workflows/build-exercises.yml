@@ -33,6 +33,7 @@ jobs:
           - NAME: "move"
           - NAME: "operators"
             SKIP_DEFAULT: true
+          - NAME: "optional"
           - NAME: "polymorphism"
           - NAME: "python"
             SKIP_SOLUTION: true
