@@ -8,31 +8,33 @@ Two solutions are provided :
 */
 
 #include <iostream>
-#include <vector>
 #include <memory>
+#include <vector>
 
-struct Particle
- {
-  virtual void print() const = 0 ;
-  virtual ~Particle() = default ;
- } ;
+struct Particle {
+  virtual void print() const = 0;
+  virtual ~Particle() = default;
+};
 
-struct Electron : public Particle
- { virtual void print() const { std::cout<<"E"<<std::endl ; } } ;
+struct Electron : public Particle {
+  virtual void print() const { std::cout << "E" << std::endl; }
+};
 
-struct Proton : public Particle
- { virtual void print() const { std::cout<<"P"<<std::endl ; } } ;
+struct Proton : public Particle {
+  virtual void print() const { std::cout << "P" << std::endl; }
+};
 
-struct Neutron : public Particle
- { virtual void print() const { std::cout<<"N"<<std::endl ; } } ;
+struct Neutron : public Particle {
+  virtual void print() const { std::cout << "N" << std::endl; }
+};
 
-int main()
- {
+int main() {
   std::vector<std::unique_ptr<Particle>> ps;
   ps.push_back(std::make_unique<Electron>());
   ps.push_back(std::make_unique<Proton>());
   ps.push_back(std::make_unique<Neutron>());
 
-  for ( auto const & p : ps )
-   { p->print() ; }
- }
+  for (auto const &p : ps) {
+    p->print();
+  }
+}
