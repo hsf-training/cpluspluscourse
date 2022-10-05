@@ -203,6 +203,17 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[17]{std::variant exercise}
+  \begin{exercise}{An alternative to oo polymorphism}
+    \begin{itemize}
+      \item go to \texttt{code/variant/variant.cpp}
+      \item replace inheritance from a common base class with an \texttt{std::variant} on the three kinds of particle.
+      \item two solutions given : with \texttt{std::get_if} and with \texttt{std::visit}.
+    \end{itemize}
+  \end{exercise}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[17]{std::any}
   \begin{block}{a type-safe container for single values of any type}
     \begin{itemize}
