@@ -1,4 +1,4 @@
-# Variants
+# Optional
 
 Here we explore:
 - how `std::optional` offers an alternative to errors codes and exceptions.
