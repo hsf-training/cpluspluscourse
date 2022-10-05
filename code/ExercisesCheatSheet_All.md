@@ -194,6 +194,28 @@ It can then be tried with e.g. reverse ordering of strings or an order of Comple
 
 Level 3 : use the genericity of the Complex class and play with Complex of integers or Complex of Complex
 
+### Variadic templates (directory: `variadic`)
+
+The goal of the exercise is to implement a simple tuple, ignoring const correctness (to make it simpler).
+If students encounter any constness problems, make sure they pass by value or mutable reference.
+When you are unsure yourself, check the solution.
+
+Solutions:
+
+1. Add a default constructor
+2. Add an `explicit` to the tuple constructor
+3. head(tuple&) should just return the member m_head
+4. get<I>(tuple&) should be implemented recursively. You can use SFINAE (like on the slides), but prefer `if constexpr`.
+5. Specialize `std::tuple_size`. The value of the trait is sizeof...(Ts) of the template parameter pack in tuple<Ts...>
+6. Specialize `std::tuple_element`. You can implement this recursively with Head/Tail... template parameters.
+   But since get() already does something like that, it is the easiest to just decltype(get<I>(...))
+7. tuple_cat(tuple, tuple): Delegate to a helper tuple_cat(tuple, tuple, index_seq, index_seq) then then just construct a result tuple{get<Is1>(t1)..., get<Is2>(t2)...}
+8. sum(tuple): you need a helper again with a single index sequence, but make it a local lambda this time. Inside the lambda, fold over get<Is>(t)
+9. operator<<: again, needs a helper for the index sequence.
+   To intersperse the ", " between elements, you need more logic so a fold over << won't work. Use a fold over comma.
+   Finally, to omit the last ", ", just use a conditional expression comparing the expanded index pack against the index pack size
+
+
 ### Smart pointers (directory: `smartPointers`)
 
 Here we have four code snippets that will benefit from using smart pointers.

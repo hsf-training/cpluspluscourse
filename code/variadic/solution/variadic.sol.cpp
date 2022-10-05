@@ -55,8 +55,21 @@ struct std::tuple_size<tuple<Ts...>> {
 // exercise 6: specialize std::tuple_element
 template <std::size_t I, typename... Ts>
 struct std::tuple_element<I, tuple<Ts...>> {
-    using type = std::remove_reference_t<decltype(get<I>(tuple<Ts...>{}))>;
+    using type = std::remove_reference_t<decltype(get<I>(std::declval<tuple<Ts...>>()))>;
 };
+
+// exercise 6: alternative solution using Head/Tail:
+#if 0
+template <typename Head, typename... Tail>
+struct std::tuple_element<0, tuple<Head, Tail...>> {
+    using type = Head;
+};
+
+template <std::size_t I, typename Head, typename... Tail>
+struct std::tuple_element<I, tuple<Head, Tail...>> {
+    using type = typename std::tuple_element<I - 1, tuple<Tail...>>::type;
+};
+#endif
 
 // exercise 7: implement tuple_cat(tuple, tuple)
 template <typename... Ts1, typename... Ts2, std::size_t... Is1, std::size_t... Is2>
