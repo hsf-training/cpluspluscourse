@@ -28,8 +28,10 @@ struct Neutron : public Particle
 
 int main()
  {
-  std::vector<Particle *> ps =
-   { new Electron, new Proton, new Neutron } ;
+  std::vector<std::unique_ptr<Particle>> ps;
+  ps.push_back(std::make_unique<Electron>());
+  ps.push_back(std::make_unique<Proton>());
+  ps.push_back(std::make_unique<Neutron>());
 
   for ( auto p : ps )
    { p->print() ; }
