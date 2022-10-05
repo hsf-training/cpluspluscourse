@@ -45,12 +45,9 @@ jobs:
             SKIP_DEFAULT: true
           - NAME: "templates"
           - NAME: "valgrind"
-<<<<<<< HEAD
           - NAME: "variadic"
             SKIP_DEFAULT: true
-=======
           - NAME: "variant"
->>>>>>> 33d38c3 (First import)
           - NAME: "virtual_inheritance"
         PLATFORM:
           - OS: "ubuntu-22.04"
