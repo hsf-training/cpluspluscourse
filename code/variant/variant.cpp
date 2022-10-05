@@ -6,6 +6,7 @@ In the code below, replace inheritance with the use of a std::variant.
 
 #include <iostream>
 #include <vector>
+#include <memory>
 
 struct Particle
  {
@@ -29,6 +30,6 @@ int main()
   ps.push_back(std::make_unique<Proton>());
   ps.push_back(std::make_unique<Neutron>());
 
-  for ( auto p : ps )
+  for ( auto const & p : ps )
    { p->print() ; }
  }
