@@ -43,6 +43,7 @@ code/hello/hello
 code/lambdas/randomize
 code/memcheck/memleak
 code/move/trymove
+code/optional/optional
 code/polymorphism/trypoly
 code/race/racing
 code/stl/randomize.nostl
