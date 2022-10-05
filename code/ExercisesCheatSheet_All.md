@@ -114,13 +114,26 @@ The goal there is really to play, look around and try things. Tutors may have a 
 
 The solution of the crash is simply an inversion of 2 lines in the code where definition of v and it's randomization are inverted.
 
-### Clang format (any directory)
+### `clang-format`
 
-The students can try this on any example.
-Please warn the students: If they want to revert later, they should pick an example with no local changes.
-Just follow the instructions on the slide deck.
-It is also fine if the mentor demonstrates it quickly.
-Please advise the students they should use `.clang-format` files from their projects before they start developing their own one.
+The goal is to understand that automatic code formatting is easy and can be customized
+
+Steps:
+
+1. Go to literally any example (e.g. `variadic`), which has no changes yet (we are going to revert it later)
+   Please warn the students: If they want to revert later, they should pick an example with no local changes.
+2. Format code with: `clang-format --style=GNU -i <file.cpp>`
+3. Inspect changes, try `git diff .`
+4. Revert changes using `git checkout -- <file.cpp>` or `git checkout .`
+5. You can repeat this with various other styles if you want. Supported are: LLVM, Google, Chromium, Mozilla, WebKit, Microsoft.
+6. Go to `code` directory and create a `.clang-format` file:
+   `clang-format -style=LLVM -dump-config > .clang-format`.
+   Have a look at the file.
+   You can also show this webpage so students can get an idea of what's possible: https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+   Then run `clang-format -i <any_exercise>/*.cpp`.
+   You will see that all cpp files in that directory have been formatted.
+7. Revert changes using `git checkout <any_exercise>`
+8. Please advise the students they should use `.clang-format` files from their projects before they start developing their own one.
 
 ### Address sanitizer (`asan`)
 
