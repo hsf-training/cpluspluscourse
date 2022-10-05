@@ -14,5 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable( variant "variant.cpp" )
 
 # Create the "solution executable".
-add_executable( variant.sol EXCLUDE_FROM_ALL "solution/variant.sol.cpp" )
-add_dependencies( solution variant.sol )
+add_executable( variant.sol1 EXCLUDE_FROM_ALL "solution/variant.sol1.cpp" )
+add_dependencies( solution1 variant.sol1 )
+add_executable( variant.sol2 EXCLUDE_FROM_ALL "solution/variant.sol2.cpp" )
+add_dependencies( solution1 variant.sol2 )

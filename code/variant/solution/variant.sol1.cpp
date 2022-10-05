@@ -3,18 +3,18 @@
 #include <variant>
 
 struct Electron
- { void print(){ std::cout<<"E"<<std::endl ; } } ;
+ { void print() const { std::cout<<"E"<<std::endl ; } } ;
 
 struct Proton
- { void print(){ std::cout<<"P"<<std::endl ; } } ;
+ { void print() const{ std::cout<<"P"<<std::endl ; } } ;
 
 struct Neutron
- { void print(){ std::cout<<"N"<<std::endl ; } } ;
+ { void print() const{ std::cout<<"N"<<std::endl ; } } ;
 
 using Particle = std::variant<Electron,Proton,Neutron> ;
 
 template< typename T >
-void print_if( Particle & p )
+void print_if( Particle const & p )
  {
   auto * ptr = std::get_if<T>(&p) ;
   if (ptr) ptr->print() ;
