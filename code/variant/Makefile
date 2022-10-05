@@ -1,4 +1,5 @@
 all: variant
+solution: solution1 solution2
 solution1: variant.sol1
 solution2: variant.sol2
 
