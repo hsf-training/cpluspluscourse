@@ -19,7 +19,7 @@ using Particle = std::variant<Electron, Proton, Neutron>;
 template <typename T> void print_if(Particle const &p) {
   // if the real type of p is not T,
   // get_if returns nullptr
-  T *ptr = std::get_if<T>(&p);
+  T const *ptr = std::get_if<T>(&p);
   if (ptr)
     ptr->print();
 }
