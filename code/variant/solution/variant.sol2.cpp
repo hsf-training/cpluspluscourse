@@ -20,6 +20,9 @@ int main() {
   std::vector<Particle> ps = {Electron{}, Proton{}, Neutron{}};
 
   for (auto const &p : ps) {
+    // With "auto" as argument, we provide a generic lambda. The compiler
+    // will instantiate it for all the types that the variant can hold, and at run
+    // time, the correct overload will be chosen automatically:
     std::visit([](const auto &p) { p.print(); }, p);
   }
 }
