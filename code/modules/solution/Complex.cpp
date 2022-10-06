@@ -1,9 +1,9 @@
-module;
+module; // start the module global partition
 
 #include <ostream>
 #include <cmath>
 
-export module math;
+export module math; // declare that we intend to export a new module named 'math'
 
 // You may export Complex_t as well, but for the exercise only the alias Complex at the bottom is neccessary
 template <typename T=float>
@@ -112,4 +112,4 @@ private:
     T m_r{}, m_i{};
 };
 
-export using Complex = Complex_t<>;
+export using Complex = Complex_t<>; // export the alias Complex
