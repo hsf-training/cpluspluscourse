@@ -17,7 +17,7 @@ struct Neutron {
 using Particle = std::variant<Electron, Proton, Neutron>;
 
 int main() {
-  std::vector<Particle> ps = {Electron(), Proton(), Neutron()};
+  std::vector<Particle> ps = {Electron{}, Proton{}, Neutron{}};
 
   for (auto const &p : ps) {
     std::visit([](const auto &p) { p.print(); }, p);
