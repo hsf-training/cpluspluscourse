@@ -4,7 +4,7 @@ solution1: variant.sol1
 solution2: variant.sol2
 
 clean:
-	rm -f *o *so variant *~ variant.sol
+	rm -f *o *so variant *~ variant.sol1 variant.sol2
 
 % : %.cpp
 	$(CXX) -g -std=c++20 -Wall -Wextra -o $@ $<
