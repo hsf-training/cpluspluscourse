@@ -15,7 +15,10 @@ add_executable( variant "variant.cpp" )
 
 # Create the "solution executable".
 add_executable( variant.sol1 EXCLUDE_FROM_ALL "solution/variant.sol1.cpp" )
+add_custom_target( solution1 )
 add_dependencies( solution1 variant.sol1 )
 add_executable( variant.sol2 EXCLUDE_FROM_ALL "solution/variant.sol2.cpp" )
+add_custom_target( solution2 )
 add_dependencies( solution2 variant.sol2 )
-add_dependencies( solution variant.sol1 variant.sol2 )
+add_custom_target( solution )
+add_dependencies( solution solution1 solution2 )
