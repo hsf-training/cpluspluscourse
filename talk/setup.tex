@@ -133,8 +133,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand\listofexercises{%
   \addtocontents{lex}{\end{enumerate}}
-  \footnotesize
-  \begin{multicols}{2}
+  \scriptsize
+  \begin{multicols}{3}
     \@starttoc{lex}%
   \end{multicols}
 }
@@ -143,16 +143,23 @@
 \newcounter{ex@counter}
 \regtotcounter{ex@counter}
 
-\newenvironment{exercise}[1]
+\newenvironment{exerciseWithShortcut}[2]
 {%
   \hypertarget<1>{exercise.\theex@counter}{}
-  \addtocontents{lex}{\protect\item \protect\hyperlink{exercise.\theex@counter}{#1\protect\hfill\insertframenumber}}
+  \addtocontents{lex}{\protect\item \protect\hyperlink{exercise.\theex@counter}{#2\protect\hfill\insertframenumber}}
   \stepcounter{ex@counter}
   % The box that shows up on the slide
   \begin{alertblock}{Exercise: #1}
 }%
 {%
   \end{alertblock}
+}
+\newenvironment{exercise}[1]
+{%
+  \begin{exerciseWithShortcut}{#1}{#1}
+}%
+{%
+  \end{exerciseWithShortcut}
 }
 
 \makeatother
