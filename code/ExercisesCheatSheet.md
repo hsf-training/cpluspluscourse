@@ -140,6 +140,19 @@ Here we have four code snippets that will benefit from using smart pointers.
 - `problem3` is an example of shared ownership where `std::shared_pointer` should be used.
 - `problem4` demonstrates the usage of `shared_ptr` as class members. It has a second part where a `weak_ptr` can be used, but can be skipped if not enough time.
 
+### std::optional (directory: `optional`)
+Use std::optional to signify disallowed values in a computation.
+1. Use std::optional as return value of the mysqrt function. Use `nullopt_t` for negative arguments. Note that `return {}` will create a `nullopt_t` automatically.
+2. Given that the return type changes, modify the square function accordingly to take into account cases where a `nullopt_t` is given as input. Note that `std::optional` can be directly used in an if statement as if it would be a boolean to check whether is value is present
+
+### std::variant (directory: `variant`)
+Use the variant as an alternative to inheritance. The goal is to understand
+1. That the base class is unnecessary when variant is used
+2. That no dynamic allocations and polymorphism are necessary because the variant can directly be pushed into the vector
+3. That there's multiple ways to "visit" the vector.
+  - Either with explicit checking of the type (solution 1)
+  - Or automatic visitation with std::visit (solution 2). Note that generic lambdas make the std::visit solution extremely short.
+
 
 Expert Exercises
 ----------------
@@ -169,6 +182,13 @@ Solutions:
 9. `operator<<`: again, needs a helper for the index sequence.
    To intersperse the ", " between elements, you need more logic so a fold over << won't work. Use a fold over comma.
    Finally, to omit the last ", ", just use a conditional expression comparing the expanded index pack against the index pack size
+
+
+### Spaceship operator <=>
+The goal is to write a custom <=>, and to understand that when ordering according to the norm of a complex, a `partial_ordering` is required.
+Many numbers can have the same norm, but a different phase.
+Given that an implementation for <=> is provided, an implementation for == is required as well. It's OK to default it. It is not possible to
+derive it from equivalence (<=> evaluates to 0).
 
 ### Concepts (directory: `concepts`)
 

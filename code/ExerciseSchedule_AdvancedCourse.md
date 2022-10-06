@@ -49,6 +49,6 @@ As a prerequisite for variadic templates, and in case it was not covered in day 
 
 ### variadic templates ([cheatSheet](ExercisesCheatSheet.md#variadic-templates-directory-variadic))
 
-### Spaceship operator <=> ([cheatSheet](ExercisesCheatSheet.md#spaceship-operator-directory-spaceship))
+### Spaceship operator <=> ([cheatSheet](ExercisesCheatSheet.md#spaceship-operator-))
 
 ### Concepts ([cheatSheet](ExercisesCheatSheet.md#concepts-directory-concepts))
