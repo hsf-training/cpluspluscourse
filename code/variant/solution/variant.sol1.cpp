@@ -17,7 +17,7 @@ struct Neutron {
 using Particle = std::variant<Electron, Proton, Neutron>;
 
 template <typename T> void print_if(Particle const &p) {
-  auto *ptr = std::get_if<T>(&p);
+  T *ptr = std::get_if<T>(&p);
   if (ptr)
     ptr->print();
 }
