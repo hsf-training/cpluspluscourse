@@ -23,7 +23,7 @@ template <typename T> void print_if(Particle const &p) {
 }
 
 int main() {
-  std::vector<Particle> ps = {Electron(), Proton(), Neutron()};
+  std::vector<Particle> ps = {Electron{}, Proton{}, Neutron{}};
 
   for (auto p : ps) {
     print_if<Electron>(p);
