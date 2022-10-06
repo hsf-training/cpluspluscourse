@@ -21,7 +21,7 @@ void increment(IterT &iter, unsigned d) {
 int main() {
 
   std::list<int> l_data = {1, 2, 3, 4, 5};
-  auto l_itr = l_data.begin();
+  auto l_itr = begin(l_data);
   increment(l_itr, 2);
 
   std::vector<int> v_data = {1, 2, 3, 4, 5};
