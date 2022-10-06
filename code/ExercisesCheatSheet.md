@@ -31,7 +31,7 @@ The idea of this exercise is to play with all kinds of possible loops and contro
 - change from a for loop to while and do/while loop
 - change an if statement to a switch statement
 
-### Auto & Refercences (directory: `loopsRefsAuto`)
+### Auto & References (directory: `loopsRefsAuto`)
 
 - Write an indexed for loop to initialise the members of the structs. The program should not print garbage numbers.
 - Use `auto const &` to prevent copies in the second loop.
@@ -114,7 +114,7 @@ The goal there is really to play, look around and try things. Tutors may have a 
 
 The solution of the crash is simply an inversion of 2 lines in the code where definition of v and it's randomization are inverted.
 
-### `clang-format`
+### `clang-format` (directory: possibly `variadic`)
 
 The goal is to understand that automatic code formatting is easy and can be customized
 
@@ -135,7 +135,7 @@ Steps:
 7. Revert changes using `git checkout <any_exercise>`
 8. Please advise the students they should use `.clang-format` files from their projects before they start developing their own one.
 
-### Address sanitizer (`asan`)
+### Address sanitizer (directory: `asan`)
 
 The goal is to play with asan, and learn to read the very detailed hints it gives when it detects an error.
 
@@ -191,7 +191,7 @@ Day 4 - Modern C++ Exercises
 The idea is to find out which lines are not correct, due to constness.
 Ideal to break the ice as can be organized as a quizz of which line would fail or not with correction under the form of compiler validation.
 
-### Generic programming (directory: `templates`)
+### Generic programming / templates (directory: `templates`)
 
 This exercise has several levels. People not at ease can stop after first level and go to next exercise. Alternatively, they may do level 1 and 3 and skip 2.
 
@@ -260,24 +260,24 @@ Day 5
 
 On day 5, the advice it to first work on exercises from Day 3 and 4 that were left aside.
 
-### `race`
+### Race conditions (directory: `race`)
 
 Typical race condition where a simple mutex and lock_guard "solves" the problem.
 
 The second step is to look at the execution time and find out that it's not really a solution. One could then try an atomic and see the difference, although I do not introduce them in the course
 
-### `atomic`
+### Atomicity (directory: `atomic`)
 
 Exactly the same race condition as above. Fix them using an `atomic<int>`.
 
 *Optional*: Compare run times for lock and atomic solution. Those are likely not very different, as many locks are implemented using atomics.
 
-### condition_variable
+### Condition variables (directory: `condition_variable`)
 
 Small example where 4 consumer threads are notified by a producer.
 1. The production phase is not protected by a lock.
 2. When the consumers are waking up, they don't release the lock that's tied to the condition variable, so they cannot wake up in parallel.
 
-### `python`
+### python (directory: `python`)
 
 This is playing with low level C++/python interfacing. All the c code is provided, so the only task is to use the different implementations (C, C++ manual interface, ctype) from python and see the speed of each of them.
