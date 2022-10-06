@@ -25,10 +25,9 @@ void randomize(std::vector<T> &v) {
 
 template<typename T>
 std::vector<T> getRandomVector(int len) {
-    // allocate vectors
+    // allocate vector and initialise
     std::vector<T> v(len);
-    // fill and randomize v
-    for (int i = 0; i < len; i++) v[i] = T();
+    // randomize v
     randomize(v);
     return v;
 }
