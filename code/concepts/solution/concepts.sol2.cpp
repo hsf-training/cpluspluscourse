@@ -25,7 +25,7 @@ int main() {
   increment(l_itr, 2);
 
   std::vector<int> v_data = {1, 2, 3, 4, 5};
-  auto v_itr = v_data.begin();
+  auto v_itr = begin(v_data);
   increment(v_itr, 2);
 
 }
