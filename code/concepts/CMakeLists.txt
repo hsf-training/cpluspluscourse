@@ -15,7 +15,9 @@ add_executable( concepts "concepts.cpp" )
 
 # Create the "solution executable".
 add_executable( concepts.sol1 EXCLUDE_FROM_ALL "solution/concepts.sol1.cpp" )
+add_custom_target( solution1 )
 add_dependencies( solution1 concepts.sol1 )
 add_executable( concepts.sol2 EXCLUDE_FROM_ALL "solution/concepts.sol2.cpp" )
+add_custom_target( solution2 )
 add_dependencies( solution2 concepts.sol2 )
 add_dependencies( solution concepts.sol1 concepts.sol2 )
