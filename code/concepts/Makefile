@@ -4,7 +4,7 @@ solution1: concepts.sol1
 solution2: concepts.sol2
 
 clean:
-	rm -f *o *so concepts *~ concepts.sol
+	rm -f *o *so concepts *~ concepts.sol1 concepts.sol2
 
 % : %.cpp
 	$(CXX) -g -std=c++20 -Wall -Wextra -o $@ $<
