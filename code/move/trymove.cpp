@@ -5,7 +5,7 @@
 
 template<typename T>
 void swap(std::vector<T> &v, int a, int b) {
-    T mem = v[a];
+    const T mem = v[a];
     v[a] = v[b];
     v[b] = mem;
 }
@@ -13,12 +13,12 @@ void swap(std::vector<T> &v, int a, int b) {
 template<typename T>
 void randomize(std::vector<T> &v) {
     // we randomize via len random inversions
-    std::size_t len = v.size();
+    const std::size_t len = v.size();
     std::default_random_engine e;
     std::uniform_int_distribution<std::size_t> d{0, len-1};
     for (std::size_t i = 0; i < len; i++) {
-        int a = d(e);
-        int b = d(e);
+        const int a = d(e);
+        const int b = d(e);
         swap(v, a, b);
     }
 }
