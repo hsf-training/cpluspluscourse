@@ -220,12 +220,12 @@
     \end{cppcode*}
   \end{exampleblock}
   \pause
-  \begin{exampleblock}{Good practice}
+  \begin{goodpracticeWithShortcut}{Use STL algorithms with lambdas}{STL and lambdas}
     \begin{itemize}
-      \item Use STL algorithms with lambdas!
+      \item Prefer lambdas over functors when using the STL
       \item Avoid binders like \mintinline{cpp}{std::bind2nd}, \mintinline{cpp}{std::ptr_fun}, etc.
     \end{itemize}
-  \end{exampleblock}
+  \end{goodpracticeWithShortcut}
 \end{frame}
 
 \begin{frame}[fragile]

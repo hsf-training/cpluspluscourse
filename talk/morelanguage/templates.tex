@@ -96,7 +96,7 @@
     struct Map {
       void set(const KeyType &key, ValueType value);
       ValueType get(const KeyType &key);
-    }
+    };
 
     Map<std::string, int> m1;
     Map<float> m2;   // Map<float, float>
@@ -115,7 +115,7 @@
       }
       // just declaration
       ValueType get(const KeyType &key);
-    }
+    };
 
     // out-of-line definition
     template<typename KeyType, typename ValueType>
@@ -132,7 +132,7 @@
     \begin{itemize}
     \item integral types, pointer, enums in \cpp98
     \item \mintinline{cpp}{auto} in \cpp17
-    \item floating-point and literal types in \cpp20
+    \item literal types (includes floating points) in \cpp20
     \end{itemize}
   \end{block}
   \begin{cppcode*}{}
@@ -142,6 +142,8 @@
       float perimeter() {return 2*N*sin(PI/N)*m_radius;}
       float m_radius;
     };
+
+    Polygon<19> nonadecagon{3.3f};
   \end{cppcode*}
 \end{frame}
 
@@ -413,7 +415,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[17]{Class Template Argument Deduction (CTAD)}
   \begin{block}{Standard library examples}
-    \begin{cppcode*}{}
+    \begin{cppcode*}{gobble=2}
       std::pair p{1.2, true}; // std::pair<double, bool>
       std::tuple t{1.2, true, 32};
                         // std::tuple<double, bool, int>

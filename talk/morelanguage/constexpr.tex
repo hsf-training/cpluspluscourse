@@ -28,7 +28,7 @@
     \begin{itemize}
     \item A \mintinline{cpp}{constexpr} function \emph{may} be executed at compile time.
     \begin{itemize}
-      \item Arguments must be \mintinline{cpp}{constexpr} or literals in order to benefit from compile time computation
+      \item Arguments must be \mintinline{cpp}{constexpr} or literals in order to allow compile time evaluation
       \item Function body must be visible to the compiler
     \end{itemize}
     \item A \mintinline{cpp}{constexpr} function can also be used at runtime
@@ -36,9 +36,9 @@
     \item Classes can have \mintinline{cpp}{constexpr} member functions
     \item Objects used in constant expressions must be of \emph{literal type}:
       \begin{itemize}
-      \item an integral, floating-point, enum, reference, pointer type
-      \item a union (of at least one) or array of literal types
-      \item a class type with a \mintinline{cpp}{constexpr} constructor and
+      \item integral, floating-point, enum, reference, pointer type
+      \item union (of at least one) or array of literal types
+      \item class type with a \mintinline{cpp}{constexpr} constructor and
             the destructor is trivial (or \mintinline{cpp}{constexpr} since C++20)
       \end{itemize}
     \item A constexpr function is implicitly \mintinline{cpp}{inline} (header files)
