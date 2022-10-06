@@ -6,7 +6,7 @@ Here we explore:
 ## Prerequisites
 
 - slides about `std::variant`
-- slides about lambdas functions (for solution2)
+- slides about lambda functions (for solution2)
 
 ## Instructions
 
