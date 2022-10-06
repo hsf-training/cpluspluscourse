@@ -176,12 +176,37 @@ To be filled
 
 ### Modules (directory: `modules`)
 
-To be filled
+For this exercise you will convert a header file into a module.
+Students should understand that a module is something different from a header.
+In fact, since a module needs to be compiled, it needs to be its own translation unit.
+That's why we should also rename `Complex.h` to `Complex.cpp`
+(There is a discussion about having different file suffixes for module files in the C++ community, but it has not settled yet).
+Also, we need to have a separate rule in the `Makefile` because we now need to build the module,
+whereas a header was just included and built with the source file including it.
+
+You can ask the students to look into the compiler output files and see that there is also an object file created for `Complex.cpp`.
+Furthermore, GCC creates the compiled module interface as well, which you can find in `gcm.cache/`.
+Make sure students understand the different build process and the artifacts involved.
+
+Furthermore, `export` is required to make entities visible outside the module.
+You can let students play with exporting/not-exporting `Complex`.
+Also point out, that even though `Complex_t<T>` is not exported, `main.cpp` can still use it via the type alias `Complex`.
+But in `main.cpp` we cannot use `Complex_t<T>` directly if it is not exported.
+That is the difference between visibility and reachabilty.
+
+Avoid getting stuck in `Makefile` specifics, help the students with the syntax early.
+Also remind students that this is all experimental and that better build system support (e.g. in cmake) is on its way.
 
 ### Header units (directory: `header_units`)
 
-To be filled
+For this exercise you will convert `#include`s to `import`s
+The key takeaway is that header units are easy to migrate to within the C++ source.
 
+Since header units need to be prebuilt, extra build steps are necessary.
+In practice, this should speed up builds, which this small example cannot demonstrate.
+
+Avoid getting stuck in `Makefile` specifics, help the students with the syntax early.
+Also remind students that this is all experimental and that better build system support (e.g. in cmake) is on its way.
 
 Tools Exercises
 ---------------
