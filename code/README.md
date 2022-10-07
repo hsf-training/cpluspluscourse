@@ -111,7 +111,6 @@ There are multiple options if you bring a Windows machine to the course:
 1. Use the Windows Subsystem for Linux (WSL)
 2. Use an ssh client and connect to lxplus
 3. Use Visual Studio and the native Windows compiler (MSVC)
-4. Use a GNU port for Windows, like MinGW
 
 We advise to use either [WSL](#wsl) or [lxplus](#lxplus), so a non-Windows experience.
 This way, you can follow all exercises, especially the ones on tools, which are mostly Linux focused.
@@ -183,7 +182,7 @@ Follow the [lxplus guide](#using-lxplus) from here.
 
 If you are having troubles with the terminal based environment,
 you can also try to use [VS Code](#visual-studio-code) natively on your Windows to connect to lxplus.
-We have not tested this yet, but it should work.
+We have not tested this seriously yet, but it should work.
 
 ### Visual Studio
 
@@ -205,7 +204,7 @@ For developing on Windows natively,
 but compiling and running on a remote Linux system (including WSL),
 we recommend using Visual Studio Code (VS Code).
 VS Code is a more lightweight code editor and not to be confused with the full-blown IDE Visual Studio.
-Please install VS Code from the [this website](https://code.visualstudio.com/Download):
+Please install VS Code from [this website](https://code.visualstudio.com/Download).
 
 For remote development you will also need the following extensions to VS Code:
 
@@ -234,5 +233,5 @@ More documentation on using WSL with Visual Studio Code can be found [here](http
 Experimental (we have not tested this seriously):
 You can also use VS Code to work on lxplus.
 Run from the command palette (Ctrl + Shift + P), `Remote-SSH Connect to host...`.
-Then enter `<user>@lxplus8@cern.ch`, then your password.
+Then enter `<user>@lxplus8.cern.ch`, then your password.
 The first connection takes a while for VS Code to setup its server on lxplus.
