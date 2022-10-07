@@ -88,25 +88,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{ADL consequences (2)}
-  \begin{block}{Prefer nested namespaces to \texttt{using}}
-    Don't write :
-    \begin{cppcode}
-      using namespace MyProject;
-      funcFromMyProject(...);
-    \end{cppcode}
-    Prefer :
-    \begin{cppcode*}{firstnumber=3}
-      namespace MyProject::MySubpart {
-        funcFromMyProject(...);
-      }
-    \end{cppcode*}
-    And let the compiler lookup (more easily) the function name
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlecpp[98]{ADL consequences (3)}
+  \frametitlecpp[98]{ADL consequences (2)}
   \begin{block}{Customization points and \texttt{using}}
     \begin{columns}[t]
       \begin{column}{.35\textwidth}
