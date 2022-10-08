@@ -222,6 +222,30 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[20]{init-statements for range-based loops}
+  \begin{block}{}
+    Allows to limit variable scope in range-based loops
+  \end{block}
+  \begin{alertblock}{\cpp17}
+    \begin{cppcode*}{}
+      std::array data = {"hello", ",", "world"};
+      std::size_t i = 0;
+      for (auto& d : data) {
+        std::cout << i++ << ' ' << d << '\n';
+      }
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{exampleblock}{\cpp20}
+    \begin{cppcode*}{}
+      std::array data = {"hello", ",", "world"};
+      for (std::size_t i = 0; auto& d : data) {
+        std::cout << i++ << ' ' << d << '\n';
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[98]{Control structures: while loop}
   \begin{block}{while loop syntax}
     \begin{cppcode*}{}
