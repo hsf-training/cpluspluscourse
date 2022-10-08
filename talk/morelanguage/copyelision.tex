@@ -9,7 +9,7 @@
         return Foo();
       }
       int main() {
-        // compiler was authorised to elide the copy
+        // compiler was authorised to avoid the copy
         Foo foo = f();
       }
     \end{cppcode*}

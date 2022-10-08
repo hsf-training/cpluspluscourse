@@ -2,9 +2,19 @@
 % Improvement on the default split theme : added line numbers %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%
+% Main colors %
+%%%%%%%%%%%%%%%
+
 \setbeamercolor{frametitle}{fg=white}
 \setbeamercolor{frametitle right}{fg=white}
 \setbeamercolor{structure}{fg=beamer@blendedblue} % this should be the default anyway, but make sure, since we change it between basic/advanced slides
+\setbeamercolor{goodpractice head}{fg=white,bg=orange!85!black}
+\setbeamercolor{goodpractice body}{fg=black,bg=orange!25}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% headline and footline %
+%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \defbeamertemplate*{footline}{mysplit theme}
 {%
@@ -31,9 +41,6 @@
     \insertsubsectionnavigationhorizontal{.6\paperwidth}{}{\hskip0pt plus1filll}%
   \end{beamercolorbox}%
 }
-
-\setbeamercolor{goodpractice head}{fg=white,bg=orange!85!black}
-\setbeamercolor{goodpractice body}{fg=black,bg=orange!25}
 
 %%%%%%%%%%%%
 % packages %
