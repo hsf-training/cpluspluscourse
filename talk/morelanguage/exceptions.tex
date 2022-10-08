@@ -195,7 +195,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{Exceptions}
-  \begin{exampleblock}{Advice}
+  \begin{goodpractice}{Exceptions}
     \begin{itemize}
       \item throw exceptions by value, catch them by (const) reference
       \item use exceptions for \textit{unlikely} runtime errors outside the program's control
@@ -206,7 +206,7 @@
       \begin{itemize}
         \item consider \mintinline{cpp}{assert} and tests
       \end{itemize}
-      \item \textit{don't} use exceptions to provide alternative return values (or to skip them)
+      \item \textit{don't} use exceptions to provide alternative/skip return values
       \begin{itemize}
         \item you can use \mintinline{cpp}{std::optional} or \mintinline{cpp}{std::variant}
         \item avoid using the global C-style \mintinline{cpp}{errno}
@@ -214,7 +214,7 @@
       \item never throw in destructors
       \item see also the \href{https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-errors}{\cpp core guidelines} and the \href{https://isocpp.org/wiki/faq/exceptions}{ISO \cpp FAQ}
     \end{itemize}
-  \end{exampleblock}
+  \end{goodpractice}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -312,12 +312,13 @@
         int f() noexcept;
       \end{cppcode*}
       \begin{itemize}
-        \item either no exceptions will be thrown or they are handled internally
-        \item checked at compile time, so it allows the compiler to optimise around that knowledge
+        \item either no exceptions is thrown or they are handled internally
+        \item checked at compile time
+        \item so allows the compiler to optimise around that knowledge
       \end{itemize}
       \item a function with \mintinline{cpp}{noexcept(expression)} is only \mintinline{cpp}{noexcept} when \mintinline{cpp}{expression} evaluates to \mintinline{cpp}{true} at compile-time
       \begin{cppcode*}{gobble=2,linenos=false}
-        int safe_if_8B_long() noexcept(sizeof(long)==8);
+        int safe_if_8B() noexcept(sizeof(long)==8);
       \end{cppcode*}
       \item Use \mintinline{cpp}{noexcept} on leaf functions where you know the behaviour
       \item C++11 destructors are \mintinline{cpp}{noexcept} - never throw from them
@@ -331,7 +332,7 @@
   \begin{block}{}
     \begin{itemize}
       \item the \mintinline{cpp}{noexcept(expression)} operator checks at compile-time whether an expression can throw exceptions
-      \item it returns a \mintinline{cpp}{bool}, which is \mintinline{cpp}{true} if no exceptions can be thrown
+      \item returns a \mintinline{cpp}{bool}, which is \mintinline{cpp}{true} if no exceptions can be thrown
     \end{itemize}
   \end{block}
   \begin{block}{}
