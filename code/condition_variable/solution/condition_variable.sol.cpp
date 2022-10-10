@@ -13,13 +13,12 @@
  */
 using namespace std::chrono_literals; // We can write 1s
 
-std::mutex cout_mutex; // We need this to synchronise printing
-
 // Print contents of the stream to cout in a thread-safe manner.
 // This class consumes stream inputs, buffers them, and writes them
 // out when destructed respecting the cout_mutex.
 class SafeCout {
   std::stringstream stream;
+  inline static std::mutex cout_mutex; // We need this to synchronise printing
 
 public:
   ~SafeCout() {
@@ -33,7 +32,6 @@ public:
     return *this;
   }
 };
-
 
 // A mock data object
 struct Data {
@@ -108,7 +106,7 @@ int main() {
     }
     auto result = process(threadIdx, data);
 
-    SafeCout{} << '[' << threadIdx << "] Done " << (result ? "OK" : "with failure!") << '\n';
+    SafeCout{} << '[' << threadIdx << "] Data processing completed " << (result ? "OK" : "with failure!") << '\n';
   };
 
   std::vector<std::thread> consumers;
