@@ -10,10 +10,10 @@
         for (int i=0; i < 100; i++) inc();
       };
       int main() {
-        std::thread t1(inc100);
-        std::thread t2(inc100);
+        std::thread t1{inc100};
+        std::thread t2{inc100};
         for (auto t: {&t1,&t2}) t->join();
-        std::cout << a << std::endl;
+        std::cout << a << "\n";
       }
     \end{cppcode*}
   \end{exampleblock}
