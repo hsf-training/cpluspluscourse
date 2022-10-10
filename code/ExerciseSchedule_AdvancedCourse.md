@@ -40,9 +40,9 @@ People should replay them and discover the tools by themselves.
 Day 3
 -----
 
-### Atomicity ([cheatSheet](ExercisesCheatSheet.md#atomicity-directory-atomic))
-
 ### Race conditions ([cheatSheet](ExercisesCheatSheet.md#race-conditions-directory-race))
+
+### Atomicity ([cheatSheet](ExercisesCheatSheet.md#atomicity-directory-atomic))
 
 ### Generic programming / templates ([cheatSheet](ExercisesCheatSheet.md#generic-programming--templates-directory-templates))
 As a prerequisite for variadic templates, and in case it was not covered in day 2 session
