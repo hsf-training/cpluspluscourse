@@ -16,8 +16,8 @@
       void foo() {...}
       void bar() {...}
       int main() {
-        std::thread t1(foo);
-        std::thread t2(bar);
+        std::thread t1{foo};
+        std::thread t2{bar};
         for (auto t: {&t1,&t2}) t->join();
       }
     \end{cppcode*}
@@ -29,7 +29,7 @@
   \begin{exampleblock}{Can take a function and its arguments}
     \begin{cppcode*}{}
       void function(int j, double j) {...};
-      std::thread t1(function, 1, 2.0);
+      std::thread t1{function, 1, 2.0};
     \end{cppcode*}
   \end{exampleblock}
   \pause
@@ -40,10 +40,10 @@
         int operator() (int j) const { return i+j; };
         int m_i;
       };
-      std::thread t2(AdderFunctor(2), 5);
+      std::thread t2{AdderFunctor{2}, 5};
       int a;
-      std::thread t3([](int i) { return i+2; }, a);
-      std::thread t4([a]       { return a+2; });
+      std::thread t3{[](int i) { return i+2; }, a};
+      std::thread t4{[a]       { return a+2; }};
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -68,7 +68,7 @@
     \begin{cppcode*}{}
       int f() {...}
       std::future<int> res = std::async(f);
-      std::cout << res->get();
+      std::cout << res.get() << "\n";
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -116,7 +116,7 @@
   \begin{exampleblock}{Usage}
     \begin{cppcode*}{}
       int f() { return 42; }
-      std::packaged_task<int()> task(f);
+      std::packaged_task<int()> task{f};
       auto future = task.get_future();
       task();
       std::cout << future.get() << std::endl;
