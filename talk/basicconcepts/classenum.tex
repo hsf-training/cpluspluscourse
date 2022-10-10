@@ -112,7 +112,7 @@
       VehicleType t = CAR;
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{gobble=2,firstnumber=8}
       enum VehicleType
         : int { // C++11
         BIKE = 3,
@@ -139,7 +139,7 @@
     \item strong typing, no automatic conversion to int
     \end{itemize}
     \small
-    \begin{cppcode*}{}
+    \begin{cppcode*}{firstnumber=3}
       enum VType { Bus, Car }; enum Color { Red, Blue };
       VType t = Bus;
       if (t == Red) { /* We do enter */ }
@@ -210,7 +210,7 @@
     \end{cppcode*}
   \end{alertblock}
   \begin{exampleblock}{\cpp11}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{gobble=2,firstnumber=4}
       using myint = uint64_t;
       myint toto = 17;
       using pos = int[3];

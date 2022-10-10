@@ -159,7 +159,7 @@
   \pause
   \begin{alertblock}{\cpp98}
     Don't confuse with a variable declaration as condition:
-    \begin{cppcode*}{}
+    \begin{cppcode*}{firstnumber=7}
       if (Value* val = GetValuePtr())
         f(*val);
     \end{cppcode*}
@@ -183,7 +183,7 @@
   \end{block}
   \pause
   \begin{exampleblock}{Practical example}
-    \begin{cppcode*}{}
+    \begin{cppcode*}{firstnumber=4}
       for(int i = 0, j = 0 ; i < 10 ; i++, j = i*i) {
         std::cout << i << "^2 is " << j << '\n';
       }
@@ -213,7 +213,7 @@
     \end{cppcode*}
   \end{block}
   \begin{exampleblock}{Example code}
-    \begin{cppcode*}{}
+    \begin{cppcode*}{firstnumber=4}
       int v[4] = {1,2,3,4};
       int sum = 0;
       for (int a : v) { sum += a; }
@@ -236,7 +236,7 @@
     \end{cppcode*}
   \end{alertblock}
   \begin{exampleblock}{\cpp20}
-    \begin{cppcode*}{}
+    \begin{cppcode*}{firstnumber=6}
       std::array data = {"hello", ",", "world"};
       for (std::size_t i = 0; auto& d : data) {
         std::cout << i++ << ' ' << d << '\n';

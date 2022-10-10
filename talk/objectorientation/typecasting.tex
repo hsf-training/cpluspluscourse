@@ -25,7 +25,7 @@
   \small
   \begin{exampleblock}{}
     \begin{cppcode*}{gobble=2}
-      struct A{ virtual ~A()=default } a;
+      struct A{ virtual ~A()=default; } a;
       struct B : A {} b;
 
       A& c = static_cast<A&>(b); // OK. b is also an A
@@ -33,15 +33,15 @@
       B& e = static_cast<B&>(c); // OK. c is a B
 
       B& f = dynamic_cast<B&>(c); // OK, c is a B
-      B& g = dynamic_cast<B&>(a); // Exception: not a B
-
-      B* d = dynamic_cast<B*>(&a); // nullptr. a not a B.
-      if (d != nullptr) {
-        // Will not reach this
+      B& g = dynamic_cast<B&>(a); // throws std::bad_cast
+      B& foo(A& h) {
+        return dynamic_cast<B&>(h);
       }
+      B& i = foo(c); // OK, c is a B
 
-      if (auto bPtr = dynamic_cast<B*>(&c)) {
-        // OK, we will get here
+      B* j = dynamic_cast<B*>(&a); // nullptr. a not a B.
+      if (j != nullptr) {
+        // Will not reach this
       }
       \end{cppcode*}
   \end{exampleblock}

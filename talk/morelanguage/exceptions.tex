@@ -336,13 +336,13 @@
     \end{itemize}
   \end{block}
   \begin{block}{}
-    \begin{cppcode*}{gobble=2, linenos=false}
+    \begin{cppcode*}{gobble=2}
       constexpr bool callCannotThrow = noexcept(f());
       if constexpr (callCannotThrow) { ... }
     \end{cppcode*}
   \end{block}
   \begin{block}{}
-    \begin{cppcode*}{gobble=2, linenos=false}
+    \begin{cppcode*}{gobble=2,firstnumber=3}
       template <typename Function>
       void g(Function f) noexcept(noexcept(f())) {
         ...
@@ -394,7 +394,10 @@
       \item Return a \mintinline{cpp}{std::error_code} (\cpp11)
       \item If failing to produce a value is not a hard error, consider returning \mintinline{cpp}{std::optional<T>} (\cpp17)
       \item Return \mintinline{cpp}{std::expected<T, E>} (\cpp23), where \mintinline{cpp}{T} is the return type on success and \mintinline{cpp}{E} is the type on failure
-      \item Terminate the program, e.g.\ by calling \mintinline{cpp}{std::terminate()} or  \mintinline{cpp}{std::abort()}
+      \item Terminate the program
+        \begin{itemize}
+        \item e.g.\ by calling \mintinline{cpp}{std::terminate()} or \mintinline{cpp}{std::abort()}
+        \end{itemize}
       \item Contracts: Specify function pre- and postconditions. Planned for \cpp20, but removed. Will come back in the future
     \end{itemize}
   \end{block}
