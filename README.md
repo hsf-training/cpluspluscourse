@@ -55,17 +55,19 @@ one word per line and is case-sensitive.
 
 ## Exercises guidelines
 
-### About instructions for mentors and students
+### Instructions for mentors and students
 
-The [cheat sheet](code/ExercisesCheatSheet_All.md) is only for mentors, with roadmap, solutions and key points to discuss.
+Students should start with the README in the respective exercise folders. These have the basic building instructions, give the name of the main program file, and possibly give a summary of the exercise goals and steps.
 
-Readmes are for students. These host the basic building instructions, give the name of the main program file, and possibly give a summary of the exercise goals and steps.
+Inside the code, one gets more precise help on what should/could be done. If the code is longer and only some parts need to be touched, this is often pointed out with comments.
 
-Inside the code, one gets more precise help on what should/could be done and also where (e.g. when the code is long and only one part needs to be worked on).
-
-### About solutions
+### Solutions to exercises
 
 Each exercice should provide a solution in the `solution` subdirectory. For any `<name>.cpp` exercise, the solution should be called `solution/<name>.sol.cpp`.
+We invite students to only consult the solution when they completed an exercise or when they are really stuck. The preferred order is:
+1. Work on the exercise and consult the slides
+2. Discuss problems and questions with the class and the mentor
+3. Consult the solution
 
 ### About building
 
@@ -81,6 +83,11 @@ cmake ..
 make
 make solution
 ```
+
+### For Mentors
+
+Depending on which course is running, consult the schedule for exercise sessions in [essentials](code/ExerciseSchedule_EssentialCourse.md) or [advanced](code/ExerciseSchedule_AdvancedCourse.md).
+For mentors, there is a [cheat sheet](code/ExercisesCheatSheet.md) with hints towards the solutions and key points to discuss during the exercise sessions.
 
 ## Contributors ✨
 
