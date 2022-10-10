@@ -2,9 +2,13 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Condition variables}
-  \begin{block}{Communicating thread dependencies}
+  \begin{block}{Communicating between threads}
     \begin{itemize}
-      \item \mintinline{cpp}{std::condition_variable} from \mintinline{cpp}{<condition_variable>} header
+      \item Take the case where threads are waiting for other thread(s)
+      \item \mintinline{cpp}{std::condition_variable}
+      \begin{itemize}
+        \item from \mintinline{cpp}{<condition_variable>} header
+      \end{itemize}
       \item Allows for a thread to sleep (= conserve CPU time) until a given condition is satisfied
     \end{itemize}
   \end{block}
@@ -23,12 +27,14 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{Using condition variables}
-  \begin{block}{Producer side}
+  \frametitlecpp[17]{Using condition variables: notify}
+  \begin{block}{Producer side: providing data to waiting threads}
     \begin{itemize}
-      \item Imagine multiple threads sharing data. Protect it with a mutex
-      \item Use a condition variable to notify consumers
-      \item Optimization: Don't hold lock while notifying (would block the waking threads)
+      \item Protect data with a mutex, and use condition variable to notify consumers
+      \item Optimal use: don't hold lock while notifying
+      \begin{itemize}
+        \item waiting threads would be blocked
+      \end{itemize}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{}
@@ -48,43 +54,51 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[11]{Using condition variables: wait}
+  \vspace{-1.2\baselineskip}
   \begin{overprint}
   \onslide<1>
-  \begin{block}{Consumer side I: Going into wait}
+  \begin{block}{Mechanics of wait}
     \begin{itemize}
-      \item Start many threads which have to wait for shared data
-      \item Provide a lock to be managed by \mintinline{cpp}{wait}
-      \item \mintinline{cpp}{wait} will only lock while necessary; unlocked while sleeping
-      \item Threads might wake up, but \mintinline{cpp}{wait} returns only when condition satisfied
+      \item Many threads are waiting for shared data
+      \item Pass a \mintinline{cpp}{unique_lock} and a predicate for wakeup to \mintinline{cpp}{wait()}
+      \item \mintinline{cpp}{wait()} sends threads to sleep while predicate is \mintinline{cpp}{false}
+      \item \mintinline{cpp}{wait()} will only lock when necessary; unlocked while sleeping
+      \item Threads might wake up spuriously, but \mintinline{cpp}{wait()} returns only when lock available \emph{and} predicate \mintinline{cpp}{true}
     \end{itemize}
   \end{block}
   \onslide<2->
-  \begin{block}{Consumer side II: Waking up}
+  \begin{block}{Waiting / waking up}
     \begin{itemize}
       \item \mintinline{cpp}{notify_all()} is called, threads wake up
-      \item Threads try to acquire mutex, evaluate condition
-      \item One thread succeeds to acquire mutex, exits from \mintinline{cpp}{wait}
-      \item \alt<2>{ {\color{red} Problem}: Other threads still blocked!}{ {\color{green!80!black} Solution:} Put locking and waiting in a scope}
+      \item Threads try to lock mutex, and evaluate predicate
+      \item One thread succeeds to acquire mutex, starts data processing
+      \item {\color{red} Problem}: Thread holds mutex now, other threads are blocked!
     \end{itemize}
   \end{block}
   \end{overprint}
 
-  \begin{exampleblock}{}
-    \begin{overprint}
-    \onslide<1-2>
-    \begin{cppcode*}{gobble=2,highlightlines=4}
+  \begin{alertblock}{Na\"ive waiting}
+    \begin{cppcode*}{gobble=2,highlightlines=3}
       auto processData = [&](){
-
         std::unique_lock<std::mutex> lock{mutex};
         cond.wait(lock, [&](){ return data.isReady(); });
-
         process(data);
       };
-      std::thread t1{processData}, t2{processData}, ...;
-      for (auto t : {&producer, &t1, &t2, ...}) t->join();
     \end{cppcode*}
+  \end{alertblock}
+\end{frame}
 
-    \onslide<3>
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Using condition variables: correct wait}
+  \begin{block}{Waiting / waking up}
+    \begin{itemize}
+      \item {\color{green!50!black} Solution:} Put locking and waiting in a scope
+      \item Threads will one-by-one wake up, acquire lock, evaluate predicate, release lock
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Correct waiting}
     \begin{cppcode*}{gobble=2}
       auto processData = [&](){
         {
@@ -96,7 +110,6 @@
       std::thread t1{processData}, t2{processData}, ...;
       for (auto t : {&producer, &t1, &t2, ...}) t->join();
     \end{cppcode*}
-    \end{overprint}
   \end{exampleblock}
 \end{frame}
 
