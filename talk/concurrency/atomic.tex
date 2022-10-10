@@ -22,15 +22,15 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \begin{alertblock}{Expressions using an atomic type are \textit{not} atomic!}
-    \begin{itemize}
-      \item Atomic load; value+2; atomic store
-    \end{itemize}
+  \begin{alertblock}{Warning: Expressions using an atomic type are \textit{not} atomic!}
     \begin{cppcode*}{}
       std::atomic<int> a{0};
       std::thread t1([&]{ a = a + 2; });
       std::thread t2([&]{ a = a + 2; });
     \end{cppcode*}
+    \begin{itemize}
+      \item Atomic load; value+2; atomic store
+    \end{itemize}
   \end{alertblock}
   \begin{block}{Sequence diagram}
     \begin{tikzpicture}
@@ -57,7 +57,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \begin{block}{Use atomic member functions}
+  \begin{block}{Solution: Use atomic member functions}
     \begin{itemize}
       \item The member functions of \mintinline{cpp}{std::atomic} are thread safe
       \item \mintinline{cpp}{fetch_add} and \mintinline{cpp}{operator+=}: atomic \{ load; add; store \}

@@ -4,7 +4,7 @@
   \frametitlecpp[11]{Basic concurrency}
   \begin{block}{Threading}
     \begin{itemize}
-    \item new object \mintinline{cpp}{std::thread} in \mintinline{cpp}{<thread>} header
+    \item \cpp11 added \mintinline{cpp}{std::thread} in \mintinline{cpp}{<thread>} header
     \item takes a function as argument of its constructor
     \item must be detached or joined before the main thread terminates
     \item \cpp20: \mintinline{cpp}{std::jthread} automatically joins at destruction
@@ -37,7 +37,7 @@
     \begin{cppcode*}{}
       struct AdderFunctor {
         AdderFunctor(int i): m_i(i) {}
-        int operator() (int j) const { return i+j; };
+        int operator() (int j) const { return m_i+j; }
         int m_i;
       };
       std::thread t2{AdderFunctor{2}, 5};
@@ -86,7 +86,7 @@
       \begin{itemize}
       \item execution starts when \mintinline{cpp}{get()} is called on the returned future
       \end{itemize}
-    \item default is not specified!
+    \item default is not specified, but tries to use existing concurrency!
     \end{itemize}
   \end{block}
   \pause
@@ -100,7 +100,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Fine grained control on asynchronous execution}
+  \frametitlecpp[11]{Fine-grained control on asynchronous execution}
   \begin{block}{\texttt{std::packaged\_task} template}
     \begin{itemize}
     \item creates an asynchronous version of any function-like object
