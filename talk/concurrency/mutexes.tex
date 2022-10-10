@@ -18,7 +18,7 @@
     \end{cppcode*}
   \end{exampleblock}
   \pause
-  \begin{block}{What do you expect ? Try it in code/race}
+  \begin{block}{What do you expect? (Exercise code/race)}
     \pause
     Anything between 100 and 200 !!!
   \end{block}
@@ -33,7 +33,7 @@
   \end{exampleblock}
   \begin{block}{Practically}
     \begin{itemize}
-    \item an operation that won't run concurrently to another one
+    \item an operation that won't be interrupted by other concurrent operations
     \item an operation that will have a stable environment during execution
     \end{itemize}
   \end{block}
@@ -122,11 +122,12 @@
   \begin{exampleblock}{}
     \begin{cppcode*}{gobble=2}
       void function(...) {
-        // ...
+        // uncritical work ...
         {
           std::scoped_lock myLocks{mutex1, mutex2, ...};
           // critical section
         }
+        // uncritical work ...
       }
     \end{cppcode*}
   \end{exampleblock}
@@ -146,13 +147,13 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Dead lock}
-  \begin{exampleblock}{Scenario}
+  \frametitlecpp[11]{Dead locks}
+  \begin{block}{Scenario}
     \begin{itemize}
     \item 2 mutexes, 2 threads
     \item locking order different in the 2 threads
     \end{itemize}
-  \end{exampleblock}
+  \end{block}
   \pause
   \begin{block}{Sequence diagram}
     \begin{tikzpicture}
@@ -184,10 +185,10 @@
       \begin{itemize}
       \item Or add master lock protecting the locking phase
       \end{itemize}
-    \item Respect a strict order in the locking across all threads
+    \item Respect a strict locking order across all threads
     \item Do not use locks
       \begin{itemize}
-      \item Use other techniques, e.g. lock-free queues
+      \item Use other techniques, e.g.\ lock-free queues
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -199,7 +200,7 @@
     \begin{itemize}
       \item Normal \mintinline{cpp}{std::mutex} objects cannot be shared
       \item \mintinline{cpp}{std::shared_mutex} to the rescue, but can be slower
-      \item \emph{Either} exclusive \emph{or} shared locking; never both
+      \item It locks \emph{either} in exclusive \emph{or} in shared mode; never both
     \end{itemize}
   \end{block}
   \begin{exampleblock}{}
