@@ -1,0 +1,26 @@
+\subsection[TLS]{Thread-local storage}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Thread-local storage}
+  \begin{block}{\mintinline{cpp}{thread_local} keyword}
+    \begin{itemize}
+      \item A variable can be declared \mintinline{cpp}{thread-local}
+      \item Then every thread will have its own copy
+      \item Most useful for ``working memory'' in each thread
+      \item Note: Can also be declared directly on the stack of a thread
+      \begin{itemize}
+        \item and will be faster, thus should be preferred when possible
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{}
+      thread_local int a{0};
+      std::jthread t1([&] { a++; });
+      std::jthread t2([&] { a++; });
+      a += 2;
+      t1.join(); t2.join();
+      assert( a == 2 ); // Guaranteed to succeed
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
