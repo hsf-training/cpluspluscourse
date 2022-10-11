@@ -204,8 +204,8 @@
     \begin{cppcode}
       struct Delegate {
         int m_i;
-        Delegate() { ... complex initialization ...}
-        Delegate(int i) : Delegate(), m_i(i) {}
+        Delegate(int i) : m_i(i) {}
+        Delegate() : Delegate(42) {}
       };
     \end{cppcode}
   \end{exampleblock}
