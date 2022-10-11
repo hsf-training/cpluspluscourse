@@ -63,7 +63,7 @@ Inside the code, one gets more precise help on what should/could be done. If the
 
 ### Solutions to exercises
 
-Each exercice should provide a solution in the `solution` subdirectory. For any `<name>.cpp` exercise, the solution should be called `solution/<name>.sol.cpp`.
+Each exercise should provide a solution in the `solution` subdirectory. For any `<name>.cpp` exercise, the solution should be called `solution/<name>.sol.cpp`.
 We invite students to only consult the solution when they completed an exercise or when they are really stuck. The preferred order is:
 1. Work on the exercise and consult the slides
 2. Discuss problems and questions with the class and the mentor
@@ -91,7 +91,7 @@ For mentors, there is a [cheat sheet](code/ExercisesCheatSheet.md) with hints to
 
 ## Contributors ✨
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks go to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
