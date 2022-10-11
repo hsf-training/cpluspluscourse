@@ -1,28 +1,34 @@
 \subsection[copy]{Copy elision}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{Guaranteed copy elision}
-  \begin{block}{What is copy elision}
+  \frametitlecpp[17]{Copy elision}
+  \begin{block}{Copy elision}
+    \small
     \begin{cppcode*}{}
       struct Foo { ... };
       Foo f() {
-        return Foo();
+        return Foo(); // return-value opt. (RVO)
+      }
+      Foo g() {
+        Foo foo;
+        return foo; // named return-value opt. (NRVO)
       }
       int main() {
-        // compiler was authorised to avoid the copy
-        Foo foo = f();
+        // compiler must avoid these copies:
+        Foo a = f();
+        Foo b = Foo();
+        Foo c = Foo(Foo());
+        // copy elision allowed, but not guaranteed:
+        Foo d = g();
       }
     \end{cppcode*}
   \end{block}
-  \begin{exampleblock}{From \cpp17 on}
-    The elision is guaranteed.
-  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{Guaranteed copy elision}
-  Allows to write code not allowed with \cpp14 (would not compile)
-  \begin{block}{One case where the guarantee is needed}
+  Allows to write code not allowed in \cpp14 (would not compile)
+  \begin{block}{Guaranteed: Return value optimization (RVO)}
     \begin{cppcode*}{}
       struct Foo {
         Foo() { ... }
@@ -32,10 +38,10 @@
         Foo& operator=(Foo &&) = delete;
       };
       Foo f() {
-        return Foo();  // ok
+        return Foo();  // ok, no move
       }
       int main() {
-        Foo foo = f(); // ok
+        Foo foo = f(); // ok, no move
       }
     \end{cppcode*}
   \end{block}
