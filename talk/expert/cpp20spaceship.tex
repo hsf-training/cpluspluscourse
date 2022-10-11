@@ -39,7 +39,7 @@
       \item similar to \mintinline{cpp}{std::strcmp}
       \end{itemize}
     \item greater, lower or equal to \mintinline{cpp}{0} means respectively \emph{lower than}, \emph{greater than} and \emph{equivalent to}
-    \item It is provided by default for all predefined types
+    \item It is provided by default for all built-in types
     \end{itemize}
   \end{exampleblock}
 \end{frame}
@@ -120,7 +120,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{Compiler-generated comparison operators}
-  \begin{block}{For a given home-made class}
+  \begin{block}{For a given user-defined class}
     \begin{itemize}
     \item defining \mintinline{cpp}{operator<=>} allows the compiler to use it when encountering any other comparison operators
     \item of course, one can replace the default implementations
