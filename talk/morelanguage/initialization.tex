@@ -98,8 +98,8 @@
     \end{cppcode*}
     \begin{itemize}
       \item If \mintinline{cpp}{T} has a default constructor (including compiler generated), calls it
-      \item Otherwise \mintinline{cpp}{t} is left uninitialized (undefined value)
-      \item If \mintinline{cpp}{T} is an array, default initializes all members
+      \item If \mintinline{cpp}{T} is a fundamental type, \mintinline{cpp}{t} is left uninitialized (undefined value)
+      \item If \mintinline{cpp}{T} is an array, the same rules are applied to each item
     \end{itemize}
   \end{block}
 \end{frame}
