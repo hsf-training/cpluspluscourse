@@ -72,7 +72,7 @@
       void wrapper(const T& arg) { func(arg); }
 
       template <typename T>
-      void wrapper(T&& arg) { func(arg); }
+      void wrapper(T&& arg) { func(std::move(arg)); }
     \end{cppcode*}
   \end{block}{}
 \end{frame}
