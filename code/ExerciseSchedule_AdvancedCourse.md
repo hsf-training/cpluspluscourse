@@ -10,7 +10,7 @@ There are far too many exercies on each day. They are given in order in which th
 Day 1
 -----
 
-### Hello World ([CheatSheet](ExercisesCheatSheet.md#hello-world-directory-hello))#
+### Hello World ([CheatSheet](ExercisesCheatSheet.md#hello-world-directory-hello))
 
 ### Operators ([cheatSheet](ExercisesCheatSheet.md#operators-directory-operators))
 
