@@ -105,6 +105,31 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[98]{Template parameters}
+  \begin{block}{\texttt{typename} vs. \texttt{class} keyword}
+    \begin{itemize}
+      \item for declaring a template type parameter,
+            the \mintinline{cpp}{typename} and \mintinline{cpp}{class} keyword are semantically equivalent
+      \item template template parameters required \cpp17 for \mintinline{cpp}{typename}
+    \end{itemize}
+  \end{block}
+  \small
+  \begin{cppcode*}{}
+    template<typename T>
+    T func(T a); // equivalent to:
+    template<class T>
+    T func(T a);
+
+    template<template<class> class C>
+    C<int> func(C<int> a); // equivalent to:
+    template<template<typename> class C>
+    C<int> func(C<int> a); // equivalent to:
+    template<template<typename> typename C> // C++17
+    C<int> func(C<int> a);
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[98]{Template implementation}
   \begin{cppcode*}{}
     template<typename KeyType=int, typename ValueType=KeyType>
