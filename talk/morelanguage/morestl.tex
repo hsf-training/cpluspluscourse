@@ -39,7 +39,7 @@
       \begin{itemize}
       \item \mintinline{cpp}{std::vector}, \mintinline{cpp}{std::array}, C arrays, ...
       \item not \mintinline{cpp}{std::list} or \mintinline{cpp}{std::deque} (no contiguous storage)
-      \item \mintinline{cpp}{span} should thus be preferred as function arguments
+      \item \mintinline{cpp}{span} should thus be preferred as function argument
       \end{itemize}
     \item Simply a pair (pointer, size), so cheap to copy
       \begin{itemize}
@@ -86,27 +86,52 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{std::optional}
-  \begin{block}{Manages an optional contained value}
+  \begin{block}{Manages an optionally contained value}
     \begin{itemize}
-    \item Contextually converts to bool telling if it contains something
+    \item Contextually converts to bool, telling if it contains something
     \item Has value semantics (Copy, Move, Compare, stack alloc.)
     \item Useful for the return value of a function that may fail
     \item Useful in place of pointers where value semantics are intuitive
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{Code example}
+  \begin{exampleblock}{}
     \small
     \begin{cppcode*}{}
       std::optional<Phone> parse_phone(std::string_view in) {
         if (is_valid_phone(in))
-          return in;   // equiv. to optional<Phone>(in);
-        else
-          return {};   // default constructs std::nullopt
+          return in;   // equiv. to optional<Phone>{in};
+        return {};   // or: return std::nullopt; (empty opt.)
       }
-      auto v = parse_phone(...);
-      if (v) {            // alternatively v.is_valid()
-        process_phone(v.value()); // *v is equivalent
+      if (v) {                    // or: v.is_valid()
+        process_phone(v.value()); // or: *v (unchecked)
+        v->call(); // calls Phone::call()   (unchecked)
       }
+      v.reset(); assert(!v.has_value()); // or: v = {};
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{std::optional}
+  \begin{exampleblock}{Code example}
+    \small
+    \begin{cppcode*}{}
+      // address may be given for a person or not
+      void processPerson(std::string_view name,
+                         std::optional<Address> address);
+      Address addr = wonderland();
+      processPerson("Alice", std::move(addr));
+
+      // Every person has a name, but not always an address
+      struct Person {
+        std::string name;
+        std::optional<Address> address;
+      };
+      std::vector<Person> ps = ...;
+      std::sort(ps.begin(), ps.end(),
+                [](const Person& a, const Person& b) {
+        return a.address < b.address;
+      }); // sorts by address, persons w/o address at front
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
@@ -124,12 +149,12 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{std::variant}
-  \begin{block}{a type-safe union}
+  \begin{block}{A type-safe union}
     \begin{itemize}
     \item Allows the variable to hold any of the given types
     \item \mintinline{cpp}{std::get} reads the value of the variant
     \item and throws \mintinline{cpp}{std::bad_variant_access} for bad accesses
-    \item Makes it easy to implement visitor pattern
+    \item Currently held alternative can be probed
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Code example}
@@ -140,10 +165,10 @@
       try {
         float val = std::get<float>(opt) // will throw
       } catch (std::bad_variant_access const& ex) {...}
-
-      // Or check the type before accessing it
       if (std::holds_alternative<float>(opt))
           std::cout << std::get<float>(opt);
+      if (const float* v = std::get_if<float>(opt)) { ... }
+      const int current_alternative = opt.index(); // == 0
     \end{cppcode*}
   \end{exampleblock}
 
@@ -151,24 +176,27 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{std::variant and the visitor pattern}
-  \begin{block}{std::visit}
+  \begin{block}{\texttt{std::visit}}
     \begin{itemize}
-    \item Applies a ``visitor'' to given variant
-    \item A visitor is a callable able to handle the different types
+      \item Applies a ``visitor'' to a given variant
+      \begin{itemize}
+        \item A visitor is a callable able to handle all different types
+        \item Must return \mintinline{cpp}{void} or the same type for all overloads
+      \end{itemize}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Practically}
     \small
     \begin{cppcode*}{gobble=2}
       struct Visitor {
-        void operator() (int i) { std::cout << "i32:" << i;}
-        void operator() (float f) { std::cout << "f32:" << f;}
-        void operator() (std::string s) { std::cout << s;}
+        auto operator()(int i)   {return "i:"+std::to_string(i);}
+        auto operator()(float f) {return "f:"+std::to_string(f);}
+        auto operator()(const std::string& s) { return "s:"+s;}
         template <typename T>
-        void operator() (T t) { return std::cout << "other"; }
+        auto operator()(const T& t) { return std::string{"?"}; }
       };
       void print(std::variant<int, float, std::string, char> v) {
-        std::cout << std::visit(Visitor{}, v) << "\n;
+        std::cout << std::visit(Visitor{}, v) << '\n';
       }
       print(100); print(42.0f); print("example"); print('A');
     \end{cppcode*}
@@ -220,7 +248,7 @@
     \item Allows a variable to hold any type (say bye to \mintinline{cpp}{void*})
     \item \mintinline{cpp}{std::any_cast} reads the internal value
     \item and throws \mintinline{cpp}{std::bad_any_cast} for bad accesses
-    \item \mintinline{cpp}{any_cast} will only match concrete types, ignoring inheritance
+    \item \mintinline{cpp}{std::any_cast} only matches types 1:1, ignoring inheritance
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Code example}
@@ -232,9 +260,9 @@
       try {
         int val = std::any_cast<int>(val); // will throw
       } catch (std::bad_any_cast const& ex) {...}
-      // Or check the type before accessing it
-      if (val.type() == typeid(int))
+      if (val.type() == typeid(int)) // requires RTTI
         std::cout << std::any_cast<int>(val);
+      val.reset(); assert(!val.has_value());
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
