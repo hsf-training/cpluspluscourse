@@ -14,7 +14,7 @@
   \begin{cppcode}
     template<typename T>
     const T & max(const T &a, const T &b) {
-      return a > b ? a : b;
+      return b < a ? a : b;
     }
     template<typename T>
     struct Vector {
@@ -33,9 +33,10 @@
       \item they are compiled for each instantiation
       \item they need to be defined before used
       \begin{itemize}
-        \item so all templated code has to be in headers
+        \item so all template code must typically be in headers
+        \item or declared to be available externally (\mintinline{cpp}{extern template})
       \end{itemize}
-      \item this may lead to longer compilation times and bigger libraries
+      \item this may lead to longer compilation times and bigger binaries
     \end{itemize}
   \end{alertblock}
   \newsavebox{\codepiece}
@@ -104,7 +105,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Templates implementation}
+  \frametitlecpp[98]{Template implementation}
   \begin{cppcode*}{}
     template<typename KeyType=int, typename ValueType=KeyType>
     struct Map {
@@ -131,7 +132,7 @@
     \begin{itemize}
     \item integral types, pointer, enums in \cpp98
     \item \mintinline{cpp}{auto} in \cpp17
-    \item floats and literal types in \cpp20
+    \item floating-point and literal types in \cpp20
     \end{itemize}
   \end{block}
   \begin{cppcode*}{}
@@ -145,25 +146,213 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Templates}
+  \frametitlecpp[98]{Template specialization}
   \begin{block}{Specialization}
-    templates can be specialized for given values of their parameter
+    Templates can be specialized for given values of their parameter
   \end{block}
+  \small
   \begin{cppcode*}{}
     template<typename F, unsigned int N>
-    struct Polygon {
-      Polygon(F radius) : m_radius(radius) {}
-      F perimeter() {return 2*N*sin(PI/N)*m_radius;}
-      F m_radius;
-    };
+    struct Polygon { ... }; // primary template
 
-    template<typename F>
+    template<typename F> // partial specialization
     struct Polygon<F, 6> {
       Polygon(F radius) : m_radius(radius) {}
-      F perimeter() {return 6*m_radius;}
+      F perimeter() { return 6*m_radius; }
       F m_radius;
     };
+    template<>           // full specialization
+    struct Polygon<int, 6> {
+      Polygon(int radius) : m_radius(radius) {}
+      int perimeter() { return 6*m_radius; }
+      int m_radius;
+    };
   \end{cppcode*}
+\end{frame}
+
+\begin{advanced}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Template argument deduction}
+  \begin{block}{Template argument deduction}
+    \begin{itemize}
+    \item Template arguments deduced from (function) arguments
+    \item Template arguments can always be specified explicitly
+    \item Only for function templates (Before \cpp14)
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    template <typename T, typename U>
+    void f(T t, U u) { ... }
+
+    f(42, true);        // deduces T=int, U=bool
+                        // calls f<int, bool>(42, true);
+    f<float>(42, true); // sets T=float, deduces U=bool
+                        // calls f<float, bool>(42, true);
+                        // 42 converted to float before call
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Template argument deduction}
+  \begin{block}{Deduced contexts}
+    \begin{itemize}
+    \item Compiler can even deduce template arguments inside certain expressions (pattern matching)
+    \item See \href{https://en.cppreference.com/w/cpp/language/template_argument_deduction}{cppreference} for details
+    \end{itemize}
+  \end{block}
+  \begin{cppcode*}{}
+    template <typename T>
+    void f(T* p) { ... }
+
+    const int * ip = ...;
+    f(ip); // deduces T=const int
+
+    template <typename T, std::size_t N>
+    void g(std::array<T*, N> a) { ... }
+
+    std::array<int*, 3> aip = ...;
+    g(aip); // deduces T=int, N=3
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Template argument deduction}
+  \begin{block}{Non-deduced contexts}
+    \begin{itemize}
+    \item Deduction from certain expressions is impossible/forbidden
+    \end{itemize}
+  \end{block}
+  \begin{overprint}
+    \onslide<1>
+    \begin{alertblock}{}
+      \footnotesize
+      \begin{cppcode*}{gobble=2}
+        template <typename C>
+        void f(typename C::value_type v) { ... }
+        f(std::vector<int>{...}); // cannot deduce C
+                                  // from a dependent type
+        template <typename T, std::size_t N>
+        void g(std::array<T, N * 2> a) { ... }
+        g(std::array<int, 4>{...}); // deduces T=int,
+                                    // cannot deduce N from expression
+        template <typename T>
+        void h(std::vector<T> v) { ... }
+        h({1, 2, 3}); // error, braced-initializer list has no type
+        h(std::vector<int>{1, 2, 3}); // ok, T=int
+      \end{cppcode*}
+    \end{alertblock}
+    \onslide<2>
+    \begin{alertblock}{}
+      \footnotesize
+      \begin{cppcode*}{gobble=2}
+        template <typename C, typename F>
+        void reduce(const C& cont, const F& f = std::plus{});
+        reduce(std::vector<int>{...}); // error: cannot deduce F
+        // would need: <typename C, typename F = decltype(std::plus{})>
+
+        template<typename T>
+        const T & max(const T &a, const T &b) { ... }
+        int i = 3;
+        max(i, 3.14f); // deduces T=int and T=float, error
+        // either: max<float>(i, 3.14f);
+        // or:     max(static_cast<float>(i), 3.14f);
+      \end{cppcode*}
+    \end{alertblock}
+  \end{overprint}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Template argument deduction}
+  \begin{block}{Deduction in partial specializations}
+    \begin{itemize}
+      \item Partial specializations also deduce template arguments
+      \begin{itemize}
+        \item with similar rules as for function templates
+        \item but some more restrictions (cf.\ \href{https://en.cppreference.com/w/cpp/language/partial_specialization}{cppreference})
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \small
+  \begin{cppcode*}{}
+    template <typename T>
+    struct S { ... }; // primary template
+
+    template <typename T>
+    struct S<T*> { ... }; // specialization 1
+
+    template <typename T, std::size_t N>
+    struct S<std::array<T*, N>> { ... }; // specialization 2
+
+    S<int>  s1; // prim. tmpl. (T=int) ok, spec. 1/2 invalid
+    S<int*> s2; // prim. tmpl. (T=int*) and spec. 1 (T=int) ok
+                // spec. 1 is more specialized, will be used
+  \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Template argument deduction}
+  \begin{block}{Specialization vs.\ overloading}
+    \begin{itemize}
+      \item For function templates we can choose between specialization and overloading
+      \item Partial specialization of function templates is forbidden
+    \end{itemize}
+  \end{block}
+  \small
+  \begin{multicols}{2}
+    \begin{cppcode*}{}
+      template <typename T>
+      void f(T t) { ... }
+
+
+      void f(int* t) { ... }
+
+
+      template <typename T>
+      void f(T* t) { ... }
+    \end{cppcode*}
+    \columnbreak
+    \begin{cppcode*}{}
+      template <typename T>
+      void f(T t) { ... }
+
+      template <>
+      void f<int*>(int* t) { ... }
+
+      // part. spec. forbidden:
+      template <typename T>
+      void f<T*>(T* t) {...}
+    \end{cppcode*}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Template argument deduction}
+  \begin{block}{Disadvantages of specialization vs.\ overloading}
+    \begin{itemize}
+      \item Specialization always needs a primary template
+      \begin{itemize}
+        \item Sometimes this does not make sense
+      \end{itemize}
+      \item Partial specializations of function templates is forbidden
+      \begin{itemize}
+        \item So we need SFINAE workarounds or concepts
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \small
+  \begin{block}{Could you express this with specializations?}
+    \begin{cppcode}
+      template <typename T>
+      void f(T* p) { ... }
+
+      template <typename T>
+      void f(std::unique_ptr<T> p) { ... }
+    \end{cppcode}
+  \end{block}
+  \begin{goodpractice}{Specialization vs.\ overloading}
+    Prefer overloading function templates over template specialization
+  \end{goodpractice}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -237,6 +426,8 @@
     \end{cppcode*}
   \end{block}
 \end{frame}
+
+\end{advanced}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{The full power of templates}
