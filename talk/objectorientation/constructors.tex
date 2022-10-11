@@ -186,8 +186,8 @@
   \end{block}
   \begin{exampleblock}{Practically}
     \begin{cppcode}
-      ClassName() = default;  // provide/force default
-      ClassName() = delete;   // do not provide default
+      ClassName() = default; // provide default if possible
+      ClassName() = delete;  // disable default constructor
     \end{cppcode}
   \end{exampleblock}
 \end{frame}
