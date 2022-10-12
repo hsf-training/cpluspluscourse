@@ -4,7 +4,7 @@
   \frametitle{The burden of comparison operators}
   \begin{block}{Motivation}
     \begin{itemize}
-    \item One often needs \mintinline{cpp}{operator<} for a home-made class
+    \item One often needs \mintinline{cpp}{operator<} for a user-defined class
       \begin{itemize}
       \item e.g.\ when sorting a \mintinline{cpp}{std::vector}
       \item e.g.\ when using it as a key for \mintinline{cpp}{std::set} or \mintinline{cpp}{std::map}
@@ -14,7 +14,7 @@
       \item \mintinline{cpp}{operator>}, \mintinline{cpp}{operator>=}, \mintinline{cpp}{operator<=}, ...
       \item often implemented reusing e.g.\ \mintinline{cpp}{operator<} and \mintinline{cpp}{operator==}
       \end{itemize}
-    \item All these should be defined as free functions, optionally friends
+    \item Should be defined as hidden friend functions
     \item Much boilerplate code to write. Too much...
     \end{itemize}
   \end{block}
@@ -38,7 +38,7 @@
       \begin{itemize}
       \item similar to \mintinline{cpp}{std::strcmp}
       \end{itemize}
-    \item greater, lower or equal to \mintinline{cpp}{0} means respectively \emph{lower than}, \emph{greater than} and \emph{equivalent to}
+    \item lower, greater, or equal to \mintinline{cpp}{0} means respectively \emph{lower than}, \emph{greater than} and \emph{equivalent to}
     \item It is provided by default for all built-in types and many types in the standard library
     \end{itemize}
   \end{exampleblock}
@@ -50,15 +50,15 @@
     \begin{cppcode*}{}
     template <typename T>
     void three_way_compare( T lhs, T rhs ) {
-      auto res = ( lhs <=> rhs );
-      std::cout << "(" << lhs << "<=>" << rhs << ") : "
+      auto res = lhs <=> rhs;
+      std::cout << lhs << "<=>" << rhs << ": "
                 << (res<0) << (res==0) << (res>0)
-                << std::endl;
+                << '\n';
     }
     int main() {
-      three_way_compare(1, 2); // (1<=>2): 100
-      three_way_compare(2, 2); // (2<=>2): 010
-      three_way_compare(2, 1); // (2<=>1): 001
+      three_way_compare(1, 2); // 1<=>2: 100
+      three_way_compare(2, 2); // 2<=>2: 010
+      three_way_compare(2, 1); // 2<=>1: 001
     }
     \end{cppcode*}
   \end{exampleblock}
@@ -66,23 +66,24 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{Different kinds of ordering}
-  \begin{block}{About the return type of \texttt{operator<=>}}
+  \begin{block}{The return type of \texttt{operator<=>}}
     \begin{itemize}
     \item for integers \mintinline{cpp}{operator<=>} returns \mintinline{cpp}{std::strong_ordering}
-    \item \mintinline{cpp}{partial_ordering} and \mintinline{cpp}{weak_ordering} also exist
+    \item \mintinline{cpp}{weak_ordering} and \mintinline{cpp}{partial_ordering} also exist
     \end{itemize}
   \end{block}
   \begin{exampleblock}{3 types of ordering}
     \begin{description}[partial]
     \item[strong] exactly one test among \mintinline{cpp}{<0}, \mintinline{cpp}{==0}, and \mintinline{cpp}{>0} will return \mintinline{cpp}{true}
-    \item[partial] like strong but all tests may return \mintinline{cpp}{false}
-      \begin{itemize}
-      \item e.g.\ compare a floating point to \mintinline{cpp}{NaN}
-      \end{itemize}
     \item[weak] like strong but two \emph{equivalent} values may differ
       \begin{itemize}
       \item they are however \emph{equivalent} for ranking
       \item e.g.\ rational numbers $2/3$ and $4/6$
+      \end{itemize}
+    \item[partial] like weak but some values are incomparable
+      \begin{itemize}
+      \item for some values all tests may return \mintinline{cpp}{false}
+      \item e.g.\ compare a floating point to \mintinline{cpp}{NaN}
       \end{itemize}
     \end{description}
   \end{exampleblock}
@@ -104,15 +105,15 @@
       }
     };
     int main() {
-      // floats use partial_ordering
-      three_way_compare(+0., -0.);     // (0<=>-0)   : 010
-      three_way_compare(0./1., 1./0.); // (0<=>inf)  : 100
-      three_way_compare(0., 0./0.);    // (0<=>-nan) : 000
-
       // Ratio uses weak_ordering
-      three_way_compare(Ratio{1, 2}, Ratio{2, 3}); // (1/2<=>2/3) : 100
-      three_way_compare(Ratio{2, 3}, Ratio{4, 6}); // (2/3<=>4/6) : 010
-      three_way_compare(Ratio{2, 3}, Ratio{1, 2}); // (2/3<=>1/2) : 001
+      three_way_compare(Ratio{1, 2}, Ratio{2, 3}); // 1/2<=>2/3 : 100
+      three_way_compare(Ratio{2, 3}, Ratio{4, 6}); // 2/3<=>4/6 : 010
+      three_way_compare(Ratio{2, 3}, Ratio{1, 2}); // 2/3<=>1/2 : 001
+
+      // floats use partial_ordering
+      three_way_compare(+0., -0.);  // 0<=>-0   : 010
+      three_way_compare(0., 1./0.); // 0<=>inf  : 100
+      three_way_compare(0., 0./0.); // 0<=>-nan : 000
     }
     \end{cppcode*}
   \end{exampleblock}
@@ -122,12 +123,12 @@
   \frametitlecpp[20]{Compiler-generated comparison operators}
   \begin{block}{For a given user-defined class}
     \begin{itemize}
-    \item defining \mintinline{cpp}{operator<=>} allows the compiler to use it when encountering any other comparison operators
-    \item of course, one can replace the default implementations
+    \item defining \mintinline{cpp}{operator<=>} allows the compiler to use it when encountering the comparison operators \mintinline{cpp}{<},  \mintinline{cpp}{<=}, \mintinline{cpp}{>} and \mintinline{cpp}{>=}
+    \item of course, one can still provide a custom implementation
     \item the compiler will \emph{NOT} add a default implementation for \mintinline{cpp}{operator==} and \mintinline{cpp}{operator!=}
       \begin{itemize}
       \item as those operators mean \textbf{equal}, rather than \textbf{equivalent}
-      \item if \mintinline{cpp}{operator<=>} does not provide a strong order, it is advised not to define \mintinline{cpp}{operator==} yourself
+      \item if \mintinline{cpp}{operator<=>} does not provide a strong order, it is advised not to define \mintinline{cpp}{operator==}
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -153,12 +154,12 @@
   \frametitlecpp[20]{\texttt{operator<=>} summary}
   \begin{block}{Summary}
     \begin{itemize}
-      \item Defining \mintinline{cpp}{operator<=>} allows you to use \mintinline{cpp}{operator<}, \mintinline{cpp}{operator>},\mintinline{cpp}{operator<=}, and \mintinline{cpp}{operator>=} for free
+      \item Defining \mintinline{cpp}{operator<=>} allows you to use \mintinline{cpp}{operator<}, \mintinline{cpp}{operator>}, \mintinline{cpp}{operator<=}, and \mintinline{cpp}{operator>=} for free
       \item The standard library defines a few kinds of orderings
         \begin{itemize}
           \item strong, weak and partial
         \end{itemize}
-      \item If \mintinline{cpp}{operator<=>} does not define a strong order, avoid defining \mintinline{cpp}{operator==}.
+      \item If \mintinline{cpp}{operator<=>} does not define a strong ordering, avoid defining \mintinline{cpp}{operator==}
     \end{itemize}
   \end{block}
 \end{frame}
