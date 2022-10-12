@@ -16,16 +16,16 @@ struct Particle {
   virtual ~Particle() = default;
 };
 
-struct Electron : public Particle {
-  virtual void print() const { std::cout << "E" << std::endl; }
+struct Electron : Particle {
+  void print() const override { std::cout << "E" << std::endl; }
 };
 
-struct Proton : public Particle {
-  virtual void print() const { std::cout << "P" << std::endl; }
+struct Proton : Particle {
+  void print() const override { std::cout << "P" << std::endl; }
 };
 
-struct Neutron : public Particle {
-  virtual void print() const { std::cout << "N" << std::endl; }
+struct Neutron : Particle {
+  void print() const override { std::cout << "N" << std::endl; }
 };
 
 int main() {
