@@ -308,8 +308,8 @@
     template <typename T>
     struct S<T*> { ... }; // specialization 1
 
-    template <typename T, std::size_t N>
-    struct S<std::array<T*, N>> { ... }; // specialization 2
+    template <typename U, std::size_t N>
+    struct S<std::array<U*, N>> { ... }; // specialization 2
 
     S<int>  s1; // prim. tmpl. (T=int) ok, spec. 1/2 invalid
     S<int*> s2; // prim. tmpl. (T=int*) and spec. 1 (T=int) ok
@@ -339,7 +339,7 @@
       void f(T* t) { ... }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{}
+    \begin{cppcode*}{firstnumber=10}
       template <typename T>
       void f(T t) { ... }
 
