@@ -1,3 +1,4 @@
+#include <memory>
 #include <stdexcept>
 
 template <typename T>
@@ -9,7 +10,6 @@ template<typename ElementType, typename Compare=less<ElementType> >
 class OrderedVector {
 public:
     OrderedVector(unsigned int maxLen);
-    ~OrderedVector();
     OrderedVector(const OrderedVector&) = delete;
     OrderedVector& operator=(const OrderedVector&) = delete;
     bool add(ElementType value);
@@ -19,19 +19,12 @@ private:
     unsigned int m_len;
     unsigned int m_maxLen;
     Compare m_compare;
-    ElementType* m_data;
+    std::unique_ptr<ElementType[]> m_data;
 };
 
 template<typename ElementType, typename Compare>
-OrderedVector<ElementType,Compare>::~OrderedVector() {
-    delete[] m_data;
-}
-
-template<typename ElementType, typename Compare>
 OrderedVector<ElementType,Compare>::OrderedVector(unsigned int maxLen) :
-m_len(0), m_maxLen(maxLen), m_compare() {
-    m_data = new ElementType[m_maxLen];
-}
+m_len(0), m_maxLen(maxLen), m_compare(), m_data(std::make_unique<ElementType[]>(m_maxLen)) { }
 
 template<typename ElementType, typename Compare>
 bool OrderedVector<ElementType,Compare>::add(ElementType value) {
