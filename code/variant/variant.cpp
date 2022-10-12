@@ -17,15 +17,15 @@ struct Particle {
 };
 
 struct Electron : Particle {
-  void print() const override { std::cout << "E" << std::endl; }
+  void print() const override { std::cout << "E\n"; }
 };
 
 struct Proton : Particle {
-  void print() const override { std::cout << "P" << std::endl; }
+  void print() const override { std::cout << "P\n"; }
 };
 
 struct Neutron : Particle {
-  void print() const override { std::cout << "N" << std::endl; }
+  void print() const override { std::cout << "N\n"; }
 };
 
 int main() {
