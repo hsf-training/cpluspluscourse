@@ -10,18 +10,34 @@
     \item \cpp20: \mintinline{cpp}{std::jthread} automatically joins at destruction
     \end{itemize}
   \end{block}
-  \pause
-  \begin{exampleblock}{Example code}
-    \begin{cppcode*}{}
-      void foo() {...}
-      void bar() {...}
-      int main() {
-        std::thread t1{foo};
-        std::thread t2{bar};
-        for (auto t: {&t1,&t2}) t->join();
-      }
-    \end{cppcode*}
-  \end{exampleblock}
+  \vspace{-1\baselineskip}
+  \begin{overprint}
+    \onslide<1>
+    \begin{exampleblock}{Example code}
+      \begin{cppcode*}{gobble=2}
+        void foo() {...}
+        void bar() {...}
+        int main() {
+          std::thread t1{foo};
+          std::thread t2{bar};
+          for (auto t: {&t1,&t2}) t->join();
+          return 0;
+        }
+      \end{cppcode*}
+    \end{exampleblock}
+    \onslide<2>
+    \begin{exampleblock}{Example with jthread (\cpp20)}
+      \begin{cppcode*}{gobble=2}
+        void foo() {...}
+        void bar() {...}
+        int main() {
+          std::jthread t1{foo};
+          std::jthread t2{bar};
+          return 0;
+        }
+      \end{cppcode*}
+    \end{exampleblock}
+  \end{overprint}
 \end{frame}
 
 \begin{frame}[fragile]
