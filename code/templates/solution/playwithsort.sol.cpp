@@ -4,18 +4,25 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <ranges>
 
-struct RevOrderString {
+struct ReverseStringLess {
     bool operator() (const std::string &s, const std::string &t) const {
+        // __cpp_lib_ranges is a feature test macro.
+        // We can use those to check what features a C++ compiler supports.
+#ifdef __cpp_lib_ranges
+        return std::ranges::lexicographical_compare(std::views::reverse(s), std::views::reverse(t));
+#else
         std::string rs = s;
         std::string rt = t;
         std::reverse(rs.begin(), rs.end());
         std::reverse(rt.begin(), rt.end());
         return rs < rt;
+#endif
     }
 };
 
-struct ManhattanOrder {
+struct ManhattanLess {
     bool operator() (const Complex &a, const Complex &b) const {
         return std::abs(a.real()) + std::abs(a.imaginary()) < std::abs(b.real()) + std::abs(b.imaginary());
     }
@@ -53,7 +60,7 @@ int main() {
     std::cout << "\n\n";
 
     std::cout << "String\n";
-    OrderedVector<std::string, RevOrderString> vsr(5);
+    OrderedVector<std::string, ReverseStringLess> vsr(5);
     vsr.add(std::string("one"));
     vsr.add(std::string("two"));
     vsr.add(std::string("three"));
@@ -64,7 +71,7 @@ int main() {
     std::cout << "\n\n";
 
     std::cout << "Complex with manhatan order\n";
-    OrderedVector<Complex, ManhattanOrder> vcm(5);
+    OrderedVector<Complex, ManhattanLess> vcm(5);
     vcm.add(Complex(1.5,0.0));
     vcm.add(Complex(1.0,1.0));
     vcm.add(Complex(-1.0,0.0));
