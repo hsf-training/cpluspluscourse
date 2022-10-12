@@ -14,14 +14,14 @@
  * (Verify by running the program with valgrind!)
  *
  * Remember that:
- * - The ownership of data is expressed using unique_ptr.
- * - "Observer" access without ownership is expressed using raw pointers.
- * - Shared access to data is expressed using shared_ptr.
+ * - The unique ownership of data is expressed using unique_ptr.
+ * - "Observer" access without ownership is expressed using raw pointers or references.
+ * - Shared ownership to data is expressed using shared_ptr.
  */
 
 
 /* --------------------------------------------------------------------------------------------
- * 1: Always use smart pointers when you use new.
+ * 1: Always use smart pointers instead of new.
  *
  * A frequent source of leaks is a function that terminates earlier than the programmer thought.
  *
@@ -65,7 +65,7 @@ void problem1() {
  * - Factory functions should return objects either directly or using smart pointers.
  *   This is good practice, because it clearly shows who owns an object. Fix the return type of the factory function.
  * - The vector should own the objects, so try to store them using smart pointers.
- * - Since the visitor function doesn't accept smart pointers, find a solution to pass the objects.
+ * - Since the change function doesn't accept smart pointers, find a solution to pass the objects.
  *   Note that this works without shared_ptr!
  * --------------------------------------------------------------------------------------------
  */
@@ -86,8 +86,8 @@ std::unique_ptr<LargeObject> createLargeObject() {
 
 // A function to do something with the objects.
 // Note that since we don't own the object, we don't need a smart pointer as argument.
-void visitLargeObject(LargeObject* object) {
-    object->fData[0] = 1.;
+void changeLargeObject(LargeObject& object) {
+    object.fData[0] = 1.;
 }
 
 void problem2() {
@@ -102,7 +102,7 @@ void problem2() {
     }
 
     for (const auto& obj : largeObjects) {
-        visitLargeObject(obj.get());
+        changeLargeObject(*obj);
     }
 }
 
@@ -112,7 +112,7 @@ void problem2() {
  * 3: Shared ownership.
  *
  * Most of the time, ownership can be solved by having one owner (with unique_ptr) and one or
- * more observers. Sometimes, we need to truly share data, though.
+ * more observers (raw pointers or references). Sometimes, we need to truly share data, though.
  *
  * Here is an example of a completely messed up ownership model. It leaks about 1/10 of the times
  * it is invoked.
