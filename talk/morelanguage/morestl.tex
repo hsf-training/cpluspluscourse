@@ -167,7 +167,7 @@
       } catch (std::bad_variant_access const& ex) {...}
       if (std::holds_alternative<float>(opt))
           std::cout << std::get<float>(opt);
-      if (const float* v = std::get_if<float>(opt)) { ... }
+      if (const float* v = std::get_if<float>(&opt)) { ... }
       const int current_alternative = opt.index(); // == 0
     \end{cppcode*}
   \end{exampleblock}
