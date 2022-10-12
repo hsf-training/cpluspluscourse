@@ -1,6 +1,9 @@
 # Writing leak-free C++.
 
-Here we have four code snippets that will benefit from using smart pointers. By replacing every explicit `new` with `make_unique` or `make_shared`, (alternatively by explicitly instantiating smart pointers) we will fix memory leaks, and make most cleanup code unnecessary.
+Here we have four code snippets that will benefit from using smart pointers.
+By replacing every explicit `new` with `make_unique` or `make_shared`,
+(alternatively by explicitly instantiating smart pointers) we will fix memory leaks,
+and make most cleanup code unnecessary.
 
 ## Prerequisites
 
