@@ -1,10 +1,10 @@
+#include <memory>
 #include <stdexcept>
 
 template<typename ElementType>
 class OrderedVector {
 public:
     OrderedVector(unsigned int maxLen);
-    ~OrderedVector();
     OrderedVector(const OrderedVector&) = delete;
     OrderedVector& operator=(const OrderedVector&) = delete;
     bool add(ElementType value);
@@ -13,19 +13,12 @@ public:
 private:
     unsigned int m_len;
     unsigned int m_maxLen;
-    ElementType* m_data;
+    std::unique_ptr<ElementType[]> m_data;
 };
 
 template<typename ElementType>
-OrderedVector<ElementType>::~OrderedVector() {
-    delete[] m_data;
-}
-
-template<typename ElementType>
 OrderedVector<ElementType>::OrderedVector(unsigned int maxLen) :
-m_len(0), m_maxLen(maxLen) {
-    m_data = new ElementType[m_maxLen];
-}
+m_len(0), m_maxLen(maxLen), m_data(std::make_unique<ElementType[]>(m_maxLen)) { }
 
 template<typename ElementType>
 bool OrderedVector<ElementType>::add(ElementType value) {
