@@ -55,9 +55,7 @@
     \end{cppcode*}
   \end{block}
   \begin{alertblock}{}
-    \begin{itemize}
-      \item \mintinline{cpp}{const T&} won't work when passing something non const
-    \end{itemize}
+     and \mintinline{cpp}{const T&} won't work when passing something non const
   \end{alertblock}
 \end{frame}
 
@@ -78,7 +76,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{The new problem: scaling to n arguments}
+  \frametitlecpp[11]{The new problem: scaling to more arguments}
   \begin{block}{}
     \begin{cppcode*}{}
       template <typename T1, typename T2>
@@ -96,8 +94,10 @@
     \end{cppcode*}
   \end{block}{}
   \begin{alertblock}{Exploding complexity}
-    3$^{n}$ complexity\\
-    you do not want to try n = 5...
+    \begin{itemize}
+      \item for $n$ arguments, 3$^{n}$ overloads
+      \item you do not want to try n = 5...
+    \end{itemize}
   \end{alertblock}
 \end{frame}
 
@@ -187,6 +187,22 @@
       };
     \end{cppcode*}
   \end{alertblock}
+  \vspace{-1.2\baselineskip}
+  \begin{overprint}
+  \onslide<1>
+  \begin{exampleblock}{Half-way correct version}
+    \begin{cppcode*}{gobble=2}
+      template <typename T> struct S {
+
+        template <typename U>
+        S(U&& t) { ... } // deducing context -> fwd. ref.
+        template <typename U>
+        void f(U&& t)    // deducing context -> fwd. ref.
+        // ... but now U can be a different type than T
+      };
+    \end{cppcode*}
+  \end{exampleblock}
+  \onslide<2>
   \begin{exampleblock}{Correct version}
     \begin{cppcode*}{gobble=2}
       template <typename T> struct S {
@@ -199,6 +215,7 @@
       };
     \end{cppcode*}
   \end{exampleblock}
+  \end{overprint}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -237,20 +254,20 @@
     \small
     \begin{cppcode*}{}
       template<typename T>
-      T&& forward(remove_reference_t<T>& t) noexcept {
+      T&& forward(remove_reference_t<T>& t) noexcept {  // 1.
         return static_cast<T&&>(t);
       }
       template<typename T>
-      T&& forward(remove_reference_t<T>&& t) noexcept {
+      T&& forward(remove_reference_t<T>&& t) noexcept { // 2.
         return static_cast<T&&>(t);
       }
     \end{cppcode*}
   \end{block}
   \begin{block}{}
     \begin{itemize}
-    \item if \mintinline{cpp}{T} is \mintinline{cpp}{int}, it returns \mintinline{cpp}{int&&}
-    \item if \mintinline{cpp}{T} is \mintinline{cpp}{int&}, it returns \mintinline{cpp}{int& &&}, i.e.\ \mintinline{cpp}{int&}
-    \item if \mintinline{cpp}{T} is \mintinline{cpp}{int&&}, it returns \mintinline{cpp}{int&& &&}, i.e.\ \mintinline{cpp}{int&&}
+    \item if \mintinline{cpp}{T} is \mintinline{cpp}{int}, selects 2., returns \mintinline{cpp}{int&&}
+    \item if \mintinline{cpp}{T} is \mintinline{cpp}{int&}, selects 1., returns \mintinline{cpp}{int& &&}, i.e.\ \mintinline{cpp}{int&}
+    \item if \mintinline{cpp}{T} is \mintinline{cpp}{int&&}, selects 2., returns \mintinline{cpp}{int&& &&}, i.e.\ \mintinline{cpp}{int&&}
     \end{itemize}
   \end{block}
 \end{frame}
@@ -269,17 +286,17 @@
     \begin{itemize}
     \item if we pass an rvalue reference \mintinline{cpp}{U&&} to wrapper
       \begin{itemize}
-      \item arg will be of type \mintinline{cpp}{U&&}
+      \item \mintinline{cpp}{T=U}, arg is of type \mintinline{cpp}{U&&}
       \item func will be called with a \mintinline{cpp}{U&&}
       \end{itemize}
     \item if we pass an lvalue reference \mintinline{cpp}{U&} to wrapper
       \begin{itemize}
-      \item arg will be of type \mintinline{cpp}{U&}
+      \item \mintinline{cpp}{T=U&}, arg is of type \mintinline{cpp}{U&} (reference collapsing)
       \item func will be called with a \mintinline{cpp}{U&}
       \end{itemize}
     \item if we pass a plain \mintinline{cpp}{U} (rvalue) to wrapper
       \begin{itemize}
-      \item arg will be of type \mintinline{cpp}{U&&} (no copy in wrapper)
+      \item \mintinline{cpp}{T=U}, arg is of type \mintinline{cpp}{U&&} (no copy in wrapper)
       \item func will be called with a \mintinline{cpp}{U&&}
       \item if func takes a plain \mintinline{cpp}{U}, copy happens there, as expected
       \end{itemize}
