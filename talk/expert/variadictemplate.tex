@@ -6,7 +6,7 @@
   \frametitlecpp[11]{Basic variadic template}
   \begin{block}{The idea}
     \begin{itemize}
-    \item a template parameter accepting arbitrarily many arguments
+    \item a parameter accepting arbitrarily many arguments (i.e.\ pack)
     \item template parameter pack for e.g.\ types, function parameter packs for values, and expansions, details on \href{https://en.cppreference.com/w/cpp/language/parameter_pack}{cppreference}
     \end{itemize}
   \end{block}
@@ -39,9 +39,36 @@
     \begin{itemize}
     \item it's more performant
     \item type safety is included
-    \item it applies to everything, including objects
+    \item it applies to everything, including user-defined types
     \end{itemize}
   \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Parameter packs}
+  \begin{block}{Parameter packs}
+    \begin{itemize}
+      \item only a few operations are supported
+      \begin{itemize}
+        \item query the number of elements in a pack with \mintinline{cpp}{sizeof...}
+        \item expand it with \mintinline{cpp}{x...}
+      \end{itemize}
+      \item can be empty
+      \item can hold different types
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{}
+      template<typename... Args>
+      void f(Args... args) {
+        constexpr std::size_t N = sizeof...(Args);
+        std::tuple<Args...> t{args...};
+      }
+      f(0, 1, 2);       // Args = [int, int, int]
+      f();              // Args = empty
+      f(0, true, 3.14); // Args = [int, bool, double]
+    \end{cppcode*}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
