@@ -1,12 +1,8 @@
 #include <memory>
 #include <stdexcept>
+#include <functional>
 
-template <typename T>
-struct less {
-  bool operator() (const T& x, const T& y) const {return x<y;}
-};
-
-template<typename ElementType, typename Compare=less<ElementType> >
+template<typename ElementType, typename Compare=std::less<>>
 class OrderedVector {
 public:
     OrderedVector(unsigned int maxLen);

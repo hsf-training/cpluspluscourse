@@ -10,6 +10,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include( "${CMAKE_CURRENT_SOURCE_DIR}/../CompilerSettings.cmake" )
 include( "${CMAKE_CURRENT_SOURCE_DIR}/../SolutionTarget.cmake" )
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # Create the user's executable.
 add_executable( playwithsort "Complex.hpp" "OrderedVector.hpp" "playwithsort.cpp" )
 
