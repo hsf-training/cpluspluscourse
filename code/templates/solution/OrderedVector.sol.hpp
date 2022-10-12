@@ -5,25 +5,34 @@
 template<typename ElementType, typename Compare=std::less<>>
 class OrderedVector {
 public:
-    OrderedVector(unsigned int maxLen);
+    OrderedVector(unsigned int maxLen)
+      : m_maxLen(maxLen), m_data(std::make_unique<ElementType[]>(m_maxLen)) { }
+
     OrderedVector(const OrderedVector&) = delete;
     OrderedVector& operator=(const OrderedVector&) = delete;
+
     bool add(ElementType value);
-    ElementType& at(unsigned int n);
-    ElementType& operator[](unsigned int n);
+
+    ElementType& at(unsigned int n) {
+      if (n >= m_len) {
+        throw std::out_of_range("too big");
+      }
+      return m_data[n];
+    }
+
+    ElementType& operator[](unsigned int n) {
+      return at(n);
+    }
+
 private:
-    unsigned int m_len;
+    unsigned int m_len = 0;
     unsigned int m_maxLen;
     Compare m_compare;
     std::unique_ptr<ElementType[]> m_data;
 };
 
 template<typename ElementType, typename Compare>
-OrderedVector<ElementType,Compare>::OrderedVector(unsigned int maxLen) :
-m_len(0), m_maxLen(maxLen), m_compare(), m_data(std::make_unique<ElementType[]>(m_maxLen)) { }
-
-template<typename ElementType, typename Compare>
-bool OrderedVector<ElementType,Compare>::add(ElementType value) {
+bool OrderedVector<ElementType, Compare>::add(ElementType value) {
     if (m_len >= m_maxLen) {
         return false;
     }
@@ -41,17 +50,4 @@ bool OrderedVector<ElementType,Compare>::add(ElementType value) {
     m_data[index] = value;
     m_len++;
     return true;
-}
-
-template<typename ElementType, typename Compare>
-ElementType& OrderedVector<ElementType,Compare>::at(unsigned int n) {
-    if (n >= m_len) {
-        throw std::out_of_range("too big");
-    }
-    return m_data[n];
-}
-
-template<typename ElementType, typename Compare>
-ElementType& OrderedVector<ElementType,Compare>::operator[](unsigned int n) {
-    return at(n);
 }
