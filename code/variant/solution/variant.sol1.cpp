@@ -3,15 +3,15 @@
 #include <vector>
 
 struct Electron {
-  void print() const { std::cout << "E" << std::endl; }
+  void print() const { std::cout << "E\n"; }
 };
 
 struct Proton {
-  void print() const { std::cout << "P" << std::endl; }
+  void print() const { std::cout << "P\n"; }
 };
 
 struct Neutron {
-  void print() const { std::cout << "N" << std::endl; }
+  void print() const { std::cout << "N\n"; }
 };
 
 using Particle = std::variant<Electron, Proton, Neutron>;
