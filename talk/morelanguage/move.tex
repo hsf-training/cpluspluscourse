@@ -157,7 +157,7 @@
       T f() { T r; return r; } // move r out of f
       T v = f(); // move returned (temporary) T into v
       void g(T a, T b, T c);
-      g(func(), T{}, v); // move, move, copy
+      g(f(), T{}, v); // move, move, copy
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
