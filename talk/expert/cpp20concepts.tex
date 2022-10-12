@@ -25,9 +25,9 @@
     \begin{cppcode*}{}
     template
     <typename T,
-     typename = typename std::enable_if_t<std::is_floating_point_v<T>>
+     typename = std::enable_if_t<std::is_floating_point_v<T>>
     bool equal( T e1, T e2 ) {
-      return abs(e1-e2)<std::numeric_limits<T>::epsilon();
+      return std::abs(e1-e2)<std::numeric_limits<T>::epsilon();
     }
     ... equal(10,5+5) ...
     \end{cppcode*}
@@ -53,7 +53,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
   \frametitlecpp[20]{Basic requirements}
   \begin{block}{A new keyword}
     \begin{itemize}
-      \item The keyword \mintinline{cpp}{requires} let us define various constraints.
+      \item The keyword \mintinline{cpp}{requires} lets us define various constraints.
     \end{itemize}
   \end{block}
   \begin{exampleblock}{With concepts}
@@ -62,7 +62,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     template<typename T>
     requires std::is_floating_point_v<T>
     bool equal( T e1, T e2 ) {
-      return abs(e1-e2)<std::numeric_limits<T>::epsilon();
+      return std::abs(e1-e2)<std::numeric_limits<T>::epsilon();
     }
     ... equal(10,5+5) ...
     \end{cppcode*}
@@ -95,7 +95,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     template< typename T>
     requires std::is_floating_point_v<T>
     bool equal( T e1, T e2 )
-    { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
+    {return std::abs(e1-e2)<std::numeric_limits<T>::epsilon();}
     \end{cppcode*}
   \end{exampleblock}
   \begin{block}{Requirements affect overload resolution}
@@ -110,31 +110,30 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \begin{block}{Definition}
       \begin{itemize}
       \item a \textbf{concept} gives a name to a given set of requirements
-      \item useful when requirements are reused often
+      \item useful when the same requirements are reused frequently
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{A new keyword : {\it concept}}
+    \begin{exampleblock}{A new keyword: \texttt{concept}}
       \small
       \begin{cppcode*}{gobble=2}
       template< typename T>
       concept MyFloatingPoint =
-        (std::is_floating_point_v<T>) &&
-        (std::numeric_limits<T>::epsilon()>0);
+        std::is_floating_point_v<T> &&
+        std::numeric_limits<T>::epsilon()>0;
 
       template<typename T>
       requires MyFloatingPoint<T>
       bool equal( T e1, T e2 )
-      { return abs(e1-e2)<std::numeric_limits<T>::epsilon(); }
+      {return std::abs(e1-e2)<std::numeric_limits<T>::epsilon();}
       \end{cppcode*}
     \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
     \frametitlecpp[20]{Some usages of concepts}
-    \begin{block}{Concepts as template parameters}
+    \begin{block}{Constrained template parameters}
       \begin{itemize}
-      \item concepts can be used in template parameter lists
-      \item replacing \mintinline{cpp}{typename}
+        \item a concept can replace \mintinline{cpp}{typename} in a template parameter lists
       \end{itemize}
     \end{block}
     \begin{exampleblock}{}
@@ -142,22 +141,47 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
       \begin{cppcode*}{gobble=2}
       template<MyFloatingPoint T>
       bool equal( T e1, T e2 ) {
-        return abs(e1-e2) < std::numeric_limits<T>::epsilon();
+        return std::abs(e1-e2)<std::numeric_limits<T>::epsilon();
       }
       \end{cppcode*}
     \end{exampleblock}
-    \begin{block}{Concepts in abbreviated function arguments}
+    \begin{block}{Constrained variables}
       \begin{itemize}
-        \item concepts can be used together with \mintinline{cpp}{auto} in abbreviated function templates
+        \item a concept can be used together with \mintinline{cpp}{auto} to impose requirements on the type of a variable
+      \end{itemize}
+    \end{block}
+    \begin{exampleblock}{firstnumber=4,gobble=2}
+      \begin{cppcode*}{firstnumber=4,gobble=2}
+      MyFloatingPoint auto f = 3.14f;
+      MyFloatingPoint auto d = 3.14;
+      MyFloatingPoint auto i = 3; // compile error
+      \end{cppcode*}
+    \end{exampleblock}
+\end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitlecpp[20]{Some usages of concepts}
+    \begin{block}{Abbreviated function templates}
+      \begin{itemize}
+        \item function parameters, similar to variables, can be constrained as well
+        \item the template head becomes obsolete
+        \item the function is still a template though!
+        \item unconstrained \mintinline{cpp}{auto} parameters are allowed as well
       \end{itemize}
     \end{block}
     \begin{exampleblock}{}
       \small
-      \begin{cppcode*}{firstnumber=4,gobble=2}
+      \begin{cppcode*}{gobble=2}
+      // no template <...> here!
       bool equal( MyFloatingPoint auto e1,
                   MyFloatingPoint auto e2 ) {
-        return abs(e1-e2) <
-               std::numeric_limits<decltype(e1)>::epsilon(); }
+        return std::abs(e1-e2) <
+               std::numeric_limits<decltype(e1)>::epsilon();
+      }
+
+      // unconstrained abbreviated function template:
+      void equal(auto e1, auto e2) { ... }
       \end{cppcode*}
     \end{exampleblock}
 \end{frame}
@@ -170,13 +194,13 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
         \item Prefer the ones provided by the standard library
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{E.g. : the floating point concept}
+    \begin{exampleblock}{E.g.: the floating point concept}
       \small
       \begin{cppcode*}{gobble=2}
       #include <concepts>
       bool equal( std::floating_point auto e1,
                   std::floating_point auto e2 ) {
-        return abs(e1-e2) <
+        return std::abs(e1-e2) <
                std::numeric_limits<decltype(e1)>::epsilon();
       }
       \end{cppcode*}
@@ -184,24 +208,25 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitlecpp[20]{Concepts checking}
-    \begin{block}{Concepts as boolean operators}
+    \frametitlecpp[20]{Checking concepts}
+    \begin{block}{Concepts as Boolean operators}
       \begin{itemize}
-        \item Concepts can be used wherever a boolean is expected
+        \item Concepts can be used wherever a \mintinline{c}{bool} is expected
         \item they can appear in \mintinline{cpp}{if constexpr} conditions
           \begin{itemize}
           \item since they are evaluated at compile-time
           \end{itemize}
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{Using concepts with {\it if constexpr}}
+    \begin{exampleblock}{Using concepts with \texttt{if constexpr}}
       \small
       \begin{cppcode*}{gobble=2}
       template<typename T>
       bool equal( T e1, T e2 )
       {
         if constexpr (std::floating_point<T>) {
-          return abs(e1-e2)<std::numeric_limits<T>::epsilon();
+          return std::abs(e1-e2)
+                   < std::numeric_limits<T>::epsilon();
         } else {
           return (e1==e2);
         }
@@ -225,32 +250,34 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
       \begin{cppcode*}{gobble=2}
       template<typename T>
       concept StreamableAndComparableNumber =
-      requires( T v1, T v2 ) {
+      requires( T v1, T v2, std::ostream os ) {
         requires std::integral<T> || std::floating_point<T>;
-        std::cout<<v1<<v2;
+        os<<v1<<v2;
         { equal(v1,v2) } -> std::convertible_to<bool>;
       };
       \end{cppcode*}
     \end{exampleblock}
-    Remember : use standard concepts first
+    \begin{block}{}
+      Remember : use standard concepts first
+    \end{block}
 \end{frame}
 
 \begin{frame}
     \frametitlecpp[20]{Requirements and concepts}
-    \begin{block}{To be remembered}
+    \begin{block}{Summary}
       \begin{itemize}
       \item A template can now \emph{require} properties of its parameters
       \item Compiler error messages clearly state which argument does not fulfill which requirement
       \item A set of requirements can be gathered in a \emph{concept}
       \item Overload resolution takes requirements into account
       \item The standard library provides many ready-to-use concepts
-      \item Writing a new good concept is an expert topic
+      \item Writing a new good concept is an expert task
       \end{itemize}
     \end{block}
 \end{frame}
 
 \begin{frame}
-  \frametitlecpp[11]{Exercise time}
+  \frametitlecpp[20]{Exercise time}
   \begin{exercise}{Concepts}
     \begin{itemize}
     \item go to code/concepts
