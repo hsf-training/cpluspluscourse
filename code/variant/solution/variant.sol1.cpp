@@ -1,6 +1,8 @@
 #include <iostream>
 #include <variant>
 #include <vector>
+#include <algorithm>
+#include <span>
 
 struct Electron {
   void print() const { std::cout << "E\n"; }
@@ -24,6 +26,12 @@ template <typename T> void print_if(Particle const &p) {
     ptr->print();
 }
 
+std::size_t countNeutrons(std::span<const Particle> ps) {
+    return std::count_if(ps.begin(), ps.end(), [](const Particle& p){
+        return std::get_if<Neutron>(&p) != nullptr;
+    });
+}
+
 int main() {
   std::vector<Particle> ps = {Electron{}, Proton{}, Neutron{}};
 
@@ -32,4 +40,6 @@ int main() {
     print_if<Proton>(p);
     print_if<Neutron>(p);
   }
+
+  std::cout << "We have " << countNeutrons(ps) << " neutrons!\n";
 }

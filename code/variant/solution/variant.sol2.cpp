@@ -1,6 +1,8 @@
 #include <iostream>
 #include <variant>
 #include <vector>
+#include <algorithm>
+#include <span>
 
 struct Electron {
   void print() const { std::cout << "E\n"; }
@@ -16,6 +18,12 @@ struct Neutron {
 
 using Particle = std::variant<Electron, Proton, Neutron>;
 
+std::size_t countNeutrons(std::span<const Particle> ps) {
+    return std::count_if(ps.begin(), ps.end(), [](const Particle& p){
+        return std::holds_alternative<Neutron>(p);
+    });
+}
+
 int main() {
   std::vector<Particle> ps = {Electron{}, Proton{}, Neutron{}};
 
@@ -25,4 +33,6 @@ int main() {
     // time, the correct overload will be chosen automatically:
     std::visit([](const auto &p) { p.print(); }, p);
   }
+
+  std::cout << "We have " << countNeutrons(ps) << " neutrons!\n";
 }
