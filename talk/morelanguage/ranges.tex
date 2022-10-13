@@ -30,7 +30,7 @@
     \item They introduce easy functional programming to the STL
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{Example}
+  \begin{exampleblock}{Example \godboltLink{https://godbolt.org/z/d1vTv4TMa}}
     { \small
       \begin{cppcode*}{gobble=4}
         auto const numbers = std::views::iota(0, 6);
@@ -71,7 +71,7 @@
     \item Here, the minimal number of iterations is performed
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{Example}
+  \begin{exampleblock}{Example \godboltLink{https://godbolt.org/z/bWe6W69oE}}
     \begin{cppcode*}{gobble=2}
       // print first 20 prime numbers above 1000000
       for (int i: std::views::iota(1000000)

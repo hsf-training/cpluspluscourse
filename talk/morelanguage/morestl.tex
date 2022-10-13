@@ -1,7 +1,7 @@
 \subsection[More]{More STL}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{\texttt{std::string\_view}}
+  \frametitlecpp[17]{\texttt{std::string\_view} \cpprefLink{https://en.cppreference.com/w/cpp/string/basic_string_view}}
   \begin{block}{Non owning read-only view of a contiguous char sequence}
     \begin{itemize}
     \item Doesn't allocate memory
@@ -23,7 +23,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[20]{\texttt{std::span<T>} - Concept}
+  \frametitlecpp[20]{\texttt{std::span<T>} - Concept \cpprefLink{https://en.cppreference.com/w/cpp/container/span}}
   \begin{block}{Non owning view of a contiguous sequence of items}
     \begin{itemize}
     \item Doesn't allocate memory
@@ -85,7 +85,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{std::optional}
+  \frametitlecpp[17]{std::optional \cpprefLink{https://en.cppreference.com/w/cpp/utility/optional}}
   \begin{block}{Manages an optionally contained value}
     \begin{itemize}
     \item Contextually converts to bool, telling if it contains something
@@ -148,7 +148,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{std::variant}
+  \frametitlecpp[17]{std::variant \cpprefLink{https://en.cppreference.com/w/cpp/utility/variant}}
   \begin{block}{A type-safe union}
     \begin{itemize}
     \item Allows the variable to hold any of the given types
@@ -176,7 +176,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{std::variant and the visitor pattern}
-  \begin{block}{\texttt{std::visit}}
+  \begin{block}{\texttt{std::visit} \cpprefLink{https://en.cppreference.com/w/cpp/utility/variant/visit}}
     \begin{itemize}
       \item Applies a ``visitor'' to a given variant
       \begin{itemize}
@@ -185,7 +185,7 @@
       \end{itemize}
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{Practically}
+  \begin{exampleblock}{Practically \godboltLink{https://godbolt.org/z/bxzEsM3de}}
     \small
     \begin{cppcode*}{gobble=2}
       struct Visitor {
@@ -210,7 +210,7 @@
     \item use inheritance to group a set of lambdas
     \end{itemize}
   \end{exampleblock}
-  \begin{block}{Practically}
+  \begin{block}{Practically \godboltLink{https://godbolt.org/z/WcdnT1hra}}
     \small
     \begin{cppcode*}{gobble=2}
       template<typename... Ts> // covered in expert part
@@ -242,7 +242,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{std::any}
+  \frametitlecpp[17]{std::any \cpprefLink{https://en.cppreference.com/w/cpp/utility/any}}
   \begin{block}{a type-safe container for single values of any type}
     \begin{itemize}
     \item Allows a variable to hold any type (say bye to \mintinline{cpp}{void*})
@@ -296,7 +296,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{\texttt{std::tuple}}
+  \frametitlecpp[11]{\texttt{std::tuple} \cpprefLink{https://en.cppreference.com/w/cpp/utility/tuple}}
   \begin{exampleblock}{}
     \begin{cppcode*}{}
       #include <tuple>

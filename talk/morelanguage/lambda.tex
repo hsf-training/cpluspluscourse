@@ -244,7 +244,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Anatomy of a lambda}
-  \begin{block}{Lambdas are pure syntactic sugar - \href{https://cppinsights.io/lnk?code=aW50IG1haW4oKSB7CiAgaW50IHN1bSA9IDAsIG9mZnNldCA9IDE7CiAgYXV0byBsID0gWyZzdW0sIG9mZnNldF0oaW50IHgpIHsKICAgIHN1bSArPSB4ICsgb2Zmc2V0OwogIH07Cn0=&insightsOptions=cpp17&std=cpp17&rev=1.0}{{\color{blue!50!white} see cppinsights.io}}}
+  \begin{block}{Lambdas are pure syntactic sugar - \cppinsightLink{https://cppinsights.io/s/67800da8}}
     \begin{itemize}
     \item they are replaced by a functor during compilation
     \end{itemize}
@@ -293,7 +293,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Higher-order lambdas}
+  \frametitlecpp[11]{Higher-order lambdas \godboltLink{https://godbolt.org/z/GMj76Wer7}}
   \begin{exampleblock}{Example}
     \begin{cppcode*}{}
       auto build_incrementer = [](int inc) {
