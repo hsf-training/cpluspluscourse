@@ -186,6 +186,22 @@
   \frametitle{#2 \hfill \cpp#1}
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% easy links to godbolt and cppinsight %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Use as \godbolLink{url}
+\newcommand\godboltLink[1]{%
+  \href{#1}{\color{blue!50!white} godbolt}%
+}
+% Use as \cppinsightLink{url}
+\newcommand\cppinsightLink[1]{%
+  \href{#1}{\color{blue!50!white} cppinsight}%
+}
+% Use as \cppinsightLink{url}
+\newcommand\cpprefLink[1]{%
+  \href{#1}{\color{blue!50!white} cppreference}%
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % easy class diagrams in tikz %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
