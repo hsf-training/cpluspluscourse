@@ -167,8 +167,8 @@
       f(4);            // rvalue -> T&& is int&&
       double d = 3.14;
       f(d);            // lvalue -> T&& is double&
-      float f() {...}
-      f(f());          // rvalue -> T&& is float&&
+      float g() {...}
+      f(g());          // rvalue -> T&& is float&&
       std::string s = "hello";
       f(s);            // lvalue -> T&& is std::string&
       f(std::move(s)); // rvalue -> T&& is std::string&&
