@@ -20,12 +20,12 @@
     leading to a substitution failure
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{Practical code}
+  \begin{exampleblock}{Practical code \godboltLink{https://godbolt.org/z/e4T9q1jfh}}
     \scriptsize
     \begin{cppcode*}{}
     template
     <typename T,
-     typename = std::enable_if_t<std::is_floating_point_v<T>>
+     typename = std::enable_if_t<std::is_floating_point_v<T>>>
     bool equal( T e1, T e2 ) {
       return std::abs(e1-e2)<std::numeric_limits<T>::epsilon();
     }
@@ -56,7 +56,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
       \item The keyword \mintinline{cpp}{requires} lets us define various constraints.
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{With concepts}
+  \begin{exampleblock}{With concepts \godboltLink{https://godbolt.org/z/dWvM9Pvee}}
     \scriptsize
     \begin{cppcode*}{}
     template<typename T>

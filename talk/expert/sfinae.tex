@@ -128,7 +128,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Not so easy actually...}
-  \begin{exampleblock}{Example}
+  \begin{exampleblock}{Example \godboltLink{https://godbolt.org/z/Y9Ys4hvWq}}
     \small
     \begin{cppcode*}{}
       template <typename T, typename = void>
@@ -168,7 +168,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{Previous introspection example using \texttt{void\_t}}
-    \begin{exampleblock}{Example}
+    \begin{exampleblock}{Example \godboltLink{https://godbolt.org/z/hfMxndP1x}}
       \begin{cppcode*}{}
       template <typename T, typename = void>
       struct hasFoo : std::false_type {};
@@ -212,7 +212,7 @@
 
 \begin{frame}[fragile]
   \frametitle{SFINAE and the STL \hfill \cpp11/\cpp14}
-  \begin{block}{\texttt{enable\_if}}
+  \begin{block}{\texttt{enable\_if} \cpprefLink{https://en.cppreference.com/w/cpp/types/enable_if}}
     \begin{cppcode*}{linenos=false}
       template<bool B, typename T=void>
       struct enable_if;
