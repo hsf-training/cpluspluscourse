@@ -234,7 +234,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[20]{Resuming a coroutine}
   \scriptsize
-  \begin{block}{User code - \href{https://godbolt.org/z/qx46Pa4v3}{\color{blue!50}godbolt}}
+  \begin{block}{User code - \godboltLink{https://godbolt.org/z/qx46Pa4v3}}
     \begin{cppcode*}{gobble=2}
       Task myCoroutine() {
         std::cout << "Step 1 of coroutine\n";
@@ -350,7 +350,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{\texttt{co\_yield} - final usage}
-  \begin{exampleblock}{Finally, we can use the generator nicely - \href{https://godbolt.org/z/6bbrYrss5}{\color{blue!50}godbolt}}
+  \begin{exampleblock}{Finally, we can use the generator nicely - \godboltLink{https://godbolt.org/z/6bbrYrss5}}
     {\scriptsize
       \begin{cppcode*}{gobble=4}
         Task range(int first, int last) {
@@ -386,7 +386,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{Laziness allows for infinite ranges}
-  \begin{block}{Generators do not need to be finite - \href{https://godbolt.org/z/MP6qdGWYe}{\color{blue!50}godbolt}}
+  \begin{block}{Generators do not need to be finite - \godboltLink{https://godbolt.org/z/MP6qdGWYe}}
     \begin{cppcode*}{gobble=2}
       Task range(int first) {
         while (true) {
@@ -402,7 +402,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{Real life example}
-  \begin{block}{A Fibonacci generator - \href{https://godbolt.org/z/3Pev1M8se}{\color{blue!50}godbolt}, from \href{https://en.cppreference.com/w/cpp/language/coroutines}{\color{blue!50}cppreference}}
+  \begin{block}{A Fibonacci generator, from \cpprefLink{https://en.cppreference.com/w/cpp/language/coroutines} - \godboltLink{https://godbolt.org/z/3Pev1M8se}}
     \scriptsize
      \begin{cppcode*}{gobble=2}
        Task<long long int> fibonacci(unsigned n) {
@@ -495,7 +495,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{\texttt{awaiter} example}
-  \begin{block}{Switch to new thread - \href{https://godbolt.org/z/K7svE4P7s}{\color{blue!50}godbolt}, from \href{https://en.cppreference.com/w/cpp/language/coroutines}{\color{blue!50}cppreference}}
+  \begin{block}{Switch to new thread, from \cpprefLink{https://en.cppreference.com/w/cpp/language/coroutines} - \godboltLink{https://godbolt.org/z/K7svE4P7s}}
     \scriptsize
     \begin{cppcode*}{gobble=2}
       auto switch_to_new_thread(std::jthread& out) {

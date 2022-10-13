@@ -10,7 +10,7 @@
     \item template parameter pack for e.g.\ types, function parameter packs for values, and expansions, details on \href{https://en.cppreference.com/w/cpp/language/parameter_pack}{cppreference}
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{Recursive example}
+  \begin{exampleblock}{Recursive example \cppinsightLink{https://cppinsights.io/s/1c9fa05f}}
     \begin{cppcode*}{}
       template<typename T>
       T sum(T v) { return v; }
@@ -97,7 +97,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{Fold expressions}
-  \begin{exampleblock}{Example - call a function on all arguments}
+  \begin{exampleblock}{Example: call a function on all arguments - \cppinsightLink{https://cppinsights.io/s/23e7d474}}
     \begin{cppcode*}{}
       template<typename T>
       void print(const T& t) {
@@ -121,7 +121,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Variadic class template}
-  \begin{block}{The tuple example, simplified}
+  \begin{block}{The tuple example, simplified - \godboltLink{https://godbolt.org/z/nxjja4bob}}
     \begin{cppcode*}{}
       template <typename... Ts>
       struct tuple {};
