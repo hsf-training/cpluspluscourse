@@ -164,7 +164,10 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \frametitlecpp[20]{Some usages of concepts}
     \begin{block}{Abbreviated function templates}
       \begin{itemize}
-        \item function parameters, similar to variables, can be constrained as well
+        \item function parameters can be constrained as well
+        \begin{itemize}
+          \item similar to variables
+        \end{itemize}
         \item the template head becomes obsolete
         \item the function is still a template though!
         \item unconstrained \mintinline{cpp}{auto} parameters are allowed as well
