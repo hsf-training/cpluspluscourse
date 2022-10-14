@@ -1,5 +1,12 @@
 name: Build LaTeX slides
-on: [push,pull_request]
+on:
+  push:
+    paths:
+      - "talk/"
+  pull_request:
+    paths:
+      - "talk/"
+      - ".github/workflows"
 
 # Cancel running jobs on force-push
 concurrency:
