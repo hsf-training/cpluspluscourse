@@ -29,8 +29,8 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: C++Course.tex
-          latexmk_use_xelatex: true
-          args: -f -pdf -interaction=nonstopmode -shell-escape
+          latexmk_shell_escape: true
+          args: -pdf -interaction=nonstopmode
           working_directory: talk
           extra_system_packages: "py-pygments"
       - name: Upload PDF as artifact
