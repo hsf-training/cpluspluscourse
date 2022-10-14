@@ -56,7 +56,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{\texttt{std::span<T>} - Usage}
-  \begin{exampleblock}{Some example - \godboltLink{https://godbolt.org/z/W81sjrbxK}}
+  \begin{exampleblockGB}{Some example}{https://godbolt.org/z/W81sjrbxK}{\texttt{span}}
     \scriptsize
     \begin{cppcode*}{}
       void print(std::span<int> c) {
@@ -81,7 +81,7 @@
       std::cout << sizeof(sv) << " " << sizeof(sa2) << "\n";  // 16 8
       std::span<int, 3> s2a2 = a; // compilation failure, invalid conversion
     \end{cppcode*}
-  \end{exampleblock}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -185,7 +185,7 @@
       \end{itemize}
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{Practically \godboltLink{https://godbolt.org/z/bxzEsM3de}}
+  \begin{exampleblockGB}{Practically}{https://godbolt.org/z/bxzEsM3de}{\texttt{variant visitor}}
     \small
     \begin{cppcode*}{gobble=2}
       struct Visitor {
@@ -200,17 +200,17 @@
       }
       print(100); print(42.0f); print("example"); print('A');
     \end{cppcode*}
-  \end{exampleblock}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{std::variant and the lambda visitor pattern}
-  \begin{exampleblock}{Idea}
+  \begin{block}{Idea}
     \begin{itemize}
     \item use inheritance to group a set of lambdas
     \end{itemize}
-  \end{exampleblock}
-  \begin{block}{Practically \godboltLink{https://godbolt.org/z/WcdnT1hra}}
+  \end{block}
+  \begin{exampleblockGB}{Practically}{https://godbolt.org/z/WcdnT1hra}{\texttt{variant $\lambda$ visitor}}
     \small
     \begin{cppcode*}{gobble=2}
       template<typename... Ts> // covered in expert part
@@ -227,7 +227,7 @@
         std::visit(overloadSet, v);
       }
     \end{cppcode*}
-  \end{block}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]

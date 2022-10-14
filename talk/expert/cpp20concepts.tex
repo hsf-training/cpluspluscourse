@@ -20,7 +20,7 @@
     leading to a substitution failure
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{Practical code \godboltLink{https://godbolt.org/z/e4T9q1jfh}}
+  \begin{exampleblockGB}{Practical code}{https://godbolt.org/z/e4T9q1jfh}{SFINAE failure}
     \scriptsize
     \begin{cppcode*}{}
     template
@@ -46,7 +46,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
 .../type_traits:2514:11: |fvtextcolor[red][error:] no type named 'type' in 'struct std::enable_if<false, void>'
  2514 |     using |fvtextcolor[red][enable_if_t] = typename enable_if<_Cond, _Tp>::type;
     \end{Verbatim}
-  \end{exampleblock}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -56,7 +56,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
       \item The keyword \mintinline{cpp}{requires} lets us define various constraints.
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{With concepts \godboltLink{https://godbolt.org/z/dWvM9Pvee}}
+  \begin{exampleblockGB}{With concepts}{https://godbolt.org/z/dWvM9Pvee}{concept failure}
     \scriptsize
     \begin{cppcode*}{}
     template<typename T>
@@ -81,7 +81,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
 |fvtextcolor[blue][<source>:6:15:] |fvtextcolor[blue!50!green][note:] |fvtextcolor[blue][the expression 'is_floating_point_v<T> [with T = int]' evaluated to 'false']
     6 | requires |fvtextcolor[blue!50!green][std::is_floating_point_v<T>]
     \end{Verbatim}
-  \end{exampleblock}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]

@@ -2,7 +2,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Races}
-  \begin{exampleblock}{Example code \godboltLink{https://godbolt.org/z/oGz61Pn19}}
+  \begin{exampleblockGB}{Example code}{https://godbolt.org/z/oGz61Pn19}{Race}
     \begin{cppcode*}{}
       int a = 0;
       void inc() { a++; };
@@ -16,7 +16,7 @@
         std::cout << a << "\n";
       }
     \end{cppcode*}
-  \end{exampleblock}
+  \end{exampleblockGB}
   \pause
   \begin{block}{What do you expect? (Exercise code/race)}
     \pause
@@ -98,7 +98,7 @@
     \end{description}
   \end{block}
   \pause
-  \begin{exampleblock}{Practically \godboltLink{https://godbolt.org/z/a5TaaPrad}}
+  \begin{exampleblockGB}{Practically}{https://godbolt.org/z/a5TaaPrad}{\texttt{mutex}}
     \begin{cppcode*}{}
       int a = 0;
       std::mutex m;
@@ -107,7 +107,7 @@
         a++;
       }
     \end{cppcode*}
-  \end{exampleblock}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]

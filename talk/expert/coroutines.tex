@@ -234,7 +234,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[20]{Resuming a coroutine}
   \scriptsize
-  \begin{block}{User code - \godboltLink{https://godbolt.org/z/qx46Pa4v3}}
+  \begin{exampleblockGB}{User code}{https://godbolt.org/z/qx46Pa4v3}{Resuming a coroutine}
     \begin{cppcode*}{gobble=2}
       Task myCoroutine() {
         std::cout << "Step 1 of coroutine\n";
@@ -252,7 +252,7 @@
         // c.resume(); // would segfault!
       }
     \end{cppcode*}
-  \end{block}
+  \end{exampleblockGB}
   \begin{block}{}
     \begin{minted}[gobble=4]{text}
       Step 1 of coroutine
@@ -350,7 +350,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{\texttt{co\_yield} - final usage}
-  \begin{exampleblock}{Finally, we can use the generator nicely - \godboltLink{https://godbolt.org/z/6bbrYrss5}}
+  \begin{exampleblockGB}{Finally, we can use the generator nicely}{https://godbolt.org/z/6bbrYrss5}{\texttt{co\_yield}}
     {\scriptsize
       \begin{cppcode*}{gobble=4}
         Task range(int first, int last) {
@@ -363,7 +363,7 @@
         } // 1 2 3 4 5 6 7 8 9
       \end{cppcode*}
     }
-  \end{exampleblock}
+  \end{exampleblockGB}
   \pause
   \begin{alertblock}{Wait a minute: 0 is missing in the output!}
     \begin{itemize}
@@ -386,7 +386,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{Laziness allows for infinite ranges}
-  \begin{block}{Generators do not need to be finite - \godboltLink{https://godbolt.org/z/MP6qdGWYe}}
+  \begin{exampleblockGB}{Generators do not need to be finite}{https://godbolt.org/z/MP6qdGWYe}{Infinite generator}
     \begin{cppcode*}{gobble=2}
       Task range(int first) {
         while (true) {
@@ -397,12 +397,12 @@
         std::cout << i << "\n";
       }
     \end{cppcode*}
-  \end{block}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{Real life example}
-  \begin{block}{A Fibonacci generator, from \cpprefLink{https://en.cppreference.com/w/cpp/language/coroutines} - \godboltLink{https://godbolt.org/z/3Pev1M8se}}
+  \begin{exampleblockGB}{A Fibonacci generator, from \cpprefLink{https://en.cppreference.com/w/cpp/language/coroutines}}{https://godbolt.org/z/3Pev1M8se}{Fibonacci generator}
     \scriptsize
      \begin{cppcode*}{gobble=2}
        Task<long long int> fibonacci(unsigned n) {
@@ -427,7 +427,7 @@
          }
        }
     \end{cppcode*}
-  \end{block}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}
@@ -495,7 +495,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{\texttt{awaiter} example}
-  \begin{block}{Switch to new thread, from \cpprefLink{https://en.cppreference.com/w/cpp/language/coroutines} - \godboltLink{https://godbolt.org/z/K7svE4P7s}}
+  \begin{exampleblockGB}{Switch to new thread, from \cpprefLink{https://en.cppreference.com/w/cpp/language/coroutines}}{https://godbolt.org/z/K7svE4P7s}{Thread switching}
     \scriptsize
     \begin{cppcode*}{gobble=2}
       auto switch_to_new_thread(std::jthread& out) {
@@ -520,7 +520,7 @@
         resuming_on_new_thread(out);
       }
      \end{cppcode*}
-  \end{block}
+  \end{exampleblockGB}
   \pause
   \vspace{-2.1cm}
   \begin{columns}
@@ -529,14 +529,14 @@
     \begin{column}{.55\textwidth}
       \setlength{\textwidth}{5.4cm}
       \raggedright
-      \begin{exampleblock}{Output}
+      \begin{block}{Output}
         \scriptsize
         \begin{minted}[gobble=9]{text}
           Started on thread: 140144191063872
           New thread ID: 140144191059712
           Resumed on thread: 140144191059712
         \end{minted}
-      \end{exampleblock}
+      \end{block}
     \end{column}
   \end{columns}
 \end{frame}

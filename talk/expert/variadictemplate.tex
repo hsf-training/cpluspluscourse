@@ -121,7 +121,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Variadic class template}
-  \begin{block}{The tuple example, simplified - \godboltLink{https://godbolt.org/z/nxjja4bob}}
+  \begin{exampleblockGB}{The tuple example, simplified}{https://godbolt.org/z/nxjja4bob}{\texttt{tuple} code}
     \begin{cppcode*}{}
       template <typename... Ts>
       struct tuple {};
@@ -136,7 +136,7 @@
       tuple<double, uint64_t, const char*>
         t1(12.2, 42, "big");
     \end{cppcode*}
-  \end{block}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
