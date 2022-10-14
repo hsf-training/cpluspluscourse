@@ -99,7 +99,7 @@ jobs:
     # Use a standard checkout of the code.
     - uses: actions/checkout@v3
     # Make sure that Python 3 is available to the build.
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     # Run the CMake configuration.
