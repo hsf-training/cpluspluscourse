@@ -46,7 +46,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{The three-way comparison operator practically}
-  \begin{exampleblock}{Output of \texttt{operator<=>} - \godboltLink{https://godbolt.org/z/o6Er1zjrf}}
+  \begin{exampleblockGB}{Output of \texttt{operator<=>}}{https://godbolt.org/z/o6Er1zjrf}{\texttt{<=>} output}
     \begin{cppcode*}{}
     template <typename T>
     void three_way_compare( T lhs, T rhs ) {
@@ -61,7 +61,7 @@
       three_way_compare(2, 1); // 2<=>1: 001
     }
     \end{cppcode*}
-  \end{exampleblock}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -92,7 +92,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[20]{Exercising different orderings}
   \scriptsize
-  \begin{exampleblock}{Example \godboltLink{https://godbolt.org/z/s8Gdae4bW}}
+  \begin{exampleblockGB}{Example}{https://godbolt.org/z/s8Gdae4bW}{various orderings}
     \begin{cppcode*}{}
     struct Ratio {
       unsigned n, d ;
@@ -116,7 +116,7 @@
       three_way_compare(0., 0./0.); // 0<=>-nan : 000
     }
     \end{cppcode*}
-  \end{exampleblock}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]

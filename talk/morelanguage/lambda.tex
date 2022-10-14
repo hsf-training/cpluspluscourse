@@ -293,8 +293,8 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Higher-order lambdas \godboltLink{https://godbolt.org/z/GMj76Wer7}}
-  \begin{exampleblock}{Example}
+  \frametitlecpp[11]{Higher-order lambdas}
+  \begin{exampleblockGB}{Example}{https://godbolt.org/z/GMj76Wer7}{\texttt{lambda}}
     \begin{cppcode*}{}
       auto build_incrementer = [](int inc) {
         return [inc](int value) { return value + inc; };
@@ -305,7 +305,7 @@
       i = inc1(i);   // i = 1
       i = inc10(i);  // i = 11
     \end{cppcode*}
-  \end{exampleblock}
+  \end{exampleblockGB}
   \begin{block}{How it works}
     \begin{itemize}
       \item \mintinline{cpp}{build_incrementer} returns a function object

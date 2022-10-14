@@ -128,7 +128,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Not so easy actually...}
-  \begin{exampleblock}{Example \godboltLink{https://godbolt.org/z/Y9Ys4hvWq}}
+  \begin{exampleblockGB}{Example}{https://godbolt.org/z/Y9Ys4hvWq}{\texttt{hasFoo} failing}
     \small
     \begin{cppcode*}{}
       template <typename T, typename = void>
@@ -146,7 +146,7 @@
       static_assert(!hasFoo<C>::value, "C has no foo()");
       static_assert(hasFoo<C,int>::value, "C has foo()");
     \end{cppcode*}
-  \end{exampleblock}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -168,7 +168,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{Previous introspection example using \texttt{void\_t}}
-    \begin{exampleblock}{Example \godboltLink{https://godbolt.org/z/hfMxndP1x}}
+    \begin{exampleblockGB}{Example}{https://godbolt.org/z/hfMxndP1x}{\texttt{hasFoo} working}
       \begin{cppcode*}{}
       template <typename T, typename = void>
       struct hasFoo : std::false_type {};
@@ -185,7 +185,7 @@
       static_assert(hasFoo<B>::value, "expected foo()");
       static_assert(hasFoo<C>::value, "expected foo()");
       \end{cppcode*}
-    \end{exampleblock}
+    \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]

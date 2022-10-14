@@ -106,7 +106,7 @@
 \makeatletter
 \newcommand\listofgoodpractices{%
   \addtocontents{lgp}{\end{enumerate}}
-  \small
+  \scriptsize
   \begin{multicols}{2}
     \@starttoc{lgp}%
   \end{multicols}
@@ -176,8 +176,6 @@
   \end{exerciseWithShortcut}
 }
 
-\makeatother
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % frametitle with C++ version %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -189,10 +187,39 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % easy links to godbolt and cppinsight %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Use as \godbolLink{url}
-\newcommand\godboltLink[1]{%
-  \href{#1}{\color{blue!50!white} godbolt}%
+\newcommand\listofgodbolt{%
+  \addtocontents{lgb}{\end{enumerate}}
+  \scriptsize
+  \begin{multicols}{2}
+    \@starttoc{lgb}%
+  \end{multicols}
 }
+\AtBeginDocument{ \addtocontents{lgb}{\begin{enumerate} } }
+
+\newcounter{gb@counter}
+\regtotcounter{gb@counter}
+\resetcounteronoverlays{gb@counter}
+\newcommand*{\overlaynumber}{\number\beamer@slideinframe}
+
+% Use as \godbolLink{url}
+\newcommand\godboltLink[2]{%
+  \href{#1}{\color{blue!50!white} godbolt}%
+  \ifnum \overlaynumber=1%
+    \hypertarget<1>{godbolt.\thegb@counter}{}
+    \addtocontents{lgb}{\protect\item \protect\hyperlink{godbolt.\thegb@counter}{#2 - \href{#1}{godbolt}\protect\hfill\insertframenumber}}%
+    \stepcounter{gb@counter}%
+  \fi
+}
+
+% Use as \begin{exampleblockGB}{<Title of box on slide>}{<godbolt link>}{<title in index>}
+\newenvironment{exampleblockGB}[3]
+{%
+  \begin{exampleblock}{#1 - \godboltLink{#2}{#3}}
+}%
+{%
+  \end{exampleblock}
+}
+
 % Use as \cppinsightLink{url}
 \newcommand\cppinsightLink[1]{%
   \href{#1}{\color{blue!50!white} cppinsight}%
@@ -201,6 +228,8 @@
 \newcommand\cpprefLink[1]{%
   \href{#1}{\color{blue!50!white} cppreference}%
 }
+
+\makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % easy class diagrams in tikz %
