@@ -97,7 +97,7 @@ jobs:
     # The build/test steps to execute.
     steps:
     # Use a standard checkout of the code.
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     # Make sure that Python 3 is available to the build.
     - uses: actions/setup-python@v2
       with:
