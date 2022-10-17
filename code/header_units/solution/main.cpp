@@ -3,7 +3,7 @@ import <algorithm>;
 import <vector>;
 import <numeric>;
 import <random>;
-import "Complex.hpp";
+import "../Complex.hpp";
 
 template<typename T>
 void compute(int len, T initial, T step) {
