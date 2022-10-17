@@ -6,7 +6,7 @@ clean:
 algorithm numeric random vector:
 	${CXX} -std=c++20 -fmodules-ts -x c++-system-header $@
 
-Complex_header_unit: Complex.hpp
+Complex_header_unit: ../Complex.hpp
 	${CXX} -std=c++20 -g -O0 -Wall -Wextra -fmodules-ts -x c++-header $<
 
 main.o: main.cpp Complex_header_unit algorithm numeric random vector
