@@ -264,7 +264,7 @@
   \pgfmathsetmacro{\nbbars}{\stacknbblocks-1}
   \pgfmathtruncatemacro\nbbarstrunc{\nbbars}
   \ifnum\nbbarstrunc>0
-    \foreach \n in {1,...,\nbbars} {
+    \foreach \n in {1,...,\nbbarstrunc} {
       \draw[\stackcolor!70] (0,\n*\stacksizey) -- +(\stacksizex,0);
     }
   \fi
@@ -276,7 +276,8 @@
     }
     \ifnum1=\displayaddrs\relax
       \pgfmathparse{(\n-1)*\blocksize*\stackwordsize+\stackbaseaddr}
-      \pgfmathdectoBase\hexversion{\pgfmathresult}{16}
+      \pgfmathtruncatemacro\addressdec{\pgfmathresult}
+      \pgfmathdectoBase\hexversion{\addressdec}{16}
       \draw node at (\stacksizex,\n*\stacksizey-\stacksizey/2) [right=2pt]
             {0x\hexversion};
     \fi
@@ -284,7 +285,7 @@
   \pgfmathsetmacro{\nbseps}{\stackwordsize-1}
   \pgfmathtruncatemacro\nbsepstrunc{\nbseps}
   \ifnum\nbsepstrunc>0
-    \foreach \n in {1,...,\nbseps} {
+    \foreach \n in {1,...,\nbsepstrunc} {
       \draw[\stackcolor!10] (\stacksizex/\stackwordsize*\n,0) -- +(0,\stacknbblocks*\stacksizey);
     }
   \fi
@@ -341,7 +342,8 @@
     block size/.get=\blocksize,
   }
   \pgfmathparse{(#2-1)*\stackwordsize*\blocksize+\stackbaseaddr}
-  \pgfmathdectoBase\hexaddress{\pgfmathresult}{16}
+  \pgfmathtruncatemacro\addressdec{\pgfmathresult}
+  \pgfmathdectoBase\hexaddress{\addressdec}{16}
   \memorypushvalue{\arabic{memorystackindex}}{1}{#1 0x\hexaddress}
   \draw[\stackcolor!80,->] (stack\arabic{memorystackindex}-1.west) .. controls +(left:1) and +(left:1) .. (stack#2-1.west);
   \addtocounter{memorystackindex}{1}
