@@ -3,7 +3,7 @@ compile: *.tex
 	pdflatex -shell-escape $<
 
 TESTDIRS = callgrind cppcheck header_units control hello modules move python smartPointers templates virtual_inheritance \
-	   debug helgrind lambdas memcheck polymorphism race stl valgrind
+	   debug helgrind memcheck polymorphism race stl valgrind
 NOCOMPILETESTDIRS = constness
 
 solution:
