@@ -30,7 +30,7 @@ jobs:
         with:
           root_file: C++Course.tex
           latexmk_shell_escape: true
-          args: -pdf -interaction=nonstopmode
+          args: -pdf -interaction=nonstopmode -halt-on-error
           working_directory: talk
           extra_system_packages: "py-pygments"
       - name: Upload PDF as artifact
