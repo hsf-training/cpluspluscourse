@@ -49,6 +49,8 @@
       edge[transverse] (C++98);
       \node[new] (C17) [below of=C11,node distance=1.8cm] {C17}
       edge[direct] (C11);
+      \node[new] (C23) [below of=C17,node distance=1.2cm] {C23}
+      edge[direct] (C17);
       \node[new] (C++14) [below of=C++11] {\cpp14}
       edge[direct] (C++11);
       \node[left of=C++14,node distance=1.5cm] {2014};
