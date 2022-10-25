@@ -5,8 +5,8 @@
   \begin{block}{Interface}
     Set of declarations defining some functionality
     \begin{itemize}
-    \item put in a so-called ``header file''
-    \item the implementation exists somewhere else
+    \item Put in a so-called ``header file''
+    \item The implementation exists somewhere else
     \end{itemize}
   \end{block}
   \begin{block}{Header : hello.hpp}
@@ -43,8 +43,8 @@
   \pause
   \begin{block}{Use only in very restricted cases}
     \begin{itemize}
-    \item inclusion of headers
-    \item customization for specific compilers/platforms
+    \item Conditional inclusion of headers
+    \item Customization for specific compilers/platforms
     \end{itemize}
   \end{block}
 \end{frame}
@@ -53,9 +53,9 @@
   \frametitlecpp[98]{Header include guards}
   \begin{block}{Problem: redefinition by accident}
     \begin{itemize}
-      \item a header may define new names (e.g.\ types)
-      \item multiple (transitive) inclusions of a header would define those names multiple times, which is a compile error
-      \item solution: guard the content of your headers!
+      \item Headers may define new names (e.g.\ types)
+      \item Multiple (transitive) inclusions of a header would define those names multiple times, which is a compile error
+      \item Solution: guard the content of your headers!
     \end{itemize}
   \end{block}
   \begin{block}{Include guards}
