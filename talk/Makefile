@@ -1,19 +1,27 @@
 all: C++Course.pdf
 
-essentials:
-	ESSENTIALS=1 make
+LATEXMK=latexmk
+OPTIONS=-pdf -shell-escape -halt-on-error
 
-%.pdf: *.tex **/*.tex
-ifdef ESSENTIALS
-	echo "\basictrue" > onlybasics.tex
+essentials: all
+essentials: OPTIONS+=-pretex='\basictrue'
+
+preview: all
+preview: OPTIONS+=-pvc
+
+ifneq ($(V), 1)
+	OPTIONS+=-quiet
 else
-	rm -f onlybasics.tex
+	OPTIONS+=-interaction=nonstopmode
 endif
-	pdflatex -shell-escape C++Course.tex
-	pdflatex -shell-escape C++Course.tex
+
+.PHONY: clean clobber FORCE
+
+%.pdf: %.tex FORCE
+	$(LATEXMK) $(OPTIONS) $<
 
 clean:
-	rm -rf *.aux */*.aux *.log *.nav *.out *.pyg *.snm *.vrb *.toc C++Course.l* _minted-C++Course
+	$(LATEXMK) -quiet -c
 
-clobber: clean
-	rm -f C++Course.pdf
+clobber:
+	$(LATEXMK) -quiet -C
