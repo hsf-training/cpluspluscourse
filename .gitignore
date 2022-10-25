@@ -1,17 +1,6 @@
 # latex related, Course
-talk/*aux
-talk/*/*aux
-C++Course.log
-C++Course.nav
-C++Course.out
-C++Course.snm
-C++Course.toc
-C++Course.vrb
-C++Course.xdv
-C++Course.pdf
-C++Course*.vrb
-C++Course.fdb_latexmk
-C++Course.fls
+C++Course.*
+!C++Course.tex
 _minted*
 
 # latex related, exercise intro
