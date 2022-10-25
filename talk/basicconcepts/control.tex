@@ -83,10 +83,10 @@
       }
     \end{cppcode*}
     \begin{itemize}
-      \item \mintinline{cpp}{break} is not mandatory but...
-      \item cases are entry points, not independent pieces
-      \item execution falls through to the next case without a \mintinline{cpp}{break}!
-      \item \mintinline{cpp}{default} may be omitted
+      \item The \mintinline{cpp}{break} statement is not mandatory but...
+      \item Cases are entry points, not independent pieces
+      \item Execution falls through to the next case without a \mintinline{cpp}{break}!
+      \item The \mintinline{cpp}{default} case may be omitted
     \end{itemize}
   \end{block}
   \pause
@@ -142,7 +142,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{init-statements for if and switch}
+  \frametitlecpp[17]{Init-statements for if and switch}
   \begin{block}{}
     Allows to limit variable scope in \mintinline{cpp}{if} and \mintinline{cpp}{switch} statements
   \end{block}
@@ -176,9 +176,9 @@
     \end{cppcode*}
     \vspace{-0.2cm}
     \begin{itemize}
-      \item initializations and increments are comma separated
-      \item initializations can contain declarations
-      \item braces are optional if loop body is a single statement
+      \item Initializations and increments are comma separated
+      \item Initializations can contain declarations
+      \item Braces are optional if loop body is a single statement
     \end{itemize}
   \end{block}
   \pause
@@ -201,8 +201,8 @@
   \frametitlecpp[11]{Range-based loops}
   \begin{block}{Reason of being}
     \begin{itemize}
-    \item simplifies loops over ``ranges'' tremendously
-    \item especially with STL containers
+    \item Simplifies loops over ``ranges'' tremendously
+    \item Especially with STL containers
     \end{itemize}
   \end{block}
   \begin{block}{Syntax}
@@ -222,7 +222,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[20]{init-statements for range-based loops}
+  \frametitlecpp[20]{Init-statements for range-based loops}
   \begin{block}{}
     Allows to limit variable scope in range-based loops
   \end{block}
@@ -257,7 +257,7 @@
       } while(condition);
     \end{cppcode*}
     \begin{itemize}
-      \item braces are optional if the body is a single statement
+      \item Braces are optional if the body is a single statement
     \end{itemize}
   \end{block}
   \pause
@@ -274,10 +274,10 @@
   \frametitlecpp[98]{Control structures: jump statements}
   \begin{block}{}
     \begin{description}
-    \item[break] exits the loop and continues after it
-    \item[continue] goes immediately to next loop iteration
-    \item[return] exists the current function
-    \item[goto] can jump anywhere inside a function, don't use!
+    \item[break] Exits the loop and continues after it
+    \item[continue] Goes immediately to next loop iteration
+    \item[return] Exits the current function
+    \item[goto] Can jump anywhere inside a function, avoid!
     \end{description}
   \end{block}
   \pause
