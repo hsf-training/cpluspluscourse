@@ -28,22 +28,22 @@
 
 \begin{frame}[fragile]
   \frametitle{Git crash course}
-  \begin{minted}[gobble=4]{bash}
-    # git init myProject
+  \begin{minted}[gobble=4]{shell-session}
+    $ git init myProject
     Initialized empty Git repository in myProject/.git/
 
-    # vim file.cpp; vim file2.cpp
-    # git add file.cpp file2.cpp
-    # git commit -m "Committing first 2 files"
+    $ vim file.cpp; vim file2.cpp
+    $ git add file.cpp file2.cpp
+    $ git commit -m "Committing first 2 files"
     [master (root-commit) c481716] Committing first 2 files
     ...
 
-    # git log --oneline
+    $ git log --oneline
     d725f2e Better STL test
     f24a6ce Reworked examples + added stl one
     bb54d15 implemented template part
     ...
 
-    # git diff f24a6ce bb54d15
+    $ git diff f24a6ce bb54d15
   \end{minted}
 \end{frame}
