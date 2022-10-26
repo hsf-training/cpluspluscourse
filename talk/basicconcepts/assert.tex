@@ -64,12 +64,12 @@ Abort trap: 6
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[17]{Static Assert}
+  \frametitlecpp[11]{Static Assert}
   \begin{block}{Checking invariants at compile time}
     \begin{itemize}
       \item To check invariants at compile time, use \mintinline{cpp}{static_assert}
       \item The assertion can be any constant expression (see later)
-      \item No runtime penalty!
+      \item The message argument is optional in \cpp 17 and later
     \end{itemize}
   \end{block}
   \begin{exampleblock}{\texttt{static\_assert}}
@@ -86,7 +86,8 @@ Abort trap: 6
   \scriptsize
   \begin{Verbatim}[commandchars=\\\{\}]
 a.cpp: In function 'double f(UserType)':
-\textcolor{blue}{a.cpp:3:9:} \textcolor{red}{error:} \textcolor{blue}{static assertion failed: This function expects floating-point types.}
+\textcolor{blue}{a.cpp:3:9:} \textcolor{red}{error:} \textcolor{blue}{static assertion failed: This function}
+                                           \textcolor{blue}{expects floating-point types.}
    2 | static_assert(
      |   \textcolor{red}{std::is_floating_point_v<UserType>},
      |   \textcolor{red}{~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~}
