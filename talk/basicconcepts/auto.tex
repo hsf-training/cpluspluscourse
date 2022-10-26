@@ -5,7 +5,8 @@
   \begin{block}{Reason of being}
     \begin{itemize}
     \item Many type declarations are redundant
-    \item They are also a source for compiler warnings and errors
+    \item They are often a source for compiler warnings and errors
+    \item Using auto prevents unwanted/unnecessary type conversions
     \end{itemize}
     \begin{cppcode*}{}
       std::vector<int> v;
