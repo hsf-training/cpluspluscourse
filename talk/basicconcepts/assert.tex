@@ -77,7 +77,7 @@ Abort trap: 6
     \begin{cppcode*}{}
       double f(UserType a) {
         static_assert(
-          std::is_floating_point_v<UserType>,
+          std::is_floating_point<UserType>::value,
           "This function expects floating-point types.");
         return std::sqrt(a);
       }
@@ -89,7 +89,7 @@ a.cpp: In function 'double f(UserType)':
 \textcolor{blue}{a.cpp:3:9:} \textcolor{red}{error:} \textcolor{blue}{static assertion failed: This function}
                                            \textcolor{blue}{expects floating-point types.}
    2 | static_assert(
-     |   \textcolor{red}{std::is_floating_point_v<UserType>},
-     |   \textcolor{red}{~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~}
+     |   \textcolor{red}{std::is_floating_point<UserType>::value},
+     |   \textcolor{red}{~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}
   \end{Verbatim}
 \end{frame}
