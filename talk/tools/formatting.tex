@@ -4,11 +4,11 @@
 \frametitle{clang-format}
 \begin{block}{.clang-format}
 	\begin{itemize}
-		\item file describing your formatting preferences
-		\item should be checked-in at the repository root (project wide)
+		\item File describing your formatting preferences
+		\item Should be checked-in at the repository root (project wide)
 		\item \mintinline{bash}{clang-format -style=LLVM -dump-config >} \\
 		  \mintinline{bash}{.clang-format}
-		\item adapt style options with help from: \url{https://clang.llvm.org/docs/ClangFormatStyleOptions.html}
+		\item Adapt style options with help from: \url{https://clang.llvm.org/docs/ClangFormatStyleOptions.html}
 	\end{itemize}
 \end{block}
 \begin{block}{Run clang-format}
@@ -26,15 +26,15 @@
 \frametitle{clang-format}
 \begin{exercise}{clang-format}
 	\begin{itemize}
-		\item go to any example
-		\item format code with: \mintinline{bash}{clang-format --style=GNU -i <file.cpp>}
-		\item inspect changes, try \mintinline{bash}{git diff .}
-		\item revert changes using \mintinline{bash}{git checkout -- <file.cpp>} or \mintinline{bash}{git checkout .}
-		\item go to code directory and create a .clang-format file \\
+		\item Go to any example
+		\item Format code with: \mintinline{bash}{clang-format --style=GNU -i <file.cpp>}
+		\item Inspect changes, try \mintinline{bash}{git diff .}
+		\item Revert changes using \mintinline{bash}{git checkout -- <file.cpp>} or \mintinline{bash}{git checkout .}
+		\item Go to code directory and create a .clang-format file \\
 		  \mintinline{bash}{clang-format -style=LLVM -dump-config >} \\
 		  \mintinline{bash}{.clang-format}
-		\item run \mintinline{bash}{clang-format -i <any_exercise>/*.cpp}
-		\item revert changes using \mintinline{bash}{git checkout <any_exercise>}
+		\item Run \mintinline{bash}{clang-format -i <any_exercise>/*.cpp}
+		\item Revert changes using \mintinline{bash}{git checkout <any_exercise>}
 	\end{itemize}
 \end{exercise}
 \end{frame}
