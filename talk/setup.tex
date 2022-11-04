@@ -46,6 +46,7 @@
 % packages %
 %%%%%%%%%%%%
 
+\usepackage{fontawesome}
 \usepackage{morewrites}
 \usepackage[utf8]{inputenc}
 \usepackage{newunicodechar}
@@ -232,6 +233,16 @@
 % Use as \cppinsightLink{url}
 \newcommand\cpprefLink[1]{%
   \href{#1}{\color{blue!50!white} cppreference}%
+}
+
+% Use as \youtubechannel{channelname}
+\newcommand\youtubechannel[1]{%
+  \mbox{\href{https://www.youtube.com/c/#1}{\color{red}\faYoutubePlay\ #1}}%
+}
+
+% Use as \youtubeuser{username}
+\newcommand\youtubeuser[1]{%
+  \mbox{\href{https://www.youtube.com/user/#1}{\color{red}\faYoutubePlay\ #1}}%
 }
 
 \makeatother
