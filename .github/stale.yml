@@ -1,11 +1,3 @@
-# === IMPORTANT: CENTRALLY MAINTAINED FILE ===
-# This file was automatically added via the scripts at the maintenance repository.
-# Please do not change it. Rather, update the blueprint in the maintenance repository and propagate
-# the changes from there.
-# IF YOU REALLY WANT TO MAKE REPOSITORY SPECIFIC CHANGES TO THIS FILE, PLEASE REMOVE THIS NOTICE!
-# Tag @klieret for any questions.
-# ======
-
 # Configuration for probot-stale - https://github.com/probot/stale
 
 # Number of days of inactivity before an Issue or Pull Request becomes stale
