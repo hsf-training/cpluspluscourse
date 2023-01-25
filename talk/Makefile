@@ -9,7 +9,7 @@ essentials: OPTIONS+=-pretex='\basictrue'
 preview: all
 preview: OPTIONS+=-pvc
 
-ifneq ($(V), 1)
+ifeq ($(QUIET), 1)
 	OPTIONS+=-quiet
 else
 	OPTIONS+=-interaction=nonstopmode
@@ -21,8 +21,8 @@ endif
 	$(LATEXMK) $(OPTIONS) $<
 
 clean:
-	$(LATEXMK) -quiet -C
+	$(LATEXMK) -C
 
 clobber:
-	$(LATEXMK) -quiet -C
+	$(LATEXMK) -C
 	$(RM) C++Course.pdf
