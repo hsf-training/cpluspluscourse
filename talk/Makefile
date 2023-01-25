@@ -21,7 +21,8 @@ endif
 	$(LATEXMK) $(OPTIONS) $<
 
 clean:
-	$(LATEXMK) -quiet -c
+	$(LATEXMK) -quiet -C
 
 clobber:
 	$(LATEXMK) -quiet -C
+	$(RM) C++Course.pdf
