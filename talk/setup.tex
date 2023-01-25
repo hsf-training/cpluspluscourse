@@ -46,7 +46,6 @@
 % packages %
 %%%%%%%%%%%%
 
-\usepackage{fontawesome}
 \usepackage{morewrites}
 \usepackage[utf8]{inputenc}
 \usepackage{newunicodechar}
@@ -237,12 +236,12 @@
 
 % Use as \youtubechannel{channelname}
 \newcommand\youtubechannel[1]{%
-  \mbox{\href{https://www.youtube.com/c/#1}{\color{red}\faYoutubePlay\ #1}}%
+  \mbox{\href{https://www.youtube.com/c/#1}{\color{red!10!black}\raisebox{-0.1em}{\includegraphics[height=0.8em]{youtube}}\ #1}}%
 }
 
 % Use as \youtubeuser{username}
 \newcommand\youtubeuser[1]{%
-  \mbox{\href{https://www.youtube.com/user/#1}{\color{red}\faYoutubePlay\ #1}}%
+  \mbox{\href{https://www.youtube.com/user/#1}{\color{red!10!black}\raisebox{-0.1em}{\includegraphics[height=0.8em]{youtube}}\ #1}}%
 }
 
 \makeatother
