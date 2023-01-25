@@ -215,32 +215,7 @@
   Details in  \href{https://www.nextptr.com/tutorial/ta1430524603/capture-this-in-lambda-expression-timeline-of-change}{this blog post}.
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitlecpp[14]{Generic lambdas}
-  \begin{block}{Generic lambdas (aka.\ polymorphic lambdas)}
-    \begin{itemize}
-      \item The type of lambda parameters may be \mintinline{cpp}{auto}.
-      \begin{cppcode*}{linenos=false,gobble=4}
-        auto add = [](auto a, auto b) { return a + b; };
-      \end{cppcode*}
-      \item The generated \mintinline{cpp}{operator()} becomes a template function:
-      \begin{cppcode*}{linenos=false,gobble=4}
-        template <typename T, typename U>
-        auto operator()(T a, U b) const { return a + b; }
-      \end{cppcode*}
-      \item The types of \mintinline{cpp}{a} and \mintinline{cpp}{b} may be different.
-    \end{itemize}
-  \end{block}
-  \begin{block}{Explicit template parameters (\cpp20)}
-    \begin{itemize}
-      \begin{cppcode*}{linenos=false,gobble=4}
-        auto add = []<typename T>(T a, T b)
-          { return a + b; };
-      \end{cppcode*}
-      \item The types of \mintinline{cpp}{a} and \mintinline{cpp}{b} must be the same.
-    \end{itemize}
-  \end{block}
-\end{frame}
+\begin{advanced}
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Anatomy of a lambda}
@@ -293,6 +268,33 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[14]{Generic lambdas}
+  \begin{block}{Generic lambdas (aka.\ polymorphic lambdas)}
+    \begin{itemize}
+      \item The type of lambda parameters may be \mintinline{cpp}{auto}.
+      \begin{cppcode*}{linenos=false,gobble=4}
+        auto add = [](auto a, auto b) { return a + b; };
+      \end{cppcode*}
+      \item The generated \mintinline{cpp}{operator()} becomes a template function:
+      \begin{cppcode*}{linenos=false,gobble=4}
+        template <typename T, typename U>
+        auto operator()(T a, U b) const { return a + b; }
+      \end{cppcode*}
+      \item The types of \mintinline{cpp}{a} and \mintinline{cpp}{b} may be different.
+    \end{itemize}
+  \end{block}
+  \begin{block}{Explicit template parameters (\cpp20)}
+    \begin{itemize}
+      \begin{cppcode*}{linenos=false,gobble=4}
+        auto add = []<typename T>(T a, T b)
+          { return a + b; };
+      \end{cppcode*}
+      \item The types of \mintinline{cpp}{a} and \mintinline{cpp}{b} must be the same.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[11]{Higher-order lambdas}
   \begin{exampleblockGB}{Example}{https://godbolt.org/z/GMj76Wer7}{\texttt{lambda}}
     \begin{cppcode*}{}
@@ -341,3 +343,5 @@
   \end{exampleblock}
 
 \end{frame}
+
+\end{advanced}
