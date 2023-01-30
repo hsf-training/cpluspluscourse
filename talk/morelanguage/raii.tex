@@ -257,6 +257,125 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[11]{weak\_ptr}
+  \begin{block}{weak\_ptr: a non-owning observer}
+    \small
+    \begin{itemize}
+    \item Sometimes want to observe resources without keeping them alive
+    \begin{itemize}
+      \item \mintinline{cpp}{shared_ptr}? Resource stays alive
+      \item Raw pointer? Risk of dangling pointer
+    \end{itemize}
+    \item The solution is to construct a \mintinline{cpp}{weak_ptr} from a shared pointer
+    \item To access the resource, convert the weak into a \mintinline{cpp}{shared_ptr}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{}
+    \small
+    \begin{cppcode*}{}
+      std::shared_ptr<Cache> getSharedCache();
+      std::weak_ptr<Cache> weakPtr{ getSharedCache() };
+      // ... shared cache may be invalidated here
+      if (std::shared_ptr<Cache> cache = weakPtr.lock()) {
+        // Cache is alive, we actively extend its lifetime
+        return cache->findItem(...);
+      } else {
+        // Cache is nullptr, we need to do something
+        weakPtr = recomputeCache(...);
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Quiz: shared\_ptr and weak\_ptr}
+  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org/z/vM35Y6qEW}{shared\_ptr vs weak\_ptr}
+    \small
+    \begin{cppcode*}{gobble=2}
+      auto shared = std::make_shared<int>(100);
+      auto print = [shared](){
+        std::cout << "Use: " << shared.use_count() << " "
+                  << "value: " << *shared << "\n";
+      };
+      print();
+      {
+        auto ptr{ shared };
+        (*ptr)++;
+        print();
+      }
+      print();
+    \end{cppcode*}
+  \end{exampleblockGB}
+  \pause
+  \begin{block}{}
+    \small
+    \begin{minted}[autogobble=true]{bash}
+      Use: 2 value: 100
+      Use: 3 value: 101
+      Use: 2 value: 101
+    \end{minted}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Quiz: shared\_ptr and weak\_ptr}
+  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org/z/vM35Y6qEW}{shared\_ptr vs weak\_ptr}
+    \small
+    % escapeinside seems to break gobble, so need to un-indent manually
+    \begin{cppcode*}{escapeinside=@@}
+auto shared = std::make_shared<int>(100);
+auto print = [@\textcolor{red}{&}@shared](){
+  std::cout << "Use: " << shared.use_count() << " "
+            << "value: " << *shared << "\n";
+};
+print();
+{
+  auto ptr{ shared };
+  (*ptr)++;
+  print();
+}
+print();
+      \end{cppcode*}
+  \end{exampleblockGB}
+  \begin{block}{}
+    \small
+    \begin{minted}[autogobble=true]{bash}
+      Use: 1 value: 100
+      Use: 2 value: 101
+      Use: 1 value: 101
+    \end{minted}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Quiz: shared\_ptr and weak\_ptr}
+  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org}{shared\_ptr vs weak\_ptr}
+    \small
+    \begin{cppcode*}{gobble=2}
+      auto shared = std::make_shared<int>(100);
+      std::weak_ptr<int> weak{ shared };
+      print(); // with print as before
+
+      auto ptr = weak.lock();
+      (*ptr)++;       print();
+
+      ptr = nullptr;  print();
+
+      function(weak); print();
+    \end{cppcode*}
+  \end{exampleblockGB}
+  \pause
+  \begin{block}{}
+    \small
+    \begin{minted}[autogobble=true]{bash}
+      Use: 1 value: 100
+      Use: 2 value: 101
+      Use: 1 value: 101
+      Use: 1 (or more) value: ???
+    \end{minted}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[98]{smart pointers}
   \begin{exercise}{Smart pointers}
     \begin{itemize}
