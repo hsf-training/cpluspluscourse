@@ -1,13 +1,10 @@
-
 ## Prerequisites
-
-* be able to use simple templated code
+- Copy and move constructors
+- Copy and move assignment operators
 
 ## Instructions
 
-* look at the code and run it with callgrind
+* look at the code and run it with callgrind or time it e.g. using `/usr/bin/time ./trymove`
 * understand how inefficient it is
-* implement move semantic the easy way in NVector
-* run with callgrind and see no improvement
 * understand why and fix trymove.cpp
 * see efficiency improvements

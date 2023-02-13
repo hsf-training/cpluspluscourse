@@ -4,8 +4,8 @@ solution: trymove.sol
 clean:
 	rm -f *o trymove trymove.sol *~ callgrind.out.*
 
-trymove : trymove.cpp NVector.hpp
-	${CXX} -g -std=c++11 -O0 -Wall -Wextra -L. -o $@ $<
+trymove : trymove.cpp
+	${CXX} -g -std=c++17 -O2 -Wall -Wextra -L. -o $@ $<
 
-trymove.sol : solution/trymove.sol.cpp solution/NVector.sol.hpp
-	${CXX} -g -std=c++11 -O0 -Wall -Wextra -L. -o $@ $<
+trymove.sol : solution/trymove.sol.cpp
+	${CXX} -g -std=c++17 -O2 -Wall -Wextra -L. -o $@ $<
