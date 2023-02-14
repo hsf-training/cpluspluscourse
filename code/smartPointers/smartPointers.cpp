@@ -1,10 +1,12 @@
 #include <algorithm>
+#include <array>
 #include <cstdlib>
 #include <ctime>
 #include <functional>
 #include <stdexcept>
 #include <iostream>
 #include <numeric>
+#include <span>
 #include <vector>
 
 
@@ -22,29 +24,32 @@
 /* --------------------------------------------------------------------------------------------
  * 1: Always use smart pointers instead of new.
  *
- * A frequent source of leaks is a function that terminates earlier than the programmer thought.
+ * A frequent source of leaks is a function that terminates in an unexpected way.
  *
  * - Fix the leak using a smart pointer.
  * - The arguments of sumEntries() don't need to change, as it has only read access.
  * --------------------------------------------------------------------------------------------
  */
 
-// Declare a function to do something with the data. No need to change it.
-double sumEntries(const double* data, std::size_t size) {
-    if (size > 200)
-        throw std::invalid_argument("I only want to sum 200 numbers or less.");
+// Note how we are using a span pointing to "double const" to ensure that the
+// data can only be read. You don't need to change anything in this function.
+double sumEntries(std::span<double const> range) {
+    // Simulate an error
+    throw std::invalid_argument("Error when summing over data.");
 
-    return std::reduce(data, data + size, 0.);
+    return std::reduce(range.begin(), range.end(), 0.);
 }
 
-// Often, data are owned by one entity, and only used by others. Fix the leak.
+// Often, data are owned by one entity, and merely used by others. In this case, we hand the data to
+// sumEntries() for reading, so the ownership stays with this function. Unfortunately, something goes
+// wrong and we didn't use smart pointers.
+// Understand and fix the memory leak.
 void doStuffWithData() {
-    constexpr std::size_t arraySize = 10000;
-    auto data = new double[arraySize];
+    auto data = new std::array<double, 10000>{};
 
-    sumEntries(data, arraySize);
+    sumEntries(*data);
 
-    delete[] data;
+    delete data;
 }
 
 
@@ -52,8 +57,8 @@ void problem1() {
    try {
        doStuffWithData();
    } catch (const std::exception& e) {
-       std::cerr << "problem1(): Do stuff with data terminated with exception:\n" << e.what()
-               << "\n We may have a memory leak now.\n";
+       std::cerr << "problem1() terminated with exception: \"" << e.what()
+               << "\" Check for memory leaks.\n";
    }
 }
 
@@ -75,7 +80,7 @@ void problem1() {
 
 // This is a large object. We maybe shouldn't copy it, so using a pointer is advisable to pass it around.
 struct LargeObject {
-    double fData[100000];
+    std::array<double, 100000> fData;
 };
 
 // A factory function to create large objects.
