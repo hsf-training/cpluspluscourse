@@ -1,0 +1,10 @@
+#!/bin/bash
+
+PROGRAM="./racing"
+if [ $# -ge 1 ]; then
+  PROGRAM=$1
+fi
+
+while true; do
+  $PROGRAM || break;
+done
