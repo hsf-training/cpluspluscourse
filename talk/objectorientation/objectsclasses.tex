@@ -7,11 +7,13 @@
     \begin{itemize}
     \item with inheritance
     \item with access control
-    \item including methods
+    \item including methods/member functions
     \end{itemize}
   \end{block}
   \begin{block}{Objects}
-    instances of classes
+    \begin{itemize}
+    \item instances of classes
+    \end{itemize}
   \end{block}
   \begin{block}{A class encapsulates state and behavior of ``something''}
     \begin{itemize}
@@ -28,7 +30,7 @@
 
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{My First Class}
+  \frametitlecpp[98]{My first class}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       struct MyFirstClass {
@@ -91,7 +93,7 @@
   \begin{block}{Standard practice}
     \begin{itemize}
     \item usually in .cpp, outside of class declaration
-    \item using the class name as namespace
+    \item using the class name as ``namespace''
     \item when reference/pointer to the object is needed, use \mintinline{cpp}{this} keyword
     \end{itemize}
   \end{block}
@@ -107,7 +109,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{{\ttfamily this} keyword}
+  \frametitlecpp[98]{\texttt{this} keyword}
   \begin{block}{How to know an object's address?}
     \begin{itemize}
     \item Sometimes we need to pass a reference to ourself to a different entity

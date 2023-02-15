@@ -49,8 +49,8 @@
     \end{cppcode*}
     \vspace{-0.2cm}
     \begin{itemize}
-      \item If test is \mintinline{cpp}{true} expression1 is returned
-      \item Else, expression2 is returned
+      \item If test is \mintinline{cpp}{true} \mintinline{cpp}{expression1} is returned
+      \item Else, \mintinline{cpp}{expression2} is returned
     \end{itemize}
   \end{block}
   \pause
@@ -203,7 +203,7 @@
   \begin{block}{Reason of being}
     \begin{itemize}
     \item Simplifies loops over ``ranges'' tremendously
-    \item Especially with STL containers
+    \item Especially with STL containers and ranges
     \end{itemize}
   \end{block}
   \begin{block}{Syntax}
@@ -238,7 +238,6 @@
   \end{alertblock}
   \begin{exampleblock}{\cpp20}
     \begin{cppcode*}{firstnumber=6}
-      std::array data = {"hello", ",", "world"};
       for (std::size_t i = 0; auto& d : data) {
         std::cout << i++ << ' ' << d << '\n';
       }
