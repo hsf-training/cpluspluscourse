@@ -52,18 +52,19 @@
       \begin{itemize}
       \item the data itself (templated)
       \item the memory allocation of the structure (templated)
-      \item the algorithms that may use the structure
+      \item the algorithms that may use the structure (iterators)
       \end{itemize}
     \item examples
       \begin{itemize}
       \item string, string\_view (\cpp17)
       \item list, forward\_list (\cpp11), vector, deque, array (\cpp11)
-      \item map, set, multimap, multiset
-      \item unordered\_map (\cpp11), unordered\_set (\cpp11)
+      \item {[}multi]map, [multi]set
+      \item flat\_[multi]map (\cpp23), flat\_[multi]set (\cpp23)
+      \item unordered\_[multi]map (\cpp11), unordered\_[multi]set (\cpp11)
       \item stack, queue, priority\_queue
       \item span (\cpp20)
+      \item non-containers: bitset, pair, tuple (\cpp11), optional (\cpp17), variant (\cpp17), any (\cpp17), expected (\cpp23)
       \end{itemize}
-    \item non-containers: pair, tuple (\cpp11), optional (\cpp17), variant (\cpp17), any (\cpp17)
     \item see also the \href{https://en.cppreference.com/w/cpp/string/basic_string}{string} and \href{https://en.cppreference.com/w/cpp/container}{container library} on cppreference
     \end{itemize}
   \end{block}
@@ -252,7 +253,7 @@
     \begin{cppcode*}{firstnumber=9}
       std::vector<int> v = ...;
       int sum = std::accumulate(v.begin(), v.end(), 0);
-      // std::reduce(v.begin(), v.end(), 0); // C++17
+      // std::reduce(v.begin(), v.end()); // C++17
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}

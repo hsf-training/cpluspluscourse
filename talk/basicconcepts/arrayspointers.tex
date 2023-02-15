@@ -82,7 +82,7 @@ int l = *pak;
     \begin{cppcode*}{}
       void* vp = nullptr;
       int* ip = nullptr;
-      int i = NULL;      // OK -> bug ?
+      int i = NULL;      // OK -> bug?
       int i = nullptr;   // ERROR
     \end{cppcode*}
   \end{exampleblock}
@@ -95,7 +95,7 @@ int l = *pak;
     #include <cstring>
 
     int *bad;          // pointer to random address
-    int *ai = nullptr; // better, deterministic, can be tested
+    int *ai = nullptr; // better, deterministic, testable
 
     // allocate array of 10 ints (uninitialized)
     ai = (int*) malloc(10*sizeof(int));

@@ -7,7 +7,7 @@
     \item special functions called when building/destroying an object
     \item a class can have several constructors, but only one destructor
     \item the constructors have the same name as the class
-    \item same for the destructor with a leading $\sim$
+    \item same for the destructor with a leading \mintinline{cpp}{~}
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
@@ -103,7 +103,7 @@
   \pause
   \begin{exampleblock}{The rule of 3/5/0 (\cpp98/\cpp11 and newer) - {\color{blue!50!white} \href{https://en.cppreference.com/w/cpp/language/rule_of_three}{cppreference}}}
     \begin{itemize}
-    \item if a class has a destructor, a copy/move constructor or a copy/move assignment operator, it should have all three/five. strive for having none.
+    \item if a class has a destructor, a copy/move constructor or a copy/move assignment operator, it should have all three/five. strive for having none by using RAII types as members.
     \end{itemize}
   \end{exampleblock}
 \end{frame}
@@ -178,16 +178,16 @@
   \end{block}
   \begin{block}{Details}
     \begin{itemize}
-    \item when no user defined constructor, a default is provided
+    \item without a user-defined constructor, a default one is provided
     \item any user-defined constructor disables the default one
-    \item but they can be enforced
-    \item rule can be more subtle depending on members
+    \item but the default one can be requested explicitly
+    \item rule can be more subtle depending on data members
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Practically}
     \begin{cppcode}
-      ClassName() = default; // provide default if possible
-      ClassName() = delete;  // disable default constructor
+      Class() = default; // provide default if possible
+      Class() = delete;  // disable default constructor
     \end{cppcode}
   \end{exampleblock}
 \end{frame}
@@ -197,7 +197,7 @@
   \begin{block}{Idea}
     \begin{itemize}
     \item avoid replication of code in several constructors
-    \item by delegating to another constructor, in the initializer list
+    \item by delegating to another constructor, in the initialization list
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Practically}

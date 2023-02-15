@@ -31,7 +31,7 @@
     #include "hello.hpp"
     // macro constants and function-style macros
     #define MY_GOLDEN_NUMBER 1746
-    #define CHECK_ERROR(x) if ((x) != MY_GOLDEN_NUMBER) \
+    #define CHECK_GOLDEN(x) if ((x) != MY_GOLDEN_NUMBER) \
       std::cerr << #x " was not the golden number\n";
     // compile time or platform specific configuration
     #if defined(USE64BITS) || defined(__GNUG__)
