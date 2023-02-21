@@ -133,12 +133,12 @@
 
     double d = 123'456.789'101; // digit separators, C++14
 
-    double d = 0x4d2.1E6p3; // hexfloat, 0x4d2.1E6 * 2^3
-                            // = 1234.12 * 2^3 = 9872.95
+    double d = 0x4d2.4p3;   // hexfloat, 0x4d2.1 * 2^3
+                            // = 1234.25 * 2^3 = 9874
 
-    3.14f, 3.14F // float
-    3.14,  3.14  // double
-    3.14l, 3.14L // long double
+    3.14f, 3.14F, 3.14f32, 3.14F32 // float (C++23 for f32)
+    3.14,  3.14,  3.14f64, 3.14F64 // double (C++23 for f64)
+    3.14l, 3.14L,  // long double
   \end{cppcode}
 \end{frame}
 
