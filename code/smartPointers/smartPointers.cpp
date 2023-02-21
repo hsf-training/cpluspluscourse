@@ -14,9 +14,11 @@
  * Please fix all memory leaks / ownership problems using smart pointers.
  * (Verify by running the program with valgrind!)
  *
+ * In main() at the bottom, comment in all parts as you progress through the exercise.
+ *
  * Remember that:
  * - The unique ownership of data is expressed using unique_ptr.
- * - "Observer" access without ownership is expressed using raw pointers or references.
+ * - "Observer" access without ownership is expressed using raw pointers, references or spans.
  * - Shared ownership to data is expressed using shared_ptr.
  */
 
@@ -86,7 +88,7 @@ struct LargeObject {
 // A factory function to create large objects.
 LargeObject* createLargeObject() {
     auto object = new LargeObject();
-    // Do more setup of object here
+    // Imagine there is more setup steps of "object" here
     // ...
 
     return object;
@@ -206,16 +208,19 @@ void problem3() {
  *
  * 4.1:
  * The class "Owner" owns some data, but it is broken. If you copy it like in
- * problem4_1(), you have two pointers pointing to the same data, but both think
+ * problem4_1(), you have two pointers pointing to the same data, but both instances think
  * that they own the data.
+ *
+ * Tasks:
  * - Comment in problem4_1() in main().
- * - Verify that it crashes. Try running valgrind ./smartPointers, it should give you some hints as to
+ * - It likely crashes. Verify this. You can also try running valgrind ./smartPointers, it should give you some hints as to
  *   what's happening.
  * - Fix the Owner class by using a shared_ptr for its _largeObj, which we can copy as much as we want.
- * - Note: Now you even don't need a destructor.
+ * - Run the fixed program.
+ * - Note: Once shared_ptr is in use, you can also use the default destructor.
  *
  * 4.2: **BONUS**
- * We go beyond the scope of the lecture now, and use a weak pointer.
+ * Let's use a weak_ptr now to observe a shared_ptr.
  * These are used to observe a shared_ptr, but unlike the shared_ptr, they don't prevent the deletion
  * of the underlying object if all shared_ptr go out of scope.
  * To *use* the observed data, one has to create a shared_ptr from the weak_ptr, so that it is guaranteed that
@@ -241,7 +246,7 @@ public:
         _largeObj(new LargeObject()) { }
 
     ~Owner() {
-        std::cout << "problem4(): I think I'm the owner. I'm deallocating " << _largeObj << " now.\n";
+        std::cout << "problem4(): Owner " << this << " is deallocating " << _largeObj << ".\n";
         delete _largeObj;
     }
 
@@ -262,12 +267,13 @@ void problem4_1() {
         owners.push_back(owner);
     }
 
-    /* Starting from here, we have a problem:
-     * We created all these data owners, but the ones in the vector are copies of the owner objects in the loop.
-     * When those originals are destroyed, the memory is deallocated. The copies now
-     * point to the deallocated memory!
-     * We can fix this using copy constructors (but we don't want to copy the data),
+    /* Now we have a problem:
+     * We created Owner instances on the stack, and copied them into the vector.
+     * When the instances on the stack are destroyed, the memory is deallocated.
+     * All copies in the vector now point to the deallocated memory!
+     * We could fix this using copy constructors (but we don't want to copy the data),
      * using move semantics or using shared_ptr.
+     * Here, we want to go for shared_ptr.
      */
 }
 
@@ -277,7 +283,7 @@ public:
     Observer(const Owner& owner) :
         _largeObj(owner.getData()) { }
 
-    double processData() const {
+    double getValue() const {
         if (_largeObj) {
             return _largeObj->fData[0];
         }
@@ -294,28 +300,31 @@ private:
 void problem4_2() {
     // We directly construct 5 owners inside the vector to get around problem4_1:
     std::vector<Owner> owners(5);
-    std::vector<Observer> observers;
 
+    // Let's now fill the other vector with observers:
+    std::vector<Observer> observers;
     observers.reserve(owners.size());
     for (const auto& owner : owners) {
         observers.emplace_back(owner);
     }
 
-    // Now let's destroy the owners:
-    owners.clear();
+    // Now let's destroy a few of the data owners:
+    owners.resize(3);
 
+    std::cout << "Values of the observers:\n\t";
     for (const auto& observer : observers) {
         // Problem: We don't know if the data is alive ...
         // TODO: Fix Observer!
-        // observer.processData();
+        // std::cout << observer.getValue() << " ";
     }
+    std::cout << "\n";
 }
 
 
 int main() {
     problem1();
-    problem2();
-    problem3();
-//    problem4_1();
-    problem4_2();
+    // problem2();
+    // problem3();
+    // problem4_1();
+    // problem4_2();
 }
