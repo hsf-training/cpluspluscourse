@@ -183,8 +183,8 @@ changeSS2(s);
     \begin{itemize}
     \item By default, arguments are passed by value (= copy) \\
           good for small types, e.g.\ numbers
-    \item Prefer references for mandatory parameters to avoid copies
-    \item Use pointers for optional parameters to allow \mintinline{cpp}{nullptr}
+    \item Use references for parameters to avoid copies \\
+          good for large types, e.g.\ objects
     \item Use \mintinline{cpp}{const} for safety and readability whenever possible
     \end{itemize}
   \end{block}
