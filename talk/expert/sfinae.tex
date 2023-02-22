@@ -236,22 +236,28 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \begin{exampleblock}{Gaudi usage example}
+  \begin{exampleblockGB}{Usage example}{https://godbolt.org/z/xse8GM8fq}{\texttt{enable\_if}}
+    \small
     \begin{cppcode*}{}
-      constexpr struct deref_t {
-        template
-          <typename In,
-           typename = typename std::enable_if_t
-                      <!std::is_pointer_v<In>>>
-        In& operator()(In& in) const { return in; }
+    template <typename T> constexpr bool is_iterable ... ;
 
-        template <typename In>
-        In& operator()(In* in) const {
-          assert(in!=nullptr); return *in;
+    template<typename T,
+             typename std::enable_if_t
+               <!is_iterable<T>, bool> = true>
+    void print(T const& t) {
+        std::cout << t << "\n";
+    }
+    template<typename T,
+             typename std::enable_if_t
+               <is_iterable<T>, bool> = true>
+    void print(T const& t) {
+        for (auto const& item : t) {
+            std::cout << item << "\n";
         }
-      } deref;
+    }
     \end{cppcode*}
-  \end{exampleblock}
+    Note : using \mintinline{cpp}{if constexpr} would be simpler
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
