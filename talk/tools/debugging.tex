@@ -10,7 +10,7 @@
     \end{itemize}
   \end{alertblock}
   \pause
-  \begin{block}{The solution : debuggers}
+  \begin{block}{The solution: debuggers}
     \begin{itemize}
     \item dedicated program able to stop execution at any time
     \item and show you where you are and what you have
@@ -26,7 +26,6 @@
     \item[\href{https://www.intel.com/content/www/us/en/develop/documentation/get-started-with-debugging-dpcpp-linux/top.html}{\beamergotobutton{gdb-oneapi}}]
       the Intel OneAPI debugger
     \end{description}
-    If you use an IDE, the debugger is usually integrated
   \end{block}
 \end{frame}
 
@@ -68,4 +67,27 @@
     \item use -Wall -Wextra and see warning
     \end{itemize}
   \end{exercise}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Debugging UIs}
+  \begin{block}{User interfaces for debuggers}
+    \begin{itemize}
+      \item offer convenience on top of command line
+      \item windows for variables, breakpoints, call stack, active threads, watch variables in-code, disassembly, run to cursor ...
+    \end{itemize}
+    \begin{description}
+      \item[\href{https://code.visualstudio.com/docs/cpp/cpp-debug}{\beamergotobutton{VSCode}}]
+        Built-in support for gdb
+      \item[\href{https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb}{\beamergotobutton{CodeLLDB}}]
+        VS Code plugin for LLDB
+      \item[\href{https://github.com/cyrus-and/gdb-dashboard}{\beamergotobutton{GDB dashboard}}]
+        Poplar terminal UI for gdb
+      \item[\href{https://github.com/hugsy/gef}{\beamergotobutton{GEF}}]
+        Modern terminal UI for gdb
+    \end{description}
+    \begin{itemize}
+      \item some editors and most IDEs have good debugger integration
+    \end{itemize}
+  \end{block}
 \end{frame}
