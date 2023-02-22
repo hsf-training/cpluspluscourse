@@ -75,12 +75,11 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Capturing variables}
-  \begin{block}{Python code}
-    \begin{pythoncode*}{}
-      increment = 3
-      data = [1,9,3,8,3,7,4,6,5]
-      map(lambda x : x + increment, data)
-    \end{pythoncode*}
+  \begin{block}{Adaptable lambdas}
+    \begin{itemize}
+      \item we can adapt a lambda's behavior
+      \item by accessing variables outside its body
+    \end{itemize}
   \end{block}
   \pause
   \begin{block}{First attempt in \cpp}
@@ -106,6 +105,9 @@
   \begin{block}{The capture list}
     \begin{itemize}
     \item local variables outside the lambda must be explicitly captured
+    \begin{itemize}
+      \item unlike in Python, Java, C\#, Rust, ...
+    \end{itemize}
     \item captured variables are listed within initial \mintinline{cpp}{[]}
     \end{itemize}
   \end{block}
