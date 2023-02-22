@@ -7,7 +7,7 @@
     \item also known as functors (no relation to functors in math)
     \item a class that implements \mintinline{cpp}{operator()}
     \item allows to use objects in place of functions
-    \item and, as objects have constructors, allow to construct functions
+    \item with constructors and data members
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -25,25 +25,24 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Function objects}
-  \begin{block}{Typical usage}
-    \begin{itemize}
-    \item pass a function to another one
-    \item or to an STL algorithm
-    \end{itemize}
-  \end{block}
-  \begin{cppcode}
-    struct BinaryFunction {
-      virtual double operator() (double a, double b) = 0;
-    };
-    double binary_op(double a, double b, BinaryFunction &func) {
-      return func(a, b);
+  \frametitlecpp[20]{Function objects}
+  \begin{exampleblockGB}{Function objects as function arguments}{https://godbolt.org/z/1nqnfKxx8}{function objects}
+    \begin{cppcode}
+    int count_if(const auto& range, auto predicate) {
+      int count = 0;             // ↑ template (later)
+      for (const auto& e : range)
+        count += predicate(e);
+      return count;
     }
-    struct Add : BinaryFunction {
-      double operator() (double a, double b) override
-      { return a+b; }
+    struct IsBetween {
+      int lower, upper;
+      bool operator()(int value) const {
+        return lower < value && value < upper;
+      }
     };
-    Add addfunc;
-    double c = binary_op(a, b, addfunc);
-  \end{cppcode}
+    int arr[]{1, 2, 3, 4, 5, 6, 7};
+    std::cout << count_if(arr, IsBetween{2, 6}); // 3
+    // prefer: std::ranges::count_if
+    \end{cppcode}
+  \end{exampleblockGB}
 \end{frame}
