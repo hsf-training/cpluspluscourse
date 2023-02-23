@@ -26,6 +26,17 @@ Setup requirements
  - python3, libpython3-dev
  - ctypes, matplotlib, numpy python packages
 
+### A word on timing
+
+  - several exercises ask you to "time" things
+  - here it's always sufficient to use the `time` command line:
+  ```shell
+  time ./racing
+  real 0m0.022s
+  user 0m0.011s
+  sys  0m0.021s
+  ```
+  - and just take the first number (real time)
 
 Getting exercises’ code
 -----------------------
