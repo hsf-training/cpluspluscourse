@@ -23,9 +23,9 @@
   \end{block}
   \begin{exampleblock}{Requirements}
     \begin{itemize}
-    \item \mintinline{cpp}{someType} needs to be some iterable type
-    \item \mintinline{cpp}{range} should execute lazily, only creating values on demand
-    \item meaning \mintinline{cpp}{range} should be suspended and resumed
+    \item \cppinline{someType} needs to be some iterable type
+    \item \cppinline{range} should execute lazily, only creating values on demand
+    \item meaning \cppinline{range} should be suspended and resumed
     \end{itemize}
     That's what coroutines are for!
   \end{exampleblock}
@@ -51,7 +51,7 @@
   \end{exampleblock}
   \begin{alertblock}{The bad news}
     \begin{itemize}
-    \item class \mintinline{cpp}{Generator} is not provided by the STL
+    \item class \cppinline{Generator} is not provided by the STL
     \item and is $\sim80$ lines of boiler plate code...
     \item may be sorted out in \cpp23
     \item in the meantime, we'll have to dive into some details!
@@ -69,9 +69,9 @@
       \end{itemize}
     \item practically a function using one of:
       \begin{description}
-      \item[\mintinline{cpp}{co_await}] suspends execution
-      \item[\mintinline{cpp}{co_yield}] suspends execution and returns a value
-      \item[\mintinline{cpp}{co_return}] completes execution
+      \item[\cppinline{co_await}] suspends execution
+      \item[\cppinline{co_yield}] suspends execution and returns a value
+      \item[\cppinline{co_return}] completes execution
       \end{description}
     \end{itemize}
   \end{block}
@@ -82,7 +82,7 @@
     \item access to this data is given via the returned value
       \begin{itemize}
       \item so the returned type must follow some convention
-      \item it needs to contain a \mintinline{cpp}{struct promise_type}
+      \item it needs to contain a \cppinline{struct promise_type}
       \end{itemize}
     \end{itemize}
   \end{alertblock}
@@ -109,19 +109,19 @@
     }
   \end{block}
   \begin{exampleblock}{\texttt{promise\_type} interface}
-    \begin{description}[\small \mintinline{cpp}{initial/final_suspend}]
+    \begin{description}[\small \cppinline{initial/final_suspend}]
       \setlength{\itemsep}{0pt}
-    \item[\small \mintinline{cpp}{get_return_object}] builds a Task from the given promise
-    \item[\small \mintinline{cpp}{initial/final_suspend}] called before/after coroutine starts/ends
-    \item[\small \mintinline{cpp}{unhandled_exception}] called in case of exception in coroutine
-    \item[\small \mintinline{cpp}{return_void/value}] returns final value of the coroutine
+    \item[\small \cppinline{get_return_object}] builds a Task from the given promise
+    \item[\small \cppinline{initial/final_suspend}] called before/after coroutine starts/ends
+    \item[\small \cppinline{unhandled_exception}] called in case of exception in coroutine
+    \item[\small \cppinline{return_void/value}] returns final value of the coroutine
     \end{description}
   \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{Minimal sequence of events (nothing suspended)}
-  \begin{block}{Compiler generated set of calls when calling \mintinline{cpp}{myCoroutine}}
+  \begin{block}{Compiler generated set of calls when calling \cppinline{myCoroutine}}
     \center
     \begin{tikzpicture}[->, node distance=.75cm, font=\tiny, scale=0.8, every node/.style={scale=0.8},xscale=6,-{Latex[length=1mm,width=1mm]}]
       \tikzstyle{call}=[rectangle,draw=black,thick,inner sep=6pt,rounded corners,minimum width=4.5cm,minimum height=.6cm,fill=red!30]
@@ -168,13 +168,13 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{Suspending a coroutine}
-  \begin{block}{Main way to suspend a coroutine: \mintinline{cpp}{co_wait}}
+  \begin{block}{Main way to suspend a coroutine: \cppinline{co_wait}}
     \begin{itemize}
     \item it's an expression taking an ``awaitable''/ ``awaiter''
       \begin{itemize}
       \item we'll ignore the distinction for now
       \end{itemize}
-    \item 2 trivial awaiters are provided by the STL: \mintinline{cpp}{std::suspend_always} and \mintinline{cpp}{std::suspend_never}
+    \item 2 trivial awaiters are provided by the STL: \cppinline{std::suspend_always} and \cppinline{std::suspend_never}
     \item obviously only the first one will trigger a suspension
       \begin{itemize}
       \item note the other one is used in the minimal code
@@ -201,14 +201,14 @@
   \frametitlecpp[20]{Resuming a coroutine}
   \begin{block}{Principles}
     \begin{itemize}
-    \item one needs to call \mintinline{cpp}{resume()} on the \mintinline{cpp}{coroutine_handle}
+    \item one needs to call \cppinline{resume()} on the \cppinline{coroutine_handle}
     \item BUT user code has no such handle
       \begin{itemize}
-      \item only the coroutine return object (here a \mintinline{cpp}{Task} instance)
+      \item only the coroutine return object (here a \cppinline{Task} instance)
       \end{itemize}
     \item so one has to amend the Task class
       \begin{itemize}
-      \item and the \mintinline{cpp}{promise_type} as it's building the \mintinline{cpp}{Task} instance
+      \item and the \cppinline{promise_type} as it's building the \cppinline{Task} instance
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -268,27 +268,27 @@
   \frametitlecpp[20]{A few more details}
   \begin{block}{About suspension of coroutines}
     \begin{itemize}
-    \item \mintinline{cpp}{initial/final_suspend} methods allow to suspend a coroutine at the very start/end (after \mintinline{cpp}{co_return})
+    \item \cppinline{initial/final_suspend} methods allow to suspend a coroutine at the very start/end (after \cppinline{co_return})
     \item a suspended coroutine is not deallocated
       \begin{itemize}
       \item i.e.\ its state will stay on the heap
       \item so you can leak coroutines!
       \end{itemize}
-    \item one can directly call \mintinline{cpp}{coroutine_handle::destroy} if the execution of a suspended coroutine should be aborted
+    \item one can directly call \cppinline{coroutine_handle::destroy} if the execution of a suspended coroutine should be aborted
       \begin{itemize}
-      \item which requires another piece of code in \mintinline{cpp}{Task}, e.g.
+      \item which requires another piece of code in \cppinline{Task}, e.g.
         {\scriptsize
           \begin{cppcode*}{gobble=8,linenos=false}
             ~Task() { if (h_) h_.destroy(); }
           \end{cppcode*}
         }
       \end{itemize}
-    \item the \mintinline{cpp}{Task} class should be move only
+    \item the \cppinline{Task} class should be move only
      \end{itemize}
   \end{block}
-  \begin{alertblock}{We need standard \mintinline{cpp}{Task} classes in the STL!}
+  \begin{alertblock}{We need standard \cppinline{Task} classes in the STL!}
     \begin{itemize}
-    \item \mintinline{cpp}{std::generator} may come in \cpp23
+    \item \cppinline{std::generator} may come in \cpp23
      \end{itemize}
     \end{alertblock}
 \end{frame}
@@ -297,9 +297,9 @@
   \frametitlecpp[20]{\texttt{co\_yield} - returning a value upon suspension}
   \begin{block}{What \texttt{co\_yield} really is}
     \begin{itemize}
-    \item an expression like \mintinline{cpp}{co_await}
-    \item a shortcut for \mintinline{cpp}{co_await promise.yield_value(expr)}
-    \item and we have to provide the \mintinline{cpp}{yield_value} method of \mintinline{cpp}{promise_type} and the \mintinline{cpp}{Task} accessor
+    \item an expression like \cppinline{co_await}
+    \item a shortcut for \cppinline{co_await promise.yield_value(expr)}
+    \item and we have to provide the \cppinline{yield_value} method of \cppinline{promise_type} and the \cppinline{Task} accessor
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Typical code}
@@ -367,8 +367,8 @@
   \pause
   \begin{alertblock}{Wait a minute: 0 is missing in the output!}
     \begin{itemize}
-    \item resume called in \mintinline{cpp}{operator++} before 0 is printed
-    \item we should pause in \mintinline{cpp}{initial_suspend}
+    \item resume called in \cppinline{operator++} before 0 is printed
+    \item we should pause in \cppinline{initial_suspend}
     \end{itemize}
      {\scriptsize
       \begin{cppcode*}{gobble=4,firstnumber=10}
@@ -434,19 +434,19 @@
   \frametitlecpp[20]{Coming back to awaitables/awaiters}
   \begin{block}{awaitables vs awaiters}
     \begin{itemize}
-    \item awaitable is the type required by \mintinline{cpp}{co_await}/\mintinline{cpp}{co_yield}
+    \item awaitable is the type required by \cppinline{co_await}/\cppinline{co_yield}
       \begin{itemize}
       \item or the expression given has to be convertible to awaitable
-      \item alternatively the \mintinline{cpp}{promise_type} can have an \mintinline{cpp}{await_transform} method returning an awaitable
+      \item alternatively the \cppinline{promise_type} can have an \cppinline{await_transform} method returning an awaitable
       \end{itemize}
     \item an awaiter is retrieved from the awaitable by the compiler
       \begin{itemize}
-      \item either by calling operator \mintinline{cpp}{co_wait} on it
+      \item either by calling operator \cppinline{co_wait} on it
       \item or via direct conversion if no such operator exists
       \end{itemize}
     \item an awaiter has 3 main methods
       \begin{itemize}
-      \item \mintinline{cpp}{await_ready}, \mintinline{cpp}{await_suspend} \mintinline{cpp}{and await_resume}
+      \item \cppinline{await_ready}, \cppinline{await_suspend} \cppinline{and await_resume}
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -556,7 +556,7 @@
     \begin{itemize}
     \item standard Task/Generator classes are not provided
     \item leading to \emph{lots of boiler plate code} for the end user
-    \item \mintinline{cpp}{std::generator} is part of \cpp23's draft
+    \item \cppinline{std::generator} is part of \cpp23's draft
     \item in the meantime, libraries exist, e.g. \href{https://github.com/lewissbaker/cppcoro}{CppCoro}
     \end{itemize}
   \end{alertblock}

@@ -94,7 +94,7 @@
     \begin{itemize}
     \item usually in .cpp, outside of class declaration
     \item using the class name as ``namespace''
-    \item when reference/pointer to the object is needed, use \mintinline{cpp}{this} keyword
+    \item when reference/pointer to the object is needed, use \cppinline{this} keyword
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -114,10 +114,10 @@
     \begin{itemize}
     \item Sometimes we need to pass a reference to ourself to a different entity
     \item For example to implement operators, see later
-    \item All class methods can use the keyword \mintinline{cpp}{this}
+    \item All class methods can use the keyword \cppinline{this}
       \begin{itemize}
         \item It returns the address of the current object
-        \item Its type is \mintinline{cpp}{T*} in the methods of a struct/class {\ttfamily T}
+        \item Its type is \cppinline{T*} in the methods of a struct/class {\ttfamily T}
       \end{itemize}
     \end{itemize}
   \end{block}

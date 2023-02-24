@@ -6,7 +6,7 @@
     \begin{itemize}
       \item References allow for direct access to another object
       \item They can be used as shortcuts / better readability
-      \item They can be declared \mintinline{cpp}{const} to allow only read access
+      \item They can be declared \cppinline{const} to allow only read access
       \item They can be used as function arguments
     \end{itemize}
   \end{block}
@@ -30,14 +30,14 @@
   \begin{block}{Specificities of reference}
     \begin{itemize}
     \item Natural syntax
-    \item Cannot be \mintinline{cpp}{nullptr}
+    \item Cannot be \cppinline{nullptr}
     \item Must be assigned when defined, cannot be reassigned
-    \item References to temporary objects must be \mintinline{cpp}{const}
+    \item References to temporary objects must be \cppinline{const}
     \end{itemize}
   \end{block}
   \begin{block}{Advantages of pointers}
     \begin{itemize}
-    \item Can be \mintinline{cpp}{nullptr}
+    \item Can be \cppinline{nullptr}
     \item Can be initialized after declaration, can be reassigned
     \end{itemize}
   \end{block}
@@ -45,7 +45,7 @@
   \begin{goodpractice}{References}
     \begin{itemize}
       \item Prefer using references instead of pointers
-      \item Mark references \mintinline{cpp}{const} to prevent modification
+      \item Mark references \cppinline{const} to prevent modification
     \end{itemize}
   \end{goodpractice}
 \end{frame}

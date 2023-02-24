@@ -10,7 +10,7 @@
       int i = {42}; // copy list initialization (C++11)
     \end{cppcode}
     \begin{itemize}
-      \item All of the above have the same effect: \mintinline{cpp}{i == 42}
+      \item All of the above have the same effect: \cppinline{i == 42}
     \end{itemize}
   \end{block}
   \begin{block}{Narrowing conversions}
@@ -66,7 +66,7 @@
       C c = {1, 2}; // calls C(std::initializer_list<int>{1, 2})
     \end{cppcode}
     \begin{itemize}
-      \item A constructor with a \mintinline{cpp}{std::initializer_list} parameter takes precedence over other overloads.
+      \item A constructor with a \cppinline{std::initializer_list} parameter takes precedence over other overloads.
     \end{itemize}
   \end{block}
   \begin{alertblock}{Beware}
@@ -97,9 +97,9 @@
       T t;
     \end{cppcode*}
     \begin{itemize}
-      \item If \mintinline{cpp}{T} has a default constructor (including compiler generated), calls it
-      \item If \mintinline{cpp}{T} is a fundamental type, \mintinline{cpp}{t} is left uninitialized (undefined value)
-      \item If \mintinline{cpp}{T} is an array, the same rules are applied to each item
+      \item If \cppinline{T} has a default constructor (including compiler generated), calls it
+      \item If \cppinline{T} is a fundamental type, \cppinline{t} is left uninitialized (undefined value)
+      \item If \cppinline{T} is an array, the same rules are applied to each item
     \end{itemize}
   \end{block}
 \end{frame}
@@ -115,7 +115,7 @@
       T t();    // function declaration
     \end{cppcode}
     \begin{itemize}
-      \item Basically zero-initializes \mintinline{cpp}{t} (or the temporary), unless \mintinline{cpp}{T} has a user defined constructor, which is run in this case
+      \item Basically zero-initializes \cppinline{t} (or the temporary), unless \cppinline{T} has a user defined constructor, which is run in this case
       \item Details on \href{https://en.cppreference.com/w/cpp/language/value_initialization}{cppreference}
     \end{itemize}
   \end{block}
@@ -149,20 +149,20 @@
   \frametitlecpp[11]{Initialization}
   \begin{goodpractice}{Initialization}
     \begin{itemize}
-      \item In generic code, for a generic type \mintinline{cpp}{T}:
+      \item In generic code, for a generic type \cppinline{T}:
       \begin{itemize}
-        \item \mintinline{cpp}{T t;} performs the minimally necessary initialization
-        \item \mintinline{cpp}{T t{};} performs full and deterministic initialization
+        \item \cppinline{T t;} performs the minimally necessary initialization
+        \item \cppinline{T t{};} performs full and deterministic initialization
       \end{itemize}
-      \item Prefer \mintinline{cpp}{T t{};} over \mintinline{cpp}{T t; memset(&t, 0, sizeof(t));}
-      \item Prefer braces over parentheses to avoid accidental narrowing conversions. E.g.\ \mintinline{cpp}{T t{1, 2};}
+      \item Prefer \cppinline{T t{};} over \cppinline{T t; memset(&t, 0, sizeof(t));}
+      \item Prefer braces over parentheses to avoid accidental narrowing conversions. E.g.\ \cppinline{T t{1, 2};}
       \begin{itemize}
-        \item Unless \mintinline{cpp}{T} has a \mintinline{cpp}{std::initializer_list} constructor that you do not want to call!
-        \item Be wary of \mintinline{cpp}{std::vector}!
+        \item Unless \cppinline{T} has a \cppinline{std::initializer_list} constructor that you do not want to call!
+        \item Be wary of \cppinline{std::vector}!
       \end{itemize}
       \item The STL value initializes when creating new user objects
       \begin{itemize}
-        \item E.g. \mintinline{cpp}{vec.resize(vec.size() + 10);}
+        \item E.g. \cppinline{vec.resize(vec.size() + 10);}
       \end{itemize}
       \item Aggregates are very flexible. If your class does not need special initialization, make it an aggregate (rule of zero)
     \end{itemize}

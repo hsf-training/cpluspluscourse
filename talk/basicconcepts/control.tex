@@ -14,8 +14,8 @@
       }
     \end{cppcode*}
     \begin{itemize}
-      \item The \mintinline{cpp}{else} and \mintinline{cpp}{else if} clauses are optional
-      \item The \mintinline{cpp}{else if} clause can be repeated
+      \item The \cppinline{else} and \cppinline{else if} clauses are optional
+      \item The \cppinline{else if} clause can be repeated
       \item Braces are optional if there is a single statement
     \end{itemize}
   \end{block}
@@ -49,8 +49,8 @@
     \end{cppcode*}
     \vspace{-0.2cm}
     \begin{itemize}
-      \item If test is \mintinline{cpp}{true} \mintinline{cpp}{expression1} is returned
-      \item Else, \mintinline{cpp}{expression2} is returned
+      \item If test is \cppinline{true} \cppinline{expression1} is returned
+      \item Else, \cppinline{expression2} is returned
     \end{itemize}
   \end{block}
   \pause
@@ -64,7 +64,7 @@
   \pause
   \begin{alertblock}{Do not abuse it}
     \begin{itemize}
-      \item Explicit \mintinline{cpp}{if}s are generally easier to read
+      \item Explicit \cppinline{if}s are generally easier to read
       \item Use the ternary operator with short conditions and expressions
       \item Avoid nesting
     \end{itemize}
@@ -84,15 +84,15 @@
       }
     \end{cppcode*}
     \begin{itemize}
-      \item The \mintinline{cpp}{break} statement is not mandatory but...
+      \item The \cppinline{break} statement is not mandatory but...
       \item Cases are entry points, not independent pieces
-      \item Execution falls through to the next case without a \mintinline{cpp}{break}!
-      \item The \mintinline{cpp}{default} case may be omitted
+      \item Execution falls through to the next case without a \cppinline{break}!
+      \item The \cppinline{default} case may be omitted
     \end{itemize}
   \end{block}
   \pause
   \begin{alertblock}{Use break}
-    Avoid \mintinline{cpp}{switch} statements with fall-through cases
+    Avoid \cppinline{switch} statements with fall-through cases
   \end{alertblock}
 \end{frame}
 
@@ -145,7 +145,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[17]{Init-statements for if and switch}
   \begin{block}{}
-    Allows to limit variable scope in \mintinline{cpp}{if} and \mintinline{cpp}{switch} statements
+    Allows to limit variable scope in \cppinline{if} and \cppinline{switch} statements
   \end{block}
   \begin{exampleblock}{\cpp17}
     \begin{cppcode*}{}
@@ -193,7 +193,7 @@
   \pause
   \begin{goodpracticeWithShortcut}{Don't abuse the \texttt{for} syntax}{\texttt{for} syntax}
     \begin{itemize}
-      \item The \mintinline{cpp}{for} loop head should fit in 1-3 lines
+      \item The \cppinline{for} loop head should fit in 1-3 lines
     \end{itemize}
   \end{goodpracticeWithShortcut}
 \end{frame}

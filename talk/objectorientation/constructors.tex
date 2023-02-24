@@ -7,7 +7,7 @@
     \item special functions called when building/destroying an object
     \item a class can have several constructors, but only one destructor
     \item the constructors have the same name as the class
-    \item same for the destructor with a leading \mintinline{cpp}{~}
+    \item same for the destructor with a leading \cppinline{~}
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
@@ -85,9 +85,9 @@
   \begin{block}{Concept}
     \begin{itemize}
     \item special constructor called for replicating an object
-    \item takes a single parameter of type \mintinline{cpp}{const &} to class
+    \item takes a single parameter of type \cppinline{const &} to class
     \item provided by the compiler if not declared by the user
-    \item in order to forbid copy, use \mintinline{cpp}{= delete} (see next slides)
+    \item in order to forbid copy, use \cppinline{= delete} (see next slides)
       \begin{itemize}
       \item or private copy constructor with no implementation in \cpp98
       \end{itemize}
@@ -153,7 +153,7 @@
   \frametitlecpp[98]{Explicit unary constructor}
   \begin{block}{Concept}
     \begin{itemize}
-      \item The keyword \mintinline{cpp}{explicit} forbids such implicit conversions.
+      \item The keyword \cppinline{explicit} forbids such implicit conversions.
       \item It is recommended to use it systematically, except in special cases.
     \end{itemize}
   \end{block}
@@ -172,8 +172,8 @@
   \frametitlecpp[11]{Defaulted Constructor}
   \begin{block}{Idea}
     \begin{itemize}
-    \item avoid empty default constructors like \mintinline{cpp}{ClassName() {}}
-    \item declare them as \mintinline{cpp}{= default}
+    \item avoid empty default constructors like \cppinline{ClassName() {}}
+    \item declare them as \cppinline{= default}
     \end{itemize}
   \end{block}
   \begin{block}{Details}

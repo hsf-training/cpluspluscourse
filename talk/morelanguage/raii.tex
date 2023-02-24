@@ -116,7 +116,7 @@
     \end{cppcode*}
   \end{exampleblock}
   \begin{goodpracticeWithShortcut}{Use \texttt{std::fstream} for file handling}{Use \texttt{std::fstream}}
-     The standard library provides \mintinline{cpp}{std::fstream} to handle files, use it!
+     The standard library provides \cppinline{std::fstream} to handle files, use it!
   \end{goodpracticeWithShortcut}
 \end{frame}
 
@@ -125,13 +125,13 @@
   \begin{block}{A RAII pointer}
     \begin{itemize}
     \item wraps a regular pointer
-    \item retrieve it using \mintinline{cpp}{get()}
+    \item retrieve it using \cppinline{get()}
     \item has move-only semantic
       \begin{itemize}
       \item the pointer has unique ownership
       \item copying will result in a compile error
       \end{itemize}
-    \item in \mintinline{cpp}{<memory>} header
+    \item in \cppinline{<memory>} header
     \end{itemize}
   \end{block}
   \pause
@@ -177,8 +177,8 @@ of 'std::unique_ptr<Foo>'
   \frametitlecpp[14]{\texttt{std::make\_unique}}
   \begin{block}{}
     \begin{itemize}
-      \item directly allocates the object managed by a \mintinline{cpp}{unique_ptr}
-      \item no \mintinline{cpp}{new} or \mintinline{cpp}{delete} calls anymore!
+      \item directly allocates the object managed by a \cppinline{unique_ptr}
+      \item no \cppinline{new} or \cppinline{delete} calls anymore!
       \item no memory leaks if used everywhere
     \end{itemize}
   \end{block}
@@ -208,12 +208,12 @@ of 'std::unique_ptr<Foo>'
   \frametitlecpp[11]{Arrays and \texttt{unique\_ptr}}
   \begin{block}{Dynamic arrays}
     \begin{itemize}
-      \item \mintinline{cpp}{unique_ptr} can wrap arrays
-      \item Use \mintinline{cpp}{T[]} as template parameter
+      \item \cppinline{unique_ptr} can wrap arrays
+      \item Use \cppinline{T[]} as template parameter
       \item This will enable the subscript operator
       \item The default constructor is called for each element
-      \item If size known at compile time, prefer \mintinline{cpp}{std::array}
-      \item If size might change, prefer \mintinline{cpp}{std::vector}
+      \item If size known at compile time, prefer \cppinline{std::array}
+      \item If size might change, prefer \cppinline{std::vector}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{}
@@ -236,7 +236,7 @@ of 'std::unique_ptr<Foo>'
     \item Always use RAII for resources, in particular allocations
     \item You thus never have to release / deallocate yourself
     \item Use raw pointers as non-owning, re-bindable observers
-    \item Remember that \mintinline{cpp}{unique_ptr} is move only
+    \item Remember that \cppinline{unique_ptr} is move only
     \end{itemize}
   \end{block}
   \pause
@@ -258,7 +258,7 @@ of 'std::unique_ptr<Foo>'
   \frametitlecpp[11]{\texttt{unique\_ptr} usage summary}
   \begin{block}{It's about lifetime management}
     \begin{itemize}
-    \item Use \mintinline{cpp}{unique_ptr} in functions taking part in lifetime management
+    \item Use \cppinline{unique_ptr} in functions taking part in lifetime management
     \item Otherwise use raw pointers or references
     \end{itemize}
   \end{block}
@@ -268,7 +268,7 @@ of 'std::unique_ptr<Foo>'
   \frametitlecpp[11]{\texttt{shared\_ptr}, \texttt{make\_shared}}
   \begin{block}{\mintinline{cpp}{shared_ptr} : a reference counting pointer}
     \begin{itemize}
-    \item wraps a regular pointer similar to \mintinline{cpp}{unique_ptr}
+    \item wraps a regular pointer similar to \cppinline{unique_ptr}
     \item has move and copy semantic
     \item uses reference counting internally
       \begin{itemize}
@@ -297,11 +297,11 @@ of 'std::unique_ptr<Foo>'
     \begin{itemize}
     \item Sometimes want to observe resources without keeping them alive
     \begin{itemize}
-      \item \mintinline{cpp}{shared_ptr}? Resource stays alive
+      \item \cppinline{shared_ptr}? Resource stays alive
       \item Raw pointer? Risk of dangling pointer
     \end{itemize}
-    \item The solution is to construct a \mintinline{cpp}{weak_ptr} from a shared pointer
-    \item To access the resource, convert the weak into a \mintinline{cpp}{shared_ptr}
+    \item The solution is to construct a \cppinline{weak_ptr} from a shared pointer
+    \item To access the resource, convert the weak into a \cppinline{shared_ptr}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{}

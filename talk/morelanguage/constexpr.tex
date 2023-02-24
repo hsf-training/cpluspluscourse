@@ -26,22 +26,22 @@
   \frametitlecpp[14]{Generalized Constant Expressions(2)}
   \begin{block}{Notes}
     \begin{itemize}
-    \item A \mintinline{cpp}{constexpr} function \emph{may} be executed at compile time.
+    \item A \cppinline{constexpr} function \emph{may} be executed at compile time.
     \begin{itemize}
-      \item Arguments must be \mintinline{cpp}{constexpr} or literals in order to allow compile time evaluation
+      \item Arguments must be \cppinline{constexpr} or literals in order to allow compile time evaluation
       \item Function body must be visible to the compiler
     \end{itemize}
-    \item A \mintinline{cpp}{constexpr} function can also be used at runtime
-    \item A \mintinline{cpp}{constexpr} variable must be initialized at compile time
-    \item Classes can have \mintinline{cpp}{constexpr} member functions
+    \item A \cppinline{constexpr} function can also be used at runtime
+    \item A \cppinline{constexpr} variable must be initialized at compile time
+    \item Classes can have \cppinline{constexpr} member functions
     \item Objects used in constant expressions must be of \emph{literal type}:
       \begin{itemize}
       \item integral, floating-point, enum, reference, pointer type
       \item union (of at least one) or array of literal types
-      \item class type with a \mintinline{cpp}{constexpr} constructor and
-            the destructor is trivial (or \mintinline{cpp}{constexpr} since C++20)
+      \item class type with a \cppinline{constexpr} constructor and
+            the destructor is trivial (or \cppinline{constexpr} since C++20)
       \end{itemize}
-    \item A constexpr function is implicitly \mintinline{cpp}{inline} (header files)
+    \item A constexpr function is implicitly \cppinline{inline} (header files)
     \end{itemize}
   \end{block}
 \end{frame}
@@ -127,8 +127,8 @@
     \begin{itemize}
     \item Force a function to be executed at compile-time
     \item Runtime evaluation is forbidden
-    \item Same restrictions as \mintinline{cpp}{constexpr} functions
-    \item New keyword: \mintinline{cpp}{consteval}
+    \item Same restrictions as \cppinline{constexpr} functions
+    \item New keyword: \cppinline{consteval}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
@@ -149,9 +149,9 @@
   \frametitlecpp[20]{constinit}
   \begin{block}{Motivation}
     \begin{itemize}
-    \item Like a \mintinline{cpp}{constexpr} variable, a \mintinline{cpp}{constinit} variable guarantees compile-time initialization, but can be modified afterwards
-    \item Only allowed for \mintinline{cpp}{static}/global and \mintinline{cpp}{thread_local} variables
-    \item Initializer must be a constant expression, but \mintinline{cpp}{constexpr} destruction is not required
+    \item Like a \cppinline{constexpr} variable, a \cppinline{constinit} variable guarantees compile-time initialization, but can be modified afterwards
+    \item Only allowed for \cppinline{static}/global and \cppinline{thread_local} variables
+    \item Initializer must be a constant expression, but \cppinline{constexpr} destruction is not required
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}

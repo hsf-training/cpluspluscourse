@@ -59,9 +59,9 @@
 \begin{frame}[fragile]
   \begin{block}{Solution: Use atomic member functions}
     \begin{itemize}
-      \item The member functions of \mintinline{cpp}{std::atomic} are thread safe
-      \item \mintinline{cpp}{fetch_add} and \mintinline{cpp}{operator+=}: atomic \{ load; add; store \}
-      \item But don't confuse ``\mintinline{cpp}{a += 2}'' and ``\mintinline{cpp}{a = a + 2}''
+      \item The member functions of \cppinline{std::atomic} are thread safe
+      \item \cppinline{fetch_add} and \cppinline{operator+=}: atomic \{ load; add; store \}
+      \item But don't confuse ``\cppinline{a += 2}'' and ``\cppinline{a = a + 2}''
     \end{itemize}
   \end{block}
   \begin{exampleblock}{}
@@ -91,8 +91,8 @@
   \frametitlecpp[20]{Atomic references}
   \begin{block}{\texttt{std::atomic\_ref} template}
     \begin{itemize}
-      \item Wraps a \mintinline{cpp}{T&} and makes access to it atomic
-      \item Like \mintinline{cpp}{std::atomic<T>}, but does not contain the \mintinline{cpp}{T}
+      \item Wraps a \cppinline{T&} and makes access to it atomic
+      \item Like \cppinline{std::atomic<T>}, but does not contain the \cppinline{T}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{}
@@ -120,7 +120,7 @@
     \begin{itemize}
       \item Go to \texttt{code/atomic}
       \item You'll find a program with the same race condition as in \texttt{race}
-      \item Fix it using \mintinline{cpp}{std::atomic}
+      \item Fix it using \cppinline{std::atomic}
     \end{itemize}
   \end{exercise}
 \end{frame}
