@@ -32,7 +32,7 @@
     \item do not be afraid of recursion
     \item everything is at compile time!
     \item unlike C-style variadic functions \\
-          e.g.\ \mintinline{cpp}{printf(const char* fmt, ...);}
+          e.g.\ \cppinline{printf(const char* fmt, ...);}
     \end{itemize}
   \end{block}
   \begin{block}{Why it is better than variadic functions}
@@ -50,8 +50,8 @@
     \begin{itemize}
       \item only a few operations are supported
       \begin{itemize}
-        \item query the number of elements in a pack with \mintinline{cpp}{sizeof...}
-        \item expand it with \mintinline{cpp}{x...}
+        \item query the number of elements in a pack with \cppinline{sizeof...}
+        \item expand it with \cppinline{x...}
       \end{itemize}
       \item can be empty
       \item can hold different types
@@ -211,7 +211,7 @@
   \begin{exerciseWithShortcut}{Variadic templates}{Variadic tpl}
     \begin{itemize}
     \item go to code/variadic
-    \item you will extend the \mintinline{cpp}{tuple} from the last slides
+    \item you will extend the \cppinline{tuple} from the last slides
     \item follow the instructions in the source code
     \end{itemize}
   \end{exerciseWithShortcut}

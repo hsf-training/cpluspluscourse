@@ -92,7 +92,7 @@
   \pause
   \begin{block}{The objects}
     \begin{description}[labelwidth=1.8cm]
-    \item[std::mutex] in the \mintinline{cpp}{mutex} header. \textbf{Mut}ual \textbf{ex}clusion
+    \item[std::mutex] in the \cppinline{mutex} header. \textbf{Mut}ual \textbf{ex}clusion
     \item[std::scoped\_lock] RAII to lock and unlock automatically
     \item[std::unique\_lock] same, but can be released/relocked explicitly
     \end{description}
@@ -114,9 +114,9 @@
   \frametitlecpp[17]{Mutexes and Locks}
   \begin{goodpractice}{Locking}
     \begin{itemize}
-      \item Generally, use \mintinline{cpp}{std::scoped_lock}. Before \cpp17 use \mintinline{cpp}{std::lock_guard}.
-      \item Hold as short as possible, consider wrapping critical section in block statement \mintinline{cpp}|{ }|
-      \item Only if manual control needed, use \mintinline{cpp}{std::unique_lock}
+      \item Generally, use \cppinline{std::scoped_lock}. Before \cpp17 use \cppinline{std::lock_guard}.
+      \item Hold as short as possible, consider wrapping critical section in block statement \cppinline|{ }|
+      \item Only if manual control needed, use \cppinline{std::unique_lock}
     \end{itemize}
   \end{goodpractice}
   \begin{exampleblock}{}
@@ -180,7 +180,7 @@
   \frametitlecpp[11]{How to avoid dead locks}
   \begin{block}{Possible solutions}
     \begin{itemize}
-    \item \cpp17: \mintinline{cpp}{std::scoped_lock lock{m1, m2};} comes with deadlock-avoidance algorithm
+    \item \cpp17: \cppinline{std::scoped_lock lock{m1, m2};} comes with deadlock-avoidance algorithm
     \item Never take several locks
       \begin{itemize}
       \item Or add master lock protecting the locking phase
@@ -198,8 +198,8 @@
   \frametitlecpp[17]{Shared mutex / locks}
   \begin{block}{Sharing a mutex}
     \begin{itemize}
-      \item Normal \mintinline{cpp}{std::mutex} objects cannot be shared
-      \item \mintinline{cpp}{std::shared_mutex} to the rescue, but can be slower
+      \item Normal \cppinline{std::mutex} objects cannot be shared
+      \item \cppinline{std::shared_mutex} to the rescue, but can be slower
       \item It locks \emph{either} in exclusive \emph{or} in shared mode; never both
     \end{itemize}
   \end{block}

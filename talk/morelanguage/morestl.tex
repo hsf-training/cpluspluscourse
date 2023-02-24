@@ -5,9 +5,9 @@
   \begin{block}{Non owning read-only view of a contiguous char sequence}
     \begin{itemize}
     \item Doesn't allocate memory
-    \item Similar interface to \mintinline{cpp}{std::string}, but read-only
+    \item Similar interface to \cppinline{std::string}, but read-only
     \item Easy to copy, faster for some calls eg. \texttt{substr} (O(1) vs O(n))
-    \item The data pointed to has to outlive the \mintinline{cpp}{string_view}
+    \item The data pointed to has to outlive the \cppinline{string_view}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Some example uses}
@@ -33,22 +33,22 @@
       \end{itemize}
     \item Provides container like interface
       \begin{itemize}
-      \item iterators, \mintinline{cpp}{size}, \mintinline{cpp}{front}/\mintinline{cpp}{back}, \mintinline{cpp}{subspan}, ...
+      \item iterators, \cppinline{size}, \cppinline{front}/\cppinline{back}, \cppinline{subspan}, ...
       \end{itemize}
     \item Standard contiguous containers convert to it automatically
       \begin{itemize}
-      \item \mintinline{cpp}{std::vector}, \mintinline{cpp}{std::array}, C arrays, ...
-      \item not \mintinline{cpp}{std::list} or \mintinline{cpp}{std::deque} (no contiguous storage)
-      \item \mintinline{cpp}{span} should thus be preferred as function argument
+      \item \cppinline{std::vector}, \cppinline{std::array}, C arrays, ...
+      \item not \cppinline{std::list} or \cppinline{std::deque} (no contiguous storage)
+      \item \cppinline{span} should thus be preferred as function argument
       \end{itemize}
     \item Simply a pair (pointer, size), so cheap to copy
       \begin{itemize}
       \item and thus to be passed by value
       \end{itemize}
-    \item \mintinline{cpp}{span} can also have a \texttt{static extend}
+    \item \cppinline{span} can also have a \texttt{static extend}
       \begin{itemize}
       \item meaning the size is determined at compile time
-      \item and thus only a pointer is stored by \mintinline{cpp}{span}
+      \item and thus only a pointer is stored by \cppinline{span}
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -152,8 +152,8 @@
   \begin{block}{A type-safe union}
     \begin{itemize}
     \item Allows the variable to hold any of the given types
-    \item \mintinline{cpp}{std::get} reads the value of the variant
-    \item and throws \mintinline{cpp}{std::bad_variant_access} for bad accesses
+    \item \cppinline{std::get} reads the value of the variant
+    \item and throws \cppinline{std::bad_variant_access} for bad accesses
     \item Currently held alternative can be probed
     \end{itemize}
   \end{block}
@@ -181,7 +181,7 @@
       \item Applies a ``visitor'' to a given variant
       \begin{itemize}
         \item A visitor is a callable able to handle all different types
-        \item Must return \mintinline{cpp}{void} or the same type for all overloads
+        \item Must return \cppinline{void} or the same type for all overloads
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -235,8 +235,8 @@
   \begin{exerciseWithShortcut}{An alternative to oo polymorphism}{std::variant}
     \begin{itemize}
       \item go to \texttt{code/variant/variant.cpp}
-      \item replace inheritance from a common base class with an \mintinline{cpp}{std::variant} on the three kinds of particle.
-      \item two solutions given : with \mintinline{cpp}{std::get_if} and with \mintinline{cpp}{std::visit}.
+      \item replace inheritance from a common base class with an \cppinline{std::variant} on the three kinds of particle.
+      \item two solutions given : with \cppinline{std::get_if} and with \cppinline{std::visit}.
     \end{itemize}
   \end{exerciseWithShortcut}
 \end{frame}
@@ -245,10 +245,10 @@
   \frametitlecpp[17]{std::any \cpprefLink{https://en.cppreference.com/w/cpp/utility/any}}
   \begin{block}{a type-safe container for single values of any type}
     \begin{itemize}
-    \item Allows a variable to hold any type (say bye to \mintinline{cpp}{void*})
-    \item \mintinline{cpp}{std::any_cast} reads the internal value
-    \item and throws \mintinline{cpp}{std::bad_any_cast} for bad accesses
-    \item \mintinline{cpp}{std::any_cast} only matches types 1:1, ignoring inheritance
+    \item Allows a variable to hold any type (say bye to \cppinline{void*})
+    \item \cppinline{std::any_cast} reads the internal value
+    \item and throws \cppinline{std::bad_any_cast} for bad accesses
+    \item \cppinline{std::any_cast} only matches types 1:1, ignoring inheritance
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Code example}
@@ -344,7 +344,7 @@
   \frametitlecpp[17]{Structured Binding Declarations}
   \begin{block}{}
     \begin{itemize}
-      \item Helps with \mintinline{cpp}{std::tuple}, tuple-like, array or aggregate types
+      \item Helps with \cppinline{std::tuple}, tuple-like, array or aggregate types
       \item Automatically creates variables and ties them
       \item CV qualifiers and references allowed
     \end{itemize}
@@ -373,9 +373,9 @@
       \item For non-aggregates, you can opt-in to structured bindings
       \item The compiler requires these hooks:
       \begin{itemize}
-        \item Specialize \mintinline{cpp}{std::tuple_size}
-        \item Specialize \mintinline{cpp}{std::tuple_element}
-        \item Provide either \mintinline{cpp}{T::get<I>()} or \mintinline{cpp}{get<I>(T)}
+        \item Specialize \cppinline{std::tuple_size}
+        \item Specialize \cppinline{std::tuple_element}
+        \item Provide either \cppinline{T::get<I>()} or \cppinline{get<I>(T)}
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -399,7 +399,7 @@
   \frametitlecpp[17]{compile-time branches}
   \begin{block}{{\it if constexpr}}
     \begin{itemize}
-    \item takes a \mintinline{cpp}{constexpr} expression as condition
+    \item takes a \cppinline{constexpr} expression as condition
     \item evaluates at compile time
     \item key benefit: the discarded branch can contain invalid code
     \end{itemize}

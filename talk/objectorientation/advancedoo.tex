@@ -120,7 +120,7 @@
   \frametitlecpp[98]{Virtual methods}
   \begin{block}{the concept}
     \begin{itemize}
-    \item methods can be declared \mintinline{cpp}{virtual}
+    \item methods can be declared \cppinline{virtual}
     \item for these, the most derived object's implementation is used
           (i.e.\ the dynamic type behind a pointer/reference)
     \item for non-virtual methods, the static type of the variable decides
@@ -140,11 +140,11 @@
     \center
     \begin{tikzpicture}[node distance=1.5cm]
       \classbox{Drawable}{
-        \mintinline{cpp}{void draw();}
+        \cppinline{void draw();}
       }
       \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
-        \mintinline{cpp}{void draw();}
+        \cppinline{void draw();}
       }
       \draw[very thick,-Triangle] (Polygon) -- (Shape);
       \draw[very thick,-Triangle] (Shape) -- (Drawable);
@@ -164,11 +164,11 @@
     \center
     \begin{tikzpicture}[node distance=1.5cm]
       \classbox{Drawable}{
-        \mintinline{cpp}{virtual void draw();}
+        \cppinline{virtual void draw();}
       }
       \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
-        \mintinline{cpp}{void draw();}
+        \cppinline{void draw();}
       }
       \draw[very thick,-Triangle] (Polygon) -- (Shape);
       \draw[very thick,-Triangle] (Shape) -- (Drawable);
@@ -206,8 +206,8 @@
   \begin{block}{Principle}
     \begin{itemize}
     \item when overriding a virtual method
-    \item the \mintinline{cpp}|override| keyword should be used
-    \item the \mintinline{cpp}|virtual| keyword is then optional
+    \item the \cppinline|override| keyword should be used
+    \item the \cppinline|virtual| keyword is then optional
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Practically}
@@ -236,8 +236,8 @@
     \end{cppcode}
   \end{block}
   \begin{itemize}
-  \item with \mintinline{cpp}|override|, you would get a compiler error
-  \item if you forget \mintinline{cpp}|override| when you should have it, you get a compiler warning
+  \item with \cppinline|override|, you would get a compiler error
+  \item if you forget \cppinline|override| when you should have it, you get a compiler warning
   \end{itemize}
 \end{frame}
 
@@ -271,7 +271,7 @@
   \begin{block}{Concept}
     \begin{itemize}
     \item unimplemented methods that must be overridden
-    \item marked by \mintinline{cpp}{= 0} in the declaration
+    \item marked by \cppinline{= 0} in the declaration
     \item makes their class abstract
     \item only non-abstract classes can be instantiated
     \end{itemize}
@@ -292,11 +292,11 @@
     \columnbreak
     \begin{tikzpicture}[node distance=1.5cm]
       \classbox{Drawable}{
-        \mintinline{cpp}{virtual void draw() = 0;}
+        \cppinline{virtual void draw() = 0;}
       }
       \classbox[below of=Drawable]{Shape}{}
       \classbox[below of=Shape]{Polygon}{
-        \mintinline{cpp}{void draw() override;}
+        \cppinline{void draw() override;}
       }
       \draw[very thick,-Triangle] (Polygon) -- (Shape);
       \draw[very thick,-Triangle] (Shape) -- (Drawable);
@@ -334,8 +334,8 @@
   \end{overprint}
   \begin{block}{}
     \begin{itemize}
-      \item What happens when \mintinline{cpp}{p} is deleted?
-      \item What if a class deriving from \mintinline{cpp}{Drawable} has a destructor?
+      \item What happens when \cppinline{p} is deleted?
+      \item What if a class deriving from \cppinline{Drawable} has a destructor?
     \end{itemize}
   \end{block}
 \end{frame}
@@ -344,7 +344,7 @@
   \frametitlecpp[98]{Polymorphism and destruction}
   \begin{block}{Virtual destructors}
     \begin{itemize}
-    \item We can mark a destructor as \mintinline{cpp}{virtual}
+    \item We can mark a destructor as \cppinline{virtual}
     \item This selects the right destructor based on the runtime type
     \end{itemize}
   \end{block}
@@ -359,7 +359,7 @@
   \end{cppcode}
   \begin{goodpractice}{Virtual destructors}
     \begin{itemize}
-      \item If you expect users to inherit from your class and override methods (i.e.\ use your class polymorphically), declare its destructor \mintinline{cpp}{virtual}
+      \item If you expect users to inherit from your class and override methods (i.e.\ use your class polymorphically), declare its destructor \cppinline{virtual}
     \end{itemize}
   \end{goodpractice}
 \end{frame}
@@ -372,7 +372,7 @@
       \begin{itemize}
         \item no data members
         \item all its methods pure virtual
-        \item a \mintinline{cpp}{virtual} destructor
+        \item a \cppinline{virtual} destructor
       \end{itemize}
     \item the equivalent of an Interface in Java
     \end{itemize}
@@ -399,7 +399,7 @@
   \begin{block}{Concept}
     \begin{itemize}
     \item overriding an overloaded method will hide the others
-    \item unless you inherit them using \mintinline{cpp}{using}
+    \item unless you inherit them using \cppinline{using}
     \end{itemize}
   \end{block}
   \begin{cppcode*}{gobble=0}

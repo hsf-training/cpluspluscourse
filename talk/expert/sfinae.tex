@@ -53,7 +53,7 @@
     \begin{itemize}
     \item gives you a reference to a ``fake'' object at compile time
     \item useful for types that cannot easily be constructed
-    \item use only in unevaluated contexts, e.g. inside \mintinline{cpp}{decltype}
+    \item use only in unevaluated contexts, e.g. inside \cppinline{decltype}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{}
@@ -102,8 +102,8 @@
   \frametitlecpp[11]{Using SFINAE for introspection}
   \begin{block}{The main idea}
     \begin{itemize}
-    \item use a primary template, inheriting from \mintinline{cpp}{false_type}
-    \item use a template specialization, inheriting from \mintinline{cpp}{true_type}
+    \item use a primary template, inheriting from \cppinline{false_type}
+    \item use a template specialization, inheriting from \cppinline{true_type}
     \begin{itemize}
       \item which depends on the feature you want to introspect,
             as part of the context where template argument deduction happens
@@ -153,7 +153,7 @@
   \frametitlecpp[17]{Using \texttt{void\_t}}
   \begin{block}{Concept}
     \begin{itemize}
-    \item Maps a sequence of given types to \mintinline{cpp}{void}
+    \item Maps a sequence of given types to \cppinline{void}
     \item Introduced in \cpp17, though trivial to implement in \cpp11
     \item Can be used in specializations to check the validity of an expression
     \end{itemize}
@@ -194,14 +194,14 @@
     \begin{itemize}
     \item Don't implement SFINAE introspection for everything,\\
           use the standard library!
-    \item Standard type traits in header \mintinline{cpp}{<type_traits>}
-    \item They look like \mintinline{cpp}{std::is_*<T>}
-    \item Checks at compile time whether \mintinline{cpp}{T} is
+    \item Standard type traits in header \cppinline{<type_traits>}
+    \item They look like \cppinline{std::is_*<T>}
+    \item Checks at compile time whether \cppinline{T} is
     \begin{itemize}
       \item float, signed, final, abstract, default\_constructible, ...
     \end{itemize}
-    \item Result in nested boolean constant \mintinline{cpp}{value}
-    \item Since \cpp17, variable template versions: \mintinline{cpp}{std::is_*_v<T>}, giving the bool directly
+    \item Result in nested boolean constant \cppinline{value}
+    \item Since \cpp17, variable template versions: \cppinline{std::is_*_v<T>}, giving the bool directly
     \end{itemize}
   \end{block}
   \begin{cppcode*}{}
@@ -218,7 +218,7 @@
       struct enable_if;
     \end{cppcode*}
     \begin{itemize}
-    \item If \mintinline{cpp}{B} is true, has a nested alias \mintinline{cpp}{type} to type \mintinline{cpp}{T}
+    \item If \cppinline{B} is true, has a nested alias \cppinline{type} to type \cppinline{T}
     \item otherwise, has no such alias
     \end{itemize}
   \end{block}
@@ -256,7 +256,7 @@
         }
     }
     \end{cppcode*}
-    Note : using \mintinline{cpp}{if constexpr} would be simpler
+    Note : using \cppinline{if constexpr} would be simpler
   \end{exampleblockGB}
 \end{frame}
 
@@ -316,7 +316,7 @@
   \end{block}
   \begin{goodpractice}{SFINAE vs.\ if constexpr}
     \begin{itemize}
-      \item \mintinline{cpp}{if constexpr} can replace SFINAE in many places.
+      \item \cppinline{if constexpr} can replace SFINAE in many places.
       \item It is usually more readable as well. Use it if you can.
     \end{itemize}
   \end{goodpractice}

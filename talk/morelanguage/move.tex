@@ -18,8 +18,8 @@
   \pause
   \begin{alertblock}{What happens during swap}
     \begin{itemize}
-    \item one allocation and one release for 10k \mintinline{cpp}{int}s
-    \item a copy of 30k \mintinline{cpp}{int}s
+    \item one allocation and one release for 10k \cppinline{int}s
+    \item a copy of 30k \cppinline{int}s
     \end{itemize}
   \end{alertblock}
 \end{frame}
@@ -36,7 +36,7 @@
   \pause
   \begin{block}{What happens during swap}
     \begin{itemize}
-    \item 3 swaps of \mintinline{cpp}{int*} (9 copies)
+    \item 3 swaps of \cppinline{int*} (9 copies)
     \item only some pointers to the underlying storage are swapped
     \end{itemize}
   \end{block}
@@ -84,7 +84,7 @@
     \begin{alertblock}{Pass by copy}
       \begin{itemize}
       \item One unnecessary (large?) allocation and release
-      \item Unnecessary copy of the \mintinline{cpp}{int}s
+      \item Unnecessary copy of the \cppinline{int}s
       \end{itemize}
     \end{alertblock}
     \onslide<4>
@@ -96,7 +96,7 @@
     \onslide<5>
     \begin{alertblock}{So non-const references?}
       \begin{itemize}
-      \item Non-\mintinline{cpp}{const} references could work, but does the outside know that we're changing the vector?
+      \item Non-\cppinline{const} references could work, but does the outside know that we're changing the vector?
       \item Could lead to bugs
       \end{itemize}
     \end{alertblock}
@@ -114,7 +114,7 @@
       \item a new type of reference: rvalue reference
       \begin{itemize}
       \item used for move semantic
-      \item denoted by \mintinline{cpp}{&&}
+      \item denoted by \cppinline{&&}
       \end{itemize}
       \item 2 new special member functions in every class:
       \begin{description}
@@ -176,7 +176,7 @@
   \pause
   \begin{block}{Explicitly request moving}
     \begin{itemize}
-    \item using the \mintinline{cpp}{std::move} function
+    \item using the \cppinline{std::move} function
     \item which is basically a cast to an rvalue reference
     \end{itemize}
     \begin{cppcode*}{firstnumber=6}
@@ -200,21 +200,21 @@
     \item move constructor
       \begin{itemize}
       \item consider delegating to default constructor
-      \item swap \mintinline{cpp}{*this} with parameter (source)
+      \item swap \cppinline{*this} with parameter (source)
       \end{itemize}
-    \item move assignment as \mintinline{cpp}{operator=(T source)}
+    \item move assignment as \cppinline{operator=(T source)}
       \begin{itemize}
       \item parameter passed by value; caller can move or copy into it
-      \item swap parameter with \mintinline{cpp}{*this}
-      \item end of scope: parameter destroys former content of \mintinline{cpp}{*this}
+      \item swap parameter with \cppinline{*this}
+      \item end of scope: parameter destroys former content of \cppinline{*this}
       \end{itemize}
-    \item alternative: move assignment as \mintinline{cpp}{operator=(T&& source)}
+    \item alternative: move assignment as \cppinline{operator=(T&& source)}
       \begin{itemize}
-      \item swap parameter with \mintinline{cpp}{*this}
+      \item swap parameter with \cppinline{*this}
       \item 1 swap less, separate copy assignment operator needed
-      \item former content of \mintinline{cpp}{*this} destroyed with caller argument
+      \item former content of \cppinline{*this} destroyed with caller argument
       \end{itemize}
-    \item swap, move constructor/assignment must be \mintinline{cpp}{noexcept}
+    \item swap, move constructor/assignment must be \cppinline{noexcept}
     \end{itemize}
   \end{block}
 \end{frame}

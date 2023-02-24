@@ -87,8 +87,8 @@
   \frametitlecpp[98]{Object allocation on the heap}
   \begin{block}{On the heap}
     \begin{itemize}
-    \item objects are created by calling \mintinline{cpp}{new} (constructor is called)
-    \item objects are destructed by calling \mintinline{cpp}{delete} (destructor is called)
+    \item objects are created by calling \cppinline{new} (constructor is called)
+    \item objects are destructed by calling \cppinline{delete} (destructor is called)
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -111,9 +111,9 @@
   \frametitlecpp[98]{Array allocation on the heap}
   \begin{block}{Arrays on the heap}
     \begin{itemize}
-    \item arrays of objects are created by calling \mintinline{cpp}{new[]} \\
+    \item arrays of objects are created by calling \cppinline{new[]} \\
       default constructor is called for each object of the array
-    \item arrays of object are destructed by calling \mintinline{cpp}{delete[]} \\
+    \item arrays of object are destructed by calling \cppinline{delete[]} \\
       destructor is called for each object of the array
     \end{itemize}
   \end{block}

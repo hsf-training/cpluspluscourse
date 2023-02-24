@@ -55,7 +55,7 @@
   \begin{block}{The \texttt{const} keyword for member functions}
     \begin{itemize}
     \item indicate that the function does not modify the object
-    \item in other words, \mintinline{cpp}{this} is a pointer to a constant object
+    \item in other words, \cppinline{this} is a pointer to a constant object
     \end{itemize}
   \end{block}
   \begin{cppcode}
@@ -73,8 +73,8 @@
   \frametitlecpp[98]{Method constness}
   \begin{block}{Constness is part of the type}
     \begin{itemize}
-    \item \mintinline{cpp}{T const} and \mintinline{cpp}{T} are different types
-    \item however, \mintinline{cpp}{T} is automatically cast to \mintinline{cpp}{T const} when needed
+    \item \cppinline{T const} and \cppinline{T} are different types
+    \item however, \cppinline{T} is automatically cast to \cppinline{T const} when needed
     \end{itemize}
   \end{block}
   \begin{cppcode}

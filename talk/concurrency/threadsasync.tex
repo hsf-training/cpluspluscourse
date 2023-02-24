@@ -4,10 +4,10 @@
   \frametitle{Basic concurrency \hfill \cpp11/\cpp20}
   \begin{block}{Threading}
     \begin{itemize}
-    \item \cpp11 added \mintinline{cpp}{std::thread} in \mintinline{cpp}{<thread>} header
+    \item \cpp11 added \cppinline{std::thread} in \cppinline{<thread>} header
     \item takes a function as argument of its constructor
     \item must be detached or joined before the main thread terminates
-    \item \cpp20: \mintinline{cpp}{std::jthread} automatically joins at destruction
+    \item \cpp20: \cppinline{std::jthread} automatically joins at destruction
     \end{itemize}
   \end{block}
   \vspace{-1\baselineskip}
@@ -75,8 +75,8 @@
   \pause
   \begin{block}{Practically}
     \begin{itemize}
-    \item \mintinline{cpp}{std::async} function launches an asynchronous task
-    \item \mintinline{cpp}{std::future<T>} allows to retrieve the result
+    \item \cppinline{std::async} function launches an asynchronous task
+    \item \cppinline{std::future<T>} allows to retrieve the result
     \end{itemize}
   \end{block}
   \pause
@@ -100,7 +100,7 @@
       \item[std::launch::deferred] causes lazy execution in current thread
       \end{description}
       \begin{itemize}
-      \item execution starts when \mintinline{cpp}{get()} is called on the returned future
+      \item execution starts when \cppinline{get()} is called on the returned future
       \end{itemize}
     \item default is not specified, but tries to use existing concurrency!
     \end{itemize}
@@ -122,7 +122,7 @@
     \item creates an asynchronous version of any function-like object
       \begin{itemize}
       \item identical arguments
-      \item returns a \mintinline{cpp}{std::future}
+      \item returns a \cppinline{std::future}
       \end{itemize}
     \item provides access to the returned future
     \item associated with threads, gives full control on execution

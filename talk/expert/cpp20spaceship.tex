@@ -4,15 +4,15 @@
   \frametitle{The burden of comparison operators}
   \begin{block}{Motivation}
     \begin{itemize}
-    \item One often needs \mintinline{cpp}{operator<} for a user-defined class
+    \item One often needs \cppinline{operator<} for a user-defined class
       \begin{itemize}
-      \item e.g.\ when sorting a \mintinline{cpp}{std::vector}
-      \item e.g.\ when using it as a key for \mintinline{cpp}{std::set} or \mintinline{cpp}{std::map}
+      \item e.g.\ when sorting a \cppinline{std::vector}
+      \item e.g.\ when using it as a key for \cppinline{std::set} or \cppinline{std::map}
       \end{itemize}
     \item Many other operators are also desirable for completeness
       \begin{itemize}
-      \item \mintinline{cpp}{operator>}, \mintinline{cpp}{operator>=}, \mintinline{cpp}{operator<=}, ...
-      \item often implemented reusing e.g.\ \mintinline{cpp}{operator<} and \mintinline{cpp}{operator==}
+      \item \cppinline{operator>}, \cppinline{operator>=}, \cppinline{operator<=}, ...
+      \item often implemented reusing e.g.\ \cppinline{operator<} and \cppinline{operator==}
       \end{itemize}
     \item Should be defined as hidden friend functions
     \item Much boilerplate code to write. Too much...
@@ -24,7 +24,7 @@
   \frametitlecpp[20]{The three-way comparison operator}
   \begin{block}{Idea}
     \begin{itemize}
-    \item C++20 introduces \mintinline{cpp}{operator<=>}
+    \item C++20 introduces \cppinline{operator<=>}
     \item named the \textbf{three-way comparison operator}.
       \begin{itemize}
       \item unofficially called \textbf{spaceship operator}
@@ -34,11 +34,11 @@
   \end{block}
   \begin{exampleblock}{How it works}
     \begin{itemize}
-    \item it returns \emph{something} which can be compared to \mintinline{cpp}{0}
+    \item it returns \emph{something} which can be compared to \cppinline{0}
       \begin{itemize}
-      \item similar to \mintinline{cpp}{std::strcmp}
+      \item similar to \cppinline{std::strcmp}
       \end{itemize}
-    \item lower, greater, or equal to \mintinline{cpp}{0} means respectively \emph{lower than}, \emph{greater than} and \emph{equivalent to}
+    \item lower, greater, or equal to \cppinline{0} means respectively \emph{lower than}, \emph{greater than} and \emph{equivalent to}
     \item It is provided by default for all built-in types and many types in the standard library
     \end{itemize}
   \end{exampleblock}
@@ -68,13 +68,13 @@
   \frametitlecpp[20]{Different kinds of ordering}
   \begin{block}{The return type of \texttt{operator<=>}}
     \begin{itemize}
-    \item for integers \mintinline{cpp}{operator<=>} returns \mintinline{cpp}{std::strong_ordering}
-    \item \mintinline{cpp}{weak_ordering} and \mintinline{cpp}{partial_ordering} also exist
+    \item for integers \cppinline{operator<=>} returns \cppinline{std::strong_ordering}
+    \item \cppinline{weak_ordering} and \cppinline{partial_ordering} also exist
     \end{itemize}
   \end{block}
   \begin{exampleblock}{3 types of ordering}
     \begin{description}[partial]
-    \item[strong] exactly one test among \mintinline{cpp}{<0}, \mintinline{cpp}{==0}, and \mintinline{cpp}{>0} will return \mintinline{cpp}{true}
+    \item[strong] exactly one test among \cppinline{<0}, \cppinline{==0}, and \cppinline{>0} will return \cppinline{true}
     \item[weak] like strong but two \emph{equivalent} values may differ
       \begin{itemize}
       \item they are however \emph{equivalent} for ranking
@@ -82,8 +82,8 @@
       \end{itemize}
     \item[partial] like weak but some values are incomparable
       \begin{itemize}
-      \item for some values all tests may return \mintinline{cpp}{false}
-      \item e.g.\ compare a floating point to \mintinline{cpp}{NaN}
+      \item for some values all tests may return \cppinline{false}
+      \item e.g.\ compare a floating point to \cppinline{NaN}
       \end{itemize}
     \end{description}
   \end{exampleblock}
@@ -123,12 +123,12 @@
   \frametitlecpp[20]{Compiler-generated comparison operators}
   \begin{block}{For a given user-defined class}
     \begin{itemize}
-    \item defining \mintinline{cpp}{operator<=>} allows the compiler to use it when encountering the comparison operators \mintinline{cpp}{<},  \mintinline{cpp}{<=}, \mintinline{cpp}{>} and \mintinline{cpp}{>=}
+    \item defining \cppinline{operator<=>} allows the compiler to use it when encountering the comparison operators \cppinline{<},  \cppinline{<=}, \cppinline{>} and \cppinline{>=}
     \item of course, one can still provide a custom implementation
-    \item the compiler will \emph{NOT} add a default implementation for \mintinline{cpp}{operator==} and \mintinline{cpp}{operator!=}
+    \item the compiler will \emph{NOT} add a default implementation for \cppinline{operator==} and \cppinline{operator!=}
       \begin{itemize}
       \item as those operators mean \textbf{equal}, rather than \textbf{equivalent}
-      \item if \mintinline{cpp}{operator<=>} does not provide a strong order, it is advised not to define \mintinline{cpp}{operator==}
+      \item if \cppinline{operator<=>} does not provide a strong order, it is advised not to define \cppinline{operator==}
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -138,14 +138,14 @@
   \frametitlecpp[20]{Compiler-generated \texttt{operator<=>}}
   \begin{block}{Default \texttt{operator<=>} implementation}
     \begin{itemize}
-    \item One can ask the compiler to provide a default implementation for \mintinline{cpp}{operator<=>} and/or \mintinline{cpp}{operator==}
+    \item One can ask the compiler to provide a default implementation for \cppinline{operator<=>} and/or \cppinline{operator==}
       \begin{itemize}
-        \item declaring them with ``\mintinline{cpp}{= default}''
+        \item declaring them with ``\cppinline{= default}''
         \item it will compare the member variables, one by one
       \end{itemize}
     \item Can be useful e.g.\ for tuples
     \item Can be wrong, e.g.\ for the Ratio class
-    \item If \mintinline{cpp}{operator<=>} is defaulted and no \mintinline{cpp}{operator==} is defined, then the compiler also provides \mintinline{cpp}{operator==}
+    \item If \cppinline{operator<=>} is defaulted and no \cppinline{operator==} is defined, then the compiler also provides \cppinline{operator==}
     \end{itemize}
   \end{block}
 \end{frame}
@@ -154,12 +154,12 @@
   \frametitlecpp[20]{\texttt{operator<=>} summary}
   \begin{block}{Summary}
     \begin{itemize}
-      \item Defining \mintinline{cpp}{operator<=>} allows you to use \mintinline{cpp}{operator<}, \mintinline{cpp}{operator>}, \mintinline{cpp}{operator<=}, and \mintinline{cpp}{operator>=} for free
+      \item Defining \cppinline{operator<=>} allows you to use \cppinline{operator<}, \cppinline{operator>}, \cppinline{operator<=}, and \cppinline{operator>=} for free
       \item The standard library defines a few kinds of orderings
         \begin{itemize}
           \item strong, weak and partial
         \end{itemize}
-      \item If \mintinline{cpp}{operator<=>} does not define a strong ordering, avoid defining \mintinline{cpp}{operator==}
+      \item If \cppinline{operator<=>} does not define a strong ordering, avoid defining \cppinline{operator==}
     \end{itemize}
   \end{block}
 \end{frame}

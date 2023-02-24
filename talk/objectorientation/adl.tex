@@ -12,12 +12,12 @@
     \begin{itemize}
     \item qualified lookup, for names preceded by `::'
       \begin{itemize}
-      \item here \mintinline{cpp}{cout} and \mintinline{cpp}{endl}
+      \item here \cppinline{cout} and \cppinline{endl}
       \item name is only looked for in given class/namespace/enum class
       \end{itemize}
     \item unqualified lookup
       \begin{itemize}
-      \item here for \mintinline{cpp}{std} and \mintinline{cpp}{operator<<}
+      \item here for \cppinline{std} and \cppinline{operator<<}
       \item name is looked for in a sequence of scopes until found
       \item remaining scopes are not examined
       \end{itemize}
@@ -32,7 +32,7 @@
     \item file (only for global level usage)
     \item current namespace/block, enclosing namespaces/blocks, etc...
     \item current class if any, base classes if any, etc...
-    \item for a call expression (e.g.\ \mintinline{cpp}{f(a, b)} or \mintinline{cpp}{a + b}), Argument Dependent Lookup (ADL)
+    \item for a call expression (e.g.\ \cppinline{f(a, b)} or \cppinline{a + b}), Argument Dependent Lookup (ADL)
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Argument Dependent Lookup (simplified)}
@@ -76,12 +76,12 @@
     \vspace{.2cm}
     Advantages :
     \begin{itemize}
-    \item minimal change in user code, \mintinline{cpp}{func} still feels part of class \mintinline{cpp}{A}
-    \item makes sure \mintinline{cpp}{func} does not touch internal state of \mintinline{cpp}{A}
+    \item minimal change in user code, \cppinline{func} still feels part of class \cppinline{A}
+    \item makes sure \cppinline{func} does not touch internal state of \cppinline{A}
     \end{itemize}
     Notes :
     \begin{itemize}
-    \item non-member \mintinline{cpp}{func} has to be in same namespace as \mintinline{cpp}{A}
+    \item non-member \cppinline{func} has to be in same namespace as \cppinline{A}
     \item please avoid global namespace
     \end{itemize}
   \end{block}
@@ -110,7 +110,7 @@
     \vspace{.2cm}
     Advantages :
     \begin{itemize}
-    \item allows to use \mintinline{cpp}{std::swap} by default
+    \item allows to use \cppinline{std::swap} by default
     \item but benefits from any dedicated overload
     \end{itemize}
     \begin{columns}
@@ -135,7 +135,7 @@
       \begin{itemize}
         \item Without any declaration outside the class
       \end{itemize}
-      \item They are \emph{not} member functions (no access to \mintinline{cpp}{this})
+      \item They are \emph{not} member functions (no access to \cppinline{this})
     \end{itemize}
   \end{block}
   \begin{exampleblock}{\texttt{operator<<} as hidden friend}
@@ -160,7 +160,7 @@
   \frametitlecpp[11]{Hidden Friends and ADL}
   \begin{block}{Advantages of hidden friends}
     \begin{itemize}
-      \item Are \emph{only} found via ADL, e.g.\ \mintinline{cpp}{std::cout << complex;}
+      \item Are \emph{only} found via ADL, e.g.\ \cppinline{std::cout << complex;}
       \item Compiler needs to consider less functions during ordinary name lookup (faster compilation)
       \item Avoid accidental implicit conversions
     \end{itemize}
@@ -188,28 +188,28 @@
     \begin{itemize}
       \item Must declare in-class, as member operators:
       \begin{itemize}
-        \item \mintinline{cpp}{operator=}, \mintinline{cpp}{operator()}, \mintinline{cpp}{operator[]}, \mintinline{cpp}{operator->}
+        \item \cppinline{operator=}, \cppinline{operator()}, \cppinline{operator[]}, \cppinline{operator->}
       \end{itemize}
       \item Prefer in-class declaration, as member operators:
       \begin{itemize}
-        \item compound assignment operators, e.g.\ \mintinline{cpp}{operator+=}
+        \item compound assignment operators, e.g.\ \cppinline{operator+=}
         \item unary operators
         \begin{itemize}
-          \item e.g.\ \mintinline{cpp}{operator++}, \mintinline{cpp}{operator--}, \mintinline{cpp}{operator!}, unary \mintinline{cpp}{operator-} (negate), dereference operator \mintinline{cpp}{operator*}
+          \item e.g.\ \cppinline{operator++}, \cppinline{operator--}, \cppinline{operator!}, unary \cppinline{operator-} (negate), dereference operator \cppinline{operator*}
         \end{itemize}
       \end{itemize}
       \item Prefer definition in-class as hidden friends:
       \begin{itemize}
-        \item binary arithmetic operators, e.g.\ \mintinline{cpp}{operator+}, \mintinline{cpp}{operator|}
-        \item binary logical operators, e.g.\ \mintinline{cpp}{operator<}
-        \item stream operators, e.g.\ \mintinline{cpp}{operator<<}
+        \item binary arithmetic operators, e.g.\ \cppinline{operator+}, \cppinline{operator|}
+        \item binary logical operators, e.g.\ \cppinline{operator<}
+        \item stream operators, e.g.\ \cppinline{operator<<}
       \end{itemize}
       \item Avoid overloading:
       \begin{itemize}
-        \item Address-of \mintinline{cpp}{operator&}
-        \item Boolean logic operators, e.g.\ \mintinline{cpp}{operator||}
-        \item Comma operator \mintinline{cpp}{operator,}
-        \item Member dereference operators \mintinline{cpp}{operator->*}
+        \item Address-of \cppinline{operator&}
+        \item Boolean logic operators, e.g.\ \cppinline{operator||}
+        \item Comma operator \cppinline{operator,}
+        \item Member dereference operators \cppinline{operator->*}
       \end{itemize}
     \end{itemize}
   \end{goodpractice}

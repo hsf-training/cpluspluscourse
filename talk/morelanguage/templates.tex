@@ -34,7 +34,7 @@
       \item they need to be defined before used
       \begin{itemize}
         \item so all template code must typically be in headers
-        \item or declared to be available externally (\mintinline{cpp}{extern template})
+        \item or declared to be available externally (\cppinline{extern template})
       \end{itemize}
       \item this may lead to longer compilation times and bigger binaries
     \end{itemize}
@@ -109,8 +109,8 @@
   \begin{block}{\texttt{typename} vs. \texttt{class} keyword}
     \begin{itemize}
       \item for declaring a template type parameter,
-            the \mintinline{cpp}{typename} and \mintinline{cpp}{class} keyword are semantically equivalent
-      \item template template parameters required \cpp17 for \mintinline{cpp}{typename}
+            the \cppinline{typename} and \cppinline{class} keyword are semantically equivalent
+      \item template template parameters required \cpp17 for \cppinline{typename}
     \end{itemize}
   \end{block}
   \small
@@ -156,7 +156,7 @@
   \begin{block}{template parameters can also be values}
     \begin{itemize}
     \item integral types, pointer, enums in \cpp98
-    \item \mintinline{cpp}{auto} in \cpp17
+    \item \cppinline{auto} in \cpp17
     \item literal types (includes floating points) in \cpp20
     \end{itemize}
   \end{block}

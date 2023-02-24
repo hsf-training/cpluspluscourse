@@ -53,7 +53,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
   \frametitlecpp[20]{Basic requirements}
   \begin{block}{A new keyword}
     \begin{itemize}
-      \item The keyword \mintinline{cpp}{requires} lets us define various constraints.
+      \item The keyword \cppinline{requires} lets us define various constraints.
     \end{itemize}
   \end{block}
   \begin{exampleblockGB}{With concepts}{https://godbolt.org/z/dWvM9Pvee}{concept failure}
@@ -133,7 +133,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \frametitlecpp[20]{Some usages of concepts}
     \begin{block}{Constrained template parameters}
       \begin{itemize}
-        \item a concept can replace \mintinline{cpp}{typename} in a template parameter lists
+        \item a concept can replace \cppinline{typename} in a template parameter lists
       \end{itemize}
     \end{block}
     \begin{exampleblock}{}
@@ -147,7 +147,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \end{exampleblock}
     \begin{block}{Constrained variables}
       \begin{itemize}
-        \item a concept can be used together with \mintinline{cpp}{auto} to impose requirements on the type of a variable
+        \item a concept can be used together with \cppinline{auto} to impose requirements on the type of a variable
       \end{itemize}
     \end{block}
     \begin{exampleblock}{Example code}
@@ -170,7 +170,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
         \end{itemize}
         \item the template head becomes obsolete
         \item the function is still a template though!
-        \item unconstrained \mintinline{cpp}{auto} parameters are allowed as well
+        \item unconstrained \cppinline{auto} parameters are allowed as well
       \end{itemize}
     \end{block}
     \begin{exampleblock}{}
@@ -215,7 +215,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \begin{block}{Concepts as Boolean operators}
       \begin{itemize}
         \item Concepts can be used wherever a \mintinline{c}{bool} is expected
-        \item they can appear in \mintinline{cpp}{if constexpr} conditions
+        \item they can appear in \cppinline{if constexpr} conditions
           \begin{itemize}
           \item since they are evaluated at compile-time
           \end{itemize}
@@ -241,7 +241,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
 \begin{frame}[fragile]
     \frametitlecpp[20]{Advanced requirements overview}
     \begin{block}{\texttt{requires} as an expression}
-        \mintinline{cpp}{requires} can express more than basic requirements. It can
+        \cppinline{requires} can express more than basic requirements. It can
         \begin{itemize}
             \item include other basic requirements
             \item list expressions that must be valid

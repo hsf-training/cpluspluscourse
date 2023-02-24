@@ -5,9 +5,9 @@
   \begin{block}{Communicating between threads}
     \begin{itemize}
       \item Take the case where threads are waiting for other thread(s)
-      \item \mintinline{cpp}{std::condition_variable}
+      \item \cppinline{std::condition_variable}
       \begin{itemize}
-        \item from \mintinline{cpp}{<condition_variable>} header
+        \item from \cppinline{<condition_variable>} header
       \end{itemize}
       \item Allows for a thread to sleep (= conserve CPU time) until a given condition is satisfied
     \end{itemize}
@@ -16,12 +16,12 @@
   \begin{block}{Usage}
     \begin{itemize}
     \item Use RAII-style locks to protect shared data
-    \item \mintinline{cpp}{wait()} will block until the condition is met
+    \item \cppinline{wait()} will block until the condition is met
       \begin{itemize}
       \item you can have several waiters sharing the same mutex
       \end{itemize}
-    \item \mintinline{cpp}{notify_one()} will wake up one waiter
-    \item \mintinline{cpp}{notify_all()} will wake up all waiters
+    \item \cppinline{notify_one()} will wake up one waiter
+    \item \cppinline{notify_all()} will wake up all waiters
     \end{itemize}
   \end{block}
 \end{frame}
@@ -61,16 +61,16 @@
   \begin{block}{Mechanics of wait}
     \begin{itemize}
       \item Many threads are waiting for shared data
-      \item Pass a \mintinline{cpp}{unique_lock} and a predicate for wakeup to \mintinline{cpp}{wait()}
-      \item \mintinline{cpp}{wait()} sends threads to sleep while predicate is \mintinline{cpp}{false}
-      \item \mintinline{cpp}{wait()} will only lock when necessary; unlocked while sleeping
-      \item Threads might wake up spuriously, but \mintinline{cpp}{wait()} returns only when lock available \emph{and} predicate \mintinline{cpp}{true}
+      \item Pass a \cppinline{unique_lock} and a predicate for wakeup to \cppinline{wait()}
+      \item \cppinline{wait()} sends threads to sleep while predicate is \cppinline{false}
+      \item \cppinline{wait()} will only lock when necessary; unlocked while sleeping
+      \item Threads might wake up spuriously, but \cppinline{wait()} returns only when lock available \emph{and} predicate \cppinline{true}
     \end{itemize}
   \end{block}
   \onslide<2->
   \begin{block}{Waiting / waking up}
     \begin{itemize}
-      \item \mintinline{cpp}{notify_all()} is called, threads wake up
+      \item \cppinline{notify_all()} is called, threads wake up
       \item Threads try to lock mutex, and evaluate predicate
       \item One thread succeeds to acquire mutex, starts data processing
       \item {\color{red} Problem}: Thread holds mutex now, other threads are blocked!

@@ -8,7 +8,7 @@
       \begin{itemize}
         \item ``Here, `a' should always be positive''
       \end{itemize}
-      \item This can be checked using \mintinline{cpp}{assert}
+      \item This can be checked using \cppinline{assert}
       \item The program will be aborted if the assertion fails
     \end{itemize}
   \end{block}
@@ -44,7 +44,7 @@ Abort trap: 6
       \item Prefer handling user-facing errors with helpful error messages/exceptions
       \item Assertions can impact the speed of a program
       \begin{itemize}
-        \item Assertions are disabled when the macro \mintinline{cpp}{NDEBUG} is defined
+        \item Assertions are disabled when the macro \cppinline{NDEBUG} is defined
         \item Decide if you want to disable them when you release code
       \end{itemize}
     \end{itemize}
@@ -67,7 +67,7 @@ Abort trap: 6
   \frametitlecpp[11]{Static Assert}
   \begin{block}{Checking invariants at compile time}
     \begin{itemize}
-      \item To check invariants at compile time, use \mintinline{cpp}{static_assert}
+      \item To check invariants at compile time, use \cppinline{static_assert}
       \item The assertion can be any constant expression (see later)
       \item The message argument is optional in \cpp 17 and later
     \end{itemize}

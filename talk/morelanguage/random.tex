@@ -10,7 +10,7 @@
         \item distributions to shape these into numbers
         \item access to (potential) hardware entropy
       \end{itemize}
-      \item All found in header \mintinline{cpp}{<random>}
+      \item All found in header \cppinline{<random>}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Example}
@@ -29,14 +29,14 @@
   \begin{block}{Engines}
     \begin{itemize}
       \item Generate random bits (as integers), depending on algorithm
-      \item Can be seeded via constructor or \mintinline{cpp}{seed()}
+      \item Can be seeded via constructor or \cppinline{seed()}
       \item Algorithms:
-        {\footnotesize \mintinline{cpp}{linear_congruential_engine}, \mintinline{cpp}{mersenne_twister_engine}, \mintinline{cpp}{subtract_with_carry_engine}}
+        {\footnotesize \cppinline{linear_congruential_engine}, \cppinline{mersenne_twister_engine}, \cppinline{subtract_with_carry_engine}}
       \item Adaptors:
-        {\footnotesize \mintinline{cpp}{discard_block_engine}, \mintinline{cpp}{independent_bits_engine}, \mintinline{cpp}{shuffle_order_engine}}
+        {\footnotesize \cppinline{discard_block_engine}, \cppinline{independent_bits_engine}, \cppinline{shuffle_order_engine}}
       \item Aliases:
-        {\footnotesize \mintinline{cpp}{minstd_rand0}, \mintinline{cpp}{minstd_rand}, \mintinline{cpp}{mt19937}, \mintinline{cpp}{mt19937_64}, \mintinline{cpp}{ranlux24}, \mintinline{cpp}{ranlux48}, \mintinline{cpp}{knuth_b}} (use these)
-      \item \mintinline{cpp}{std::default_random_engine} aliases one of the above
+        {\footnotesize \cppinline{minstd_rand0}, \cppinline{minstd_rand}, \cppinline{mt19937}, \cppinline{mt19937_64}, \cppinline{ranlux24}, \cppinline{ranlux48}, \cppinline{knuth_b}} (use these)
+      \item \cppinline{std::default_random_engine} aliases one of the above
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Engine creation with seed}
@@ -102,21 +102,21 @@
   \frametitlecpp[98]{C random library}
   \begin{block}{C random library}
     \begin{itemize}
-      \item The C library (\mintinline{cpp}{<cstdlib>}) offers a primitive PRNG:
-      \item \mintinline{cpp}{rand()} returns random int between 0 and \mintinline{cpp}{RAND_MAX} (incl.)
-      \item \mintinline{cpp}{srand(seed)} sets the global seed
+      \item The C library (\cppinline{<cstdlib>}) offers a primitive PRNG:
+      \item \cppinline{rand()} returns random int between 0 and \cppinline{RAND_MAX} (incl.)
+      \item \cppinline{srand(seed)} sets the global seed
     \end{itemize}
   \end{block}
   \begin{alertblock}{Disadvantages}
     \begin{itemize}
-      \item Seeding is not thread-safe; \mintinline{cpp}{rand()} may be.
+      \item Seeding is not thread-safe; \cppinline{rand()} may be.
       \item Returned numbers have small, implementation-defined range
       \item No guarantee on quality
       \item Mapping a random number to a custom range is hard
-      \item E.g.: \mintinline{cpp}{rand() % 10} yields biased numbers and is wrong!
+      \item E.g.: \cppinline{rand() % 10} yields biased numbers and is wrong!
     \end{itemize}
   \end{alertblock}
   \begin{goodpracticeWithShortcut}{Strongly avoid the C random library}{C random library}
-    Use the \cpp11 facilities from the \mintinline{cpp}{<random>} header
+    Use the \cpp11 facilities from the \cppinline{<random>} header
   \end{goodpracticeWithShortcut}
 \end{frame}

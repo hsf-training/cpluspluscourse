@@ -167,7 +167,7 @@
   \begin{block}{functors / function objects}
     \begin{itemize}
       \item generic utility functions
-      \item as structs with \mintinline{cpp}{operator()}
+      \item as structs with \cppinline{operator()}
       \item mostly useful to be passed to STL algorithms
     \item implemented independently of
       \begin{itemize}
@@ -224,7 +224,7 @@
   \begin{goodpracticeWithShortcut}{Use STL algorithms with lambdas}{STL and lambdas}
     \begin{itemize}
       \item Prefer lambdas over functors when using the STL
-      \item Avoid binders like \mintinline{cpp}{std::bind2nd}, \mintinline{cpp}{std::ptr_fun}, etc.
+      \item Avoid binders like \cppinline{std::bind2nd}, \cppinline{std::ptr_fun}, etc.
     \end{itemize}
   \end{goodpracticeWithShortcut}
 \end{frame}

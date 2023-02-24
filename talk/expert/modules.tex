@@ -55,7 +55,7 @@
   \begin{block}{Exporting declarations}
     \begin{itemize}
       \item By default, everything inside a module is internal
-      \item Declarations become visible when declared with \mintinline{cpp}{export} in the primary module interface
+      \item Declarations become visible when declared with \cppinline{export} in the primary module interface
       \item You can only export entities at namespace scope (including the global scope)
       \item You cannot export entities with internal linkage (declared static or inside anonymous namespace)
       \item You cannot export aliases to non-exported types
@@ -165,7 +165,7 @@
   \end{alertblock}
   \begin{block}{}
     \begin{itemize}
-    \item Headers included after \mintinline{cpp}{export module} add to the module's preamble and purview
+    \item Headers included after \cppinline{export module} add to the module's preamble and purview
     \item This is usually not what you want
     \end{itemize}
   \end{block}
@@ -341,11 +341,11 @@
   % see: Minimal module support for the standard library http://wg21.link/P2412
   \begin{block}{Standard library modules}
     \begin{itemize}
-      \item Use \mintinline{cpp}|import std;| for the entire C++ standard library. Basically everything in namespace \mintinline{cpp}|std|.
+      \item Use \cppinline|import std;| for the entire C++ standard library. Basically everything in namespace \cppinline|std|.
       \begin{itemize}
-        \item E.g.\ \mintinline{cpp}{memcpy(a, b, n);}, \mintinline{cpp}{sqrt(val);}, \mintinline{cpp}{uint32_t i;} will not compile. You need to prefix \mintinline{cpp}{std::}.
+        \item E.g.\ \cppinline{memcpy(a, b, n);}, \cppinline{sqrt(val);}, \cppinline{uint32_t i;} will not compile. You need to prefix \cppinline{std::}.
       \end{itemize}
-      \item Use \mintinline{cpp}|import std.compat;| for the entire C and C++ standard library
+      \item Use \cppinline|import std.compat;| for the entire C and C++ standard library
       \item No macros are exported. For these, you still need to include the corresponding headers.
       \begin{cppcode*}{gobble=4}
         import std;        // everything C++
@@ -402,7 +402,7 @@
         \item I.e.\ the header does not require setup of preprocessor state before inclusion
       \end{itemize}
       \item All \cpp standard library headers are importable
-      \item C wrapper headers (\mintinline{cpp}{<c*>}) are not
+      \item C wrapper headers (\cppinline{<c*>}) are not
       \end{itemize}
     \end{block}
     \begin{block}{Include translation}
@@ -595,7 +595,7 @@
       \begin{itemize}
         \item build2 supports everything g++ does
         \item MSBuild figures out dependencies and build order automatically (Windows/Visual Studio only)
-        \item \mintinline{cpp}{g++ a.cpp b.cpp ...} ``just works'', must be one line though
+        \item \cppinline{g++ a.cpp b.cpp ...} ``just works'', must be one line though
         \item GCC uses a \href{https://wg21.link/P1184}{module mapper} to resolve imports, which specifies a protocol and uses a central server for module maintenance
         \item \href{https://wg21.link/p1602}{Experimental extensions to GNU make} exist to grow dependency graph on the fly while modules are discovered
         \item No support in cmake (3.23) yet
@@ -610,14 +610,14 @@
         \item By default, g++ caches compiled module interfaces (CMI, i.e.\ BMI) in subdirectory \texttt{./gcm.cache}
         \item Each module needs to be built before it can be imported
         \begin{itemize}
-          \item {\footnotesize \mintinline{cpp}{g++ -std=c++20 -fmodules-ts -c ratio.cpp -o ratio.o}}
+          \item {\footnotesize \cppinline{g++ -std=c++20 -fmodules-ts -c ratio.cpp -o ratio.o}}
           \item Generates \texttt{ratio.o} and \texttt{./gcm.cache/ratio.gcm} (CMI)
         \end{itemize}
         \item Each header unit needs to be built before it can be imported
         \begin{itemize}
-          \item {\footnotesize \mintinline{cpp}{g++ -std=c++20 -fmodules-ts -x c++-system-header vector}}
+          \item {\footnotesize \cppinline{g++ -std=c++20 -fmodules-ts -x c++-system-header vector}}
           \item Generates e.g.\ \texttt{./gcm.cache/usr/include/c++/11/vector.gcm} (CMI)
-          \item {\footnotesize \mintinline{cpp}{g++ -std=c++20 -fmodules-ts -x c++-header ratio.h}}
+          \item {\footnotesize \cppinline{g++ -std=c++20 -fmodules-ts -x c++-header ratio.h}}
           \item Generates e.g.\ \texttt{./gcm.cache/,/ratio.h.gcm} (CMI)
         \end{itemize}
       \end{itemize}
@@ -630,7 +630,7 @@
       \begin{itemize}
         \item Start writing importable headers (no macro dependencies)
         \begin{itemize}
-          \item This allows dual use: \mintinline{cpp}{#include} before \cpp20 and \mintinline{cpp}{import} with \cpp20
+          \item This allows dual use: \cppinline{#include} before \cpp20 and \cppinline{import} with \cpp20
         \end{itemize}
         \item Watch progress on module support in your build system
       \end{itemize}
@@ -639,7 +639,7 @@
       \begin{itemize}
         \item Start importing headers when \cpp20 is available
         \item Start writing modules when all users of your code have \cpp20
-        \item Start using \mintinline{cpp}{import std;} when \cpp23 is available
+        \item Start using \cppinline{import std;} when \cpp23 is available
       \end{itemize}
     \end{exampleblock}
 \end{frame}
@@ -666,7 +666,7 @@
   \begin{exercise}{Header units}
     \begin{itemize}
       \item go to \texttt{code/header\_units}
-      \item convert all \mintinline{cpp}{#include}s into header unit \mintinline{cpp}{import}s
+      \item convert all \cppinline{#include}s into header unit \cppinline{import}s
     \end{itemize}
   \end{exercise}
 \end{frame}

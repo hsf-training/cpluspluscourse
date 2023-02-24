@@ -16,8 +16,8 @@
   \end{block}
   Example usage :
   \begin{itemize}
-  \item \mintinline{cpp}{emplace_back}
-  \item \mintinline{cpp}{make_unique}
+  \item \cppinline{emplace_back}
+  \item \cppinline{make_unique}
   \end{itemize}
 \end{frame}
 
@@ -33,7 +33,7 @@
   \end{block}
   \begin{alertblock}{What about references?}
     \begin{itemize}
-      \item what if \mintinline{cpp}{func} takes a reference to avoid copies?
+      \item what if \cppinline{func} takes a reference to avoid copies?
       \item wrapper would force a copy and we fail to use references
     \end{itemize}
 
@@ -55,7 +55,7 @@
     \end{cppcode*}
   \end{block}
   \begin{alertblock}{}
-     and \mintinline{cpp}{const T&} won't work when passing something non const
+     and \cppinline{const T&} won't work when passing something non const
   \end{alertblock}
 \end{frame}
 
@@ -118,14 +118,14 @@
   \end{block}
   \begin{block}{\cpp11 added rvalue-references}
     \begin{itemize}
-      \item More combinations possible, like: \mintinline{cpp}{int&& &}, or \mintinline{cpp}{int&& &&}
+      \item More combinations possible, like: \cppinline{int&& &}, or \cppinline{int&& &&}
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Reference collapsing}
     \begin{itemize}
-      \item Rule: When multiple references are involved, \mintinline{cpp}{&} always wins
-      \item \mintinline{cpp}{T&& &, T& &&, T& &} $\rightarrow$ \mintinline{cpp}{T&}
-      \item \mintinline{cpp}{T&& &&} $\rightarrow$ \mintinline{cpp}{T&&}
+      \item Rule: When multiple references are involved, \cppinline{&} always wins
+      \item \cppinline{T&& &, T& &&, T& &} $\rightarrow$ \cppinline{T&}
+      \item \cppinline{T&& &&} $\rightarrow$ \cppinline{T&&}
     \end{itemize}
   \end{exampleblock}
 \end{frame}
@@ -140,17 +140,17 @@
   \end{exampleblock}
   \begin{block}{Forwarding reference}
     \begin{itemize}
-      \item Next to a template parameter, that can be deduced, \mintinline{cpp}{&&} is not an rvalue reference, but a ``forwarding reference''
+      \item Next to a template parameter, that can be deduced, \cppinline{&&} is not an rvalue reference, but a ``forwarding reference''
       \begin{itemize}
         \item aka.\ ``universal reference''
       	\item So, this applies only to functions
       \end{itemize}
       \item The template parameter is additionally allowed to be deduced as an lvalue reference, and reference collapsing proceeds:
       \begin{itemize}
-        \item if an lvalue of type \mintinline{cpp}{U} is given, \mintinline{cpp}{T} is deduced as \mintinline{cpp}{U&} and the parameter type \mintinline{cpp}{U& &&} collapses to \mintinline{cpp}{U&}
-        \item otherwise (rvalue), T is deduced as \mintinline{cpp}{U}
+        \item if an lvalue of type \cppinline{U} is given, \cppinline{T} is deduced as \cppinline{U&} and the parameter type \cppinline{U& &&} collapses to \cppinline{U&}
+        \item otherwise (rvalue), T is deduced as \cppinline{U}
         \begin{itemize}
-          \item and forms the parameter type \mintinline{cpp}{U&&}
+          \item and forms the parameter type \cppinline{U&&}
         \end{itemize}
       \end{itemize}
     \end{itemize}
@@ -223,7 +223,7 @@
   \begin{block}{\texttt{std::remove\_reference}}
     \begin{itemize}
     \item Type trait to remove reference from a type
-    \item If \mintinline{cpp}{T} is a reference type, \mintinline{cpp}{remove_reference_t<T>} is the type referred to by \mintinline{cpp}{T}, otherwise it is \mintinline{cpp}{T}.
+    \item If \cppinline{T} is a reference type, \cppinline{remove_reference_t<T>} is the type referred to by \cppinline{T}, otherwise it is \cppinline{T}.
     \end{itemize}
   \end{block}
   \begin{block}{}
@@ -265,9 +265,9 @@
   \end{block}
   \begin{block}{}
     \begin{itemize}
-    \item if \mintinline{cpp}{T} is \mintinline{cpp}{int}, selects 2., returns \mintinline{cpp}{int&&}
-    \item if \mintinline{cpp}{T} is \mintinline{cpp}{int&}, selects 1., returns \mintinline{cpp}{int& &&}, i.e.\ \mintinline{cpp}{int&}
-    \item if \mintinline{cpp}{T} is \mintinline{cpp}{int&&}, selects 2., returns \mintinline{cpp}{int&& &&}, i.e.\ \mintinline{cpp}{int&&}
+    \item if \cppinline{T} is \cppinline{int}, selects 2., returns \cppinline{int&&}
+    \item if \cppinline{T} is \cppinline{int&}, selects 1., returns \cppinline{int& &&}, i.e.\ \cppinline{int&}
+    \item if \cppinline{T} is \cppinline{int&&}, selects 2., returns \cppinline{int&& &&}, i.e.\ \cppinline{int&&}
     \end{itemize}
   \end{block}
 \end{frame}
@@ -284,21 +284,21 @@
     \end{exampleblock}
   \begin{block}{}
     \begin{itemize}
-    \item if we pass an rvalue reference \mintinline{cpp}{U&&} to wrapper
+    \item if we pass an rvalue reference \cppinline{U&&} to wrapper
       \begin{itemize}
-      \item \mintinline{cpp}{T=U}, arg is of type \mintinline{cpp}{U&&}
-      \item func will be called with a \mintinline{cpp}{U&&}
+      \item \cppinline{T=U}, arg is of type \cppinline{U&&}
+      \item func will be called with a \cppinline{U&&}
       \end{itemize}
-    \item if we pass an lvalue reference \mintinline{cpp}{U&} to wrapper
+    \item if we pass an lvalue reference \cppinline{U&} to wrapper
       \begin{itemize}
-      \item \mintinline{cpp}{T=U&}, arg is of type \mintinline{cpp}{U&} (reference collapsing)
-      \item func will be called with a \mintinline{cpp}{U&}
+      \item \cppinline{T=U&}, arg is of type \cppinline{U&} (reference collapsing)
+      \item func will be called with a \cppinline{U&}
       \end{itemize}
-    \item if we pass a plain \mintinline{cpp}{U} (rvalue) to wrapper
+    \item if we pass a plain \cppinline{U} (rvalue) to wrapper
       \begin{itemize}
-      \item \mintinline{cpp}{T=U}, arg is of type \mintinline{cpp}{U&&} (no copy in wrapper)
-      \item func will be called with a \mintinline{cpp}{U&&}
-      \item if func takes a plain \mintinline{cpp}{U}, copy happens there, as expected
+      \item \cppinline{T=U}, arg is of type \cppinline{U&&} (no copy in wrapper)
+      \item func will be called with a \cppinline{U&&}
+      \item if func takes a plain \cppinline{U}, copy happens there, as expected
       \end{itemize}
     \end{itemize}
   \end{block}

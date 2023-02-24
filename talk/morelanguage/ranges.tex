@@ -5,15 +5,15 @@
   \begin{block}{The range concept}
     \begin{itemize}
     \item A range is a sequence of items that you can iterate over
-    \item It must provide iterators to its beginning and end, obtainable via \mintinline{cpp}{std::range::begin} and \mintinline{cpp}{std::range::end}
-    \item Range concepts are located in \mintinline{cpp}{std::ranges} namespace
+    \item It must provide iterators to its beginning and end, obtainable via \cppinline{std::range::begin} and \cppinline{std::range::end}
+    \item Range concepts are located in \cppinline{std::ranges} namespace
     \item All STL containers are ranges
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Variations on ranges}
     There are actually different types of ranges
     \begin{itemize}
-    \item \mintinline{cpp}{input_range}, \mintinline{cpp}{output_range}, \mintinline{cpp}{forward_range}, \mintinline{cpp}{bidirectional_range}, \mintinline{cpp}{random_access_range}, \mintinline{cpp}{contiguous_range}
+    \item \cppinline{input_range}, \cppinline{output_range}, \cppinline{forward_range}, \cppinline{bidirectional_range}, \cppinline{random_access_range}, \cppinline{contiguous_range}
     \item corresponding to the different iterator categories
     \end{itemize}
   \end{exampleblock}
@@ -23,10 +23,10 @@
   \frametitlecpp[20]{Views}
   \begin{block}{The view concept}
     \begin{itemize}
-    \item A \mintinline{cpp}{view} is a non-owning object built from a range or another view after applying some range adaptor(s)
+    \item A \cppinline{view} is a non-owning object built from a range or another view after applying some range adaptor(s)
     \item The time complexity to copy, move, assign is constant
-    \item Range adaptors can be applied/chained with \mintinline{cpp}{|} and are lazy
-    \item They live in the \mintinline{cpp}{std::views} namespace
+    \item Range adaptors can be applied/chained with \cppinline{|} and are lazy
+    \item They live in the \cppinline{std::views} namespace
     \item They introduce easy functional programming to the STL
     \end{itemize}
   \end{block}
@@ -59,7 +59,7 @@
     \item[keys/values] for pair like views, takes 1st/2nd element of each pair
     \end{description}
   \end{block}
-  Remember you can combine them via (\mintinline{cpp}{|})
+  Remember you can combine them via (\cppinline{|})
 \end{frame}
 
 \begin{frame}[fragile]
@@ -67,7 +67,7 @@
   \begin{block}{Views are lazy}
     \begin{itemize}
     \item Computation is only triggered when iterating
-    \item And can be stopped by e.g. \mintinline{cpp}{take}
+    \item And can be stopped by e.g. \cppinline{take}
     \item Here, the minimal number of iterations is performed
     \end{itemize}
   \end{block}
