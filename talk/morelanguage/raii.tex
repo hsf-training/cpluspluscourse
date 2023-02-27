@@ -121,7 +121,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{std::unique\_ptr}
+  \frametitlecpp[11]{\texttt{std::unique\_ptr}}
   \begin{block}{A RAII pointer}
     \begin{itemize}
     \item wraps a regular pointer
@@ -174,7 +174,7 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[14]{std::make\_unique}
+  \frametitlecpp[14]{\texttt{std::make\_unique}}
   \begin{block}{}
     \begin{itemize}
       \item directly allocates the object managed by a \mintinline{cpp}{unique_ptr}
@@ -183,7 +183,7 @@ of 'std::unique_ptr<Foo>'
     \end{itemize}
   \end{block}
   \pause
-  \begin{exampleblock}{make\_unique usage}
+  \begin{exampleblock}{\texttt{make\_unique} usage}
     \begin{cppcode*}{}
       // allocation of one Foo object,
       // calls new Foo(arg1, arg2) internally
@@ -205,7 +205,7 @@ of 'std::unique_ptr<Foo>'
 \begin{advanced}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Arrays and unique\_ptr}
+  \frametitlecpp[11]{Arrays and \texttt{unique\_ptr}}
   \begin{block}{Dynamic arrays}
     \begin{itemize}
       \item \mintinline{cpp}{unique_ptr} can wrap arrays
@@ -255,7 +255,7 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{unique\_ptr usage summary}
+  \frametitlecpp[11]{\texttt{unique\_ptr} usage summary}
   \begin{block}{It's about lifetime management}
     \begin{itemize}
     \item Use \mintinline{cpp}{unique_ptr} in functions taking part in lifetime management
@@ -265,8 +265,8 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{shared\_ptr, make\_shared}
-  \begin{block}{shared\_ptr : a reference counting pointer}
+  \frametitlecpp[11]{\texttt{shared\_ptr}, \texttt{make\_shared}}
+  \begin{block}{\mintinline{cpp}{shared_ptr} : a reference counting pointer}
     \begin{itemize}
     \item wraps a regular pointer similar to \mintinline{cpp}{unique_ptr}
     \item has move and copy semantic
@@ -277,7 +277,7 @@ of 'std::unique_ptr<Foo>'
     \item reference counting is thread-safe, therefore a bit costly
     \end{itemize}
   \end{block}
-  \begin{block}{make\_shared : creates a shared\_ptr}
+  \begin{block}{\texttt{make\_shared} : creates a \texttt{shared\_ptr}}
     \begin{cppcode*}{}
       {
         auto sp = std::make_shared<Foo>(); // #ref = 1
@@ -291,8 +291,8 @@ of 'std::unique_ptr<Foo>'
 \begin{advanced}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{weak\_ptr}
-  \begin{block}{weak\_ptr: a non-owning observer}
+  \frametitlecpp[11]{\texttt{weak\_ptr}}
+  \begin{block}{\texttt{weak\_ptr}: a non-owning observer}
     \small
     \begin{itemize}
     \item Sometimes want to observe resources without keeping them alive
@@ -323,8 +323,8 @@ of 'std::unique_ptr<Foo>'
 \end{advanced}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Quiz: shared\_ptr in use}
-  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org/z/vM35Y6qEW}{shared\_ptr quiz}
+  \frametitlecpp[11]{Quiz: \texttt{shared\_ptr} in use}
+  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org/z/vM35Y6qEW}{\texttt{shared\_ptr} quiz}
     \small
     \begin{cppcode*}{gobble=2}
       auto shared = std::make_shared<int>(100);
@@ -353,8 +353,8 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Quiz: shared\_ptr in use}
-  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org/z/vM35Y6qEW}{shared\_ptr quiz}
+  \frametitlecpp[11]{Quiz: \texttt{shared\_ptr} in use}
+  \begin{exampleblock}{What is the output of this code?}
     \small
     % escapeinside seems to break gobble, so need to un-indent manually
     \begin{cppcode*}{escapeinside=@@}
@@ -371,7 +371,7 @@ print();
 }
 print();
       \end{cppcode*}
-  \end{exampleblockGB}
+  \end{exampleblock}
   \begin{block}{}
     \small
     \begin{minted}[autogobble=true]{bash}
@@ -385,8 +385,8 @@ print();
 \begin{advanced}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Quiz: shared\_ptr and weak\_ptr in use}
-  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org}{shared\_ptr vs.\ weak\_ptr quiz}
+  \frametitlecpp[11]{Quiz: \texttt{shared\_ptr} and \texttt{weak\_ptr} in use}
+  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org}{\texttt{shared\_ptr} vs.\ \texttt{weak\_ptr} quiz}
     \small
     \begin{cppcode*}{gobble=2}
       auto shared = std::make_shared<int>(100);
@@ -421,7 +421,7 @@ print();
     \begin{itemize}
     \item go to code/smartPointers
     \item compile and run the program. It doesn't generate any output.
-    \item Run with valgrind to check for leaks
+    \item Run with valgrind if possible to check for leaks
       { \scriptsize
       \begin{minted}[gobble=6]{shell-session}
         $ valgrind --leak-check=full --track-origins=yes ./smartPointers
