@@ -12,7 +12,7 @@ Day 1
 
 ### Hello World ([CheatSheet](ExercisesCheatSheet.md#hello-world-directory-hello))
 
-### Operators ([cheatSheet](ExercisesCheatSheet.md#operators-directory-operators))
+### Operator overloading ([cheatSheet](ExercisesCheatSheet.md#operator-overloading-directory-operators))
 
 ### Move semantic ([cheatSheet](ExercisesCheatSheet.md#move-semantic-directory-move))
 
@@ -47,8 +47,8 @@ Day 3
 ### Generic programming / templates ([cheatSheet](ExercisesCheatSheet.md#generic-programming--templates-directory-templates))
 As a prerequisite for variadic templates, and in case it was not covered in day 2 session
 
-### variadic templates ([cheatSheet](ExercisesCheatSheet.md#variadic-templates-directory-variadic))
+### Variadic templates ([cheatSheet](ExercisesCheatSheet.md#variadic-templates-directory-variadic))
 
-### Spaceship operator <=> ([cheatSheet](ExercisesCheatSheet.md#spaceship-operator-))
+### Spaceship operator <=> ([cheatSheet](ExercisesCheatSheet.md#spaceship-operator-directory-spaceship))
 
 ### Concepts ([cheatSheet](ExercisesCheatSheet.md#concepts-directory-concepts))
