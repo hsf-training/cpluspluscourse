@@ -40,7 +40,7 @@ double sumEntries(std::span<double const> range) {
     // Simulate an error
     throw std::invalid_argument("Error when summing over data.");
 
-    return std::reduce(range.begin(), range.end(), 0.);
+    return std::reduce(range.begin(), range.end());
 }
 
 // Often, data are owned by one entity, and merely used by others. In this case, we hand the data to

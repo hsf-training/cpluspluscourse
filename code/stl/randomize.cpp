@@ -19,7 +19,7 @@ void compute(int len, T initial, T step) {
 
     // compute standard deviation of all differences
     const T sum = std::reduce(...);
-    const T sumsq = std::reduce(..., [](...) { ...; });
+    const T sumsq = std::accumulate(..., [](...) { ...; });
     const T mean = sum/len;
     const T variance = sumsq/len - mean*mean;
 
