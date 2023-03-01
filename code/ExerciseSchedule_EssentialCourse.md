@@ -16,7 +16,7 @@ Day 1 - Basics Exercises
 
 ### Control Structures ([CheatSheet](ExercisesCheatSheet.md#control-structures-directory-control))
 
-### Auto and references ([CheatSheet](ExercisesCheatSheet.md#auto-and-references-directory-looprefsauto))
+### Auto and references ([CheatSheet](ExercisesCheatSheet.md#auto-and-references-directory-loopsrefsauto))
 
 
 Day 2 - Tools Exercises
