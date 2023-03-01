@@ -31,15 +31,15 @@ The idea of this exercise is to play with all kinds of possible loops and contro
 - change from a for loop to while and do/while loop
 - change an if statement to a switch statement
 
-### Auto & References (directory: `loopsRefsAuto`)
+### Auto and references (directory: `loopsRefsAuto`)
 
 - Write an indexed for loop to initialise the members of the structs. The program should not print garbage numbers.
 - Use `auto const &` to prevent copies in the second loop.
 - Understand the difference to `auto &`, get in the habit of using const references.
 
 
-OO Exercises
-------------
+Object-orientation Exercises
+----------------------------
 
 ### Polymorphism (directory: `polymorphism`)
 
@@ -52,7 +52,7 @@ poly->computePerimeter();
 ```
 and check what is called, in regular and virtual method case
 
-### `modern_oo`
+### Modern object-orientation (directory: `modern_oo`)
 
 Insert one `= delete`, one `= default` and one `override`.
 
@@ -75,7 +75,7 @@ See and solve the compilation issue about missing Drawable constructor. Understa
 See the new id being printed twice.
 
 
-### Operators (directory: `operators`)
+### Operator overloading (directory: `operators`)
 
 This exercise is about making `main` run successfully by completing the implementation of `Fraction`.
 Implement a constructor for `Fraction` and add two integer data members for numerator and denominator.
@@ -184,7 +184,7 @@ Solutions:
    Finally, to omit the last ", ", just use a conditional expression comparing the expanded index pack against the index pack size
 
 
-### Spaceship operator <=>
+### Spaceship operator <=> (directory: `spaceship`)
 The goal is to write a custom <=>, and to understand that when ordering according to the norm of a complex, a `partial_ordering` is required.
 Many numbers can have the same norm, but a different phase.
 Given that an implementation for <=> is provided, an implementation for == is required as well. It's OK to default it. It is not possible to
@@ -233,7 +233,7 @@ Tools Exercises
 
 Some exercises i nthis chapter are special as they will have been played (quickly) during the course. But people should still replay them and discover the tools by themselves.
 
-### `clang-format` (directory: possibly `variadic`)
+### Clang-format
 
 The goal is to understand that automatic code formatting is easy and can be customized
 
@@ -283,7 +283,7 @@ There's two bugs and one memory leak:
 - `useAfterFree()` returns a reference to a temporary. One should return a copy.
 - `memoryLeak()` lets a string leak.
 
-### `valgrind` (directory: `valgrind`)
+### Valgrind (directory: `valgrind`)
 
 Again the point is to play with the tool.
 In this example, we use an already deleted array. Simply the delete statement in the code appears too early
@@ -292,26 +292,26 @@ Second part of the exercise goes back to the gdb exercise. Here we see an access
 Interestingly this out of bound access will usually not fail but read the next variable in memory and thus biais the computation.
 Second part can be skipped if time is missing
 
-### `memcheck` (directory: `memcheck`)
+### Memcheck (directory: `memcheck`)
 
 Simple example of a memory leak and how valgrind helps a lot with this.
 Not so simple solution here. And the use of gdb with steping at the level of the destructor call is recommended. Give it as a hint to people.
 
 The solution is that the wrong destructor is called when calling "delete hexa" because the constructor is not virtual while it should be.
 
-### `callgrind` (directory: `callgrind`)
+### Callgrind (directory: `callgrind`)
 
 The goal is again to play. With the optimized version, it's interesting to see how much the startup time dominates the few computations done.
 This exercise can be skipped
 
-### `helgrind` (directory: `helgrind`)
+### Helgrind (directory: `helgrind`)
 
 This is a concurrency exercise and thus rather be kept for Day 5 although the tool is presented on Day 3.
 Usually the program works fine, and valgrind is happy. The race condition is indeed hard to trigger, but nevertheless spotted easily by helgrind.
 The title string is just deleted too early.
 This exercise should be skipped if time is missing
 
-### `cppcheck` (directory: `cppcheck`)
+### Cppcheck (directory: `cppcheck`)
 
 Simple example of a static analysis tool.
 The code shows no problem, even with valgrind and still mayb biais its result.
@@ -321,7 +321,7 @@ The basic goal is to run the tool, find the problem and fix it. The problem is a
 The second goal is to understand why it os not crashing neither detected by valgrind. Here gdb is useful and one needs to inspect the address of variables in memory to understand that the compiler aligns variables and thus leaves space after v that is considered allocated by valgrind.
 That second part can be skipped.
 
-### `clang-tidy` (directory: ?)
+### Clang-tidy
 
 To be filled
 
@@ -347,9 +347,9 @@ Small example where 4 consumer threads are notified by a producer.
 1. The production phase is not protected by a lock.
 2. When the consumers are waking up, they don't release the lock that's tied to the condition variable, so they cannot wake up in parallel.
 
-`python` Exercises
-------------------
+Python Exercises
+----------------
 
-### `python` (directory: `python`)
+### Python (directory: `python`)
 
 This is playing with low level C++/python interfacing. All the c code is provided, so the only task is to use the different implementations (C, C++ manual interface, ctype) from python and see the speed of each of them.

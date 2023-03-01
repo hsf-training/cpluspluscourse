@@ -16,7 +16,7 @@ Day 1 - Basics Exercises
 
 ### Control Structures ([CheatSheet](ExercisesCheatSheet.md#control-structures-directory-control))
 
-### Auto & References ([CheatSheet](ExercisesCheatSheet.md#auto-references-directory-looprefsauto))
+### Auto and references ([CheatSheet](ExercisesCheatSheet.md#auto-and-references-directory-looprefsauto))
 
 
 Day 2 - Tools Exercises
@@ -29,7 +29,7 @@ People should replay them and discover the tools by themselves.
 
 ### Debugging ([cheatSheet](ExercisesCheatSheet.md#debugging-directory-debug))
 
-### Clang format ([cheatSheet](ExercisesCheatSheet.md#clang-format-directory-possibly-variadic))
+### Clang-format ([cheatSheet](ExercisesCheatSheet.md#clang-format))
 
 
 Day 2 - OO Exercises
@@ -39,7 +39,7 @@ Day 2 - OO Exercises
 
 ### Virtual inheritance ([cheatSheet](ExercisesCheatSheet.md#virtual-inheritance-directory-virtual_inheritance))
 
-### Operators ([cheatSheet](ExercisesCheatSheet.md#operators-directory-operators))
+### Operator overloading ([cheatSheet](ExercisesCheatSheet.md#operator-overloading-directory-operators))
 
 
 Day 3 - Modern C++ Exercises
