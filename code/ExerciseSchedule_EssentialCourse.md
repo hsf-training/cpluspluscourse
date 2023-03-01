@@ -10,13 +10,13 @@ For each day, the exercises are given in order in which they should be done.
 Day 1 - Basics Exercises
 ------------------------
 
-### Hello World ([CheatSheet](ExercisesCheatSheet.md#hello-world-directory-hello))
+### Hello World (directory: [`hello`](hello), [CheatSheet](ExercisesCheatSheet.md#hello-world-directory-hello))
 
-### Functions ([CheatSheet](ExercisesCheatSheet.md#functions-directory-functions))
+### Functions (directory: [`functions`](functions), [CheatSheet](ExercisesCheatSheet.md#functions-directory-functions))
 
-### Control Structures ([CheatSheet](ExercisesCheatSheet.md#control-structures-directory-control))
+### Control Structures (directory: [`control`](control), [CheatSheet](ExercisesCheatSheet.md#control-structures-directory-control))
 
-### Auto and references ([CheatSheet](ExercisesCheatSheet.md#auto-and-references-directory-loopsrefsauto))
+### Auto and references (directory: [`loopsRefsAuto`](loopsRefsAuto), [CheatSheet](ExercisesCheatSheet.md#auto-and-references-directory-loopsrefsauto))
 
 
 Day 2 - Tools Exercises
@@ -25,30 +25,30 @@ Day 2 - Tools Exercises
 The tools exercises of day 2 are special as they will have been played (quickly) during the course.
 People should replay them and discover the tools by themselves.
 
-### Compiler ([cheatSheet](ExercisesCheatSheet.md#compiler))
+### Compiler ([CheatSheet](ExercisesCheatSheet.md#compiler))
 
-### Debugging ([cheatSheet](ExercisesCheatSheet.md#debugging-directory-debug))
+### Debugging (directory: [`debug`](debug), [CheatSheet](ExercisesCheatSheet.md#debugging-directory-debug))
 
-### Clang-format ([cheatSheet](ExercisesCheatSheet.md#clang-format))
+### Clang-format ([CheatSheet](ExercisesCheatSheet.md#clang-format))
 
 
 Day 2 - OO Exercises
 --------------------
 
-### Polymorphism ([cheatSheet](ExercisesCheatSheet.md#polymorphism-directory-polymorphism))
+### Polymorphism (directory: [`polymorphism`](polymorphism), [CheatSheet](ExercisesCheatSheet.md#polymorphism-directory-polymorphism))
 
-### Virtual inheritance ([cheatSheet](ExercisesCheatSheet.md#virtual-inheritance-directory-virtual_inheritance))
+### Virtual inheritance (directory: [`virtual_inheritance`](virtual_inheritance), [CheatSheet](ExercisesCheatSheet.md#virtual-inheritance-directory-virtual_inheritance))
 
-### Operator overloading ([cheatSheet](ExercisesCheatSheet.md#operator-overloading-directory-operators))
+### Operator overloading (directory: [`operators`](operators), [CheatSheet](ExercisesCheatSheet.md#operator-overloading-directory-operators))
 
 
 Day 3 - Modern C++ Exercises
 ----------------------------
 
-### Constness ([cheatSheet](ExercisesCheatSheet.md#constness-directory-constness))
+### Constness (directory: [`constness`](constness), [CheatSheet](ExercisesCheatSheet.md#constness-directory-constness))
 
-### Generic programming / templates ([cheatSheet](ExercisesCheatSheet.md#generic-programming--templates-directory-templates))
+### Generic programming / templates (directory: [`templates`](templates), [CheatSheet](ExercisesCheatSheet.md#generic-programming--templates-directory-templates))
 
-### Smart pointers ([cheatSheet](ExercisesCheatSheet.md#smart-pointers-directory-smartpointers))
+### Smart pointers (directory: [`smartPointers`](smartPointers), [CheatSheet](ExercisesCheatSheet.md#smart-pointers-directory-smartpointers))
 
-### Standard algorithms and lambdas ([cheatSheet](ExercisesCheatSheet.md#standard-algorithms-and-lambdas-directory-stl))
+### Standard algorithms and lambdas (directory: [`stl`](stl), [CheatSheet](ExercisesCheatSheet.md#standard-algorithms-and-lambdas-directory-stl))
