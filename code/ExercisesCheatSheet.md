@@ -8,11 +8,11 @@ For each day, the exercises are given in order in which they should be done.
 Basics Exercises
 ----------------
 
-### Hello World (directory: `hello`)
+### Hello World (directory: [`hello`](hello))
 
 Just try to compile and run `./hello` to make sure that everything is set up correctly.
 
-### Functions (directory: `functions`)
+### Functions (directory: [`functions`](functions))
 
 pass by copy / pass by reference
 
@@ -22,7 +22,7 @@ pass by copy / pass by reference
 - Make sure that the signature is `(SlowToCopy const & a)` to avoid copies.
 - Try to modify the data in the structs. Compare what happens for each of `(SlowToCopy a), (SlowToCopy & a), (SlowToCopyy const & a)`.
 
-### Control Structures (directory: `control`)
+### Control Structures (directory: [`control`](control))
 
 The idea of this exercise is to play with all kinds of possible loops and control structures and to understand how they work.
 
@@ -31,7 +31,7 @@ The idea of this exercise is to play with all kinds of possible loops and contro
 - change from a for loop to while and do/while loop
 - change an if statement to a switch statement
 
-### Auto and references (directory: `loopsRefsAuto`)
+### Auto and references (directory: [`loopsRefsAuto`](loopsRefsAuto))
 
 - Write an indexed for loop to initialise the members of the structs. The program should not print garbage numbers.
 - Use `auto const &` to prevent copies in the second loop.
@@ -41,7 +41,7 @@ The idea of this exercise is to play with all kinds of possible loops and contro
 Object-orientation Exercises
 ----------------------------
 
-### Polymorphism (directory: `polymorphism`)
+### Polymorphism (directory: [`polymorphism`](polymorphism))
 
 First create a Pentagon and an Hexagon and call computePerimeter. Can be used to break the ice.
 Second step is to call parent's computePerimeter methods meaning :
@@ -52,11 +52,11 @@ poly->computePerimeter();
 ```
 and check what is called, in regular and virtual method case
 
-### Modern object-orientation (directory: `modern_oo`)
+### Modern object-orientation (directory: [`modern_oo`](modern_oo))
 
 Insert one `= delete`, one `= default` and one `override`.
 
-### Virtual inheritance (directory: `virtual_inheritance`)
+### Virtual inheritance (directory: [`virtual_inheritance`](virtual_inheritance))
 
 First create a TextBox and try to call draw.
 There will be an error that the member is ambiguous, due to multiple inheritance.
@@ -75,7 +75,7 @@ See and solve the compilation issue about missing Drawable constructor. Understa
 See the new id being printed twice.
 
 
-### Operator overloading (directory: `operators`)
+### Operator overloading (directory: [`operators`](operators))
 
 This exercise is about making `main` run successfully by completing the implementation of `Fraction`.
 Implement a constructor for `Fraction` and add two integer data members for numerator and denominator.
@@ -94,18 +94,18 @@ All solutions are fine, as long as the `main` function runs successfully.
 Modern C++ Exercises
 --------------------
 
-### Constness (directory: `constness`)
+### Constness (directory: [`constness`](constness))
 
 The idea is to find out which lines are not correct, due to constness.
 Ideal to break the ice as can be organized as a quizz of which line would fail or not with correction under the form of compiler validation.
 
-### Move semantic (directory: `move`)
+### Move semantic (directory: [`move`](move))
 
 See with valgrind the number of copies and memory allocations in the problem, due to lack of move semantic.
 Implement the move semantic based on swap (copy paste from the slides).
 See in valgrind the improvements.
 
-### Generic programming / templates (directory: `templates`)
+### Generic programming / templates (directory: [`templates`](templates))
 
 This exercise has several levels. People not at ease can stop after first level and go to next exercise. Alternatively, they may do level 1 and 3 and skip 2.
 
@@ -121,7 +121,7 @@ It can then be tried with e.g. reverse ordering of strings or an order of Comple
 
 Level 3 : use the genericity of the Complex class and play with Complex of integers or Complex of Complex
 
-### Standard algorithms and lambdas (directory: `stl`)
+### Standard algorithms and lambdas (directory: [`stl`](stl))
 
 The goal is to use STL algorithms. I would advise to start in this order :
 
@@ -131,7 +131,7 @@ The goal is to use STL algorithms. I would advise to start in this order :
   - second accumulate (using lambda to compute sum of squares)
   - generate (involves a state to be captured by reference)
 
-### Smart pointers (directory: `smartPointers`)
+### Smart pointers (directory: [`smartPointers`](smartPointers))
 
 Here we have four code snippets that will benefit from using smart pointers.
 
@@ -140,12 +140,12 @@ Here we have four code snippets that will benefit from using smart pointers.
 - `problem3` is an example of shared ownership where `std::shared_pointer` should be used.
 - `problem4` demonstrates the usage of `shared_ptr` as class members. It has a second part where a `weak_ptr` can be used, but can be skipped if not enough time.
 
-### std::optional (directory: `optional`)
+### std::optional (directory: [`optional`](optional))
 Use std::optional to signify disallowed values in a computation.
 1. Use std::optional as return value of the mysqrt function. Use `nullopt_t` for negative arguments. Note that `return {}` will create a `nullopt_t` automatically.
 2. Given that the return type changes, modify the square function accordingly to take into account cases where a `nullopt_t` is given as input. Note that `std::optional` can be directly used in an if statement as if it would be a boolean to check whether is value is present
 
-### std::variant (directory: `variant`)
+### std::variant (directory: [`variant`](variant))
 Use the variant as an alternative to inheritance. The goal is to understand
 1. That the base class is unnecessary when variant is used
 2. That no dynamic allocations and polymorphism are necessary because the variant can directly be pushed into the vector
@@ -157,7 +157,7 @@ Use the variant as an alternative to inheritance. The goal is to understand
 Expert Exercises
 ----------------
 
-### Variadic templates (directory: `variadic`)
+### Variadic templates (directory: [`variadic`](variadic))
 
 The goal of the exercise is to implement a simple tuple, ignoring const correctness (to make it simpler).
 If students encounter any constness problems, make sure they pass by value or mutable reference.
@@ -184,17 +184,17 @@ Solutions:
    Finally, to omit the last ", ", just use a conditional expression comparing the expanded index pack against the index pack size
 
 
-### Spaceship operator <=> (directory: `spaceship`)
+### Spaceship operator <=> (directory: [`spaceship`](spaceship))
 The goal is to write a custom <=>, and to understand that when ordering according to the norm of a complex, a `partial_ordering` is required.
 Many numbers can have the same norm, but a different phase.
 Given that an implementation for <=> is provided, an implementation for == is required as well. It's OK to default it. It is not possible to
 derive it from equivalence (<=> evaluates to 0).
 
-### Concepts (directory: `concepts`)
+### Concepts (directory: [`concepts`](concepts))
 
 To be filled
 
-### Modules (directory: `modules`)
+### Modules (directory: [`modules`](modules))
 
 For this exercise you will convert a header file into a module.
 Students should understand that a module is something different from a header.
@@ -217,7 +217,7 @@ That is the difference between visibility and reachabilty.
 Avoid getting stuck in `Makefile` specifics, help the students with the syntax early.
 Also remind students that this is all experimental and that better build system support (e.g. in cmake) is on its way.
 
-### Header units (directory: `header_units`)
+### Header units (directory: [`header_units`](header_units))
 
 For this exercise you will convert `#include`s to `import`s
 The key takeaway is that header units are easy to migrate to within the C++ source.
@@ -268,13 +268,13 @@ Notes:
 - `--std=` >= c++11 is needed to initialise the structs.
 - The Makefile skips the generation of the object file for functions.cpp. This might surprise some people.
 
-### Debugging (directory: `debug`)
+### Debugging (directory: [`debug`](debug))
 
 The goal there is really to play, look around and try things. Tutors may have a lot of questions here on "how do you...".
 
 The solution of the crash is simply an inversion of 2 lines in the code where definition of v and it's randomization are inverted.
 
-### Address sanitizer (directory: `asan`)
+### Address sanitizer (directory: [`asan`](asan))
 
 The goal is to play with asan, and learn to read the very detailed hints it gives when it detects an error.
 
@@ -283,7 +283,7 @@ There's two bugs and one memory leak:
 - `useAfterFree()` returns a reference to a temporary. One should return a copy.
 - `memoryLeak()` lets a string leak.
 
-### Valgrind (directory: `valgrind`)
+### Valgrind (directory: [`valgrind`](valgrind))
 
 Again the point is to play with the tool.
 In this example, we use an already deleted array. Simply the delete statement in the code appears too early
@@ -292,26 +292,26 @@ Second part of the exercise goes back to the gdb exercise. Here we see an access
 Interestingly this out of bound access will usually not fail but read the next variable in memory and thus biais the computation.
 Second part can be skipped if time is missing
 
-### Memcheck (directory: `memcheck`)
+### Memcheck (directory: [`memcheck`](memcheck))
 
 Simple example of a memory leak and how valgrind helps a lot with this.
 Not so simple solution here. And the use of gdb with steping at the level of the destructor call is recommended. Give it as a hint to people.
 
 The solution is that the wrong destructor is called when calling "delete hexa" because the constructor is not virtual while it should be.
 
-### Callgrind (directory: `callgrind`)
+### Callgrind (directory: [`callgrind`](callgrind))
 
 The goal is again to play. With the optimized version, it's interesting to see how much the startup time dominates the few computations done.
 This exercise can be skipped
 
-### Helgrind (directory: `helgrind`)
+### Helgrind (directory: [`helgrind`](helgrind))
 
 This is a concurrency exercise and thus rather be kept for Day 5 although the tool is presented on Day 3.
 Usually the program works fine, and valgrind is happy. The race condition is indeed hard to trigger, but nevertheless spotted easily by helgrind.
 The title string is just deleted too early.
 This exercise should be skipped if time is missing
 
-### Cppcheck (directory: `cppcheck`)
+### Cppcheck (directory: [`cppcheck`](cppcheck))
 
 Simple example of a static analysis tool.
 The code shows no problem, even with valgrind and still mayb biais its result.
@@ -329,19 +329,19 @@ To be filled
 Concurrency Exercises
 ---------------------
 
-### Race conditions (directory: `race`)
+### Race conditions (directory: [`race`](race))
 
 Typical race condition where a simple mutex and lock_guard "solves" the problem.
 
 The second step is to look at the execution time and find out that it's not really a solution. One could then try an atomic and see the difference, although I do not introduce them in the course
 
-### Atomicity (directory: `atomic`)
+### Atomicity (directory: [`atomic`](atomic))
 
 Exactly the same race condition as above. Fix them using an `atomic<int>`.
 
 *Optional*: Compare run times for lock and atomic solution. Those are likely not very different, as many locks are implemented using atomics.
 
-### Condition variables (directory: `condition_variable`)
+### Condition variables (directory: [`condition_variable`](condition_variable))
 
 Small example where 4 consumer threads are notified by a producer.
 1. The production phase is not protected by a lock.
@@ -350,6 +350,6 @@ Small example where 4 consumer threads are notified by a producer.
 Python Exercises
 ----------------
 
-### Python (directory: `python`)
+### Python (directory: [`python`](python))
 
 This is playing with low level C++/python interfacing. All the c code is provided, so the only task is to use the different implementations (C, C++ manual interface, ctype) from python and see the speed of each of them.
