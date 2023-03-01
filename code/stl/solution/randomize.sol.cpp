@@ -42,11 +42,11 @@ void compute(int len, T initial, T step) {
 
     // compute standard deviation of all differences.
     // Note that the first element is just the original element itself, so we need to skip it.
-    const T sum = std::reduce(diffs.begin()+1, diffs.end(), T());
-    const T sumsq = std::reduce(diffs.begin()+1, diffs.end(), T(), sumsquare<T>());
+    const T sum = std::reduce(diffs.begin()+1, diffs.end());
+    const T sumsq = std::accumulate(diffs.begin()+1, diffs.end(), T(), sumsquare<T>());
     // Alternatively:
-    // const T sumsq = std::reduce(diffs.begin()+1, diffs.end(), T(),
-    //                             [](const T& s, const T& a) { return s + a * a; });
+    // const T sumsq = std::accumulate(diffs.begin()+1, diffs.end(), T(),
+    //                                 [](const T& s, const T& a) { return s + a * a; });
     const T mean = sum/len;
     const T variance = sumsq/len - mean*mean;
 

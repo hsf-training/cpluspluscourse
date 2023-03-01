@@ -22,9 +22,9 @@ void compute(int len, T initial, T step) {
     std::adjacent_difference(v.begin(), v.end(), diffs.begin());
 
     // compute standard deviation of it
-    const T sum = std::reduce(diffs.begin()+1, diffs.end(), T());
-    const T sumsq = std::reduce(diffs.begin()+1, diffs.end(), T(),
-                                [](const T& s, const T& a) { return s + a * a; });
+    const T sum = std::reduce(diffs.begin()+1, diffs.end());
+    const T sumsq = std::accumulate(diffs.begin()+1, diffs.end(), T(),
+                                    [](const T& s, const T& a) { return s + a * a; });
     const T mean = sum/len;
     const T variance = sumsq/len - mean*mean;
 
