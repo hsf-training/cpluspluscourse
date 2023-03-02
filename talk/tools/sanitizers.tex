@@ -67,24 +67,24 @@
     \begin{multicols}{2}
       \begin{overprint}
         \onslide<1>
-        \begin{cppcode*}{}
- void foo() {
-   char a[8];
-   char b[8];
-   a[8] = '1';
- }
+        \begin{cppcode*}{gobble=4}
+          void foo() {
+            char a[8];
+            char b[8];
+            a[8] = '1';
+          }
         \end{cppcode*}
         \onslide<2>
         \begin{minted}{diff}
- void foo() {
-+  char redzone1[32];
-   char a[8];
-+  char redzone2[24];
-   char b[8];
-+  char redzone3[24];
-+  // <poison redzones>
-   a[8] = '1';
-+  // <unpoison redzones>
+  void foo() {
++   char redzone1[32];
+    char a[8];
++   char redzone2[24];
+    char b[8];
++   char redzone3[24];
++   // <poison redzones>
+    a[8] = '1';
++   // <unpoison redzones>
  }
         \end{minted}
       \end{overprint}
