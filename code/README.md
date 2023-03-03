@@ -103,10 +103,10 @@ Using lxplus
   - lxplus is perfectly suitable for the exercises
   - it has all the needed compilers/tools
 
-### Practically on lxplus8
+### Practically on lxplus9
 
 ```bash
-`ssh lxplus8.cern.ch`
+`ssh lxplus9.cern.ch`
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
 git clone https://github.com/hsf-training/cpluspluscourse.git
 cd cpluspluscourse/code/hello
@@ -188,7 +188,7 @@ If that does not work, you can install a third-party ssh client for Windows.
 We have good experience with https://www.putty.org/.
 
 Open Windows Terminal, or PowerShell if you run an older version of Windows.
-Use `ssh lxplus8.cern.ch` to connect to lxplus.
+Use `ssh lxplus9.cern.ch` to connect to lxplus.
 Follow the [lxplus guide](#using-lxplus) from here.
 
 If you are having troubles with the terminal based environment,
@@ -244,5 +244,5 @@ More documentation on using WSL with Visual Studio Code can be found [here](http
 Experimental (we have not tested this seriously):
 You can also use VS Code to work on lxplus.
 Run from the command palette (Ctrl + Shift + P), `Remote-SSH Connect to host...`.
-Then enter `<user>@lxplus8.cern.ch`, then your password.
+Then enter `<user>@lxplus9.cern.ch`, then your password.
 The first connection takes a while for VS Code to setup its server on lxplus.
