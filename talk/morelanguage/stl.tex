@@ -46,28 +46,36 @@
 \begin{frame}[fragile]
   \frametitlecpp[98]{STL's concepts}
   \begin{block}{containers}
+    \small
     \begin{itemize}
+    \setlength\itemsep{0em}
+    \setlength{\parskip}{0pt}
+    \setlength{\parsep}{0pt}
     \item data structures for managing a range of elements
     \item irrespective of
       \begin{itemize}
+      \setlength\itemsep{0em}
+      \setlength{\parskip}{0pt}
+      \setlength{\parsep}{0pt}
       \item the data itself (templated)
       \item the memory allocation of the structure (templated)
       \item the algorithms that may use the structure (iterators)
       \end{itemize}
-    \item examples
-      \begin{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Examples ($\rightarrow$ \href{https://en.cppreference.com/w/cpp/string/basic_string}{\color{blue!50!white}{string}} and \href{https://en.cppreference.com/w/cpp/container}{\color{blue!50!white}{container library}} on cppreference)}
+    \small
+    \begin{itemize}
+      \setlength\itemsep{0em}
       \item string, string\_view (\cpp17)
       \item list, forward\_list (\cpp11), vector, deque, array (\cpp11)
-      \item {[}multi]map, [multi]set
-      \item flat\_[multi]map (\cpp23), flat\_[multi]set (\cpp23)
+      \item {[}multi]map, [multi]set (\cpp23: flat\_[multi]map, flat\_[multi]set)
       \item unordered\_[multi]map (\cpp11), unordered\_[multi]set (\cpp11)
       \item stack, queue, priority\_queue
       \item span (\cpp20)
       \item non-containers: bitset, pair, tuple (\cpp11), optional (\cpp17), variant (\cpp17), any (\cpp17), expected (\cpp23)
-      \end{itemize}
-    \item see also the \href{https://en.cppreference.com/w/cpp/string/basic_string}{string} and \href{https://en.cppreference.com/w/cpp/container}{container library} on cppreference
     \end{itemize}
-  \end{block}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
