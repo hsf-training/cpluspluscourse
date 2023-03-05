@@ -80,13 +80,13 @@
         case c2 : statements2; break;
         case c3 : statements3; break;
         ...
-        default : instructiond; break;
+        default : statementsn; break;
       }
     \end{cppcode*}
     \begin{itemize}
       \item The \cppinline{break} statement is not mandatory but...
       \item Cases are entry points, not independent pieces
-      \item Execution falls through to the next case without a \cppinline{break}!
+      \item Execution ``falls through'' to the next case without a \cppinline{break}!
       \item The \cppinline{default} case may be omitted
     \end{itemize}
   \end{block}
@@ -101,7 +101,7 @@
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{}
       enum class Lang { French, German, English, Other };
-      ...
+      Lang language = ...;
       switch (language) {
       case Lang::French:
         std::cout << "Bonjour";
