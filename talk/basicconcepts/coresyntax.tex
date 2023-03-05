@@ -81,22 +81,21 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Portable numeric types}
-  \alert{Requires inclusion of a specific header}
   \begin{cppcode}
-    #include <cstdint>
+    #include <cstdint> // defines the following:
 
-    int8_t c = -3;     // 8 bit signed integer
-    uint8_t c = 4;     // 8 bit unsigned integer
+    std::int8_t c = -3;     // 8 bit signed integer
+    std::uint8_t c = 4;     // 8 bit unsigned integer
 
-    int16_t s = -444;  // 16 bit signed integer
-    uint16_t s = 444;  // 16 bit unsigned integer
+    std::int16_t s = -444;  // 16 bit signed integer
+    std::uint16_t s = 444;  // 16 bit unsigned integer
 
-    int32_t s = -674;  // 32 bit signed integer
-    uint32_t s = 674;  // 32 bit unsigned integer
+    std::int32_t s = -674;  // 32 bit signed integer
+    std::uint32_t s = 674;  // 32 bit unsigned integer
 
-    int64_t s = -1635; // 64 bit signed integer
-    uint64_t s = 1635; // 64 bit unsigned int
-    \end{cppcode}
+    std::int64_t s = -1635; // 64 bit signed integer
+    std::uint64_t s = 1635; // 64 bit unsigned int
+  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -144,20 +143,19 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Useful aliases}
-    \alert{Requires inclusion of headers}
   \begin{cppcode}
-    #include <cstddef> // and many other headers
+    #include <cstddef> // (and others) defines:
 
-    size_t s = sizeof(int); // unsigned integer
-                            // can hold any variable's size
+    // unsigned integer, can hold any variable's size
+    std::size_t s = sizeof(int);
 
-    #include <cstdint>
+    #include <cstdint> // defines:
 
-    ptrdiff_t c = &s - &s;  // signed integer, can hold any
-                            // diff between two pointers
+    // signed integer, can hold any diff between two pointers
+    std::ptrdiff_t c = &s - &s;
 
-    // int, which can hold any pointer value:
-    intptr_t i = reinterpret_cast<intptr_t>(&s);   // signed
-    uintptr_t i = reinterpret_cast<uintptr_t>(&s); // unsigned
+    // signed/unsigned integer, can hold any pointer value
+    std::intptr_t i = reinterpret_cast<intptr_t>(&s);
+    std::uintptr_t i = reinterpret_cast<uintptr_t>(&s);
     \end{cppcode}
 \end{frame}
