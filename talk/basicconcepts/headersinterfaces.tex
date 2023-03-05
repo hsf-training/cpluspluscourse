@@ -9,12 +9,12 @@
     \item The implementation exists somewhere else
     \end{itemize}
   \end{block}
-  \begin{block}{Header : hello.hpp}
+  \begin{block}{Header: hello.hpp}
     \begin{cppcode*}{linenos=false}
       void printHello();
     \end{cppcode*}
   \end{block}
-  \begin{block}{Usage : myfile.cpp}
+  \begin{block}{Usage: myfile.cpp}
     \begin{cppcode*}{}
       #include "hello.hpp"
       int main() {
@@ -35,18 +35,18 @@
       std::cerr << #x " was not the golden number\n";
     // compile time or platform specific configuration
     #if defined(USE64BITS) || defined(__GNUG__)
-      using myint = uint64_t;
+      using myint = std::uint64_t;
     #elif
-      using myint = uint32_t;
+      using myint = std::uint32_t;
     #endif
   \end{cppcode}
   \pause
-  \begin{block}{Use only in very restricted cases}
+  \begin{goodpracticeWithShortcut}{Use preprocessor only in very restricted cases}{preprocessor}
     \begin{itemize}
-    \item Conditional inclusion of headers
-    \item Customization for specific compilers/platforms
+      \item Conditional inclusion of headers
+      \item Customization for specific compilers/platforms
     \end{itemize}
-  \end{block}
+  \end{goodpracticeWithShortcut}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -62,14 +62,14 @@
     \begin{cppcode*}{}
       #ifndef MY_HEADER_INCLUDED
       #define MY_HEADER_INCLUDED
-      ... // content
+      ... // header file content
       #endif
     \end{cppcode*}
   \end{block}
   \begin{block}{Pragma once (non-standard)}
     \begin{cppcode*}{}
       #pragma once
-      ... // content
+      ... // header file content
     \end{cppcode*}
   \end{block}
 \end{frame}

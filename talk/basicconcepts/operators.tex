@@ -26,12 +26,12 @@
   \frametitlecpp[98]{Operators(2)}
   \begin{block}{Bitwise and Assignment Operators}
     \begin{cppcode*}{}
-      int i = 0xee & 0x55;  // 0x44
-      i |= 0xee;            // 0xee
-      i ^= 0x55;            // 0xbb
-      int j = ~0xee;        // 0xffffff11
-      int k = 0x1f << 3;    // 0xf8
-      int l = 0x1f >> 2;    // 0x7
+      unsigned i = 0xee & 0x55;  // 0x44
+      i |= 0xee;                 // 0xee
+      i ^= 0x55;                 // 0xbb
+      unsigned j = ~0xee;        // 0xffffff11
+      unsigned k = 0x1f << 3;    // 0xf8
+      unsigned l = 0x1f >> 2;    // 0x7
     \end{cppcode*}
   \end{block}
   \pause
@@ -59,7 +59,7 @@
     \end{cppcode*}
   \end{block}
   \pause
-  \begin{block}{Precedences \uncover<3->{\hfill \alert{\bf Don't use}\uncover<4->{\color{green} \bf\ - use parentheses}}}
+  \begin{block}{Precedences \uncover<3->{\hfill \alert{\bf Avoid}\uncover<4->{\color{green} \bf\ - use parentheses}}}
     \begin{cppcode*}{linenos=false}
       c &= 1+(++b)|(a--)*4%5^7; // ???
     \end{cppcode*}

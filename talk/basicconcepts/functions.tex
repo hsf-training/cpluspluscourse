@@ -64,16 +64,16 @@ struct BigStruct {...};
 BigStruct s;
 
 // parameter by value
-void printBS(BigStruct p) {
+void printVal(BigStruct p) {
   ...
 }
-printBS(s); // copy
+printVal(s); // copy
 
 // parameter by reference
-void printBSp(BigStruct &q) {
+void printRef(BigStruct &q) {
   ...
 }
-printBSp(s); // no copy
+printRef(s); // no copy
 }
 \begin{frame}[fragile]
   \frametitlecpp[98]{Functions: parameters are passed by value}
@@ -115,16 +115,16 @@ printBSp(s); // no copy
 struct SmallStruct {int a;};
 SmallStruct s = {1};
 
-void changeSS(SmallStruct p) {
+void changeVal(SmallStruct p) {
   p.a = 2;
 }
-changeSS(s);
+changeVal(s);
 // s.a == 1
 
-void changeSS2(SmallStruct &q) {
+void changeRef(SmallStruct &q) {
   q.a = 2;
 }
-changeSS2(s);
+changeRef(s);
 // s.a == 2
 }
 \begin{frame}[fragile]
@@ -192,7 +192,7 @@ changeSS2(s);
   \begin{block}{Syntax}
     \begin{cppcode*}{escapeinside=||}
 struct T {...}; T a;
-void f(T value);           f(a);      // by value
+void fVal(T value);        fVal(a);   // by value
 void fRef(const T &value); fRef(a);   // by reference
 void fPtr(const T *value); fPtr(|{\setlength{\fboxsep}{0pt}\color{gray}\colorbox{yellow}{\textsc{&}}}|a);  // by pointer
 void fWrite(T &value);     fWrite(a); // non-const ref

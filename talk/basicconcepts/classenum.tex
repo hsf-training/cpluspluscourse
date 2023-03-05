@@ -204,14 +204,14 @@
   Used to create type aliases
   \begin{alertblock}{\cpp98}
     \begin{cppcode*}{gobble=2}
-      typedef uint64_t myint;
-      myint toto = 17;
+      typedef std::uint64_t myint;
+      myint count = 17;
       typedef int pos[3];
     \end{cppcode*}
   \end{alertblock}
   \begin{exampleblock}{\cpp11}
     \begin{cppcode*}{gobble=2,firstnumber=4}
-      using myint = uint64_t;
+      using myint = std::uint64_t;
       myint count = 17;
       using pos = int[3];
 
