@@ -73,8 +73,8 @@
     long long ll = 0LL;          // min 64 bit
     unsigned long long l = 0ULL; // min 64 bit
 
-    float f = 1.23f;          // 32 (23+8+1) bit float
-    double d = 1.23E34;       // 64 (52+11+1) bit float
+    float f = 1.23f;          // 32 (1+8+23) bit float
+    double d = 1.23E34;       // 64 (1+11+52) bit float
     long double ld = 1.23E34L // min 64 bit float
   \end{cppcode}
 \end{frame}
@@ -135,8 +135,8 @@
     double d = 0x4d2.4p3;   // hexfloat, 0x4d2.1 * 2^3
                             // = 1234.25 * 2^3 = 9874
 
-    3.14f, 3.14F, 3.14f32, 3.14F32 // float (C++23 for f32)
-    3.14,  3.14,  3.14f64, 3.14F64 // double (C++23 for f64)
+    3.14f, 3.14F,  // float
+    3.14,  3.14,   // double
     3.14l, 3.14L,  // long double
   \end{cppcode}
 \end{frame}
@@ -159,3 +159,28 @@
     std::uintptr_t i = reinterpret_cast<uintptr_t>(&s);
     \end{cppcode}
 \end{frame}
+
+\begin{advanced}
+\begin{frame}[fragile]
+    \frametitlecpp[23]{Extended floating-point types}
+    \begin{block}{Extended floating-point types}
+        \begin{itemize}
+            \item \emph{Optional} types, which may be provided
+            \item Custom conversion and promotion rules
+        \end{itemize}
+    \end{block}
+    \begin{cppcode*}{gobble=4}
+        #include <stdfloat> // may define these:
+
+        std::float16_t  = 3.14f16;  // 16 (1+5+10) bit float
+        std::float32_t  = 3.14f32;  // like float
+                                    // but different type
+        std::float64_t  = 3.14f64;  // like double
+                                    // but different type
+        std::float128_t = 3.14f128; // 128 (1+15+112) bit float
+        std::bfloat_t   = 3.14bf16; // 16 (1+8+7) bit float
+
+        // also F16, F32, F64, F128 or BF16 suffix possible
+    \end{cppcode*}
+\end{frame}
+\end{advanced}
