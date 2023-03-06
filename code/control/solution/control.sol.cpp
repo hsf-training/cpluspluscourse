@@ -1,6 +1,6 @@
 #include <iostream>
 
-constexpr unsigned int numbers[]{1000001, 1000002, 1000003, 1000004, 1000005, 1000006, 1000007, 1000008, 1000009};
+const unsigned int numbers[]{1000001, 1000002, 1000003, 1000004, 1000005, 1000006, 1000007, 1000008, 1000009};
 
 bool isodd(unsigned int i) { return i % 2 == 1; }
 
