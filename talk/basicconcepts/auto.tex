@@ -10,7 +10,7 @@
     \end{itemize}
     \begin{cppcode*}{}
       std::vector<int> v;
-      int a = v[3];
+      float a = v[3];    // conversion intended?
       int b = v.size();  // bug? unsigned to signed
     \end{cppcode*}
   \end{block}
@@ -19,7 +19,7 @@
     \begin{cppcode*}{}
       std::vector<int> v;
       auto a = v[3];
-      const auto b = v.size();
+      const auto b = v.size(); // std::size_t
       int sum{0};
       for (auto n : v) { sum += n; }
     \end{cppcode*}
