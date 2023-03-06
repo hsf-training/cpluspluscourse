@@ -7,7 +7,6 @@
       \item References allow for direct access to another object
       \item They can be used as shortcuts / better readability
       \item They can be declared \cppinline{const} to allow only read access
-      \item They can be used as function arguments
     \end{itemize}
   \end{block}
 
@@ -21,6 +20,7 @@
       struct A { int x; int y; } a;
       const int &x = a.x; // direct read access to A's x
       x = 4;              // doesn't compile
+      a.x = 4;            // fine
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}

@@ -73,6 +73,10 @@ int l = *pak;
   \begin{block}{A pointer to nothing}
     \begin{itemize}
     \item if a pointer doesn't point to anything, set it to \cppinline{nullptr}
+    \begin{itemize}
+      \item useful to e.g.\ mark the end of a linked data structure
+      \item or absence of an optional function argument (pointer)
+    \end{itemize}
     \item same as setting it to 0 or \cppinline{NULL} (before \cpp11)
     \item triggers compilation error when assigned to integer
     \end{itemize}
@@ -80,9 +84,8 @@ int l = *pak;
   \pause
   \begin{exampleblock}{Example code}
     \begin{cppcode*}{}
-      void* vp = nullptr;
       int* ip = nullptr;
-      int i = NULL;      // OK -> bug?
+      int i = NULL;      // compiles, bug?
       int i = nullptr;   // ERROR
     \end{cppcode*}
   \end{exampleblock}

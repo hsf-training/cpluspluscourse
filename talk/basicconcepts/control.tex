@@ -56,13 +56,16 @@
   \pause
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{}
-      int collatz(int a) {
-        return a==1 ? 1 : collatz(a%2==0 ? a/2 : 3*a+1);
-      }
+      const int charge = isLepton ? -1 : 0;
     \end{cppcode*}
   \end{exampleblock}
   \pause
   \begin{alertblock}{Do not abuse it}
+    \begin{cppcode*}{}
+      int collatz(int a) {
+        return a==1 ? 1 : collatz(a%2==0 ? a/2 : 3*a+1);
+      }
+    \end{cppcode*}
     \begin{itemize}
       \item Explicit \cppinline{if}s are generally easier to read
       \item Use the ternary operator with short conditions and expressions
@@ -103,17 +106,17 @@
       enum class Lang { French, German, English, Other };
       Lang language = ...;
       switch (language) {
-      case Lang::French:
-        std::cout << "Bonjour";
-        break;
-       case Lang::German:
-        std::cout << "Guten Tag";
-        break;
-      case Lang::English:
-        std::cout << "Good morning";
-        break;
-      default:
-        std::cout << "I do not speak your language";
+        case Lang::French:
+          std::cout << "Bonjour";
+          break;
+        case Lang::German:
+          std::cout << "Guten Tag";
+          break;
+        case Lang::English:
+          std::cout << "Good morning";
+          break;
+        default:
+          std::cout << "I do not speak your language";
       }
     \end{cppcode*}
   \end{exampleblock}
@@ -144,17 +147,16 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{Init-statements for if and switch}
-  \begin{block}{}
+  \begin{block}{Purpose}
     Allows to limit variable scope in \cppinline{if} and \cppinline{switch} statements
   \end{block}
   \begin{exampleblock}{\cpp17}
     \begin{cppcode*}{}
       if (Value val = GetValue(); condition(val)) {
-        f(val);
-      } else {
-        g(val);
-      }
-      h(val); // compile error
+        f(val); // ok
+      } else
+        g(val); // ok
+      h(val);   // error, no `val` in scope here
     \end{cppcode*}
   \end{exampleblock}
   \pause
@@ -224,7 +226,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{Init-statements for range-based loops}
-  \begin{block}{}
+  \begin{block}{Purpose}
     Allows to limit variable scope in range-based loops
   \end{block}
   \begin{alertblock}{\cpp17}
@@ -252,6 +254,7 @@
       while(condition) {
         statements;
       }
+
       do {
         statements;
       } while(condition);
