@@ -22,4 +22,6 @@ Try passing by copy and passing by reference, see the difference.
 
 ## Step 4
 
-When passing by reference, ensure that your `printFiveCharacters` cannot inadvertently modify the original object. To test its const correctness, try adding something like `argument.data[0] = 'a';` to your print function. Try both with and without const attributes in your print function's signature.
+When passing by reference, ensure that your `printFiveCharacters` cannot inadvertently modify the original object.
+To test its const correctness, try adding something like `argument.name[0] = 'a';` to your print function.
+Try both with and without const attributes in your print function's signature.
