@@ -206,14 +206,14 @@
     \begin{cppcode*}{gobble=2}
       typedef std::uint64_t myint;
       myint count = 17;
-      typedef int pos[3];
+      typedef float position[3];
     \end{cppcode*}
   \end{alertblock}
   \begin{exampleblock}{\cpp11}
     \begin{cppcode*}{gobble=2,firstnumber=4}
       using myint = std::uint64_t;
       myint count = 17;
-      using pos = int[3];
+      using position = float[3];
 
       template <typename T> using myvec = std::vector<T>;
       myvec<int> myintvec;
