@@ -5,7 +5,6 @@
 * inspect backtrace, variables
 * find problem and fix bug
 * try stepping, breakpoints
-* use -Wall -Wextra and see warning
 
 
 ### Go back to the "valgrind" exercise
