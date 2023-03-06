@@ -106,7 +106,7 @@ Using lxplus
 ### Practically on lxplus9
 
 ```bash
-`ssh lxplus9.cern.ch`
+ssh lxplus9.cern.ch
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
 git clone https://github.com/hsf-training/cpluspluscourse.git
 cd cpluspluscourse/code/hello
