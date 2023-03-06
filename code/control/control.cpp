@@ -5,8 +5,8 @@ constexpr unsigned int numbers[]{1000001, 1000002, 1000003, 1000004, 1000005, 10
 bool isodd(unsigned int i) { return i % 2 == 1; }
 
 void part1() {
-  int sum_odd = 0;
-  int sum_eve = 0;
+  unsigned int sum_odd = 0;
+  unsigned int sum_eve = 0;
   for (int i = 0; i < 9; ++i) {
     unsigned int num = numbers[i];
     if (isodd(num)) {
