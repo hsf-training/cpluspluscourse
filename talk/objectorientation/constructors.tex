@@ -136,8 +136,9 @@
     \item A constructor with a single non-default parameter can be used by the compiler for an implicit conversion.
     \end{itemize}
   \end{block}
-  \begin{cppcode}
-    void print(const Vector & v)
+  \begin{exampleblockGB}{Example}{https://godbolt.org/z/TvqT185fz}{Unary constructor in action}
+    \begin{cppcode}
+    void print(const Vector & v) {
       std::cout<<"printing v elements...\n";
     }
 
@@ -146,7 +147,8 @@
       // then calls print with that Vector
       print(3);
     };
-  \end{cppcode}
+    \end{cppcode}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
