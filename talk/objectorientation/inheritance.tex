@@ -51,14 +51,14 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Managing access to class members}
-  \begin{block}{{\it public} \color{white} / {\it private} keywords}
+  \begin{block}{\texttt{public} / \texttt{private} keywords}
     \begin{description}
-      \item[private] allows access only within the class
-      \item[public] allows access from anywhere
+      \item[\texttt{private}] allows access only within the class
+      \item[\texttt{public}] allows access from anywhere
     \end{description}
     \begin{itemize}
-       \item The default for \texttt{class} is {\it private}
-       \item A \texttt{struct} is just a \texttt{class} that defaults to {\it public} access
+       \item The default for \texttt{class} is \cppinline{private}
+       \item A \cppinline{struct} is just a class that defaults to \cppinline{public} access
     \end{itemize}
   \end{block}
   \pause
@@ -90,7 +90,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Managing access to class members(2)}
-  \begin{block}{Solution is {\it protected} keyword}
+  \begin{block}{Solution is \texttt{protected} keyword}
     Gives access to classes inheriting from base class
   \end{block}
   \begin{multicols}{2}
@@ -125,10 +125,10 @@
     It influences the privacy of inherited members for external code.\\
     The code of the class itself is not affected
     \begin{description}
-    \item[public] privacy of inherited members remains unchanged
-    \item[protected] inherited public members are seen as protected
-    \item[private] all inherited members are seen as private \\
-      this is the default for \texttt{class} if nothing is specified
+    \item[\texttt{public}] privacy of inherited members remains unchanged
+    \item[\texttt{protected}] inherited public members are seen as protected
+    \item[\texttt{private}] all inherited members are seen as private \\
+      this is the default for classes if nothing is specified
     \end{description}
   \end{block}
   \pause
@@ -137,7 +137,7 @@
     \item only public members of public inheritance are accessible
     \end{itemize}
   \end{block}
-  \begin{block}{Net result for grand child code}
+  \begin{block}{Net result for code in derived classes}
     \begin{itemize}
     \item only public and protected members of public and protected parents are accessible
     \end{itemize}

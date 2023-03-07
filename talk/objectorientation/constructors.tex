@@ -24,7 +24,7 @@
     \end{cppcode*}
     \columnbreak
     \begin{cppcode*}{gobble=2,firstnumber=10}
-      // note special notation for
+      // note: special notation for
       // initialization of members
       MyFirstClass() : a(0) {}
 
@@ -81,7 +81,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Copy constructor}
+  \frametitlecpp[11]{Copy constructor}
   \begin{block}{Concept}
     \begin{itemize}
     \item special constructor called for replicating an object
@@ -137,7 +137,7 @@
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    void print( const Vector & v )
+    void print(const Vector & v)
       std::cout<<"printing v elements...\n";
     }
 
@@ -219,15 +219,17 @@
     \begin{itemize}
     \item avoid having to re-declare parent's constructors
     \item by stating that we inherit all parent constructors
+    \item derived class can add more constructors
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Practically}
     \begin{cppcode}
       struct BaseClass {
-        BaseClass(int value);
+        BaseClass(int a);
       };
       struct DerivedClass : BaseClass {
         using BaseClass::BaseClass;
+        DerivedClass(int a, int b);
       };
       DerivedClass a{5};
     \end{cppcode}
