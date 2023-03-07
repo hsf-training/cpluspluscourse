@@ -380,7 +380,7 @@
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       struct Drawable {
-        ~Drawable() = default;
+        virtual ~Drawable() = default;
         virtual void draw() = 0;
       }
     \end{cppcode*}
