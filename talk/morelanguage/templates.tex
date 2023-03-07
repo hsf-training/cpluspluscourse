@@ -110,7 +110,7 @@
     \begin{itemize}
       \item for declaring a template type parameter,
             the \cppinline{typename} and \cppinline{class} keyword are semantically equivalent
-      \item template template parameters required \cpp17 for \cppinline{typename}
+      \item template template parameters require \cpp17 for \cppinline{typename}
     \end{itemize}
   \end{block}
   \small
@@ -163,9 +163,10 @@
   \begin{cppcode*}{}
     template<unsigned int N>
     struct Polygon {
-      Polygon(float radius);
-      float perimeter() {return 2*N*sin(PI/N)*m_radius;}
-      float m_radius;
+      float perimeter() {
+        return 2 * N * std::sin(PI / N) * radius;
+      }
+      float radius;
     };
 
     Polygon<19> nonadecagon{3.3f};
@@ -184,15 +185,13 @@
 
     template<typename F> // partial specialization
     struct Polygon<F, 6> {
-      Polygon(F radius) : m_radius(radius) {}
-      F perimeter() { return 6*m_radius; }
-      F m_radius;
+      F perimeter() { return 6 * radius; }
+      F radius;
     };
     template<>           // full specialization
     struct Polygon<int, 6> {
-      Polygon(int radius) : m_radius(radius) {}
-      int perimeter() { return 6*m_radius; }
-      int m_radius;
+      int perimeter() { return 6 * radius; }
+      int radius;
     };
   \end{cppcode*}
 \end{frame}

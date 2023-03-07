@@ -4,46 +4,44 @@
   \frametitlecpp[98]{Constness}
   \begin{block}{The \texttt{const} keyword}
     \begin{itemize}
-    \item indicate that the element to the left is constant
+    \item indicates that the element to the left is constant
+    \begin{itemize}
+      \item when nothing on the left, applies to the right
+    \end{itemize}
     \item this element won't be modifiable in the future
     \item this is all checked at compile time
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    // standard syntax
     int const i = 6;
+    const int i = 6; // equivalent
 
     // error : i is constant
     i = 5;
 
-    // also ok, when nothing on the left,
-    // const applies to the element on the right
-    const int j = 6;
+    auto const j = i; // works with auto
   \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Constness and pointers}
-  \scriptsize
+  \small
   \begin{cppcode}
-    // pointer to a constant integer
     int a = 1, b = 2;
-    int const *i = &a;
+
+    int const *i = &a; // pointer to const int
     *i = 5; // error, int is const
     i = &b; // ok, pointer is not const
 
-    // constant pointer to an integer
-    int * const j = &a;
+    int * const j = &a; // const pointer to int
     *j = 5; // ok, value can be changed
     j = &b; // error, pointer is const
 
-    // constant pointer to a constant integer
-    int const * const k = &a;
+    int const * const k = &a; // const pointer to const int
     *k = 5; // error, value is const
     k = &b; // error, pointer is const
 
-    // const reference
-    int const & l = a;
+    int const & l = a; // reference to const int
     l = b; // error, reference is const
 
     int const & const l = a; // compile error
@@ -54,7 +52,7 @@
   \frametitlecpp[98]{Member function constness}
   \begin{block}{The \texttt{const} keyword for member functions}
     \begin{itemize}
-    \item indicate that the function does not modify the object
+    \item indicates that the function does not modify the object
     \item in other words, \cppinline{this} is a pointer to a constant object
     \end{itemize}
   \end{block}
@@ -62,9 +60,9 @@
     struct Example {
       void foo() const {
         // type of 'this' is 'Example const*'
-        m_member = 0; // Error: member function is const
+        data = 0; // Error: member function is const
       }
-      int m_member;
+      int data;
     };
   \end{cppcode}
 \end{frame}
@@ -74,7 +72,7 @@
   \begin{block}{Constness is part of the type}
     \begin{itemize}
     \item \cppinline{T const} and \cppinline{T} are different types
-    \item however, \cppinline{T} is automatically cast to \cppinline{T const} when needed
+    \item however: \cppinline{T} is automatically cast to \cppinline{T const} when needed
     \end{itemize}
   \end{block}
   \begin{cppcode}
