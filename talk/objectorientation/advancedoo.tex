@@ -53,9 +53,9 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Inheritance privacy and polymorphism}
-  \begin{block}{Only public inheritance is visible to code outside the class}
+  \begin{block}{Only public base classes are visible to outside code}
     \begin{itemize}
-    \item private and protected are not
+    \item private and protected bases are not
     \item this may restrict usage of polymorphism
     \end{itemize}
   \end{block}
@@ -187,7 +187,7 @@
       \end{itemize}
     \item they also imply extra storage and an extra indirection
       \begin{itemize}
-      \item practically the object stores a pointer to the correct method
+      \item practically, the object stores a pointer to the correct method
       \item in a so-called ``virtual table'' (``vtable'')
       \end{itemize}
     \end{itemize}
@@ -491,9 +491,12 @@
   \frametitlecpp[98]{Virtual inheritance}
   \begin{block}{Solution}
     \begin{itemize}
-    \item inheritance can be {\it virtual} or not
-    \item {\it virtual} inheritance will ``share'' parents
-    \item standard inheritance will replicate them
+    \item inheritance can be \cppinline{virtual} or not
+    \begin{itemize}
+      \item \cppinline{virtual} inheritance will ``share'' parents
+      \item standard inheritance will replicate them
+    \end{itemize}
+    \item most derived class will call the virtual base class's constructor
     \end{itemize}
     \begin{cppcode}
       class Text : public virtual Drawable {...};
@@ -528,19 +531,19 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Multiple inheritance advice}
-  \begin{block}{Do not use multiple inheritance}
+  \begin{goodpractice}{Avoid multiple inheritance}
     \begin{itemize}
     \item Except for inheriting from interfaces
-    \item and for rare special cases
+    \item And for rare special cases
     \end{itemize}
-  \end{block}
+  \end{goodpractice}
   \pause
-  \begin{alertblock}{Do not use diamond shapes}
+  \begin{goodpractice}{Absolutely avoid diamond-shaped inheritance}
     \begin{itemize}
     \item This is a sign that your architecture is not correct
     \item In case you are tempted, think twice and change your mind
     \end{itemize}
-  \end{alertblock}
+  \end{goodpractice}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -555,11 +558,4 @@
     \item retry with virtual inheritance
     \end{itemize}
   \end{exerciseWithShortcut}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlecpp[98]{Virtual inheritance}
-  \begin{alertblock}{Warning}
-    in case of virtual inheritance it is the most derived class that calls the virtual base class's constructor
-  \end{alertblock}
 \end{frame}
