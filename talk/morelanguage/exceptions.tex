@@ -2,7 +2,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Exceptions}
-  \begin{block}{The concept}
+  \begin{block}{Purpose}
     \begin{itemize}
       \item to handle \textit{exceptional} events that happen rarely
       \item and cleanly jump to a place where the error can be handled
@@ -30,7 +30,7 @@
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{fontsize=\small,gobble=2}
+    \begin{cppcode*}{fontsize=\small,firstnumber=7,gobble=2}
       void process_data(file &f) {
         ...
         if (i >= buffer.size())
@@ -46,21 +46,23 @@
   \begin{block}{Throwing exceptions}
     \begin{itemize}
       \item objects of any type can be thrown (even e.g.\ \cppinline{int})
-      \begin{itemize}
-        \item prefer standard exception classes
-      \end{itemize}
-      \item throw objects by value
     \end{itemize}
   \end{block}
+  \begin{goodpractice}{Throwing exceptions}
+    \begin{itemize}
+      \item prefer throwing standard exception classes
+      \item throw objects by value
+    \end{itemize}
+  \end{goodpractice}
+  \small
   \begin{cppcode}
+    #include <stdexcept>
     void process_data(file& f) {
       if (!f.open())
         throw std::invalid_argument{"stream is not open"};
-
       auto header = read_line(f); // may throw an IO error
       if (!header.starts_with("BEGIN"))
         throw std::runtime_error{"invalid file content"};
-
       std::string body(f.size()); // may throw std::bad_alloc
       ...
     }
@@ -69,9 +71,36 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Exceptions}
+  \begin{block}{Standard exceptions}
+    \begin{itemize}
+      \item \cppinline{std::exception}, defined in header \cppinline{<exception>}
+      \begin{itemize}
+        \item Base class of all standard exceptions
+        \item Get error message: \cppinline{virtual const char* what() const;}
+        \item Please derive your own exception classes from this one
+      \end{itemize}
+      \item From \cppinline{<stdexcept>}:
+      \begin{itemize}
+        \item \cppinline{std::runtime_error}, \cppinline{std::logic_error}, \cppinline{std::out_of_range}, \cppinline{std::invalid_argument}, ...
+        \item Store a string: \cppinline{throw std::runtime_error{"msg"}}
+        \item You should use these the most
+      \end{itemize}
+      \item \cppinline{std::bad_alloc}, defined in header \cppinline{<new>}
+      \begin{itemize}
+        \item Thrown by standard allocation functions (e.g.\ \cppinline{new})
+        \item Signals failure to allocate
+        \item Carries no message
+      \end{itemize}
+      \item ...
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Exceptions}
   \begin{block}{Catching exceptions}
     \begin{itemize}
-      \item a catch clause catches an exception of the same or derived type
+      \item a catch clause catches exceptions of the same or derived type
       \item multiple catch clauses will be matched in order
       \item if no catch clause matches, the exception propagates
       \item if the exception is never caught, \cppinline{std::terminate} is called
@@ -86,13 +115,18 @@
       std::cerr << "Failed to process file: " << e.what();
     }
   \end{cppcode}
+  \begin{goodpractice}{Catching exceptions}
+    \begin{itemize}
+      \item Catch exceptions by const reference
+    \end{itemize}
+  \end{goodpractice}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Exceptions}
   \begin{block}{Rethrowing exceptions}
     \begin{itemize}
-      \item a caught exception can be rethrown
+      \item a caught exception can be rethrown inside the catch handler
       \item useful when we want to act on an error, but cannot handle and want to propagate it
     \end{itemize}
   \end{block}
@@ -167,44 +201,16 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Exceptions}
-  \begin{block}{Standard exceptions}
-    \begin{itemize}
-      \item \cppinline{std::exception}, defined in header \cppinline{<exception>}
-      \begin{itemize}
-        \item Base class of all standard exceptions
-        \item Get error message: \cppinline{virtual const char* what() const;}
-        \item Please derive your own exception classes from this one
-      \end{itemize}
-      \item From \cppinline{<stdexcept>}:
-      \begin{itemize}
-        \item \cppinline{std::runtime_error}, \cppinline{std::logic_error}, \cppinline{std::out_of_range}, \cppinline{std::invalid_argument}, ...
-        \item Store a string: \cppinline{throw std::runtime_error{"msg"}}
-        \item You should use these the most
-      \end{itemize}
-      \item \cppinline{std::bad_alloc}, defined in header \cppinline{<new>}
-      \begin{itemize}
-        \item Thrown by standard allocation functions (e.g.\ \cppinline{new})
-        \item Signals failure to allocate
-        \item Carries no message
-      \end{itemize}
-      \item ...
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
   \frametitlecpp[17]{Exceptions}
   \begin{goodpractice}{Exceptions}
     \begin{itemize}
-      \item throw exceptions by value, catch them by (const) reference
       \item use exceptions for \textit{unlikely} runtime errors outside the program's control
       \begin{itemize}
         \item bad inputs, files unexpectedly not found, DB connection, \ldots
       \end{itemize}
       \item \textit{don't} use exceptions for logic errors in your code
       \begin{itemize}
-        \item consider \cppinline{assert} and tests
+        \item use \cppinline{assert} and tests
       \end{itemize}
       \item \textit{don't} use exceptions to provide alternative/skip return values
       \begin{itemize}
@@ -305,7 +311,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{noexcept specifier}
-  \begin{block}{}
+  \begin{block}{\texttt{noexcept}}
     \begin{itemize}
       \item a function with the \cppinline{noexcept} specifier states that it guarantees to not throw an exception
       \begin{cppcode*}{gobble=2,linenos=false}
@@ -314,16 +320,20 @@
       \begin{itemize}
         \item either no exceptions is thrown or they are handled internally
         \item checked at compile time
-        \item so allows the compiler to optimise around that knowledge
+        \item allows the compiler to optimize around that knowledge
       \end{itemize}
       \item a function with \cppinline{noexcept(expression)} is only \cppinline{noexcept} when \cppinline{expression} evaluates to \cppinline{true} at compile-time
       \begin{cppcode*}{gobble=2,linenos=false}
         int safe_if_8B() noexcept(sizeof(long)==8);
       \end{cppcode*}
-      \item Use \cppinline{noexcept} on leaf functions where you know the behaviour
-      \item C++11 destructors are \cppinline{noexcept} - never throw from them
     \end{itemize}
   \end{block}
+  \begin{goodpractice}{\texttt{noexcept}}
+    \begin{itemize}
+      \item Use \cppinline{noexcept} on leaf functions where you know the behavior
+      \item C++11 destructors are \cppinline{noexcept} - never throw from them
+    \end{itemize}
+  \end{goodpractice}
 \end{frame}
 
 \begin{advanced}

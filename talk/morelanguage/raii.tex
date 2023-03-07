@@ -1,4 +1,4 @@
-\subsection[RAII]{Pointers and RAII}
+\subsection[RAII]{RAII and smart pointers}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Pointers: why are they error prone?}
@@ -65,12 +65,16 @@
 \begin{frame}
   \frametitlecpp[98]{Resource Acquisition Is Initialization (RAII)}
   \begin{block}{Practically}
-    Use object semantic to acquire/release resources
+    Use variable construction/destruction and scope semantics:
     \begin{itemize}
-    \item wrap the resource inside an object
+    \item wrap the resource inside a class
     \item acquire resource in constructor
     \item release resource in destructor
-    \item create this object on the stack so that it is automatically destructed when leaving the scope, including in case of exception
+    \item create an instance on the stack
+    \begin{itemize}
+      \item automatically destructed when leaving the scope
+      \item including in case of exception
+    \end{itemize}
     \item use move semantics to pass the resource around
     \end{itemize}
   \end{block}
@@ -78,22 +82,24 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{RAII in practice}
-  \begin{exampleblock}{File class}
-    \begin{cppcode*}{}
+  \begin{exampleblock}{An RAII File class}
+    \small
+    \begin{cppcode*}{gobble=2}
       class File {
       public:
-        File(const char* filename) :
-          m_handle(std::fopen(filename, "w+")) {
+        // constructor: acquire resource
+        File(const char* filename)
+          : m_handle(std::fopen(filename, "w+")) {
+          // abort constructor on error
           if (m_handle == nullptr) { throw ... }
         }
+        // destructor: release resource
         ~File() { std::fclose(m_handle); }
         void write (const char* str) {
-          if (std::fputs(str, m_handle) == EOF) {
-            throw ...
-          }
+          ...
         }
       private:
-        std::FILE* m_handle;
+        std::FILE* m_handle; // wrapped resource
       };
     \end{cppcode*}
   \end{exampleblock}
@@ -105,13 +111,13 @@
     \begin{cppcode*}{}
       void log_function() {
         // file opening, aka resource acquisition
-        File logfile("logfile.txt") ;
+        File logfile("logfile.txt");
 
         // file usage
-        logfile.write("hello logfile!") ;
+        logfile.write("hello logfile!"); // may throw
 
         // file is automatically closed by the call to
-        // its destructor, even in case of exception !
+        // its destructor, even in case of exception!
       }
     \end{cppcode*}
   \end{exampleblock}
@@ -124,24 +130,26 @@
   \frametitlecpp[11]{\texttt{std::unique\_ptr}}
   \begin{block}{A RAII pointer}
     \begin{itemize}
-    \item wraps a regular pointer
-    \item retrieve it using \cppinline{get()}
+    \item wraps and behaves like a regular pointer
+    \item get underlying pointer using \cppinline{get()}
+    \item when destroyed, deletes the object pointed to
     \item has move-only semantic
       \begin{itemize}
       \item the pointer has unique ownership
       \item copying will result in a compile error
       \end{itemize}
-    \item in \cppinline{<memory>} header
     \end{itemize}
   \end{block}
   \pause
-  \begin{exampleblock}{Usage}
+  \begin{exampleblock}{}
     \begin{cppcode*}{}
-      std::unique_ptr<Foo> p{ new Foo{} }; // allocation
-      void f(std::unique_ptr<Foo> ptr);
+      #include <memory>
+      void f(std::unique_ptr<Foo> ptr) {
+        ptr->bar();
+      } // deallocation when f exits
 
+      std::unique_ptr<Foo> p{ new Foo{} }; // allocation
       f(std::move(p)); // transfer ownership
-      // deallocation when exiting f
       assert(p.get() == nullptr);
     \end{cppcode*}
   \end{exampleblock}
@@ -149,14 +157,12 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Quiz}
-  \begin{exampleblock}{}
+  \begin{exampleblock}{What do you expect?}
     \begin{cppcode*}{}
-      Foo *p = new Foo{};  // allocation
-      std::unique_ptr<Foo> uptr(p);
       void f(std::unique_ptr<Foo> ptr);
+      std::unique_ptr<Foo> uptr(new Foo{});
       f(uptr); // transfer of ownership
     \end{cppcode*}
-    What do you expect ?
   \end{exampleblock}
   \pause
   \begin{alertblock}{Compilation Error - \godboltLink{https://godbolt.org/z/jfqKjocnh}{\texttt{unique\_ptr} copy}}
@@ -175,31 +181,24 @@ of 'std::unique_ptr<Foo>'
 
 \begin{frame}[fragile]
   \frametitlecpp[14]{\texttt{std::make\_unique}}
-  \begin{block}{}
+  \begin{block}{\texttt{std::make\_unique}}
     \begin{itemize}
-      \item directly allocates the object managed by a \cppinline{unique_ptr}
+      \item allocates and constructs an object with arguments\\
+            and wraps it with \cppinline{std::unique_ptr} in one step
       \item no \cppinline{new} or \cppinline{delete} calls anymore!
-      \item no memory leaks if used everywhere
+      \item no memory leaks if used consistently
     \end{itemize}
   \end{block}
   \pause
-  \begin{exampleblock}{\texttt{make\_unique} usage}
+  \begin{exampleblock}{\texttt{std::make\_unique} usage}
     \begin{cppcode*}{}
-      // allocation of one Foo object,
-      // calls new Foo(arg1, arg2) internally
-      auto a = std::make_unique<Foo>(arg1, arg2);
-      std::cout << a.get() << " points to "
-                << a->someMember << '\n';
-
-      // deallocations at end of scope
+      {
+        // calls new File("logfile.txt") internally
+        auto f = std::make_unique<File>("logfile.txt");
+        f->write("hello logfile!");
+      } // deallocation at end of scope
     \end{cppcode*}
   \end{exampleblock}
-  \begin{block}{}
-    \begin{minted}[autogobble=true]{text}
-
-      0x6000005fe9a0 points to 5
-    \end{minted}
-  \end{block}
 \end{frame}
 
 \begin{advanced}
@@ -231,42 +230,54 @@ of 'std::unique_ptr<Foo>'
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{RAII or raw pointers}
-  \begin{block}{When to use what ?}
+  \begin{block}{When to use what?}
     \begin{itemize}
     \item Always use RAII for resources, in particular allocations
-    \item You thus never have to release / deallocate yourself
+    \begin{itemize}
+      \item You thus never have to release / deallocate yourself
+    \end{itemize}
     \item Use raw pointers as non-owning, re-bindable observers
-    \item Remember that \cppinline{unique_ptr} is move only
+    \item Remember that \cppinline{std::unique_ptr} is move only
     \end{itemize}
   \end{block}
   \pause
   \begin{exampleblock}{A question of ownership}
+    \small
     \begin{cppcode*}{}
-      unique_ptr<T> producer();
-      void observer(const T&);
-      void modifier(T&);
-      void consumer(unique_ptr<T>);
-      unique_ptr<T> pt{producer()}; // Receive ownership
-      observer(*pt);                // Keep ownership
-      modifier(*pt);                // Keep ownership
-      consumer(std::move(pt));      // Transfer ownership
+      std::unique_ptr<T> produce();
+      void observe(const T&);
+      void modifyRef(T&);
+      void modifyPtr(T*);
+      void consumer(std::unique_ptr<T>);
+      std::unique_ptr<T> pt{produce()}; // Receive ownership
+      observe(*pt);                     // Keep ownership
+      modifyRef(*pt);                   // Keep ownership
+      modifyPtr(pt.get());              // Keep ownership
+      consume(std::move(pt));           // Transfer ownership
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{\texttt{unique\_ptr} usage summary}
-  \begin{block}{It's about lifetime management}
+  \frametitlecpp[11]{\texttt{std::unique\_ptr} usage summary}
+  \begin{goodpractice}{\texttt{std::unique\_ptr}}
     \begin{itemize}
-    \item Use \cppinline{unique_ptr} in functions taking part in lifetime management
-    \item Otherwise use raw pointers or references
+      \item \cppinline{std::unique_ptr} is about lifetime management
+      \begin{itemize}
+        \item use it to tie the lifetime of an object to a unique RAII owner
+        \item use raw pointers/references to refer to another object\\
+              without owning it or managing its lifetime
+      \end{itemize}
+      \item use \cppinline{std::make_unique} for creation
+      \item strive for having no \cppinline{new}/\cppinline{delete} in your code
+      \item for dynamic arrays, \cppinline{std::vector} may be more useful
     \end{itemize}
-  \end{block}
+  \end{goodpractice}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{\texttt{shared\_ptr}, \texttt{make\_shared}}
-  \begin{block}{\mintinline{cpp}{shared_ptr} : a reference counting pointer}
+  \frametitlecpp[11]{\texttt{std::shared\_ptr}}
+  \begin{block}{\mintinline{cpp}{std::shared_ptr} : a reference counting pointer}
     \begin{itemize}
     \item wraps a regular pointer similar to \cppinline{unique_ptr}
     \item has move and copy semantic
@@ -277,7 +288,7 @@ of 'std::unique_ptr<Foo>'
     \item reference counting is thread-safe, therefore a bit costly
     \end{itemize}
   \end{block}
-  \begin{block}{\texttt{make\_shared} : creates a \texttt{shared\_ptr}}
+  \begin{block}{\texttt{std::make\_shared} : creates a \texttt{std::shared\_ptr}}
     \begin{cppcode*}{}
       {
         auto sp = std::make_shared<Foo>(); // #ref = 1
@@ -323,8 +334,8 @@ of 'std::unique_ptr<Foo>'
 \end{advanced}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Quiz: \texttt{shared\_ptr} in use}
-  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org/z/vM35Y6qEW}{\texttt{shared\_ptr} quiz}
+  \frametitlecpp[11]{Quiz: \texttt{std::shared\_ptr} in use}
+  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org/z/vM35Y6qEW}{\texttt{std::shared\_ptr} quiz}
     \small
     \begin{cppcode*}{gobble=2}
       auto shared = std::make_shared<int>(100);
@@ -353,7 +364,7 @@ of 'std::unique_ptr<Foo>'
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Quiz: \texttt{shared\_ptr} in use}
+  \frametitlecpp[11]{Quiz: \texttt{std::shared\_ptr} in use}
   \begin{exampleblock}{What is the output of this code?}
     \small
     % escapeinside seems to break gobble, so need to un-indent manually

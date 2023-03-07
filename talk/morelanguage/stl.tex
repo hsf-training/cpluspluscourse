@@ -25,22 +25,24 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[14]{STL in practice}
-  \begin{cppcode*}{}
-    #include <vector>
-    #include <algorithm>
+  \begin{exampleblockGB}{STL example}{https://godbolt.org/z/n8ahEr5f6}{STL}
+    \begin{cppcode*}{gobble=2}
+      #include <vector>
+      #include <algorithm>
+      #include <functional>     // `import std;` in C++23
+      #include <iterator>
+      #include <iostream>
 
-    std::vector<int> vi{5, 3, 4}; // initializer list
-    std::vector<int> vr(3); // constructor taking int
-
-    std::transform(vi.begin(), vi.end(),      // range1
-                   vi.begin(),          // start range2
-                   vr.begin(),          // start result
-                   std::multiplies{}); // function objects
-
-    for(auto n : vr) {
-      std::cout << n << ' ';
-    }
-  \end{cppcode*}
+      std::vector<int> in{5, 3, 4};   // initializer list
+      std::vector<int> out(3); // constructor taking size
+      std::transform(in.begin(), in.end(),      // range1
+                     in.begin(),          // start range2
+                     out.begin(),         // start result
+                     std::multiplies{});  // function obj
+      std::copy(out.begin(), out.end(),   // 25 9 16
+        std::ostream_iterator<int>{std::cout, " "});
+    \end{cppcode*}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -51,8 +53,7 @@
     \setlength\itemsep{0em}
     \setlength{\parskip}{0pt}
     \setlength{\parsep}{0pt}
-    \item data structures for managing a range of elements
-    \item irrespective of
+    \item data structures for managing a range of elements, irrespective of:
       \begin{itemize}
       \setlength\itemsep{0em}
       \setlength{\parskip}{0pt}
@@ -123,12 +124,11 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{STL's concepts}
+  \frametitlecpp[11]{STL's concepts}
   \begin{block}{iterators}
     \begin{itemize}
     \item generalization of pointers
-    \item allow iteration over some data
-    \item irrespective of
+    \item allow iteration over some data, irrespective of:
       \begin{itemize}
       \item the container used (templated)
       \item the data itself (container is templated)
@@ -136,12 +136,20 @@
       \end{itemize}
     \item examples
       \begin{itemize}
-      \item iterator
-      \item reverse\_iterator
-      \item const\_iterator
+        \item \cppinline{std::reverse_iterator}, \cppinline{std::back_insert_iterator}, ...
       \end{itemize}
     \end{itemize}
   \end{block}
+  \begin{exampleblockGB}{Iterator example}{https://godbolt.org/z/jv1qTo5xz}{Iterator example}
+    \begin{cppcode*}{}
+      std::vector<int> const v = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+      auto const end = v.rend() - 3; // arithmetic
+      for (auto it = v.rbegin();
+           it != end;     // compare positions
+           it += 2)       // jump 2 positions
+        std::cout << *it; // dereference, prints: 975
+    \end{cppcode*}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
