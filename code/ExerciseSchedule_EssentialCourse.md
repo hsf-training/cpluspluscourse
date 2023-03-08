@@ -25,7 +25,7 @@ Day 2 - Tools Exercises
 The tools exercises of day 2 are special as they will have been played (quickly) during the course.
 People should replay them and discover the tools by themselves.
 
-### Compiler (directory: [`functions`](functions), [CheatSheet](ExercisesCheatSheet.md#compiler))
+### Compiler (directory: [`polymorphism`](polymorphism), [CheatSheet](ExercisesCheatSheet.md#compiler))
 
 ### Debugging (directory: [`debug`](debug), [CheatSheet](ExercisesCheatSheet.md#debugging-directory-debug))
 
