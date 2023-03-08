@@ -254,7 +254,7 @@ Steps:
 7. Revert changes using `git checkout <any_exercise>`
 8. Please advise the students they should use `.clang-format` files from their projects before they start developing their own one.
 
-### Compiler
+### Compiler (directory: [`functions`](functions))
 
 Based on the functions exercise, we are replaying the compilation steps manually.
 
