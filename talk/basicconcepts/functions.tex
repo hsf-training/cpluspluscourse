@@ -201,6 +201,31 @@ void fWrite(T &value);     fWrite(a); // non-const ref
 \end{frame}
 
 \begin{frame}[fragile]
+    \frametitlecpp[98]{Overloading}
+    \begin{block}{Overloading}
+        \begin{itemize}
+            \item We can have multiple functions with the same name
+            \item They must have different parameter lists
+            \item A different return type alone is not allowed
+            \item Default arguments can cause ambiguities
+            \item All functions with the same name form an ``overload set''
+        \end{itemize}
+    \end{block}
+    \begin{exampleblock}{}
+        \begin{cppcode*}{gobble=6}
+            int sum(int b);             // 1
+            int sum(int b, int c);      // 2, ok, overload
+            // float sum(int b, int c); // disallowed
+            sum(42); // calls 1
+            sum(42, 43); // calls 2
+            int sum(int b, int c, int d = 4); // 3, overload
+            sum(42, 43, 44); // calls 3
+            sum(42, 43);     // error: ambiguous, 2 or 3
+        \end{cppcode*}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[98]{Functions}
   \begin{exercise}{Functions}
     Familiarise yourself with pass by value / pass by reference.
