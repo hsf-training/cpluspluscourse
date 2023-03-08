@@ -1,11 +1,9 @@
-
 # Set up the project.
 cmake_minimum_required( VERSION 3.12 )
 project( helgrind LANGUAGES CXX )
 
 # Set up the compilation environment.
-include( "${CMAKE_CURRENT_SOURCE_DIR}/../CompilerSettings.cmake" )
-include( "${CMAKE_CURRENT_SOURCE_DIR}/../SolutionTarget.cmake" )
+include( "${CMAKE_CURRENT_SOURCE_DIR}/../common.cmake" )
 
 # Figure out how to use the platform's thread capabilities.
 find_package( Threads REQUIRED )
