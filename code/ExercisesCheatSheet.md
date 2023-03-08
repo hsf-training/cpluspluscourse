@@ -254,13 +254,15 @@ Steps:
 7. Revert changes using `git checkout <any_exercise>`
 8. Please advise the students they should use `.clang-format` files from their projects before they start developing their own one.
 
-### Compiler (directory: [`functions`](functions))
+### Compiler (directory: [`polymorphism`](polymorphism))
 
-Based on the functions exercise, we are replaying the compilation steps manually.
+We replay the compilation steps manually.
+Concrete details in the polymorphism README.md.
 
-A "break the ice" exercise here would be to ask people to do the first step (preprocessor) and make a poll on how many lines of C++ are present in the output. It will vary depending on setups, versions, OS, etc...
+A "break the ice" exercise here would be to ask people to do the first step (preprocessor) and make a poll on how many lines of C++ are present in the output.
+It will vary depending on setups, versions, OS, etc...
 
-Then the important part is to play with nm and the -C option of C++filt to be able to decode symbols, find them and thus address a build error that mentions missing symbols.
+Then the important part is to play with `nm` and the `-C` option of `C++filt` to be able to decode symbols, find them and thus address a build error that mentions missing symbols.
 
 Another important bit is ldd and inspecting library dependencies.
 

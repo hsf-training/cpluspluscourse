@@ -20,13 +20,14 @@ Step 2
 
 ## Instructions for the "compiler chain" exercise
 
-* preprocess `Polygons.cpp` (`cpp` or `gcc -E -o output`)
+* preprocess `Polygons.cpp` (`g++ -E -o output`)
 * compile `Polygons.o` and `trypoly.o` (`g++ -c -o output`)
-* use `nm` to check symbols in '.o' files
+* use `nm` to check symbols in `.o` files
 * look at the `Makefile`
 * try `make clean; make`
 * see linking stage using `g++ -v`
-  * just add a -v in the Makefile command for trypoly
-  * run make clean; make
-  * look at the collect 2 line, from the end up to '-o trypoly'
-* see library dependencies with `ldd`
+  * just add a `-v` in the Makefile command for `trypoly`
+  * run `make clean; make`
+  * look at the collect 2 line, from the end up to `-o trypoly`
+* see library dependencies of `trypoly` and `Polygons.so` with `ldd`
+  * On OS X, use `otool -L` for a similar effect

@@ -212,19 +212,19 @@
   \frametitle{Compiler chain}
   \begin{exercise}{Compiler chain}
     \begin{itemize}
-    \item go to code/functions
-    \item preprocess functions.cpp (cpp or gcc -E -o output)
-    \item compile functions.o and Structs.o (g++ -c -o output)
+    \item go to code/polymorphism
+    \item preprocess Polygons.cpp (g++ -E -o output)
+    \item compile Polygons.o and trypoly.o (g++ -c -o output)
     \item use nm to check symbols in .o files
     \item look at the Makefile
     \item try make clean; make
     \item see linking stage of the final program using g++ -v
       \begin{itemize}
-      \item just add a -v in the Makefile command for functions target
+      \item just add a -v in the Makefile command for trypoly target
       \item run make clean; make
-      \item look at the collect 2 line, from the end up to ``-o functions''
+      \item look at the collect 2 line, from the end up to ``-o trypoly''
       \end{itemize}
-    \item see library dependencies with `ldd functions`
+    \item see library dependencies of `trypoly` using `ldd`
     \end{itemize}
   \end{exercise}
 \end{frame}
