@@ -37,9 +37,9 @@ Day 2 - OO Exercises
 
 ### Polymorphism (directory: [`polymorphism`](polymorphism), [CheatSheet](ExercisesCheatSheet.md#polymorphism-directory-polymorphism))
 
-### Virtual inheritance (directory: [`virtual_inheritance`](virtual_inheritance), [CheatSheet](ExercisesCheatSheet.md#virtual-inheritance-directory-virtual_inheritance))
-
 ### Operator overloading (directory: [`operators`](operators), [CheatSheet](ExercisesCheatSheet.md#operator-overloading-directory-operators))
+
+### Virtual inheritance (directory: [`virtual_inheritance`](virtual_inheritance), [CheatSheet](ExercisesCheatSheet.md#virtual-inheritance-directory-virtual_inheritance))
 
 
 Day 3 - Modern C++ Exercises
