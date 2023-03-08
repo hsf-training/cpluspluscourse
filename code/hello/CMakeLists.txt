@@ -1,13 +1,10 @@
-
 # Set up the project.
 cmake_minimum_required( VERSION 3.12 )
 project( hello LANGUAGES CXX )
 
 # Set up the compilation environment.
-include( "${CMAKE_CURRENT_SOURCE_DIR}/../CompilerSettings.cmake" )
-
+include( "${CMAKE_CURRENT_SOURCE_DIR}/../common.cmake" )
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Set up the library.
 add_library( helloLib "hello.hpp" "hello.cpp" )

@@ -12,10 +12,8 @@ if( "${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}" )
    message( FATAL_ERROR "The tutorial code must be built out of source!" )
 endif()
 
-# Include the test (hello world) project.
-add_subdirectory( hello )
-
 # Include the exercises that (should) work on all platforms.
+add_subdirectory( hello )
 add_subdirectory( asan )
 add_subdirectory( atomic )
 add_subdirectory( callgrind )
@@ -33,6 +31,7 @@ add_subdirectory( operators )
 add_subdirectory( polymorphism )
 add_subdirectory( race )
 add_subdirectory( smartPointers )
+add_subdirectory( stl )
 add_subdirectory( templates )
 add_subdirectory( valgrind )
 add_subdirectory( variadic )
@@ -42,9 +41,4 @@ add_subdirectory( virtual_inheritance )
 if( NOT MSVC )
    add_subdirectory( helgrind )
    add_subdirectory( python )
-endif()
-
-# Include the gcc-only exercises.
-if( NOT APPLE AND NOT MSVC )
-   add_subdirectory( stl )
 endif()
