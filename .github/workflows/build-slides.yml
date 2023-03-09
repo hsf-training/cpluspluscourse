@@ -22,11 +22,18 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v3
-      - name: Set up essentials course
-        if: matrix.version == 'essentials'
-        run: echo '\basictrue' > talk/onlybasics.tex
-      - name: Compile LaTeX document
+      - name: Compile essentials
         uses: xu-cheng/latex-action@v2
+        if: matrix.version == 'essentials'
+        with:
+          root_file: C++Course.tex
+          latexmk_shell_escape: true
+          args: -pdf -interaction=nonstopmode -halt-on-error -usepretex=\def\makebasic{}
+          working_directory: talk
+          extra_system_packages: "py-pygments"
+      - name: Compile full course
+        uses: xu-cheng/latex-action@v2
+        if: matrix.version == 'full'
         with:
           root_file: C++Course.tex
           latexmk_shell_escape: true
