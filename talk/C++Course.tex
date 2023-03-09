@@ -7,8 +7,19 @@
 % setup for the basic/advanced course switch
 % create a new latex if called basic (false by default)
 \newif\ifbasic
-%\basictrue % uncomment to make basic true
-\IfFileExists{onlybasics.tex}{\input{onlybasics}}{}
+
+% There are two ways to switch to the basic course:
+% 1. Uncomment the following line:
+%\basictrue
+
+% 2. Define the makebasic macro from the outside.
+% This could be done using -usepretex=\def\makebasic{}
+% The above is used:
+% - when invoking "make essentials"
+% - when exporting HEPCPP_ESSENTIALS=1
+\ifdefined\makebasic
+  \basictrue
+\fi
 
 % create a comment environment advanced. depending on the value of basic, we exclude or include it.
 \ifbasic

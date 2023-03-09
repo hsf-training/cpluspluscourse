@@ -4,7 +4,7 @@ LATEXMK=latexmk
 OPTIONS=-pdf -shell-escape -halt-on-error
 
 essentials: all
-essentials: OPTIONS+=-pretex='\basictrue'
+essentials: OPTIONS+=-usepretex='\def\makebasic{}'
 
 preview: all
 preview: OPTIONS+=-pvc
@@ -13,6 +13,10 @@ ifeq ($(QUIET), 1)
 	OPTIONS+=-quiet
 else
 	OPTIONS+=-interaction=nonstopmode
+endif
+
+ifeq ($(HEPCPP_ESSENTIALS), 1)
+	OPTIONS+=-usepretex='\def\makebasic{}'
 endif
 
 .PHONY: clean clobber FORCE
