@@ -124,6 +124,54 @@
 \end{frame}
 
 \begin{frame}[fragile]
+    \frametitlecpp[11]{Containers: \texttt{std::unordered\_map}}
+    \begin{block}{}
+        Conceptually a container of \cppinline{std::pair<Key const, Value>}
+    \end{block}
+    \begin{cppcode*}{gobble=4}
+        #include <unordered_map>
+        std::unordered_map<std::string, int> m;
+        m["hello"] = 1;  // inserts new key, def. constr. value
+        m["hello"] = 2;  // finds existing key
+        auto [it, isNewKey] = m.insert("hello");
+        int val = m["world"];    // inserts new key (val == 0)
+        int val = m.at("monde"); // throws std::out_of_range
+
+        if (auto it = m.find("hello"); it != m.end()) // C++17
+            m.erase(it);      // remove by iterator (fast)
+        if (m.contains("hello")) // C++20
+            m.erase("hello"); // remove by key, 2. lookup, bad
+        for (auto const& [k, v] : m) // iterate k/v pairs (C++17)
+            std::cout << k << ": " << v << '\n';
+    \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitlecpp[11]{\texttt{std::hash}}
+    \begin{block}{}
+        \begin{itemize}
+            \item The standard utility to create hash codes
+            \item Used by \cppinline{std::unordered_map} and others
+            \item Can be customized for your types via template specialization
+        \end{itemize}
+    \end{block}
+    \begin{cppcode*}{gobble=4}
+        #include <functional>
+        std::hash<std::string> h;
+        std::cout << h("hello"); // 2762169579135187400
+        std::cout << h("world"); // 8751027807033337960
+
+        class MyClass { int a, b; ... };
+        template<> struct std::hash<MyClass> {
+          std::size_t operator()(MyClass const& c) {
+            std::hash<int> h;
+            return h(c.a) ^ h(c.b.); // xor to combine hashes
+          }
+        };
+    \end{cppcode*}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[11]{STL's concepts}
   \begin{block}{iterators}
     \begin{itemize}
