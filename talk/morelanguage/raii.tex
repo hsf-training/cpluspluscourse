@@ -427,6 +427,29 @@ print();
 \end{advanced}
 
 \begin{frame}[fragile]
+    \frametitlecpp[11]{Rule of zero}
+    \begin{goodpracticeWithShortcut}{Single responsibility principle (SRP)}{Single responsibility principle}
+        Every class should have only one responsibility.
+    \end{goodpracticeWithShortcut}
+    \begin{goodpractice}{Rule of zero}
+        \begin{itemize}
+            \item If your class has any special member functions (except ctor.)
+            \begin{itemize}
+                \item Your class probably deals with a resource, use RAII
+                \item Your class should only deal with this resource (SRP)
+                \item Apply rule of 3/5: write/default/delete all special members
+            \end{itemize}
+            \item Otherwise: do not declare any special members (rule of zero)
+            \begin{itemize}
+                \item A constructor is fine, if you need some setup
+                \item If your class holds a resource as data member:\\
+                      wrap it in a smart pointer, container, or any other RAII class
+            \end{itemize}
+        \end{itemize}
+    \end{goodpractice}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[98]{smart pointers}
   \begin{exercise}{Smart pointers}
     \begin{itemize}
