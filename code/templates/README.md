@@ -8,8 +8,10 @@ Beginners
 
 Intermediary
 * Extend `OrderedVector` to allow to customize the ordering via an additional template parameter.
-  By default, `std::less` should be used.
-* Test ordering by the reversed strings (from the last letter, don't change the strings!)
+  This template parameter should be a comparison object that defaults to `std::less`.
+  Hint:
+  You have to customize the loop in OrderedVector::add where the insertion point is defined.
+* Try ordering by reversed strings (from the last letter, don't change the strings!)
 * Test order based on [Manhattan distance](https://en.wikipedia.org/wiki/Taxicab_geometry) with complex type
 
 Bonus
