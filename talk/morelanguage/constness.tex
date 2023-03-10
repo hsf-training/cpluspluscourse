@@ -62,8 +62,13 @@
         // type of 'this' is 'Example const*'
         data = 0; // Error: member function is const
       }
+      void foo() { // ok, overload
+        data = 1;  // ok, 'this' is 'Example*'
+      }
       int data;
     };
+    Example const e1; e1.foo(); // calls     const foo
+    Example       e2; e2.foo(); // calls non-const foo
   \end{cppcode}
 \end{frame}
 
@@ -76,16 +81,16 @@
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    void func(int & a);
-    void funcConst(int const & a);
+    void change(int & a);
+    void read(int const & a);
 
     int a = 0;
     int const b = 0;
 
-    func(a);      // ok
-    func(b);      // error
-    funcConst(a); // ok
-    funcConst(b); // ok
+    change(a); // ok
+    change(b); // error
+    read(a);   // ok
+    read(b);   // ok
   \end{cppcode}
 \end{frame}
 

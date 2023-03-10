@@ -4,8 +4,9 @@
   \frametitlecpp[11]{Trailing function return type}
   \begin{block}{An alternate way to specify a function's return type}
     \begin{cppcode*}{linenos=false}
-      ReturnType func(Arg1 a, Arg2 b);  // classic
-      auto func(Arg1 a, Arg2 b) -> ReturnType;
+      int f(float a);                // classic
+      auto f(float a) -> int;        // trailing
+      auto f(float a) { return 42; } // deduced, C++14
     \end{cppcode*}
   \end{block}
   \pause
@@ -13,15 +14,14 @@
     \begin{itemize}
     \item Allows to simplify inner type definition
       \begin{cppcode*}{gobble=4}
-        class Class {
-          using ReturnType = int;
-          ReturnType func();
+        class Equation {
+          using ResultType = double;
+          ResultType evaluate();
         }
-        Class::ReturnType Class::func() {...}
-        auto Class::func() -> ReturnType {...}
+        Equation::ResultType Equation::evaluate() {...}
+        auto Equation::evaluate() -> ResultType {...}
       \end{cppcode*}
-    \item \cpp14: \cppinline{ReturnType} not required, compiler can deduce it
-    \item used by lambda expressions
+    \item Used by lambda expressions
     \end{itemize}
   \end{block}
 \end{frame}
@@ -30,7 +30,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[11]{Lambda expressions}
   \begin{block}{Definition}
-    a lambda expression is a function with no name
+    A lambda expression is a function with no name
   \end{block}
   \pause
   \begin{exampleblock}{Python example}
@@ -141,7 +141,10 @@
   \end{alertblock}
   \pause
   \begin{block}{Explanation}
-    By default, variables are captured by value, and the lambda's \cppinline{operator()} is \cppinline{const}.
+    \begin{itemize}
+      \item By default, variables are captured by value
+      \item The lambda's \cppinline{operator()} is \cppinline{const}
+    \end{itemize}
   \end{block}
 \end{frame}
 
@@ -160,11 +163,61 @@
   \begin{exampleblock}{Mixed case}
     One can of course mix values and references
     \begin{cppcode*}{firstnumber=5}
-      int sum = 0, offset = 1;
+      int sum = 0, off = 1;
       int data[]{1,9,3,8,3,7,4,6,5};
-      auto f = [&sum, offset](int x) { sum += x+offset; };
+      auto f = [&sum, off](int x) { sum += x + off; };
       for (int i : data) f(i);
     \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Anatomy of a lambda}
+  \begin{block}{Lambdas are pure syntactic sugar - \cppinsightLink{https://cppinsights.io/s/67800da8}}
+    \begin{itemize}
+    \item They are replaced by a functor during compilation
+    \end{itemize}
+    \begin{columns}
+      \scriptsize
+      \begin{column}{.25\textwidth}
+        \begin{cppcode*}{gobble=6}
+          int sum = 0, off = 1;
+          auto l =
+          [&sum, off]
+
+
+
+          (int x) {
+            sum += x + off;
+          };
+
+
+          l(42);
+        \end{cppcode*}
+      \end{column}
+      \begin{column}{.45\textwidth}
+        \begin{cppcode*}{gobble=6, firstnumber=13}
+          int sum = 0, off = 1;
+          struct __lambda4 {
+            int& sum; int off;
+            __lambda4(int& s, int o)
+            : sum(s), off(o) {}
+
+            auto operator()(int x) const {
+              sum += x + off;
+            }
+          };
+          auto l = __lambda4{sum, off};
+          l(42);
+        \end{cppcode*}
+      \end{column}
+    \end{columns}
+  \end{block}
+  \begin{exampleblock}{Some nice consequence}
+    \begin{itemize}
+    \item Lambda expressions create ordinary objects
+    \item They can be copied, moved, or inherited from
+    \end{itemize}
   \end{exampleblock}
 \end{frame}
 
@@ -217,56 +270,6 @@
     The object at \cppinline{*this} is captured by value (the lambda gets a copy).
   \end{block}
   Details in  \href{https://www.nextptr.com/tutorial/ta1430524603/capture-this-in-lambda-expression-timeline-of-change}{this blog post}.
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlecpp[11]{Anatomy of a lambda}
-  \begin{block}{Lambdas are pure syntactic sugar - \cppinsightLink{https://cppinsights.io/s/67800da8}}
-    \begin{itemize}
-    \item they are replaced by a functor during compilation
-    \end{itemize}
-    \begin{columns}
-      \scriptsize
-      \begin{column}{.25\textwidth}
-        \begin{cppcode*}{gobble=6}
-          int sum = 0, off = 1;
-          auto l =
-          [&sum, off]
-
-
-
-          (int x) {
-            sum += x + off;
-          };
-
-
-          l(42);
-        \end{cppcode*}
-      \end{column}
-      \begin{column}{.45\textwidth}
-        \begin{cppcode*}{gobble=6, firstnumber=13}
-          int sum = 0, off = 1;
-          struct __lambda4 {
-            int& sum;
-            int off;
-            __lambda4(int& s, int o)
-            : sum(s), off(o) {}
-            auto operator()(int x)const{
-              sum += x + off;
-            }
-          };
-          auto l = __lambda4{sum, off};
-          l(42);
-        \end{cppcode*}
-      \end{column}
-    \end{columns}
-  \end{block}
-  \begin{exampleblock}{Some nice consequence}
-    \begin{itemize}
-    \item lambda expressions create ordinary objects
-    \item they can in particular be inherited from!
-    \end{itemize}
-  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]

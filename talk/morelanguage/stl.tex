@@ -33,13 +33,12 @@
       #include <iterator>
       #include <iostream>
 
-      std::vector<int> in{5, 3, 4};   // initializer list
-      std::vector<int> out(3); // constructor taking size
-      std::transform(in.begin(), in.end(),      // range1
-                     in.begin(),          // start range2
-                     out.begin(),         // start result
-                     std::multiplies{});  // function obj
-      std::copy(out.begin(), out.end(),   // 25 9 16
+      std::vector<int> in{5, 3, 4};    // initializer list
+      std::vector<int> out(3);  // constructor taking size
+      std::transform(in.begin(), in.end(), // input range
+                     out.begin(),          // start result
+                     std::negate{});       // function obj
+      std::copy(out.begin(), out.end(),    // -5 -3 -4
         std::ostream_iterator<int>{std::cout, " "});
     \end{cppcode*}
   \end{exampleblockGB}
@@ -142,7 +141,7 @@
   \end{block}
   \begin{exampleblockGB}{Iterator example}{https://godbolt.org/z/jv1qTo5xz}{Iterator example}
     \begin{cppcode*}{}
-      std::vector<int> const v = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+      std::vector<int> const v = {1,2,3,4,5,6,7,8,9};
       auto const end = v.rend() - 3; // arithmetic
       for (auto it = v.rbegin();
            it != end;     // compare positions
@@ -289,7 +288,7 @@
     // Computes sin(x)/(x + DBL_MIN) for elements of a range.
     std::vector<double> r(l.size());
     std::transform(l.begin(), l.end(), r.begin(),
-      [](auto x) { return sin(x)/(x + DBL_MIN); });
+      [](auto x) { return std::sin(x)/(x + DBL_MIN); });
 
     // reduce/fold (using addition)
     const auto sum = std::reduce(v.begin(), v.end());
