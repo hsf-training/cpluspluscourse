@@ -134,6 +134,8 @@ The goal is to use STL algorithms. I would advise to start in this order :
 ### Smart pointers (directory: [`smartPointers`](smartPointers))
 
 Here we have four code snippets that will benefit from using smart pointers.
+**Essentials**: Work on part 1 and 2
+**Advanced**: Try all parts
 
 - `problem1` is a simple case of usage of `make_unique` with an observer pattern where the raw pointer should be used.
 - `problem2` is an example of a collection of pointers. Move semantic has to be used to transfer ownership of newly created objects to the container (alternatively, `emplace_back`).
