@@ -49,6 +49,6 @@ Day 3 - Modern C++ Exercises
 
 ### Generic programming / templates (directory: [`templates`](templates), [CheatSheet](ExercisesCheatSheet.md#generic-programming--templates-directory-templates))
 
-### Smart pointers (directory: [`smartPointers`](smartPointers), [CheatSheet](ExercisesCheatSheet.md#smart-pointers-directory-smartpointers))
+### Smart pointers part 1 and 2 (directory: [`smartPointers`](smartPointers), [CheatSheet](ExercisesCheatSheet.md#smart-pointers-directory-smartpointers))
 
 ### Standard algorithms and lambdas (directory: [`stl`](stl), [CheatSheet](ExercisesCheatSheet.md#standard-algorithms-and-lambdas-directory-stl))

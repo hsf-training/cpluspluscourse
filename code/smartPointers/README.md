@@ -21,5 +21,5 @@ and make most cleanup code unnecessary.
 ```
 valgrind --leak-check=full --track-origins=yes ./smartPointers
 ```
-* Go through `problem1()` to `problem3()` and fix the leaks using smart pointers.
-* `problem4()` is the most difficult. Skip if not enough time.
+* In the **essentials course**, work on `problem1()` and `problem2()`, and fix the leaks using smart pointers.
+* In the **advanced course**, work on `problem1()` to `problem4()`. Skip `problem4()` if you don't have enough time.

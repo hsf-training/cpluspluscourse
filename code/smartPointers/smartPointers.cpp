@@ -14,7 +14,14 @@
  * Please fix all memory leaks / ownership problems using smart pointers.
  * (Verify by running the program with valgrind!)
  *
- * In main() at the bottom, comment in all parts as you progress through the exercise.
+ * In the *essentials course*:
+ * - Work on problem1() and problem2()
+ * - You can have a look at problem3() if interested
+ *
+ * In the *advanced course*:
+ * - Work on problem1() to problem4()
+ *
+ * In main() at the bottom, comment in the different parts as you progress through the exercise.
  *
  * Remember that:
  * - The unique ownership of data is expressed using unique_ptr.
