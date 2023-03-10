@@ -248,7 +248,7 @@ of 'std::unique_ptr<Foo>'
       void observe(const T&);
       void modifyRef(T&);
       void modifyPtr(T*);
-      void consumer(std::unique_ptr<T>);
+      void consume(std::unique_ptr<T>);
       std::unique_ptr<T> pt{produce()}; // Receive ownership
       observe(*pt);                     // Keep ownership
       modifyRef(*pt);                   // Keep ownership
