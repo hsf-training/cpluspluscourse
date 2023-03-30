@@ -1,13 +1,24 @@
-Exercises HowTo
+Exercises: HowTo
 ===============
 
- - List of exercises per day, with preferred order and solution overview.
- - Each exercise is in its own directory and referred to in the following by the name of the directory
- - We tried to provide more material than many participants can finish during the sessions. That's not a problem, as additional exercises can also be done later.
- - For each day, the exercises are given in order in which they should be done.
+ - Each exercise is in its own directory and referred to in the following by the name of the directory.
+ - Almost each exercise contains a solution.
+ - We tried to provide more material than many participants can finish during the sessions. Participants are welcome to finish the more complicated ones in
+   self study, but questions regarding the solutions are welcome in the lecture and especially during the following hands-on sessions.
+ - For each day, the exercises are given in order in which they should be done in
+   - Essentials: [`ExerciseSchedule_EssentialCourse.md`](ExerciseSchedule_EssentialCourse.md)
+   - Advanced: [`ExerciseSchedule_AdvancedCourse.md`](ExerciseSchedule_AdvancedCourse.md)
 
-Setup requirements
-------------------
+Getting the code
+----------------
+
+```bash
+git clone https://github.com/hsf-training/cpluspluscourse.git
+cd cpluspluscourse/code
+```
+
+Recommended setup
+-----------------
 
 ### Required
 
@@ -39,18 +50,38 @@ Setup requirements
   ```
   - and just take the first number (real time)
 
-Getting exercises’ code
------------------------
+
+How to test your setup
+----------------------
+ - **Please run [`check_setup.sh`](check_setup.sh) to check your setup on Linux / Mac.**
+ - go to [`code/hello`](hello)
+ - follow the `README.md`
+
+### How to compile and run?
 
 ```bash
-git clone https://github.com/hsf-training/cpluspluscourse.git
-cd cpluspluscourse/code
+cd code/hello
+make
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
+./hello
 ```
+
+### Optionally: check for valgrind/cppcheck
+
+  - `valgrind --tool=callgrind ./hello; kcachegrind`
+  - `cppcheck .`
+
 
 Anatomy of an exercise
 ----------------------
 
-Each exercise is in a subdirectory with mainly 3 sets of files
+Each exercise is in a subdirectory with mainly 4 sets of files
+
+### Instructions
+
+ - Each exercise comes with a set of instructions in the course slides
+ - Most of them also with a `README.md` in the exercise subdir
+ - And with instructions in the code
 
 ### *.hpp and *.cpp files
 
@@ -61,50 +92,27 @@ Each exercise is in a subdirectory with mainly 3 sets of files
 
   - prepared Makefile for easy compilation
   - `make` and `make clean` are available
-  - CMake is also supported
+  - CMake is also supported:
+    - Create a build directory such as `mkdir build`
+    - `cd build`
+    - Configure using `cmake ..`
+    - Compile e.g. using `make`
 
 ### solution subdirectory
 
   - the solution to the exercise (`make solution`)
   - please do not use before trying!
 
-Just follow the instructions
-----------------------------
 
- - each exercise comes with a set of instructions in the course
- - also present in exercise subdir in markdown format
- - very practical to read on github
-
-How to test your setup
-----------------------
-
-### Just use hello exercise
-
- - go to [`code/hello`](hello)
- - follow the `README.md`
-
-### How to compile ?
-
-```bash
-cd code/hello
-make
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
-./hello
-```
-
-### Practically for valgrind/cppcheck
-
-  - `valgrind --tool=callgrind ./hello; kcachegrind`
-  - `cppcheck .`
+Examples of working environments
+================================
 
 Using lxplus
 ------------
 
-  - lxplus is perfectly suitable for the exercises
+  - lxplus9 at CERN is perfectly suitable for the exercises
   - it has all the needed compilers/tools
-
-### Practically on lxplus9
-
+  - run e.g.
 ```bash
 ssh lxplus9.cern.ch
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
@@ -113,6 +121,13 @@ cd cpluspluscourse/code/hello
 make
 ./hello
 ```
+
+Using OS/X
+----------
+- Install xcode and the command line tools
+- Compiling, running, debugging will work, but a few tools such as valgrind are not available
+
+
 
 Using Windows
 -------------
@@ -181,7 +196,7 @@ Verify that the tools are there by running:
 You can install an editor inside the WSL system itself,
 but we recommend to use [VS Code](#visual-studio-code) in Windows natively.
 
-### lxplus
+### Connect to lxplus from Windows
 
 Recent versions of Windows 10 (version 1809 or higher) come with an ssh client.
 If that does not work, you can install a third-party ssh client for Windows.
