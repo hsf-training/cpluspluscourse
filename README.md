@@ -24,6 +24,7 @@ For each commit to master, the slides are compiled to a PDF and uploaded to the 
 
 Video recordings are available in the past events.
 
+* [6th HEP C++ Course and Hands-on Training (2023 March - essentials)](https://indico.cern.ch/event/1229412/)
 * [5th HEP C++ Course and Hands-on Training (2022 October - advanced)](https://indico.cern.ch/event/1172498/)
 * [4nd HEP C++ Course and Hands-on Training (2022 March - essentials)](https://indico.cern.ch/event/1119339/)
 * [3rd HEP C++ Course and Hands-on Training (2021 August)](https://indico.cern.ch/event/1019089/)
