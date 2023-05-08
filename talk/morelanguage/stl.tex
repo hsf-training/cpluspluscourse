@@ -35,11 +35,11 @@
 
       std::vector<int> in{5, 3, 4};    // initializer list
       std::vector<int> out(3);  // constructor taking size
-      std::transform(in.begin(), in.end(), // input range
+      std::transform(in.begin(), in.end(),  // input range
                      out.begin(),          // start result
                      std::negate{});       // function obj
       std::copy(out.begin(), out.end(),    // -5 -3 -4
-        std::ostream_iterator<int>{std::cout, " "});
+      std::ostream_iterator<int>{std::cout, " "});
     \end{cppcode*}
   \end{exampleblockGB}
 \end{frame}
