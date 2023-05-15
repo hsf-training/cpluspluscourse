@@ -28,6 +28,16 @@
       }
     \end{cppcode*}
   \end{multicols}
+
+  \pause
+
+  \begin{exampleblock}{Functions and references to returned values}
+    \begin{cppcode}
+      int result = square(2);
+      int & temp = square(2);        // Not allowed
+      int const & temp2 = square(2); // OK
+    \end{cppcode}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
