@@ -33,12 +33,14 @@ Recommended setup
  - `valgrind`, `kcachegrind`, `cppcheck`, `clang-format` and `clang-tidy` for corresponding exercises
  - `g++` or `clang++` as C++ compiler for sanitizer exercises
 
-### C++ and python specific needs
+### More setup for the advanced course
+
+#### C++ and python specific needs
 
  - `python3`, `libpython3-dev`
  - `ctypes`, `matplotlib`, `numpy` python packages
 
-### A word on timing
+#### A word on timing
 
   - several exercises ask you to "time" things
   - here it's always sufficient to use the `time` command line:
@@ -54,6 +56,7 @@ Recommended setup
 How to test your setup
 ----------------------
  - **Please run [`check_setup.sh`](check_setup.sh) to check your setup on Linux / Mac.**
+   The optional tools are not required for the essentials course.
  - go to [`code/hello`](hello)
  - follow the `README.md`
 
