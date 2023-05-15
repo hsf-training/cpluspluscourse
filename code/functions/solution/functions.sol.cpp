@@ -22,7 +22,7 @@ void printFiveCharacters(FastToCopy argument) {
     for (int i = 0; i < 5; i++)
         std::cout << argument.name[i];
     std::cout << '\n';
-    
+
     // alternative 1: std::cout << argument.name.substr(0, 5) << '\n';
     // alternative 2: std::cout << std::string_view{argument.name.data(), 5} << '\n';
     // alternative C: std::printf("%.5s\n", argument.name.c_str());
