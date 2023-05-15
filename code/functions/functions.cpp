@@ -12,6 +12,7 @@
  *      argument.name[0] = 'a';
  *    to your print function.
  *    Try both with and without const attributes in your print function's signature.
+ * 5. Bonus: Can you fix "printFiveCharacters" to actually only print the first five characters and not the entire string?
  */
 
 #include "Structs.h" // The data structs we will work with
@@ -19,14 +20,14 @@
 #include <iostream> // For printing
 
 void printFiveCharacters(FastToCopy argument) {
-    std::cout << argument.name << "\n";
+    std::cout << argument.name << '\n';
 }
 
 int main() {
-    FastToCopy fast = {"abcdef"};
+    FastToCopy fast = {"abcdefghijkl"};
     printFiveCharacters(fast);
 
-    SlowToCopy slow = {"ghijkl"};
+    SlowToCopy slow = {"ABCDEFGHIJKL"};
     // print it here
 
     return 0;
