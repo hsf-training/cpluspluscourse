@@ -1,56 +1,44 @@
+#include <algorithm>
 #include <iostream>
-#include <cmath>
-#include <random>
 
-constexpr auto LEN = 1000;
-constexpr auto STEP = 7;
-
-void swap(int *a, int*b) {
-    int c = *a;
-    *a = *b;
-    *b = c;
+void swap(int * a, int * b)
+{
+  int c = *a;
+  *a = *b;
+  *b = c;
 }
 
-void randomize(int* v, unsigned int len) {
-    std::default_random_engine e;
-    std::uniform_int_distribution d{0u, len - 1};
-    // we randomize via len random inversions
-    for (unsigned int i = 0; i < len; i++) {
-        int a = d(e);
-        int b = d(e);
-        swap(v+a, v+b);
-    }
+void reverse(int * v, unsigned int len)
+{
+  for (unsigned int i = 0; i < (len + 1) / 2; i++) {
+    const int a = i;
+    const int b = len - 1 - i;
+
+    swap(v + a, v + b);
+  }
 }
 
-void createAndFillVector(int*& v, unsigned int len) {
-    v = new int[LEN];
-    for (unsigned int i = 0; i < len; i++) v[i] = i*STEP;
+int * createAndFillVector(unsigned int len)
+{
+  auto v = new int[len];
+  for (unsigned int i = 0; i < len; i++) {
+    v[i] = i;
+  }
+  return v;
 }
 
-int main() {
-    int *v = nullptr;
-    // create and randomize vector of LEN+1 numbers
-    randomize(v, LEN+1);
-    createAndFillVector(v, LEN+1);
+int main()
+{
+  constexpr auto arraySize = 100;
+  int * v = nullptr;
+  // create and reverse the vector of LEN numbers
+  reverse(v, 1000);
+  v = createAndFillVector(arraySize);
 
-    // compute LEN diffs
-    int *diffs = new int[LEN];
-    for (unsigned int i = 0; i < LEN; i++)
-        diffs[i] = v[i+1] - v[i];
+  // check if the revert worked:
+  const bool isReversed = std::is_sorted(v, v + arraySize, std::greater{});
+  std::cout << "Vector reversed successfully: " << std::boolalpha
+            << isReversed << "\n";
 
-    // compute mean and standard deviation of diffs
-    float sum = 0;
-    float sumsq = 0;
-    for (unsigned int i = 0; i < LEN; i ++) {
-        sum += diffs[i];
-        sumsq += diffs[i]*diffs[i];
-    }
-    float mean = sum/LEN;
-    float stddev = std::sqrt(sumsq/LEN - mean*mean) ;
-    std::cout << "Range = [0, " << STEP*LEN << "]\n"
-              << "Mean = " << mean
-              << "\nStdDev = " << stddev << '\n';
-
-    delete[] v;
-    delete[] diffs;
+  return isReversed ? 0 : 1;
 }
