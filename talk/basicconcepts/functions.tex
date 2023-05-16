@@ -215,10 +215,12 @@ void fWrite(T &value);     fWrite(a); // non-const ref
     \begin{block}{Overloading}
         \begin{itemize}
             \item We can have multiple functions with the same name
-            \item They must have different parameter lists
-            \item A different return type alone is not allowed
+            \begin{itemize}
+                \item Must have different parameter lists
+                \item A different return type alone is not allowed
+                \item Form a so-called ``overload set''
+            \end{itemize}
             \item Default arguments can cause ambiguities
-            \item All functions with the same name form an ``overload set''
         \end{itemize}
     \end{block}
     \begin{exampleblock}{}
