@@ -6,8 +6,8 @@ project( debug LANGUAGES CXX )
 include( "${CMAKE_CURRENT_SOURCE_DIR}/../common.cmake" )
 
 # Create the user's executable.
-add_executable( debug_randomize "randomize.cpp" )
+add_executable( debug "debug.cpp" )
 
 # Create the "solution executable".
-add_executable( debug_randomize.sol EXCLUDE_FROM_ALL "solution/randomize.sol.cpp" )
-add_dependencies( solution debug_randomize.sol )
+add_executable( debug.sol EXCLUDE_FROM_ALL "solution/debug.sol.cpp" )
+add_dependencies( solution debug.sol )
