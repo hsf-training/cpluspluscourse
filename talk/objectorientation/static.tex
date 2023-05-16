@@ -9,15 +9,35 @@
     \item identified by the \cppinline{static} keyword
     \end{itemize}
   \end{block}
+
+  \vspace{-1\baselineskip}
+  \begin{overprint}
+  \onslide<1>
+  \begin{exampleblock}{Static.hpp}
   \begin{cppcode}
     class Text {
     public:
-      static std::string upper(std::string) {...}
+      static std::string upper(std::string);
     private:
       static int callsToUpper; // add `inline` in C++17
     };
+  \end{cppcode}
+  \end{exampleblock}
+
+  \onslide<2>
+  \begin{exampleblock}{Static.cpp}
+  \begin{cppcode}
+    #include "Static.hpp"
     int Text::callsToUpper = 0; // required before C++17
+
+    std::string Text::upper(std::string lower) {
+      callsToUpper++;
+      // convert lower to upper case
+      // return ...;
+    }
     std::string uppers = Text::upper("my text");
     // now Text::callsToUpper is 1
   \end{cppcode}
+  \end{exampleblock}
+  \end{overprint}
 \end{frame}
