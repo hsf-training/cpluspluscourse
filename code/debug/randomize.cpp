@@ -13,7 +13,7 @@ void swap(int *a, int*b) {
 
 void randomize(int* v, unsigned int len) {
     std::default_random_engine e;
-    std::uniform_int_distribution d{0u, len};
+    std::uniform_int_distribution d{0u, len - 1};
     // we randomize via len random inversions
     for (unsigned int i = 0; i < len; i++) {
         int a = d(e);
@@ -22,23 +22,23 @@ void randomize(int* v, unsigned int len) {
     }
 }
 
-void createAndFillVector(int** v, unsigned int len) {
-    *v = new int[LEN];
-    for (unsigned int i = 0; i < len; i++) (*v)[i] = i*STEP;
+void createAndFillVector(int*& v, unsigned int len) {
+    v = new int[LEN];
+    for (unsigned int i = 0; i < len; i++) v[i] = i*STEP;
 }
 
 int main() {
     int *v = nullptr;
-    // create and randomize vector
+    // create and randomize vector of LEN+1 numbers
     randomize(v, LEN+1);
-    createAndFillVector(&v, LEN+1);
+    createAndFillVector(v, LEN+1);
 
-    // compute diffs
+    // compute LEN diffs
     int *diffs = new int[LEN];
     for (unsigned int i = 0; i < LEN; i++)
         diffs[i] = v[i+1] - v[i];
 
-    // compute standard deviation of it
+    // compute mean and standard deviation of diffs
     float sum = 0;
     float sumsq = 0;
     for (unsigned int i = 0; i < LEN; i ++) {
