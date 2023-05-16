@@ -13,7 +13,7 @@ void swap(int *a, int*b) {
 
 void randomize(int* v, unsigned int len) {
     std::default_random_engine e;
-    std::uniform_int_distribution d{0u, len};
+    std::uniform_int_distribution d{0u, len - 1};
     // we randomize via len random inversions
     for (unsigned int i = 0; i < len; i++) {
         int a = d(e);
