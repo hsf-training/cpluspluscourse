@@ -29,17 +29,17 @@ void createAndFillVector(int*& v, unsigned int len) {
 
 int main() {
     int *v;
-    // create and randomize vector
+    // create and randomize vector of LEN+1 numbers
     createAndFillVector(v, LEN+1);
     randomize(v, LEN+1);
 
-    // compute diffs
+    // compute LEN diffs
     int *diffs = new int[LEN];
     for (unsigned int i = 0; i < LEN; i++)
         diffs[i] = v[i+1] - v[i];
     delete[] v;
 
-    // compute standard deviation of it
+    // compute mean and standard deviation of diffs
     float sum = 0;
     float sumsq = 0;
     for (unsigned int i = 0; i < LEN; i ++) {
