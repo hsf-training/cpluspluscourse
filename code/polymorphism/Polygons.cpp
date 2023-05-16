@@ -6,7 +6,7 @@ RegularPolygon::RegularPolygon(int n, float radius) : m_nbSides(n), m_radius(rad
 
 float RegularPolygon::computePerimeter() const {
     std::cout << "Polygon::computePerimeter is being called\n";
-    return 2*m_nbSides*std::sin(static_cast<float>(M_PI)/m_nbSides)*m_radius;
+    return 2 * m_nbSides * std::sin(static_cast<float>(M_PI) / m_nbSides) * m_radius;
 }
 
 Pentagon::Pentagon(float radius) : RegularPolygon(5, radius) {}
