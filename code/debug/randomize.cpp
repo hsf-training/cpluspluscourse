@@ -22,16 +22,16 @@ void randomize(int* v, unsigned int len) {
     }
 }
 
-void createAndFillVector(int** v, unsigned int len) {
-    *v = new int[LEN];
-    for (unsigned int i = 0; i < len; i++) (*v)[i] = i*STEP;
+void createAndFillVector(int*& v, unsigned int len) {
+    v = new int[LEN];
+    for (unsigned int i = 0; i < len; i++) v[i] = i*STEP;
 }
 
 int main() {
     int *v = nullptr;
     // create and randomize vector
     randomize(v, LEN+1);
-    createAndFillVector(&v, LEN+1);
+    createAndFillVector(v, LEN+1);
 
     // compute diffs
     int *diffs = new int[LEN];
