@@ -1,7 +1,7 @@
 \subsection[construct]{Constructors/destructors}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Class Constructors and Destructors}
+  \frametitlecpp[98]{Class constructors and destructors}
   \begin{block}{Concept}
     \begin{itemize}
     \item special functions called when building/destroying an object
@@ -12,11 +12,11 @@
   \end{block}
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
-      class MyFirstClass {
+      class C {
       public:
-        MyFirstClass();
-        MyFirstClass(int a);
-        ~MyFirstClass();
+        C();
+        C(int a);
+        ~C();
         ...
       protected:
         int a;
@@ -26,18 +26,18 @@
     \begin{cppcode*}{gobble=2,firstnumber=10}
       // note: special notation for
       // initialization of members
-      MyFirstClass() : a(0) {}
+      C::C() : a(0) {}
 
-      MyFirstClass(int a_):a(a_) {}
+      C::C(int a) : a(a) {}
 
-      ~MyFirstClass() {}
+      C::~C() {}
     \end{cppcode*}
   \end{multicols}
 \end{frame}
 
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Class Constructors and Destructors}
+  \frametitlecpp[98]{Class constructors and destructors}
   \begin{cppcode}
     class Vector {
     public:
@@ -61,22 +61,20 @@
 \begin{frame}[fragile]
   \frametitlecpp[98]{Constructors and inheritance}
   \begin{cppcode}
-    struct MyFirstClass {
+    struct First {
       int a;
-      MyFirstClass();
-      MyFirstClass(int a);
+      First() {} // leaves a uninitialized
+      First(int a) : a(a) {}
     };
-    struct MySecondClass : MyFirstClass {
+    struct Second : First {
       int b;
-      MySecondClass();
-      MySecondClass(int b);
-      MySecondClass(int a, int b);
+      Second();
+      Second(int b);
+      Second(int a, int b);
     };
-    MySecondClass::MySecondClass() : MyFirstClass(), b(0) {}
-    MySecondClass::MySecondClass(int b_)
-      : MyFirstClass(), b(b_) {}
-    MySecondClass::MySecondClass(int a_, int b_)
-      : MyFirstClass(a_), b(b_) {}
+    Second::Second() : First(), b(0) {}
+    Second::Second(int b) : b(b) {} // First() implicitly
+    Second::Second(int a, int b) : First(a), b(b) {}
   \end{cppcode}
 \end{frame}
 
@@ -95,9 +93,9 @@
   \end{block}
   \pause
   \begin{cppcode}
-    struct MySecondClass : MyFirstClass {
-      MySecondClass();
-      MySecondClass(const MySecondClass &other);
+    struct C {
+      C();
+      C(const C &other);
     };
   \end{cppcode}
   \pause
@@ -114,7 +112,8 @@
       Vector(int n);
       Vector(const Vector &other);
       ~Vector();
-      ...
+    private:
+      int len; int* data;
     };
     Vector::Vector(int n) : len(n) {
       data = new int[n];
@@ -137,7 +136,7 @@
   \begin{exampleblockGB}{Example}{https://godbolt.org/z/TvqT185fz}{Unary constructor in action}
     \begin{cppcode}
     void print(const Vector & v) {
-      std::cout<<"printing v elements...\n";
+      std::cout << "printing v elements...\n";
     }
 
     int main {
@@ -224,14 +223,15 @@
   \end{block}
   \begin{exampleblock}{Practically}
     \begin{cppcode}
-      struct BaseClass {
-        BaseClass(int a);
+      struct Base {
+        Base(int a);           // ctor 1
       };
-      struct DerivedClass : BaseClass {
-        using BaseClass::BaseClass;
-        DerivedClass(int a, int b);
+      struct Derived : Base {
+        using Base::Base;
+        Derived(int a, int b); // ctor 2
       };
-      DerivedClass a{5};
+      Derived d{5};    // calls ctor 1
+      Derived d{5, 6}; // calls ctor 2
     \end{cppcode}
   \end{exampleblock}
 \end{frame}
@@ -246,16 +246,17 @@
   \end{block}
   \begin{exampleblock}{Practically}
     \begin{cppcode}
-      struct BaseClass {
+      struct Base {
         int a{5}; // also possible: int a = 5;
-        BaseClass() = default;
-        BaseClass(int _a) : a(_a) {}
+        Base() = default;
+        Base(int _a) : a(_a) {}
       };
-      struct DerivedClass : BaseClass {
+      struct Derived : Base {
         int b{6};
-        using BaseClass::BaseClass;
+        using Base::Base;
       };
-      DerivedClass d{7}; // a = 7, b = 6
+      Derived d1;    // a = 5, b = 6
+      Derived d2{7}; // a = 7, b = 6
     \end{cppcode}
   \end{exampleblock}
 \end{frame}
@@ -295,29 +296,21 @@
 
       A a(1,2);    // A::A(int, int)
       A a(1);      // A::A(int)
-      A a();       // declaration of a function !
+      A a();       // declaration of a function!
       A a;         // A::A()
-      A a = (1,2); // A::A(int), comma operator !
+      A a = (1,2); // A::A(int), comma operator!
       A a = {1,2}; // not allowed
     \end{cppcode*}
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Calling constructors for arrays and vectors}
-  \begin{exampleblock}{list of items given within \{\}}
+  \frametitlecpp[11]{Constructing arrays and vectors}
+  \begin{exampleblock}{List of items given within \{\}}
     \begin{cppcode*}{firstnumber=10}
      int ip[3]{1,2,3};
-     int* ip = new int[3]{1,2,3};
-     std::vector<int> v{1,2,3};
+     int* ip = new int[3]{1,2,3}; // not allowed in C++98
+     std::vector<int> v{1,2,3};   // same
     \end{cppcode*}
   \end{exampleblock}
-  \pause
-  \begin{block}{\cpp98 nightmare}
-    \begin{cppcode*}{firstnumber=10}
-     int ip[3]{1,2,3};            // OK
-     int* ip = new int[3]{1,2,3}; // not allowed
-     std::vector<int> v{1,2,3};   // not allowed
-    \end{cppcode*}
-  \end{block}
 \end{frame}

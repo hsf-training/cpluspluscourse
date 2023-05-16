@@ -7,7 +7,7 @@
     \begin{itemize}
     \item with inheritance
     \item with access control
-    \item including methods/member functions
+    \item including methods (aka.\ member functions)
     \end{itemize}
   \end{block}
   \begin{block}{Objects}
@@ -65,37 +65,58 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Separating the interface}
-  \begin{block}{Header : MyFirstClass.hpp}
-    \begin{cppcode*}{}
-      #pragma once
-      struct MyFirstClass {
-        int a;
-        void squareA();
-        int sum(int b);
-      };
-    \end{cppcode*}
-  \end{block}
-  \begin{block}{Implementation : MyFirstClass.cpp}
-    \begin{cppcode*}{}
-      #include "MyFirstClass.hpp"
-      void MyFirstClass::squareA() {
-        a *= a;
-      }
-      int MyFirstClass::sum(int b) {
-        return a + b;
-      }
-    \end{cppcode*}
-  \end{block}
+  \begin{columns}[t]
+    \begin{column}{.45\textwidth}
+    \begin{block}{Header: MyClass.hpp}
+      \begin{cppcode*}{gobble=4}
+        #pragma once
+        struct MyClass {
+          int a;
+          void squareA();
+        };
+      \end{cppcode*}
+    \end{block}
+    \begin{block}{Implementation: MyClass.cpp}
+      \begin{cppcode*}{gobble=4}
+        #include "MyClass.hpp"
+        void MyClass::squareA() {
+          a *= a;
+        }
+      \end{cppcode*}
+    \end{block}
+    \end{column}
+    \begin{column}{.45\textwidth}
+    \begin{block}{User 1: main.cpp}
+      \begin{cppcode*}{gobble=4}
+        #include "MyClass.hpp"
+        int main() {
+          MyClass mc;
+          ...
+        }
+      \end{cppcode*}
+    \end{block}
+    \begin{block}{User 2: fun.cpp}
+      \begin{cppcode*}{gobble=4}
+        #include "MyClass.hpp"
+        void f(MyClass& mc) {
+          mc.squareA();
+        }
+      \end{cppcode*}
+    \end{block}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Implementing methods}
-  \begin{block}{Standard practice}
+  \begin{goodpractice}{Implementing methods}
     \begin{itemize}
     \item usually in .cpp, outside of class declaration
     \item using the class name as ``namespace''
+    \item short member functions can be in the header
+    \item some functions (templates, \cppinline{constexpr}) must be in the header
     \end{itemize}
-  \end{block}
+  \end{goodpractice}
   \begin{cppcode}
     void MyFirstClass::squareA() {
       a *= a;
@@ -116,18 +137,19 @@
     \item All class methods can use the keyword \cppinline{this}
       \begin{itemize}
         \item It returns the address of the current object
-        \item Its type is \cppinline{T*} in the methods of a struct/class {\ttfamily T}
+        \item Its type is \cppinline{T*} in the methods of a class {\ttfamily T}
       \end{itemize}
     \end{itemize}
   \end{block}
   \begin{cppcode}
-    void externalFunc(MyStruct & s);
-
-    struct MyStruct {
-      void invokeExternalFunc() {
-        externalFunc(*this); // Pass a reference to ourself
+    void freeFunc(S & s);
+    struct S {
+      void memberFunc() { // Implicit S* parameter
+        freeFunc(*this);  // Pass a reference to ourself
       }
     };
+    S s;
+    s.memberFunc();       // Passes &s implicitly
   \end{cppcode}
 \end{frame}
 
