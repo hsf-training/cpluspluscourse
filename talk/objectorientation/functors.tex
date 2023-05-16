@@ -26,12 +26,12 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{Function objects}
-  \begin{exampleblockGB}{Function objects as function arguments}{https://godbolt.org/z/1nqnfKxx8}{function objects}
+  \begin{exampleblockGB}{Function objects as function arguments}{https://godbolt.org/z/zxqYG6xzT}{function objects}
     \begin{cppcode}
     int count_if(const auto& range, auto predicate) {
       int count = 0;             // ↑ template (later)
       for (const auto& e : range)
-        count += predicate(e);
+        if (predicate(e)) count++;
       return count;
     }
     struct IsBetween {

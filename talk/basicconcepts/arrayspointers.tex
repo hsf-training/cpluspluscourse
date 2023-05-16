@@ -92,7 +92,7 @@ int l = *pak;
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Dynamic Arrays using C}
+  \frametitlecpp[98]{Dynamic arrays using C}
   \begin{cppcode}
     #include <cstdlib>
     #include <cstring>
@@ -111,4 +111,26 @@ int l = *pak;
   \begin{goodpracticeWithShortcut}{Don't use C's memory management}{C's memory management}
     Use \cppinline{std::vector} and friends or smart pointers
   \end{goodpracticeWithShortcut}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitlecpp[98]{Manual dynamic arrays using \cpp}
+	\begin{cppcode}
+		#include <cstdlib>
+		#include <cstring>
+
+		// allocate array of 10 ints
+		int* ai = new int[10];   // uninitialized
+		int* ai = new int[10]{}; // zero-initialized
+
+		delete[] ai; // release array memory
+
+		// allocate a single int
+		int* pi = new int;
+		int* pi = new int{};
+		delete pi; // release scalar memory
+	\end{cppcode}
+	\begin{goodpracticeWithShortcut}{Don't use manual memory management}{Manual memory management}
+		Use \cppinline{std::vector} and friends or smart pointers
+	\end{goodpracticeWithShortcut}
 \end{frame}

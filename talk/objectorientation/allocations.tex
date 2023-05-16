@@ -99,7 +99,7 @@
     }
     int g() {
       // constructor called
-      MyFirstClass *a = new MyFirstClass(3);
+      MyFirstClass *a = new MyFirstClass{3};
     } // memory leak !!!
   \end{cppcode}
   \begin{goodpracticeWithShortcut}{Prefer smart pointers over new/delete}{Prefer smart pointer}

@@ -267,7 +267,7 @@
 \end{advanced}
 
 \begin{frame}[fragile]
-  \frametitlecpp[98]{Pure Virtual methods}
+  \frametitlecpp[11]{Pure Virtual methods}
   \begin{block}{Concept}
     \begin{itemize}
     \item unimplemented methods that must be overridden
@@ -358,9 +358,7 @@
     delete p; // dynamic dispatch to right destructor
   \end{cppcode}
   \begin{goodpractice}{Virtual destructors}
-    \begin{itemize}
-      \item If you expect users to inherit from your class and override methods (i.e.\ use your class polymorphically), declare its destructor \cppinline{virtual}
-    \end{itemize}
+    If you expect users to inherit from your class and override methods (i.e.\ use your class polymorphically), declare its destructor \cppinline{virtual}
   \end{goodpractice}
 \end{frame}
 
@@ -380,7 +378,8 @@
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       struct Drawable {
-        virtual ~Drawable() = default;
+        virtual ~Drawable()
+                      = default;
         virtual void draw() = 0;
       }
     \end{cppcode*}
