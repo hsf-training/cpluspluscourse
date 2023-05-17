@@ -19,25 +19,32 @@
 #include <iostream> // For printing
 
 void printFiveCharacters(FastToCopy argument) {
-    std::cout << argument.name << "\n";
+    for (int i = 0; i < 5; i++)
+        std::cout << argument.name[i];
+    std::cout << '\n';
+
+    // alternative 1: std::cout << argument.name.substr(0, 5) << '\n';
+    // alternative 2: std::cout << std::string_view{argument.name.data(), 5} << '\n';
+    // alternative C: std::printf("%.5s\n", argument.name.c_str());
+    // alternative C++23: std::print("{:.5}\n", argument);
 }
 
 void printFiveCharacters(const SlowToCopy & argument) {
     //argument.data[0] = '\n' ; // EXPECTED COMPILATION ERROR
-    std::cout << argument.name << "\n";
+    std::cout << argument.name << '\n';
 }
 
 void printFiveCharactersWithCopy(SlowToCopy argument) {
-    std::cout << argument.name << "\n";
+    std::cout << argument.name << '\n';
     // We can actually modify the argument if we want, since it's a copy:
     argument.name[0] = 'a';
 }
 
 int main() {
-    FastToCopy fast = {"abcdef"};
+    FastToCopy fast = {"abcdefghijkl"};
     printFiveCharacters(fast);
 
-    SlowToCopy slow = {"ghijkl"};
+    SlowToCopy slow = {"ABCDEFGHIJKL"};
     printFiveCharacters(slow);
 
     std::cout << "Now printing with copy:\n";
