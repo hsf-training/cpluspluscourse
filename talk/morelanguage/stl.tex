@@ -164,7 +164,7 @@
         template<> struct std::hash<MyClass> {
           std::size_t operator()(MyClass const& c) {
             std::hash<int> h;
-            return h(c.a) ^ h(c.b.); // xor to combine hashes
+            return h(c.a) ^ h(c.b); // xor to combine hashes
           }
         };
     \end{cppcode*}
