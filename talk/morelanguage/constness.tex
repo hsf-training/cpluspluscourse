@@ -16,7 +16,7 @@
     int const i = 6;
     const int i = 6; // equivalent
 
-    // error : i is constant
+    // error: i is constant
     i = 5;
 
     auto const j = i; // works with auto
@@ -77,7 +77,7 @@
   \begin{block}{Constness is part of the type}
     \begin{itemize}
     \item \cppinline{T const} and \cppinline{T} are different types
-    \item however: \cppinline{T} is automatically cast to \cppinline{T const} when needed
+    \item but: \cppinline{T} is automatically converted to \cppinline{T const} when needed
     \end{itemize}
   \end{block}
   \begin{cppcode}

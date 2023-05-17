@@ -39,7 +39,7 @@
                      out.begin(),          // start result
                      std::negate{});       // function obj
       std::copy(out.begin(), out.end(),    // -5 -3 -4
-      std::ostream_iterator<int>{std::cout, " "});
+        std::ostream_iterator<int>{std::cout, " "});
     \end{cppcode*}
   \end{exampleblockGB}
 \end{frame}
