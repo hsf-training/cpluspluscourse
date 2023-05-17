@@ -37,8 +37,8 @@
       read_line(s);
       vec.push_back(s);
       set.add(s);
-      std::thread t1(func1, vec);
-      std::thread t2(func2, set);
+      std::thread t1{func1, vec};
+      std::thread t2{func2, set};
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
