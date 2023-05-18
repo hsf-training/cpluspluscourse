@@ -3,8 +3,11 @@
 
 Beginners
 * Look at the `OrderedVector` code
-* Compile and run `playwithsort.cpp`. See the ordering
-* Modify `playwithsort.cpp` and reuse `OrderedVector` with `Complex`
+* Compile and run `playwithsort.cpp`. See the printed ordering
+* Inspect the `Complex_t` class template and the alias `Complex`.
+  Then, in `playwithsort.cpp`, create a third `OrderedVector` with `Complex` as element type,
+  fill it with some complex values and print the vector.
+  No modifications to `Complex_t` and `OrderedVector` are required!
 
 Intermediary
 * Extend `OrderedVector` to allow to customize the ordering via an additional template parameter.

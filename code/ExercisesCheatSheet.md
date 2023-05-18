@@ -107,11 +107,11 @@ See in valgrind the improvements.
 
 ### Generic programming / templates (directory: [`templates`](templates))
 
-This exercise has several levels. People not at ease can stop after first level and go to next exercise. Alternatively, they may do level 1 and 3 and skip 2.
+This exercise has several levels. People not at ease can stop after the first level and go to next exercise. Alternatively, they may do level 1 and 3 and skip 2.
 
-Level 1 : just use the given Complex class in OrderedVector and see it works out of the box thanks to generic code in OrderedVector.
+Level 1: just use the given `Complex` alias (`Complex_t<float>`) inside an `OrderedVector`, fill and print it. See that it works out of the box thanks to generic code in `OrderedVector`.
 
-Level 2 : add a template argument for the ordering in OrderedVector.
+Level 2: add a template argument for the ordering in OrderedVector.
 The idea is to add an extra template argument "Compare" that is a functor comparing 2 arguments and an extra member "m_compare" of type "Compare" to the OrderedVector class. Then the comparison in the add function can be replaced by
 
 ```cpp
