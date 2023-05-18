@@ -1,0 +1,3 @@
+BasedOnStyle: WebKit
+InsertNewlineAtEOF: True
+Standard: Latest
