@@ -1,23 +1,23 @@
 #include <iostream>
 #include <string>
 
-int identity(int a) {
-    return a;
+void copy(int a) {
+    [[maybe_unused]] int val = a;
 };
 
-int identityConst(const int a) {
-    return a;
+void copyConst(const int a) {
+    [[maybe_unused]] int val = a;
 };
 
-int* identityp(int* a) {
-    return a;
+void write(int* a) {
+    *a = 42;
 };
 
-const int* identitypConst(const int *a) {
-    return a;
+void read(const int *a) {
+    [[maybe_unused]] int val = *a;
 };
 
-struct ConstTest {
+struct Test {
     void hello(std::string &s) {
         std::cout << "Hello " << s << '\n';
     }
@@ -46,22 +46,22 @@ int main() {
     // try constant arguments of functions
     int l = 0;
     const int m = 0;
-    identity(l);
-    identity(m);
-    identityConst(l);
-    identityConst(m);
+    copy(l);
+    copy(m);
+    copyConst(l);
+    copyConst(m);
 
     // try constant arguments of functions with pointers
     int *p = 0;
     const int *r = 0;
-    identityp(p);
-    identityp(r);
-    identitypConst(p);
-    identitypConst(r);
+    write(p);
+    write(r);
+    read(p);
+    read(r);
 
     // try constant method in a class
-    ConstTest t;
-    const ConstTest tc;
+    Test t;
+    const Test tc;
     std::string s("World");
     t.hello(s);
     tc.hello(s);
