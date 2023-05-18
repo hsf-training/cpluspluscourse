@@ -37,7 +37,7 @@ int main() {
         std::cout << vs[i] << " ";
     std::cout << "\n\n";
 
-    // TODO: Demonstrate OrderedVector with Complex as done above
+    // TODO: Demonstrate OrderedVector with Complex as element type similar to above
 
 
     // TODO: Extend OrderedVector to allow to customize the ordering via an additional template paramter.
