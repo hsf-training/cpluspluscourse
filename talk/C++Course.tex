@@ -8,18 +8,18 @@
 % create a new latex if called basic (false by default)
 \newif\ifbasic
 
-% There are two ways to switch to the basic course:
-% 1. Uncomment the following line:
+% There are three ways to switch to the basic course:
+% 1. Uncomment the line below. Disadvantage: git diff won't be empty
 %\basictrue
-
-% 2. Define the makebasic macro from the outside.
-% This could be done using -usepretex=\def\makebasic{}
-% The above is used:
-% - when invoking "make essentials"
-% - when exporting HEPCPP_ESSENTIALS=1
+% 2. Tell it to the Makefile.
+%  2.1 Invoke "make essentials"
+%  2.2 export HEPCPP_ESSENTIALS=1
+%      make <target>
 \ifdefined\makebasic
   \basictrue
 \fi
+% 3. Create a file named ./buildbasic
+\IfFileExists{./buildbasic}{\basictrue}
 
 % create a comment environment advanced. depending on the value of basic, we exclude or include it.
 \ifbasic
