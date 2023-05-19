@@ -1,6 +1,10 @@
 #include <iostream>
 #include <string>
 
+/* This is a dummy function to demonstrate pass by value.
+ * Since it doesn't do anything with the argument, we suppress
+ * possible compiler warnings using `maybe_unused`.
+ */
 void copy(int a) {
     [[maybe_unused]] int val = a;
 };
