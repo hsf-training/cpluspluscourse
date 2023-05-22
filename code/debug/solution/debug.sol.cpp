@@ -1,46 +1,46 @@
 #include <algorithm>
 #include <iostream>
 
-void swap(int * a, int * b)
+void swap(int* a, int* b)
 {
-  int c = *a;
-  *a = *b;
-  *b = c;
+    int c = *a;
+    *a = *b;
+    *b = c;
 }
 
-void reverse(int * v, unsigned int len)
+void reverse(int* v, unsigned int len)
 {
-  for (unsigned int i = 0; i < (len + 1) / 2; i++) {
-    const int a = i;
-    const int b = len - 1 - i;
+    for (unsigned int i = 0; i < (len + 1) / 2; i++) {
+        const int a = i;
+        const int b = len - 1 - i;
 
-    swap(v + a, v + b);
-  }
+        swap(v + a, v + b);
+    }
 }
 
-int * createAndFillVector(unsigned int len)
+int* createAndFillVector(unsigned int len)
 {
-  auto v = new int[len];
-  for (unsigned int i = 0; i < len; i++) {
-    v[i] = i;
-  }
-  return v;
+    auto v = new int[len];
+    for (unsigned int i = 0; i < len; i++) {
+        v[i] = i;
+    }
+    return v;
 }
 
 int main()
 {
-  constexpr auto arraySize = 100;
-  int * v = nullptr;
-  // create and reverse the vector of LEN numbers
-  v = createAndFillVector(arraySize);
-  reverse(v, arraySize);
+    constexpr auto arraySize = 100;
+    int* v = nullptr;
+    // create and reverse the vector of LEN numbers
+    v = createAndFillVector(arraySize);
+    reverse(v, arraySize);
 
-  // check if the revert worked:
-  const bool isReversed = std::is_sorted(v, v + arraySize, std::greater{});
-  std::cout << "Vector reversed successfully: " << std::boolalpha
-            << isReversed << "\n";
+    // check if the revert worked:
+    const bool isReversed = std::is_sorted(v, v + arraySize, std::greater {});
+    std::cout << "Vector reversed successfully: " << std::boolalpha
+              << isReversed << "\n";
 
-  delete[] v;
+    delete[] v;
 
-  return isReversed ? 0 : 1;
+    return isReversed ? 0 : 1;
 }
