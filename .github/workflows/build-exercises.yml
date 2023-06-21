@@ -2,10 +2,10 @@ name: Build exercises
 on:
   push:
     paths:
-      - 'code/**'
+      - 'exercises/**'
   pull_request:
     paths:
-      - 'code/**'
+      - 'exercises/**'
       - '.github/workflows/**'
 
 # Cancel running jobs on force-push
@@ -100,7 +100,7 @@ jobs:
     - uses: actions/checkout@v3
     # Run the CMake configuration.
     - name: CMake Configure
-      run: cmake -S ${{ github.workspace }}/code/${{ matrix.EXERCISE.NAME }}
+      run: cmake -S ${{ github.workspace }}/exercises/${{ matrix.EXERCISE.NAME }}
                  -B build
                  ${{ matrix.PLATFORM.GENERATOR }}
     # Perform the build of the "main exercise" with CMake.
@@ -113,12 +113,12 @@ jobs:
       if: ${{ !matrix.EXERCISE.SKIP_SOLUTION || false }}
     # Perform the build of the "main exercise" with GNU Make.
     - name: GNU Make Build Main
-      run: make -C ${{ github.workspace }}/code/${{ matrix.EXERCISE.NAME }}
+      run: make -C ${{ github.workspace }}/exercises/${{ matrix.EXERCISE.NAME }}
       if: ${{ matrix.PLATFORM.OS != 'windows-latest' &&
               (!matrix.EXERCISE.SKIP_DEFAULT || false) }}
     # Perform the build of the "solution" with GNU Make.
     - name: GNU Make Build Solution
-      run: make -C ${{ github.workspace }}/code/${{ matrix.EXERCISE.NAME }}
+      run: make -C ${{ github.workspace }}/exercises/${{ matrix.EXERCISE.NAME }}
                 solution
       if: ${{ matrix.PLATFORM.OS != 'windows-latest' &&
               (!matrix.EXERCISE.SKIP_SOLUTION || false) }}

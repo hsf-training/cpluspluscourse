@@ -14,7 +14,7 @@ Getting the code
 
 ```bash
 git clone https://github.com/hsf-training/cpluspluscourse.git
-cd cpluspluscourse/code
+cd cpluspluscourse/exercises
 ```
 
 Recommended setup
@@ -57,13 +57,13 @@ How to test your setup
 ----------------------
  - **Please run [`check_setup.sh`](check_setup.sh) to check your setup on Linux / Mac.**
    The optional tools are not required for the essentials course.
- - go to [`code/hello`](hello)
+ - go to [`exercises/hello`](hello)
  - follow the `README.md`
 
 ### How to compile and run?
 
 ```bash
-cd code/hello
+cd exercises/hello
 make
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
 ./hello
@@ -83,7 +83,7 @@ Each exercise is in a subdirectory with mainly 4 sets of files
 ### Instructions
 
  - Each exercise comes with a set of instructions in the course slides
- - Most of them also with a `README.md` in the exercise subdir
+ - Most of them also with a `README.md` in the `exercises` subdir
  - And with instructions in the code
 
 ### *.hpp and *.cpp files
@@ -120,7 +120,7 @@ Using lxplus
 ssh lxplus9.cern.ch
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:.
 git clone https://github.com/hsf-training/cpluspluscourse.git
-cd cpluspluscourse/code/hello
+cd cpluspluscourse/exercises/hello
 make
 ./hello
 ```
@@ -253,7 +253,7 @@ There are two ways to launch VS Code for working with WSL:
    Use the newly opened terminal to type commands for building, debugging, etc.
 2. Terminal first: Launch `bash` or `wsl` either via a powershell or from Windows Terminal (if installed).
    Navigate to your cloned GitHub repository, or `git clone` it if you have not done it yet.
-   Inside the `<repo>/code` or any `<repo>/code/example` directory, run `code .`.
+   Inside the `<repo>/exercises` or any `<repo>/exercises/example` directory, run `code .`.
    This will launch VS Code on Windows, already connected to your WSL and set to the right folder.
    Use your initial terminal to type commands for building, debugging etc.
 

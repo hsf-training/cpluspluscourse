@@ -11,7 +11,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Basic Module(1): wrap your method}
-  \begin{block}{mandelModule.cpp - see code/python exercise}
+  \begin{block}{mandelModule.cpp - see exercises/python exercise}
     \begin{cppcode*}{}
       #include <Python.h>
       #include "mandel.hpp"
@@ -32,7 +32,7 @@
 
 \begin{frame}[fragile]
   \frametitle{Basic Module(2): create the python module}
-  \begin{block}{mandelModule.cpp - see code/python exercise}
+  \begin{block}{mandelModule.cpp - see exercises/python exercise}
     \begin{cppcode*}{}
       // declare the modules' methods
       PyMethodDef mandelMethods[] = {
@@ -60,7 +60,7 @@
     \item with '\mintinline{bash}{-I \$(PYTHON\_INCLUDE)}'
     \end{itemize}
   \end{block}
-  \begin{block}{mandel.py - see code/python exercise}
+  \begin{block}{mandel.py - see exercises/python exercise}
     \begin{minted}[gobble=4]{python}
       from mandel import mandel
       v = mandel(0.7, 1.2)

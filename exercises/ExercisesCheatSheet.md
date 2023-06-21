@@ -247,7 +247,7 @@ Steps:
 3. Inspect changes, try `git diff .`
 4. Revert changes using `git checkout -- <file.cpp>` or `git checkout .`
 5. You can repeat this with various other styles if you want. Supported are: LLVM, Google, Chromium, Mozilla, WebKit, Microsoft.
-6. Go to `code` directory and create a `.clang-format` file:
+6. Go to `exercises` directory and create a `.clang-format` file:
    `clang-format -style=LLVM -dump-config > .clang-format`.
    Have a look at the file.
    You can also show this webpage so students can get an idea of what's possible: https://clang.llvm.org/docs/ClangFormatStyleOptions.html

@@ -34,7 +34,7 @@
   \frametitle{cppcheck}
   \begin{exercise}{cppcheck}
     \begin{itemize}
-    \item go to code/cppcheck
+    \item go to \texttt{exercises/cppcheck}
     \item compile, run, see that it works
     \item use valgrind: no issue
     \item use cppcheck, see the problem
@@ -97,7 +97,7 @@
   \frametitle{clang-tidy}
   \begin{exercise}{clang-tidy}
     \begin{itemize}
-      \item go to any example which compiles (e.g. code/cppcheck)
+      \item go to any example which compiles (e.g. \texttt{exercises/cppcheck})
       \item \mintinline{bash}{mkdir build && cd build}
       \item \mintinline{bash}{cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..}
       \item \mintinline{bash}{clang-tidy <../file.cpp> -checks=*}

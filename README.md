@@ -87,8 +87,8 @@ make solution
 
 ### For Mentors
 
-Depending on which course is running, consult the schedule for exercise sessions in [essentials](code/ExerciseSchedule_EssentialCourse.md) or [advanced](code/ExerciseSchedule_AdvancedCourse.md).
-For mentors, there is a [cheat sheet](code/ExercisesCheatSheet.md) with hints towards the solutions and key points to discuss during the exercise sessions.
+Depending on which course is running, consult the schedule for exercise sessions in [essentials](exercises/ExerciseSchedule_EssentialCourse.md) or [advanced](exercises/ExerciseSchedule_AdvancedCourse.md).
+For mentors, there is a [cheat sheet](exercises/ExercisesCheatSheet.md) with hints towards the solutions and key points to discuss during the exercise sessions.
 
 ## Contributors ✨
 
