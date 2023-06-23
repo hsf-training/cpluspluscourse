@@ -183,4 +183,33 @@ int a = 1;
     \end{cppcode*}
   \end{alertblock}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Using namespace directives}
+  \begin{alertblock}{Avoid ``using namespace'' directives}
+    \begin{itemize}
+      \item Make all members of a namespace visible in current scope
+      \item Risk of name clashes or ambiguities
+    \end{itemize}
+    \begin{cppcode*}{}
+      using namespace std;
+      cout << "We can print now\n"; // uses std::cout
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{alertblock}{Never use in headers at global scope!}
+    \begin{cppcode*}{gobble=2}
+      #include "PoorlyWritten.h" // using namespace std;
+      struct array { ... };
+      array a;  // Error: name clash with std::array
+    \end{cppcode*}
+  \end{alertblock}
+  \begin{block}{What to do instead}
+    \begin{itemize}
+      \item Qualify names: \cppinline{std::vector}, \cppinline{std::cout}, \ldots
+      \item Put things that belong together in the same namespace
+      \item Use \textit{using declarations} in local scopes: \cppinline{using std::cout;}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
 \end{advanced}
