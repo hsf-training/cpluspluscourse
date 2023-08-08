@@ -13,6 +13,10 @@
 This repository contains all material for the C++ Course taught at CERN from
 Sebastien Ponce (LHCb).
 
+## Next events
+
+Please check the [Indico agenda](https://indico.cern.ch/category/11733/).
+
 ## 📎 Getting the latest PDF
 
 For each commit to master, the slides are compiled to a PDF and uploaded to the [download](https://github.com/hsf-training/cpluspluscourse/tree/download) branch.
