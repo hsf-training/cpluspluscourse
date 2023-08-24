@@ -1,0 +1,13 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "https://github.com/issues?.*"
+    },
+    {
+      "pattern": ".*cookiecutter.*"
+    },
+    {
+      "pattern": ".*opensource.*"
+    }
+  ]
+}
