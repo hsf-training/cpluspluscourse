@@ -8,6 +8,9 @@
     },
     {
       "pattern": ".*opensource.*"
+    },
+    {
+      "pattern": "https://github.com/hsf-training/cpluspluscourse/raw/download/.*"
     }
   ]
 }
