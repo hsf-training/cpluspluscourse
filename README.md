@@ -28,11 +28,13 @@ For each commit to master, the slides are compiled to a PDF and uploaded to the 
 
 Video recordings are available in the past events.
 
-* [6th HEP C++ Course and Hands-on Training (2023 March - essentials)](https://indico.cern.ch/event/1229412/)
-* [5th HEP C++ Course and Hands-on Training (2022 October - advanced)](https://indico.cern.ch/event/1172498/)
-* [4nd HEP C++ Course and Hands-on Training (2022 March - essentials)](https://indico.cern.ch/event/1119339/)
-* [3rd HEP C++ Course and Hands-on Training (2021 August)](https://indico.cern.ch/event/1019089/)
-* [2nd HEP C++ Course and Hands-on Training (2021 January)](https://indico.cern.ch/event/979067/)
+* [8th HEP C++ Course and Hands-on Training (essentials), Manchester, August 2023](https://indico.cern.ch/event/1266661/)
+* [7th HEP C++ Course and Hands-on Training (essentials), JLAB, May 2023](https://indico.cern.ch/event/1266632/)
+* [6th HEP C++ Course and Hands-on Training (essentials), CERN, March 2023](https://indico.cern.ch/event/1229412/)
+* [5th HEP C++ Course and Hands-on Training (advanced), CERN, October 2022](https://indico.cern.ch/event/1172498/)
+* [4nd HEP C++ Course and Hands-on Training (essentials), CERN, March 2022](https://indico.cern.ch/event/1119339/)
+* [3rd HEP C++ Course and Hands-on Training, CERN, August 2021](https://indico.cern.ch/event/1019089/)
+* [2nd HEP C++ Course and Hands-on Training, virtual, January 2021](https://indico.cern.ch/event/979067/)
 * [1st HEP C++ Course and Hands-on Training (2020 October)](https://indico.cern.ch/event/946584/)
 
 Check [this page](https://hepsoftwarefoundation.org/Schools/events.html) for announcements of upcoming training events (including those with this material).
