@@ -265,7 +265,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
       \begin{cppcode*}{gobble=2}
         /// Count number of dilepton events in data.
         /// \param d Dataset to search.
-        unsigned int countDileptons(Data d) {
+        unsigned int countDileptons(Data &d) {
           selectEventsWithMuons(d);
           selectEventsWithElectrons(d);
           return d.size();
