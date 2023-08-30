@@ -16,5 +16,4 @@ SlowToCopy::SlowToCopy(const SlowToCopy& other) {
     std::cout << __func__ << ": Please don't copy me. This is slow.\n";
     std::this_thread::sleep_for(std::chrono::seconds(3));
     name = other.name;
-    std::memcpy(bigdata, other.bigdata, sizeof(bigdata));
 }
