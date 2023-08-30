@@ -8,7 +8,6 @@ struct FastToCopy {
 
 struct SlowToCopy {
     std::string name;
-    int bigdata[1000000];
 
     // Functions to create and copy this struct.
     // We go into details on the next days.
