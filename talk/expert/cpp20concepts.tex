@@ -14,7 +14,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{The world before concepts}
-  \begin{block}{\cpp17 work around : SFINAE}
+  \begin{block}{\cpp17 work around: SFINAE}
     \begin{itemize}
     \item Unsuited arguments can be avoided by inserting fake template arguments,
     leading to a substitution failure
@@ -133,7 +133,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \frametitlecpp[20]{Some usages of concepts}
     \begin{block}{Constrained template parameters}
       \begin{itemize}
-        \item a concept can replace \cppinline{typename} in a template parameter lists
+        \item a concept can replace \cppinline{typename} in a template parameter list
       \end{itemize}
     \end{block}
     \begin{exampleblock}{}
@@ -261,7 +261,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
       \end{cppcode*}
     \end{exampleblock}
     \begin{block}{}
-      Remember : use standard concepts first
+      Remember: use standard concepts first
     \end{block}
 \end{frame}
 
