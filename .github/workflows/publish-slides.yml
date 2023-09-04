@@ -18,7 +18,7 @@ jobs:
         if: matrix.version == 'essentials'
         run: echo '\basictrue' > talk/onlybasics.tex
       - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v2
+        uses: xu-cheng/latex-action@v3
         with:
           root_file: C++Course.tex
           latexmk_use_xelatex: true
