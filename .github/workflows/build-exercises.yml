@@ -97,7 +97,7 @@ jobs:
     # The build/test steps to execute.
     steps:
     # Use a standard checkout of the code.
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     # Run the CMake configuration.
     - name: CMake Configure
       run: cmake -S ${{ github.workspace }}/exercises/${{ matrix.EXERCISE.NAME }}

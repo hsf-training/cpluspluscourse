@@ -21,7 +21,7 @@ jobs:
         version: [ essentials, full ]
     steps:
       - name: Set up Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Compile essentials
         uses: xu-cheng/latex-action@v3
         if: matrix.version == 'essentials'
