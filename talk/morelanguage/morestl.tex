@@ -99,7 +99,7 @@
     \begin{cppcode*}{}
       std::optional<Phone> parse_phone(std::string_view in) {
         if (is_valid_phone(in))
-          return in;   // equiv. to optional<Phone>{in};
+          return in; // equiv. to optional<Phone>{in};
         return {};   // or: return std::nullopt; (empty opt.)
       }
       if (v) {                    // or: v.is_valid()
