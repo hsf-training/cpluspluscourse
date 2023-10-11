@@ -148,6 +148,35 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[23]{std::expected \cpprefLink{https://en.cppreference.com/w/cpp/utility/expected}}
+  \begin{block}{Manages either of 2 values (expected or not)}
+    \begin{itemize}
+    \item templated by the 2 value types
+    \item Useful for the return value of a function that may fail
+      \begin{itemize}
+      \item and would then return another type (error type)
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{}
+    \small
+    \begin{cppcode*}{}
+      enum class Error {...};
+      std::expected<int, Error> parse(std::string_view in) {
+        if (is_valid(in)) return convert_to_int(in);
+        return std::unexpected(Error::...);
+      }
+      auto v = parse(...);
+      if (v.has_value()) {
+        std::cout << *v; // (unchecked)
+        foo(v.value());  // may throw bad_expected_access
+      } else
+        log(v.error());
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[17]{std::variant \cpprefLink{https://en.cppreference.com/w/cpp/utility/variant}}
   \begin{block}{A type-safe union}
     \begin{itemize}
