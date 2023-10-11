@@ -23,7 +23,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[98]{Type casting example}
   \small
-  \begin{exampleblock}{}
+  \begin{exampleblockGB}{Practically}{https://godbolt.org/z/16faqc64s}{\texttt{casting}}
     \begin{cppcode*}{gobble=2}
       struct A{ virtual ~A()=default; } a;
       struct B : A {} b;
@@ -34,9 +34,7 @@
 
       B& f = dynamic_cast<B&>(c); // OK, c is a B
       B& g = dynamic_cast<B&>(a); // throws std::bad_cast
-      B& foo(A& h) {
-        return dynamic_cast<B&>(h);
-      }
+      B& foo(A& h) { return dynamic_cast<B&>(h); }
       B& i = foo(c); // OK, c is a B
 
       B* j = dynamic_cast<B*>(&a); // nullptr. a not a B.
@@ -44,7 +42,7 @@
         // Will not reach this
       }
       \end{cppcode*}
-  \end{exampleblock}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]

@@ -173,12 +173,12 @@
         #include <stdfloat> // may define these:
 
         std::float16_t  = 3.14f16;  // 16 (1+5+10) bit float
-        std::float32_t  = 3.14f32;  // like float
+        std::float32_t  = 3.14f32;  // like float (1+8+23)
                                     // but different type
-        std::float64_t  = 3.14f64;  // like double
+        std::float64_t  = 3.14f64;  // like double (1+11+52)
                                     // but different type
         std::float128_t = 3.14f128; // 128 (1+15+112) bit float
-        std::bfloat_t   = 3.14bf16; // 16 (1+8+7) bit float
+        std::bfloat16_t = 3.14bf16; // 16 (1+8+7) bit float
 
         // also F16, F32, F64, F128 or BF16 suffix possible
     \end{cppcode*}
