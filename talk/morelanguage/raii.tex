@@ -335,7 +335,7 @@ of 'std::unique_ptr<Foo>'
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Quiz: \texttt{std::shared\_ptr} in use}
-  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org/z/vM35Y6qEW}{\texttt{std::shared\_ptr} quiz}
+  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org/z/vM35Y6qEW}{\texttt{shared\_ptr} quiz}
     \small
     \begin{cppcode*}{gobble=2}
       auto shared = std::make_shared<int>(100);
@@ -397,7 +397,7 @@ print();
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Quiz: \texttt{shared\_ptr} and \texttt{weak\_ptr} in use}
-  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org}{\texttt{shared\_ptr} vs.\ \texttt{weak\_ptr} quiz}
+  \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org}{\texttt{shared/weak\_ptr}}
     \small
     \begin{cppcode*}{gobble=2}
       auto shared = std::make_shared<int>(100);
