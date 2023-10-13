@@ -7,7 +7,7 @@
       \item Modules allow for sharing declarations and definitions across translation units
       \item Header files do the same, but modules have benefits:
       \begin{itemize}
-        \item Better isolation. No cross-talk between multiple pieces of included code, and also not between included code and your code.
+        \item Better isolation. No cross-talk between multiple pieces of included code, or between included code and your code.
         \item Better control over public interface of your library. Avoid leaking library dependencies into user code.
         \item Faster compilation (\href{https://youtu.be/DJTEUFRslbI?si=ZRvH1wx0sVJVriLh&t=3259}{import fmt; \textgreater1500x faster})
       \end{itemize}
@@ -350,7 +350,8 @@
     \begin{itemize}
       \item Use \cppinline|import std;| for the entire C++ standard library. Basically everything in namespace \cppinline|std|.
       \begin{itemize}
-        \item E.g.\ \cppinline{memcpy(a, b, n)}, \cppinline{sqrt(val)}, \cppinline{uint32_t i} will not compile. You need to prefix \cppinline{std::}.
+      \item E.g.\ \cppinline{memcpy(a, b, n)}, \cppinline{sqrt(val)}, \cppinline{uint32_t}
+      \item Note that you need to prefix with \cppinline{std::}
       \end{itemize}
       \item Use \cppinline|import std.compat;| for the entire C and C++ standard library
       \item No macros are exported. For these, you still need to include the corresponding headers.

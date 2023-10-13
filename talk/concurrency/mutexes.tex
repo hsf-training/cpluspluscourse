@@ -114,9 +114,15 @@
   \frametitlecpp[17]{Mutexes and Locks}
   \begin{goodpractice}{Locking}
     \begin{itemize}
-      \item Generally, use \cppinline{std::scoped_lock}. Before \cpp17 use \cppinline{std::lock_guard}.
-      \item Hold as short as possible, consider wrapping critical section in block statement \cppinline|{ }|
-      \item Only if manual control needed, use \cppinline{std::unique_lock}
+    \item Generally, use \cppinline{std::scoped_lock}
+      \begin{itemize}
+      \item Before \cpp17 use \cppinline{std::lock_guard}.
+      \end{itemize}
+    \item Hold as short as possible
+      \begin{itemize}
+      \item Consider wrapping critical section in block statement \cppinline|{ }|
+      \end{itemize}
+    \item Only if manual control needed, use \cppinline{std::unique_lock}
     \end{itemize}
   \end{goodpractice}
   \begin{exampleblock}{}
