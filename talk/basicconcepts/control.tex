@@ -240,7 +240,7 @@
   \end{alertblock}
   \begin{exampleblock}{\cpp20}
     \begin{cppcode*}{firstnumber=6}
-      for (std::size_t i = 0; auto& d : data) {
+      for (std::size_t i = 0; auto const & d : data) {
         std::cout << i++ << ' ' << d << '\n';
       }
     \end{cppcode*}
