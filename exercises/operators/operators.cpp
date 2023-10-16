@@ -13,7 +13,7 @@ class Fraction {
     m_denom /= gcd;
   }
 
-  int m_num, m_denom;
+  unsigned int m_num, m_denom;
 };
 
 // TODO: operators
@@ -55,7 +55,7 @@ int main() {
   printAndCheck("One third times two", f, Fraction{2, 3});
 
   f *= athird;
-  printAndCheck("One third times one third", f, Fraction{2, 9});
+  printAndCheck("Two third times one third", f, Fraction{2, 9});
 
   // you might have some redundancy between the implementation of operator* and
   // operator*=. Can you refactor your code and implement operator* in terms of
