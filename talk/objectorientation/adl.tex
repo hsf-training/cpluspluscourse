@@ -19,7 +19,10 @@
       \begin{itemize}
       \item here for \cppinline{std} and \cppinline{operator<<}
       \item name is looked for in a sequence of scopes until found
-      \item remaining scopes are not examined
+        \begin{itemize}
+        \item remaining scopes are not examined
+        \end{itemize}
+      \item in parallel Argument Dependent Loopkup (ADL) may happen
       \end{itemize}
     \end{itemize}
   \end{block}
@@ -32,11 +35,14 @@
     \item file (only for global level usage)
     \item current namespace/block, enclosing namespaces/blocks, etc...
     \item current class if any, base classes if any, etc...
-    \item for a call expression (e.g.\ \cppinline{f(a, b)} or \cppinline{a + b}), Argument Dependent Lookup (ADL)
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Argument Dependent Lookup (simplified)}
-    To find a function name (including operators), the compiler also examines the arguments. For each argument, it searches:
+    Only for call expression
+    \begin{itemize}
+    \item e.g.\ \cppinline{f(a, b)} or \cppinline{a + b}
+    \end{itemize}
+    The compiler also examines arguments one by one and searches:
     \begin{itemize}
     \item class, if any
     \item direct and indirect base classes, if any
