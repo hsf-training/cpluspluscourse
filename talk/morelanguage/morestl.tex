@@ -56,7 +56,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{\texttt{std::span<T>} - Usage}
-  \begin{exampleblockGB}{Some example}{https://godbolt.org/z/W81sjrbxK}{\texttt{span}}
+  \begin{exampleblockGB}{Some example}{https://godbolt.org/z/bTWjM8ba1}{\texttt{span}}
     \scriptsize
     \begin{cppcode*}{}
       void print(std::span<int> c) {
@@ -102,7 +102,7 @@
           return in; // equiv. to optional<Phone>{in};
         return {};   // or: return std::nullopt; (empty opt.)
       }
-      if (v) {                    // or: v.is_valid()
+      if (v) {                    // or: v.has_value()
         process_phone(v.value()); // or: *v (unchecked)
         v->call(); // calls Phone::call()   (unchecked)
       }
@@ -158,7 +158,7 @@
       \end{itemize}
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{}
+  \begin{exampleblockGB}{Practically}{https://godbolt.org/z/9rjn1hzeW}{\texttt{expected}}
     \small
     \begin{cppcode*}{}
       enum class Error {...};
@@ -167,13 +167,13 @@
         return std::unexpected(Error::...);
       }
       auto v = parse(...);
-      if (v.has_value()) {
+      if (v) { // or v.has_value()
         std::cout << *v; // (unchecked)
         foo(v.value());  // may throw bad_expected_access
       } else
         log(v.error());
     \end{cppcode*}
-  \end{exampleblock}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -378,7 +378,8 @@
       \item CV qualifiers and references allowed
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{}
+  \begin{exampleblockGB}{Practically}{https://godbolt.org/z/PfWzxjP7W}{\texttt{Structured binding}}
+    \small
     \begin{cppcode*}{}
       std::tuple<int, double, long> tuple = ...;
       auto [ a, b, c ] = tuple;
@@ -392,7 +393,7 @@
       std::unordered_map<K, V> map = ...;
       for (const auto& [key, value] : map) { ... }
     \end{cppcode*}
-  \end{exampleblock}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
