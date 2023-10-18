@@ -424,30 +424,3 @@
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
-
-\begin{frame}[fragile]
-  \frametitlecpp[17]{compile-time branches}
-  \begin{block}{{\it if constexpr}}
-    \begin{itemize}
-    \item takes a \cppinline{constexpr} expression as condition
-    \item evaluates at compile time
-    \item key benefit: the discarded branch can contain invalid code
-    \end{itemize}
-  \end{block}
-  \begin{exampleblock}{Example code}
-    \small
-    \begin{cppcode*}{}
-      template <typename T>
-      auto remove_ptr(T t) {
-        if constexpr (std::is_pointer_v<T>) {
-          return *t;
-        } else {
-          return t;
-        }
-      }
-      int i = ...; int *j = ...;
-      int r = remove_ptr(i);  // equivalent to i
-      int q = remove_ptr(j);  // equivalent to *j
-    \end{cppcode*}
-  \end{exampleblock}
-\end{frame}
