@@ -420,17 +420,19 @@
     \item Since \cpp20: CTAD for aggregates (no constructor needed)
     \end{itemize}
   \end{block}
-  \begin{cppcode*}{}
-    template<typename A, typename B, typename C = double>
-    struct Triple {
-      Triple(A a, B b, C c) : a(a), b(b), c(c) {} // C++17
-      A a; B b; C c;
-    };
-
-    Triple t{42, true, 3.14}; // Triple<int, bool, double>
-    Triple<int> t{42, true, 3.14}; // compilation error
-    Triple<int, bool> t{42, true, 3.14}; // not CTAD
-  \end{cppcode*}
+  \begin{exampleblockGB}{Practically}{https://godbolt.org/z/eYhsMcGsW}{CTAD}
+    \small
+    \begin{cppcode*}{}
+      template<typename A, typename B, typename C = double>
+      struct Triple {
+        Triple(A a, B b, C c) : a(a), b(b), c(c) {}
+        A a; B b; C c;
+      };
+      Triple t{42, true, 3.14}; // Triple<int, bool, double>
+      Triple<int> t2{42, true, 3.14}; // compilation error
+      Triple<int, bool> t3{42, true, 3.14}; // not CTAD
+    \end{cppcode*}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
