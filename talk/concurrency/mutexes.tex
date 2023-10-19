@@ -225,3 +225,25 @@
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Synchronised \texttt{cout}}
+  \begin{block}{Parallel writing to streams}
+    \begin{itemize}
+      \item All parallel writes to streams become garbled when not synchronised
+      \item \cppinline{std::osyncstream} is a wrapper to synchronise output to streams
+      \item Multiple instances of the osyncstream synchronise globally
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{}
+    \begin{cppcode*}{gobble=2}
+      void worker(const int id, std::ostream & os);
+      void func() {
+        std::osyncstream synccout1{std::cout};
+        std::osyncstream synccout2{std::cout};
+        std::jthread t1{worker, 0, std::ref(synccout1)};
+        std::jthread t2{worker, 1, std::ref(synccout2)};
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
