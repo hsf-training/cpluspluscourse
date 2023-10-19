@@ -106,13 +106,13 @@
     \end{itemize}
   \end{block}
   \pause
-  \begin{exampleblock}{Usage}
+  \begin{exampleblockGB}{Usage}{https://godbolt.org/z/oMGz5jhMr}{\texttt{std::async}}
     \begin{cppcode*}{}
       int f() {...}
       auto res1 = std::async(std::launch::async, f);
       auto res2 = std::async(std::launch::deferred, f);
     \end{cppcode*}
-  \end{exampleblock}
+  \end{exampleblockGB}
 \end{frame}
 
 \begin{frame}[fragile]
