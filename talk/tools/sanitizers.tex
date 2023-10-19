@@ -152,8 +152,8 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
     \column{\textwidth+1cm}
     \begin{block}{Finding memory leaks with ASan}
       \begin{itemize}
-        \item On linux, ASan can display memory leaks
-        \item If not already running, start executable with \mintinline{bash}{ASAN_OPTIONS=detect_leaks=1 ./myProgram}
+        \item On linux, ASan can display memory leaks (``LeakSanitizer'')
+        \item Might be active already, otherwise start executable with \mintinline{bash}{ASAN_OPTIONS=detect_leaks=1 ./myProgram}
       \end{itemize}
     \end{block}
     \scriptsize
