@@ -1,50 +1,34 @@
 \subsection[thr]{Threads and async}
 
 \begin{frame}[fragile]
-  \frametitle{Basic concurrency \hfill \cpp11/\cpp20}
+  \frametitlecpp[11]{Basic concurrency}
   \begin{block}{Threading}
     \begin{itemize}
     \item \cpp11 added \cppinline{std::thread} in \cppinline{<thread>} header
     \item takes a function as argument of its constructor
     \item must be detached or joined before the main thread terminates
-    \item \cpp20: \cppinline{std::jthread} automatically joins at destruction
     \end{itemize}
   \end{block}
-  \vspace{-1\baselineskip}
-  \begin{overprint}
-    \onslide<1>
-    \begin{exampleblock}{Example code}
-      \begin{cppcode*}{gobble=2}
-        void foo() {...}
-        void bar() {...}
-        int main() {
-          std::thread t1{foo};
-          std::thread t2{bar};
-          for (auto t: {&t1,&t2}) t->join();
-          return 0;
-        }
-      \end{cppcode*}
-    \end{exampleblock}
-    \onslide<2>
-    \begin{exampleblock}{Example with jthread (\cpp20)}
-      \begin{cppcode*}{gobble=2}
-        void foo() {...}
-        void bar() {...}
-        int main() {
-          std::jthread t1{foo};
-          std::jthread t2{bar};
-          return 0;
-        }
-      \end{cppcode*}
-    \end{exampleblock}
-  \end{overprint}
+
+  \begin{exampleblock}{Example code}
+    \begin{cppcode*}{gobble=2}
+      void foo() {...}
+      void bar() {...}
+      int main() {
+        std::thread t1{foo};
+        std::thread t2{bar};
+        for (auto t: {&t1,&t2}) t->join();
+        return 0;
+      }
+    \end{cppcode*}
+  \end{exampleblock}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{The thread constructor}
   \begin{exampleblock}{Can take a function and its arguments}
     \begin{cppcode*}{}
-      void function(int j, double j) {...};
+      void function(int j, double j) {...}
       std::thread t1{function, 1, 2.0};
     \end{cppcode*}
   \end{exampleblock}
@@ -63,6 +47,57 @@
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{\texttt{std::jthread}}
+  \begin{goodpractice}[jthread vs.\ thread]{Prefer \cppinline{std::jthread} if \cpp20 is available}
+    \begin{itemize}
+    \item In \cppinline{<thread>} header since \cpp20
+    \item Automatically joins on destruction
+    \item Can be stopped from outside
+    \end{itemize}
+  \end{goodpractice}
+
+  \begin{exampleblock}{Example with jthread}
+    \begin{cppcode*}{gobble=2}
+      void foo() {...}
+      void bar() {...}
+      int main() {
+        std::jthread t1{foo};
+        std::jthread t2{bar}; t2.request_stop();
+        // No join required
+        return 0;
+      }
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Using jthread's stop\_token}
+  \begin{block}{}
+    \begin{itemize}
+      \item Like \cppinline{std::thread}, \cppinline{jthread} can take a function or functors/lambdas and their arguments
+      \item New: Can take functions that handle \cppinline{stop_token}s
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{stop\_token in a function}
+    \begin{cppcode*}{}
+    void function(std::stop_token st, int j) {
+      while (!st.stop_requested()) {
+        // ...
+    }}
+    std::jthread t1{function, 1};
+    t1.request_stop();
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{exampleblock}{A lambda with a stop\_token}
+    \begin{cppcode*}{}
+    std::jthread t1{
+      [](std::stop_token st, int i){ ... }, 1};
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Basic asynchronicity}
