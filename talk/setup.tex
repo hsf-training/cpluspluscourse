@@ -140,9 +140,11 @@
 {%
   \end{beamerboxesrounded}
 }
-\newenvironment{goodpractice}[1]
+\newenvironment{goodpractice}[2][]
 {%
-  \begin{goodpracticeWithShortcut}{#1}{#1}
+  \ifthenelse{\equal{#1}{}}%
+    { \begin{goodpracticeWithShortcut}{#2}{#2} }
+    { \begin{goodpracticeWithShortcut}{#2}{#1} }
 }%
 {%
   \end{goodpracticeWithShortcut}
