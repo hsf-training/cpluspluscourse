@@ -108,9 +108,9 @@ int l = *pak;
 
     free(ai); // release memory
   \end{cppcode}
-  \begin{goodpracticeWithShortcut}{Don't use C's memory management}{C's memory management}
+  \begin{goodpractice}[C's memory management]{Don't use C's memory management}
     Use \cppinline{std::vector} and friends or smart pointers
-  \end{goodpracticeWithShortcut}
+  \end{goodpractice}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -130,7 +130,7 @@ int l = *pak;
     int* pi = new int{};
     delete pi; // release scalar memory
   \end{cppcode}
-  \begin{goodpracticeWithShortcut}{Don't use manual memory management}{Manual memory management}
+  \begin{goodpractice}[Manual memory management]{Don't use manual memory management}
     Use \cppinline{std::vector} and friends or smart pointers
-  \end{goodpracticeWithShortcut}
+  \end{goodpractice}
 \end{frame}

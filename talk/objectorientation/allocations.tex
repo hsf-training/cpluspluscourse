@@ -102,9 +102,9 @@
       MyFirstClass *a = new MyFirstClass{3};
     } // memory leak !!!
   \end{cppcode}
-  \begin{goodpracticeWithShortcut}{Prefer smart pointers over new/delete}{Prefer smart pointer}
+  \begin{goodpractice}[Prefer smart pointer]{Prefer smart pointers over new/delete}
     Prefer smart pointers to manage objects (discussed later)
-  \end{goodpracticeWithShortcut}
+  \end{goodpractice}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -125,7 +125,7 @@
       delete[] a; // destructor called 10 times
     }
   \end{cppcode}
-  \begin{goodpracticeWithShortcut}{Prefer containers over new-ed arrays}{Prefer containers}
+  \begin{goodpractice}[Prefer containers]{Prefer containers over new-ed arrays}
     Prefer containers to manage collections of objects (discussed later)
-  \end{goodpracticeWithShortcut}
+  \end{goodpractice}
 \end{frame}
