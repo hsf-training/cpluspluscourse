@@ -401,7 +401,7 @@
   \memorystackset{
     size y/.get=\stacksizey
   }
-  \draw[snake=brace,thick] (-2pt,#1*\stacksizey-\stacksizey) -- (-2pt,#2*\stacksizey)
+  \draw[snake=brace,thick] (-2pt,#1*\stacksizey-\stacksizey+2pt) -- (-2pt,#2*\stacksizey-2pt)
     node [midway, above, sloped] {#3};
 }
 
