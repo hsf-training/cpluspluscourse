@@ -36,6 +36,8 @@ People should replay them and discover the tools by themselves.
 
 ### (optional) Address sanitizer (directory: [`asan`](asan), [cheatSheet](ExercisesCheatSheet.md#address-sanitizer-directory-asan))
 
+### (optional) Undefined behaviour sanitizer (directory: [`ubsan`](ubsan)
+
 
 Day 3
 -----
