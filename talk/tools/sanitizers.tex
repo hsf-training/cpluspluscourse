@@ -260,3 +260,16 @@ up.cpp:3:5: runtime error: signed integer overflow:
     \url{https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html}
   \end{block}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Undefined Behaviour Sanitizer (UBSan)}
+  \begin{exercise}{Finding evil run-time bugs}
+    \begin{itemize}
+      \item Go to \texttt{exercises/ubsan}
+      \item Compile and run the program following the instructions in README or in the program
+      \item The program should run without observable issues
+      \item Recompile with UBSan and see that almost every second line contains evil bugs
+    \end{itemize}
+  \end{exercise}
+
+\end{frame}
