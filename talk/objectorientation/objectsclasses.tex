@@ -117,40 +117,18 @@
     \item some functions (templates, \cppinline{constexpr}) must be in the header
     \end{itemize}
   \end{goodpractice}
-  \begin{cppcode}
+  \begin{block}{}
+    \begin{cppcode}
+    #include "MyFirstClass.hpp"
+
     void MyFirstClass::squareA() {
       a *= a;
     }
-
     int MyFirstClass::sum(int b) {
       return a + b;
     }
-  \end{cppcode}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlecpp[98]{\texttt{this} keyword}
-  \begin{block}{How to know an object's address?}
-    \begin{itemize}
-    \item Sometimes we need to pass a reference to ourself to a different entity
-    \item For example to implement operators, see later
-    \item All class methods can use the keyword \cppinline{this}
-      \begin{itemize}
-        \item It returns the address of the current object
-        \item Its type is \cppinline{T*} in the methods of a class {\ttfamily T}
-      \end{itemize}
-    \end{itemize}
+    \end{cppcode}
   \end{block}
-  \begin{cppcode}
-    void freeFunc(S & s);
-    struct S {
-      void memberFunc() { // Implicit S* parameter
-        freeFunc(*this);  // Pass a reference to ourself
-      }
-    };
-    S s;
-    s.memberFunc();       // Passes &s implicitly
-  \end{cppcode}
 \end{frame}
 
 \begin{frame}[fragile]
