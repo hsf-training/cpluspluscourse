@@ -17,28 +17,36 @@
   \end{cppcode}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitlecpp[98]{Operator overloading}
   \begin{block}{Defining operators for a class}
     \begin{itemize}
     \item implemented as a regular method
       \begin{itemize}
-      \item either inside the class, as a member function
+      \item \small either inside the class, as a member function
       \item or outside the class (not all)
       \end{itemize}
-    \item with a special name (replace @ by anything)
-      \begin{tabular}{llll}
-        Expression & As member & As non-member \\
-        \hline
-        @a & (a).operator@() & operator@(a) \\
-        a@b & (a).operator@(b) & operator@(a,b) \\
-        a=b & (a).operator=(b) & cannot be non-member \\
-        a(b...) & (a).operator()(b...) & cannot be non-member \\
-        a[b] & (a).operator[](b) & cannot be non-member \\
-        a-\textgreater & (a).operator-\textgreater() & cannot be non-member \\
-        a@ & (a).operator@(0) & operator@(a,0) \\
-      \end{tabular}
+    \item with a special name (replace @ by operators from below)\small
     \end{itemize}
+    \begin{tabular}{llll}
+      Expression & As member & As non-member \\
+      \hline
+      @a & (a).operator@() & operator@(a) \\
+      a@b & (a).operator@(b) & operator@(a,b) \\
+      a=b & (a).operator=(b) & cannot be non-member \\
+      a(b...) & (a).operator()(b...) & cannot be non-member \\
+      a[b] & (a).operator[](b) & cannot be non-member \\
+      a-\textgreater & (a).operator-\textgreater() & cannot be non-member \\
+      a@ & (a).operator@(0) & operator@(a,0) \\
+      \hline
+    \end{tabular}
+
+    \small
+    \begin{cppcode*}{linenos=false}
+      possible operators: + - * / % ^ & | ~ ! = < >
+          += -= *= /= %= ^= &= |= << >> >>= <<=
+          == != <= >= <=> && || ++ -- , ->* -> () []
+    \end{cppcode*}
   \end{block}
 \end{frame}
 
