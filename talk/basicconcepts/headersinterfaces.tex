@@ -73,3 +73,23 @@
     \end{cppcode*}
   \end{block}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Header / source separation}
+  \begin{goodpractice}[Header / source]{Headers and source files}
+    \begin{itemize}
+      \item Headers should contain declarations of functions / classes
+        \begin{itemize}
+          \item Only create them if interface is used somewhere else
+        \end{itemize}
+      \item Might be included/compiled many times
+      \item Good to keep them short
+      \item Minimise \cppinline{#include} statements
+      \item Put long code in implementation files. Exceptions:
+        \begin{itemize}
+          \item Short functions
+          \item Templates and constexpr functions
+        \end{itemize}
+    \end{itemize}
+  \end{goodpractice}
+\end{frame}

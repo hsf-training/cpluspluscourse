@@ -1,6 +1,45 @@
 \subsection[advOO]{Advanced OO}
 
 \begin{frame}[fragile]
+  \frametitlecpp[98]{\texttt{this} keyword}
+  \begin{block}{How to know an object's address?}
+    \begin{itemize}
+    \item Sometimes we need the address of the current object
+    \item Or we need to pass our address / a reference to a different entity
+      (for example to implement operators, see later)
+    \item All class methods can use the keyword \cppinline{this}
+      \begin{itemize}
+        \item It returns the address of the current object
+        \item Its type is \cppinline{T*} in the methods of a class {\ttfamily T}
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{minipage}{0.7\textwidth}
+  \begin{cppcode}
+    struct S {
+      int a,b;
+      // these two are the same:
+      int getB() { return b; }       // 5
+      int getB() { return this->b; } // 5
+      void testAddress() {
+        S* addr = this; // 0x3000
+      }
+    } s{2,5};
+  \end{cppcode}
+  \end{minipage}%
+  \hfil%
+  \begin{minipage}{0.3\textwidth}
+      \begin{tikzpicture}
+        \memorystack[size x=2cm,word size=1,block size=4,nb blocks=4]
+        \memorypush{a = 2}
+        \memorypush{b = 5}
+        \memorystruct{1}{2}{\tiny s}
+        \draw[-Triangle,thick] (\stacksizex-1*\stacksizey,-1*\stacksizey) node[left] {\footnotesize \cppinline{this} pointer} -- (\stacksizex,-0.1*\stacksizey);
+      \end{tikzpicture}
+    \end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[98]{Polymorphism}
   \begin{block}{the concept}
     \begin{itemize}
