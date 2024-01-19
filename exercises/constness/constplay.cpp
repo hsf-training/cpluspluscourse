@@ -7,19 +7,25 @@
  */
 void copy(int a) {
     [[maybe_unused]] int val = a;
-};
+}
 
 void copyConst(const int a) {
     [[maybe_unused]] int val = a;
-};
+}
 
 void write(int* a) {
     *a = 42;
-};
+}
+void write(int& a) {
+    a = 42;
+}
 
-void read(const int *a) {
+void read(const int* a) {
     [[maybe_unused]] int val = *a;
-};
+}
+void read(int const & a) {
+    [[maybe_unused]] int val = a = 2;
+}
 
 struct Test {
     void hello(std::string &s) {
@@ -56,12 +62,24 @@ int main() {
     copyConst(m);
 
     // try constant arguments of functions with pointers
-    int *p = 0;
-    const int *r = 0;
-    write(p);
-    write(r);
-    read(p);
-    read(r);
+    {
+      int *p = 0;
+      const int *r = 0;
+      write(p);
+      write(r);
+      read(p);
+      read(r);
+    }
+
+    // try constant arguments of functions with references
+    {
+      int p = 0;
+      const int r = 0;
+      write(2);
+      write(r);
+      read(2);
+      read(r);
+    }
 
     // try constant method in a class
     Test t;
@@ -71,4 +89,6 @@ int main() {
     tc.hello(s);
     t.helloConst(s);
     tc.helloConst(s);
+
+    return 0;
 }
