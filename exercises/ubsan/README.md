@@ -20,4 +20,3 @@ it Continuous Integration.
         program and catch the bugs, or continue with the next exercise.
 
 - Try to understand what's wrong. The solution contains a few comments what kind of bugs are hidden in the program.
-
