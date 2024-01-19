@@ -571,15 +571,18 @@
   \frametitlecpp[98]{Multiple inheritance advice}
   \begin{goodpractice}{Avoid multiple inheritance}
     \begin{itemize}
-    \item Except for inheriting from interfaces
-    \item And for rare special cases
+      \item Except for inheriting from interfaces (=no data members)
+      \item And for rare special cases
     \end{itemize}
-  \end{goodpractice}
-  \begin{goodpractice}[NO diamond inheritance]{Absolutely avoid diamond-shaped inheritance}
-    \begin{itemize}
-    \item This is a sign that your architecture is not correct
-    \item In case you are tempted, think twice and change your mind
-    \end{itemize}
+
+    \hspace*{0.05\textwidth}\begin{minipage}{0.9\textwidth}
+      \begin{alertblock}{Absolutely avoid diamond-shape inheritance}
+        \begin{itemize}
+        \item This is a sign that your architecture is not correct
+        \item In case you are tempted, think twice and change your mind
+        \end{itemize}
+      \end{alertblock}
+    \end{minipage}
   \end{goodpractice}
 \end{frame}
 

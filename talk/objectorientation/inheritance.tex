@@ -57,10 +57,9 @@
     \end{description}
     \begin{itemize}
        \item The default for \texttt{class} is \cppinline{private}
-       \item A \cppinline{struct} is just a class that defaults to \cppinline{public} access
+       \item The default for \texttt{struct} is \cppinline{public}
     \end{itemize}
   \end{block}
-  \pause
   \begin{multicols}{2}
     \begin{cppcode*}{gobble=2}
       class MyFirstClass {
@@ -207,7 +206,7 @@
       \draw[very thick,-Triangle] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
     \end{tikzpicture}
     \columnbreak
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{gobble=2,highlightlines=14}
       void funcSecond() {
         int a = priv;   // Error
         int b = prot;   // OK
@@ -249,7 +248,7 @@
       \draw[very thick,-Triangle] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
     \end{tikzpicture}
     \columnbreak
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{gobble=2,highlightlines=8-9}
       void funcSecond() {
         int a = priv;   // Error
         int b = prot;   // OK
