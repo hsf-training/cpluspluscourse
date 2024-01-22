@@ -39,7 +39,7 @@ int runTests() {
   int arr[] = {1, 2, 3, 4};
   std::cout << "arr[4]=" << arr[4] << "\n";             // Array overrun
 
-  unsigned short s = 1;
+  unsigned int s = 1;
   std::cout << "s << 33=" << (s << 33) << "\n";         // We cannot shift a type with 32 bits by 33 bits.
 
   int i = std::numeric_limits<int>::max();
