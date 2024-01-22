@@ -39,7 +39,7 @@ int runTests() {
   int arr[] = {1, 2, 3, 4};
   std::cout << "arr[4]=" << arr[4] << "\n";
 
-  unsigned short s = 1;
+  unsigned int s = 1;
   std::cout << "s << 33=" << (s << 33) << "\n";
 
   int i = std::numeric_limits<int>::max();
