@@ -202,6 +202,66 @@
   \end{cppcode*}
 \end{frame}
 
+\begin{advanced}
+
+\begin{frame}[fragile]
+  \frametitlecpp[17]{Non-type template parameter - auto}
+  \small
+  \begin{cppcode}
+    template <auto Area>
+    struct Shape {
+      static constexpr auto area() { return Area; }
+    };
+    // we use a type here to hold values
+    using Area51 = Shape<51>;
+
+    template<typename Base>
+    struct Prism {
+      double height;
+      auto volume() const { return height * Base::area(); }
+    };
+    Prism<Area51>         prism1{2.};
+    Prism<Shape<3.14>> prism2{3.}; // C++20
+  \end{cppcode}
+  \begin{block}{}
+    \begin{itemize}
+      \item Using a type to hold a value is a frequently trick
+      \begin{itemize}
+        \item See e.g.\ \mintinline{cpp}{std::integral_constant}
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[20]{Non-type template parameter - literal types}
+  \footnotesize
+  \begin{cppcode*}{}
+    template <typename T> struct Shape {
+      T area_;
+      constexpr auto area() const { return area_; }
+    };
+    template<auto Base, typename T> struct RightPrism {
+      T height;
+      T volume() const { return height * Base.area(); }
+      constexpr T area() const { ... }
+    };
+    RightPrism<Shape{60.}, double> prism1{3.};
+
+    template<unsigned int N> struct Polygon {
+      float radius;
+      constexpr float area() const { ... }
+    };
+    RightPrism<Polygon<4>{2.f}, double> prism2{3.};
+    RightPrism<RightPrism<Shape<42>, int>{3}, float> hyperprism{3.f};
+  \end{cppcode*}
+  \begin{block}{}
+    Enormous potential! We have yet to see what people will do with it!
+  \end{block}
+\end{frame}
+
+\end{advanced}
+
 \begin{frame}[fragile]
   \frametitlecpp[98]{Template specialization}
   \begin{block}{Specialization}
