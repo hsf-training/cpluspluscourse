@@ -4,30 +4,29 @@
  *    FastToCopy
  *    SlowToCopy
  *    They are exactly what their name says, so let's try to avoid copying the latter.
- * 2. Using "printFiveCharacters()" as an example, write a function that prints the first five characters of "SlowToCopy".
+ * 2. Using "printName()" as an example, write a function that prints the name of "SlowToCopy".
  *    Call it in main().
  * 3. Try passing by copy and passing by reference, see the difference.
- * 4. When passing by reference, ensure that your "printFiveCharacters" cannot inadvertently modify the original object.
+ * 4. When passing by reference, ensure that your "printName" cannot inadvertently modify the original object.
  *    To test its const correctness, try adding something like
- *      argument.name[0] = 'a';
+ *      argument.name = "other name";
  *    to your print function.
  *    Try both with and without const attributes in your print function's signature.
- * 5. Bonus: Can you fix "printFiveCharacters" to actually only print the first five characters and not the entire string?
  */
 
 #include "Structs.h" // The data structs we will work with
 
 #include <iostream> // For printing
 
-void printFiveCharacters(FastToCopy argument) {
+void printName(FastToCopy argument) {
     std::cout << argument.name << '\n';
 }
 
 int main() {
-    FastToCopy fast = {"abcdefghijkl"};
-    printFiveCharacters(fast);
+    FastToCopy fast = {"Fast"};
+    printName(fast);
 
-    SlowToCopy slow = {"ABCDEFGHIJKL"};
+    SlowToCopy slow = {"Slow"};
     // print it here
 
     return 0;
