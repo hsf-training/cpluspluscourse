@@ -6,7 +6,7 @@
 #include <cstring>
 
 /// Construct a new instance of SlowToCopy.
-SlowToCopy::SlowToCopy() : name("Large type") {}
+SlowToCopy::SlowToCopy() : name("SlowToCopy") {}
 
 /// Construct a new instance of SlowToCopy.
 SlowToCopy::SlowToCopy(const std::string& name) : name(name) {}
