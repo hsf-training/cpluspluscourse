@@ -179,12 +179,14 @@
     \end{cppcode*}
     \vspace{-0.2cm}
     \begin{itemize}
-      \item Initializations and increments are comma separated
+      \item Initializations and increments are separated by semicolon
       \item Initializations can contain declarations
+      \item Multiple declarations / increments can be separated by comma
       \item Braces are optional if loop body is a single statement
     \end{itemize}
   \end{block}
   \pause
+  \vspace{-2mm}
   \begin{exampleblock}{Practical example}
     \begin{cppcode*}{firstnumber=4}
       for(int i = 0, j = 0 ; i < 10 ; i++, j = i*i) {
