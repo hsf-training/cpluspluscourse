@@ -63,8 +63,8 @@ int main() {
 
     // try constant arguments of functions with pointers
     {
-      int *p = 0;
-      const int *r = 0;
+      int *p = &a;
+      const int *r = &b;
       write(p);
       write(r);
       read(p);
