@@ -12,6 +12,10 @@ Basics Exercises
 
 Just try to compile and run `./hello` to make sure that everything is set up correctly.
 
+### Basic types (directory: [`basicTypes`](basicTypes))
+
+The goal is to observe the behaviour of a few basic types, correctly employ integer and floating-point literals, and to be aware of conversions and the effect of operators in expressions with such types.
+
 ### Functions (directory: [`functions`](functions))
 
 pass by copy / pass by reference
