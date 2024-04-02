@@ -22,6 +22,7 @@ jobs:
         EXERCISE:
           - NAME: "asan"
           - NAME: "atomic"
+          - NAME: "basicTypes"
           - NAME: "callgrind"
           - NAME: "concepts"
           - NAME: "condition_variable"
