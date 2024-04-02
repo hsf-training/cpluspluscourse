@@ -12,6 +12,8 @@ Day 1 - Basics Exercises
 
 ### Hello World (directory: [`hello`](hello), [CheatSheet](ExercisesCheatSheet.md#hello-world-directory-hello))
 
+### Basic types (directory: [`basicTypes`](basicTypes), [CheatSheet](ExercisesCheatSheet.md#basic-types-directory-basictypes))
+
 ### Functions (directory: [`functions`](functions), [CheatSheet](ExercisesCheatSheet.md#functions-directory-functions))
 
 ### Control Structures (directory: [`control`](control), [CheatSheet](ExercisesCheatSheet.md#control-structures-directory-control))
