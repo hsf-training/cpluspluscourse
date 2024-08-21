@@ -56,10 +56,10 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{\texttt{std::span<T>} - Usage}
-  \begin{exampleblockGB}{Some example}{https://godbolt.org/z/bTWjM8ba1}{\texttt{span}}
+  \begin{exampleblockGB}{Some example}{https://godbolt.org/z/nP3jr388z}{\texttt{span}}
     \scriptsize
     \begin{cppcode*}{}
-      void print(std::span<int> c) {
+      void print(std::span<const int> c) {
         for (auto a : c) { std::cout << a << " "; }
         std::cout << "\n";
       }
@@ -70,16 +70,16 @@
       print(a);                 // 23 45 67 89
 
       std::vector v{1, 2, 3, 4, 5};
-      std::span<int> sv = v;
+      std::span<const int> sv = v;
       print(sv.subspan(2, 2));  // 3 4
 
       std::array a2{-14, 55, 24};
       times2(a2);
       print(a2);                // -28 110 48
 
-      std::span<int, 3> sa2 = a2;
+      std::span<const int, 3> sa2 = a2;
       std::cout << sizeof(sv) << " " << sizeof(sa2) << "\n";  // 16 8
-      std::span<int, 3> s2a2 = a; // compilation failure, invalid conversion
+      std::span<const int, 3> s2a2 = a; // compilation failure, invalid conversion
     \end{cppcode*}
   \end{exampleblockGB}
 \end{frame}
