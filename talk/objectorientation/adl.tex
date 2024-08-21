@@ -171,20 +171,36 @@
       \item Avoid accidental implicit conversions
     \end{itemize}
   \end{block}
-  \begin{alertblock}{Accidental conversions - two examples in one}
+  \begin{alertblock}{Accidental conversions - two counterexamples}
     \footnotesize
+    \begin{overprint}
+    \onslide<1>
     \begin{cppcode*}{gobble=2}
       std::ostream & operator<< // out-of-class definition
         (std::ostream & os, Complex const & c) { ... }
       struct Fraction {
         int num, denom;
-        operator Complex() const { ... } // case 1: conversion op
+        operator Complex() const { ... } // conversion op
       };
-      Complex::Complex(Fraction f); // or case 2: converting ctor
-      std::cout << Fraction{2,4}; // Prints 0.5 + 0i, would call:
-      //case 1: operator<<(std::cout, Fraction{2,4}.operator Complex());
-      //case 2: operator<<(std::cout, Complex(Fraction{2, 3}));
+
+      std::cout << Fraction{2,4}; // Prints 0.5 + 0i
+      //calls operator<<(std::cout, Fraction{2,4}.operator Complex());
     \end{cppcode*}
+
+    \onslide<2>
+    \begin{cppcode*}{gobble=2}
+      std::ostream & operator<< // out-of-class definition
+        (std::ostream & os, Complex const & c) { ... }
+      struct Fraction {
+        int num, denom;
+      };
+
+      Complex::Complex(Fraction f); // converting ctor
+
+      std::cout << Fraction{2,4}; // Prints 0.5 + 0i
+      //calls operator<<(std::cout, Complex(Fraction{2, 3}));
+    \end{cppcode*}
+    \end{overprint}
   \end{alertblock}
 \end{frame}
 
