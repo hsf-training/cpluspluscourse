@@ -60,20 +60,22 @@
   \onslide<1>
   \begin{block}{Mechanics of wait}
     \begin{itemize}
-      \item Many threads are waiting for shared data
-      \item Pass a \cppinline{unique_lock} and a predicate for wakeup to \cppinline{wait()}
-      \item \cppinline{wait()} sends threads to sleep while predicate is \cppinline{false}
+      \item Many threads can wait for shared data
+      \item Pass \cppinline{unique_lock} and optional predicate to \cppinline{wait()}
+      \item \cppinline{wait()} keeps threads asleep while predicate is \cppinline{false}
+      \begin{itemize}
+        \item Threads might wake up spuriously, but \cppinline{wait()} returns only when lock available \emph{and} predicate \cppinline{true}
+      \end{itemize}
       \item \cppinline{wait()} will only lock when necessary; unlocked while sleeping
-      \item Threads might wake up spuriously, but \cppinline{wait()} returns only when lock available \emph{and} predicate \cppinline{true}
     \end{itemize}
   \end{block}
   \onslide<2->
   \begin{block}{Waiting / waking up}
     \begin{itemize}
-      \item \cppinline{notify_all()} is called, threads wake up
+      \item When \cppinline{notify_all()} is called, threads wake up
       \item Threads try to lock mutex, and evaluate predicate
-      \item One thread succeeds to acquire mutex, starts data processing
-      \item {\color{red} Problem}: Thread holds mutex now, other threads are blocked!
+      \item One thread succeeds to acquire mutex, starts processing data
+      \item {\color{red} Problem}: One thread holds mutex, other threads are blocked!
     \end{itemize}
   \end{block}
   \end{overprint}

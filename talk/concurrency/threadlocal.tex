@@ -16,10 +16,11 @@
   \begin{exampleblock}{}
     \begin{cppcode*}{}
       thread_local int a{0};
-      std::jthread t1([&] { a++; });
-      std::jthread t2([&] { a++; });
-      a += 2;
-      t1.join(); t2.join();
+      {
+        std::jthread t1([&] { a++; });
+        std::jthread t2([&] { a++; });
+        a += 2;
+      }
       assert( a == 2 ); // Guaranteed to succeed
     \end{cppcode*}
   \end{exampleblock}

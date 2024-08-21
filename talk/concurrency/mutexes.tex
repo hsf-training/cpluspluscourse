@@ -230,8 +230,8 @@
   \frametitlecpp[20]{Synchronised \texttt{cout}}
   \begin{block}{Parallel writing to streams}
     \begin{itemize}
-      \item All parallel writes to streams become garbled when not synchronised
-      \item \cppinline{std::osyncstream} is a wrapper to synchronise output to streams
+      \item Parallel writes to streams become garbled when not synchronised
+      \item \cppinline{std::osyncstream} wraps and synchronises output to streams
       \item Multiple instances of the osyncstream synchronise globally
     \end{itemize}
   \end{block}
