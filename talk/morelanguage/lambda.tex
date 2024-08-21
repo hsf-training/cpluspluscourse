@@ -1,33 +1,6 @@
 \subsection[$\lambda$]{Lambdas}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Trailing function return type}
-  \begin{block}{An alternate way to specify a function's return type}
-    \begin{cppcode*}{linenos=false}
-      int f(float a);                // classic
-      auto f(float a) -> int;        // trailing
-      auto f(float a) { return 42; } // deduced, C++14
-    \end{cppcode*}
-  \end{block}
-  \pause
-  \begin{block}{Advantages}
-    \begin{itemize}
-    \item Allows to simplify inner type definition
-      \begin{cppcode*}{gobble=4}
-        class Equation {
-          using ResultType = double;
-          ResultType evaluate();
-        }
-        Equation::ResultType Equation::evaluate() {...}
-        auto Equation::evaluate() -> ResultType {...}
-      \end{cppcode*}
-    \item Used by lambda expressions
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-
-\begin{frame}[fragile]
   \frametitlecpp[11]{Lambda expressions}
   \begin{block}{Definition}
     A lambda expression is a function with no name
@@ -72,6 +45,31 @@
   \end{exampleblock}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Trailing function return type}
+  \begin{block}{An alternate way to specify a function's return type}
+    \begin{cppcode*}{linenos=false}
+      int f(float a);                // classic
+      auto f(float a) -> int;        // trailing
+      auto f(float a) { return 42; } // deduced, C++14
+    \end{cppcode*}
+  \end{block}
+  \pause
+  \begin{block}{When to use trailing return type}
+    \begin{itemize}
+    \item Only way to specify return type for lambdas
+    \item Allows to simplify inner type definition
+      \begin{cppcode*}{gobble=4}
+        class Equation {
+          using ResultType = double;
+          ResultType evaluate();
+        }
+        Equation::ResultType Equation::evaluate() {...}
+        auto Equation::evaluate() -> ResultType {...}
+      \end{cppcode*}
+    \end{itemize}
+  \end{block}
+\end{frame}
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Capturing variables}
@@ -143,7 +141,7 @@
   \begin{block}{Explanation}
     \begin{itemize}
       \item By default, variables are captured by value
-      \item The lambda's \cppinline{operator()} is \cppinline{const}
+      \item The lambda's \cppinline{operator()} is \cppinline{const inline}
     \end{itemize}
   \end{block}
 \end{frame}
@@ -338,10 +336,6 @@
         decltype([](int i) { std::cout << i; }) f;
       } s;
       s.f(42); // prints "42"
-
-      template <typename T>
-      using CudaPtr = std::unique_ptr<T,
-                        decltype([](T* p){ cudaFree(p); })>;
 
       std::set<T, decltype([](T a, T b) { ... })> s2;
     \end{cppcode*}
