@@ -424,3 +424,59 @@
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{\cpp date and time utilities \hfill \cpp11 / \cpp20}
+  \cppinline{std::chrono library} present in \cppinline{<chrono>} header
+  \begin{block}{Clocks}
+    \begin{itemize}
+    \item consists of a starting point (or epoch) and a tick rate
+      \begin{itemize}
+      \item E.g. January 1, 1970 and every second
+      \end{itemize}
+    \item C++ defines several clock type
+      \begin{itemize}
+      \item \href{https://en.cppreference.com/w/cpp/chrono/system_clock}{\color{blue!50!white} \cppinline{system_clock}} system time, aka wall clock time, or C time
+      \item \href{https://en.cppreference.com/w/cpp/chrono/steady_clock}{\color{blue!50!white} \cppinline{steady_clock}} monotonic but unrelated to wall clock time
+      \item \href{https://en.cppreference.com/w/cpp/chrono/high_resolution_clock}{\color{blue!50!white} \cppinline{high_resolution_clock}} clock with the smallest tick period
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+  \begin{block}{\href{https://en.cppreference.com/w/cpp/chrono/time_point}{\color{blue!50!white} \cppinline{time_point}} and \href{https://en.cppreference.com/w/cpp/chrono/duration}{\color{blue!50!white} \cppinline{duration}}}
+    \begin{itemize}
+    \item provide easy manipulation of times and duration
+    \item clock dependent
+    \item \href{https://en.cppreference.com/w/cpp/chrono/duration/duration_cast}{\color{blue!50!white} \cppinline{duration_cast}} allows conversions between duration types
+      \begin{itemize}
+      \item available helper types : nanoseconds, microseconds, milliseconds, seconds, minutes, hours, ...
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Practical usage / timing some \cpp code}
+  \begin{exampleblockGB}{How to measure the time spent in some code}{https://godbolt.org/z/PzKWer5eb}{\texttt{timing}}
+    \small
+    \begin{cppcode*}{gobble=2}
+      #include <chrono>
+
+      std::chrono::high_resolution_clock clock;
+      auto start = clock::now();
+      ... // code to be timed
+      std::chrono::duration<float> ticks = clock.now() - start;
+
+      auto millis = std::chrono::duration_cast
+                    <std::chrono::milliseconds>(ticks);
+      std::cout << "it took " << ticks.count() << " ticks"
+                << ", that is " << millis.count() << " ms\n";
+    \end{cppcode*}
+  \end{exampleblockGB}
+  \pause
+  \begin{alertblock}{Warning}
+    \begin{itemize}
+    \item this does not measure the amount of CPU used !
+    \item neither the time spent on a CPU (think suspended threads)
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
