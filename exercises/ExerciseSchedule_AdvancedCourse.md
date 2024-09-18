@@ -5,7 +5,7 @@ HEP C++ Advanced Course's exercise schedule
 - Solutions and hints can be found in the ExercisesCheatSheet.md file located in the same directory.
 - Each exercise is in its own directory and referred to in the following by the name of the directory
 
-There are far too many exercies on each day. They are given in order in which they should be done.
+There are far too many exercises on each day. They are given in order in which they should be done.
 
 Day 1
 -----
