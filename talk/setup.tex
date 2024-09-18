@@ -188,9 +188,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % frametitle with C++ version %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Switch designs for advanced and essentials course:
+\newif\ifisAdvancedSlide\isAdvancedSlidefalse
 % Use as \frametitlecpp[14]{Title}
 \newcommand\frametitlecpp[2][98]{
-  \frametitle{#2 \hfill \cpp#1}
+  \ifisAdvancedSlide
+    \frametitle{#2 \hfill \cpp#1 \small Adv}
+  \else
+    \frametitle{#2 \hfill \cpp#1}
+  \fi
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
