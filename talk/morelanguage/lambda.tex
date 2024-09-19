@@ -329,7 +329,7 @@
       \item Without captures, are default-constructible and assignable
     \end{itemize}
   \end{block}
-  \begin{exampleblock}{Examples}
+  \begin{exampleblockGB}{Example}{https://godbolt.org/z/GoE6xM8EG}{\texttt{lambda \cpp20}}
     \small
     \begin{cppcode*}{gobble=2}
       struct S {
@@ -339,7 +339,7 @@
 
       std::set<T, decltype([](T a, T b) { ... })> s2;
     \end{cppcode*}
-  \end{exampleblock}
+  \end{exampleblockGB}
 
 \end{frame}
 
