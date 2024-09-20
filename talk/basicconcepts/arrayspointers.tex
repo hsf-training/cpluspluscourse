@@ -16,7 +16,14 @@
   \end{cppcode}
 \end{frame}
 
-\Scontents*[store-cmd=code_arrays]{
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Pointers}
+  \begin{multicols}{2}
+    % the code has to be repeated n times here. Anyone finding a better solution
+    % is welcome, but it's not a trivial task, due to the verbatim nature of minted
+  \begin{overprint}[\columnwidth]
+    \onslide<1>
+      \begin{minted}[linenos]{cpp}
 int i = 4;
 int *pi = &i;
 int j = *pi + 1;
@@ -32,20 +39,151 @@ int *pak = k;
 // seg fault !
 int *pak = (int*)k;
 int l = *pak;
-}
-\begin{frame}[fragile]
-  \frametitlecpp[98]{Pointers}
-  \begin{multicols}{2}
-  \begin{overprint}[\columnwidth]
-    \onslide<1> \highlightCppCode{}{code_arrays}
-    \onslide<2> \highlightCppCode{1}{code_arrays}
-    \onslide<3> \highlightCppCode{2}{code_arrays}
-    \onslide<4> \highlightCppCode{3}{code_arrays}
-    \onslide<5> \highlightCppCode{5}{code_arrays}
-    \onslide<6> \highlightCppCode{6}{code_arrays}
-    \onslide<7> \highlightCppCode{7}{code_arrays}
-    \onslide<8> \highlightCppCode{8}{code_arrays}
-    \onslide<9> \highlightCppCode{11}{code_arrays}
+      \end{minted}
+    \onslide<2>
+      \begin{minted}[linenos,highlightlines=1]{cpp}
+int i = 4;
+int *pi = &i;
+int j = *pi + 1;
+
+int ai[] = {1,2,3};
+int *pai = ai; // decay to ptr
+int *paj = pai + 1;
+int k = *paj + 1;
+
+// compile error
+int *pak = k;
+
+// seg fault !
+int *pak = (int*)k;
+int l = *pak;
+      \end{minted}
+    \onslide<3>
+      \begin{minted}[linenos,highlightlines=2]{cpp}
+int i = 4;
+int *pi = &i;
+int j = *pi + 1;
+
+int ai[] = {1,2,3};
+int *pai = ai; // decay to ptr
+int *paj = pai + 1;
+int k = *paj + 1;
+
+// compile error
+int *pak = k;
+
+// seg fault !
+int *pak = (int*)k;
+int l = *pak;
+      \end{minted}
+    \onslide<4>
+      \begin{minted}[linenos,highlightlines=3]{cpp}
+int i = 4;
+int *pi = &i;
+int j = *pi + 1;
+
+int ai[] = {1,2,3};
+int *pai = ai; // decay to ptr
+int *paj = pai + 1;
+int k = *paj + 1;
+
+// compile error
+int *pak = k;
+
+// seg fault !
+int *pak = (int*)k;
+int l = *pak;
+      \end{minted}
+    \onslide<5>
+      \begin{minted}[linenos,highlightlines=5]{cpp}
+int i = 4;
+int *pi = &i;
+int j = *pi + 1;
+
+int ai[] = {1,2,3};
+int *pai = ai; // decay to ptr
+int *paj = pai + 1;
+int k = *paj + 1;
+
+// compile error
+int *pak = k;
+
+// seg fault !
+int *pak = (int*)k;
+int l = *pak;
+      \end{minted}
+    \onslide<6>
+      \begin{minted}[linenos,highlightlines=6]{cpp}
+int i = 4;
+int *pi = &i;
+int j = *pi + 1;
+
+int ai[] = {1,2,3};
+int *pai = ai; // decay to ptr
+int *paj = pai + 1;
+int k = *paj + 1;
+
+// compile error
+int *pak = k;
+
+// seg fault !
+int *pak = (int*)k;
+int l = *pak;
+      \end{minted}
+    \onslide<7>
+      \begin{minted}[linenos,highlightlines=7]{cpp}
+int i = 4;
+int *pi = &i;
+int j = *pi + 1;
+
+int ai[] = {1,2,3};
+int *pai = ai; // decay to ptr
+int *paj = pai + 1;
+int k = *paj + 1;
+
+// compile error
+int *pak = k;
+
+// seg fault !
+int *pak = (int*)k;
+int l = *pak;
+      \end{minted}
+    \onslide<8>
+      \begin{minted}[linenos,highlightlines=8]{cpp}
+int i = 4;
+int *pi = &i;
+int j = *pi + 1;
+
+int ai[] = {1,2,3};
+int *pai = ai; // decay to ptr
+int *paj = pai + 1;
+int k = *paj + 1;
+
+// compile error
+int *pak = k;
+
+// seg fault !
+int *pak = (int*)k;
+int l = *pak;
+      \end{minted}
+    \onslide<9>
+      \begin{minted}[linenos,highlightlines=11]{cpp}
+int i = 4;
+int *pi = &i;
+int j = *pi + 1;
+
+int ai[] = {1,2,3};
+int *pai = ai; // decay to ptr
+int *paj = pai + 1;
+int k = *paj + 1;
+
+// compile error
+int *pak = k;
+
+// seg fault !
+int *pak = (int*)k;
+int l = *pak;
+      \end{minted}
   \end{overprint}
   \columnbreak
     \onslide<2->{

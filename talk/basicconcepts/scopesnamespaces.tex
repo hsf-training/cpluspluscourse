@@ -21,15 +21,6 @@
   \end{exampleblock}
 \end{frame}
 
-\Scontents*[store-cmd=code_scopes]{
-int a = 1;
-{
-  int b[4];
-  b[0] = a;
-}
-// Doesn't compile here:
-// b[1] = a + 1;
-}
 \begin{frame}[fragile]
   \frametitlecpp[98]{Scope and lifetime of variables}
   \begin{block}{Variable life time}
@@ -45,15 +36,49 @@ int a = 1;
     \end{itemize}
   \end{goodpractice}
   \begin{multicols}{2}
+    % the code has to be repeated n times here. Anyone finding a better solution
+    % is welcome, but it's not a trivial task, due to the verbatim nature of minted
     \begin{overprint}[\columnwidth]
     \onslide<1>
-    \highlightCppCode{1}{code_scopes}
+      \begin{minted}[linenos,highlightlines=1]{cpp}
+int a = 1;
+{
+  int b[4];
+  b[0] = a;
+}
+// Doesn't compile here:
+// b[1] = a + 1;
+      \end{minted}
     \onslide<2>
-    \highlightCppCode{3}{code_scopes}
+      \begin{minted}[linenos,highlightlines=3]{cpp}
+int a = 1;
+{
+  int b[4];
+  b[0] = a;
+}
+// Doesn't compile here:
+// b[1] = a + 1;
+      \end{minted}
     \onslide<3>
-    \highlightCppCode{4}{code_scopes}
+      \begin{minted}[linenos,highlightlines=4]{cpp}
+int a = 1;
+{
+  int b[4];
+  b[0] = a;
+}
+// Doesn't compile here:
+// b[1] = a + 1;
+      \end{minted}
     \onslide<4>
-    \highlightCppCode{7}{code_scopes}
+      \begin{minted}[linenos,highlightlines=7]{cpp}
+int a = 1;
+{
+  int b[4];
+  b[0] = a;
+}
+// Doesn't compile here:
+// b[1] = a + 1;
+      \end{minted}
     \end{overprint}
 
     \columnbreak
