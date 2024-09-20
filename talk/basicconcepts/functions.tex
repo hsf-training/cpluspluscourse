@@ -69,7 +69,14 @@
 \end{frame}
 
 
-\Scontents*[store-cmd=code_bigStruct]{
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Functions: parameters are passed by value}
+  \begin{multicols}{2}
+    % the code has to be repeated n times here. Anyone finding a better solution
+    % is welcome, but it's not a trivial task, due to the verbatim nature of minted
+    \begin{overprint}[\columnwidth]
+      \onslide<1-2>
+      \begin{minted}[linenos,highlightlines=2]{cpp}
 struct BigStruct {...};
 BigStruct s;
 
@@ -84,17 +91,41 @@ void printRef(BigStruct &q) {
   ...
 }
 printRef(s); // no copy
-}
-\begin{frame}[fragile]
-  \frametitlecpp[98]{Functions: parameters are passed by value}
-  \begin{multicols}{2}
-    \begin{overprint}[\columnwidth]
-      \onslide<1-2>
-      \highlightCppCode{2}{code_bigStruct}
+      \end{minted}
       \onslide<3>
-      \highlightCppCode{5,8}{code_bigStruct}
+      \begin{minted}[linenos,highlightlines={5,8}]{cpp}
+struct BigStruct {...};
+BigStruct s;
+
+// parameter by value
+void printVal(BigStruct p) {
+  ...
+}
+printVal(s); // copy
+
+// parameter by reference
+void printRef(BigStruct &q) {
+  ...
+}
+printRef(s); // no copy
+      \end{minted}
       \onslide<4->
-      \highlightCppCode{11,14}{code_bigStruct}
+      \begin{minted}[linenos,highlightlines={11,14}]{cpp}
+struct BigStruct {...};
+BigStruct s;
+
+// parameter by value
+void printVal(BigStruct p) {
+  ...
+}
+printVal(s); // copy
+
+// parameter by reference
+void printRef(BigStruct &q) {
+  ...
+}
+printRef(s); // no copy
+      \end{minted}
     \end{overprint}
     \columnbreak
     \null \vfill
@@ -121,7 +152,14 @@ printRef(s); // no copy
   \end{multicols}
 \end{frame}
 
-\Scontents*[store-cmd=code_smallStruct]{
+\begin{frame}[fragile]
+  \frametitlecpp[98]{Functions: pass by value or reference?}
+  \begin{multicols}{2}
+    % the code has to be repeated n times here. Anyone finding a better solution
+    % is welcome, but it's not a trivial task, due to the verbatim nature of minted
+    \begin{overprint}[\columnwidth]
+      \onslide<1>
+      \begin{minted}[linenos]{cpp}
 struct SmallStruct {int a;};
 SmallStruct s = {1};
 
@@ -136,27 +174,126 @@ void changeRef(SmallStruct &q) {
 }
 changeRef(s);
 // s.a == 2
-}
-\begin{frame}[fragile]
-  \frametitlecpp[98]{Functions: pass by value or reference?}
-  \begin{multicols}{2}
-    \begin{overprint}[\columnwidth]
-      \onslide<1>
-      \highlightCppCode{}{code_smallStruct}
+      \end{minted}
       \onslide<2>
-      \highlightCppCode{2}{code_smallStruct}
+      \begin{minted}[linenos,highlightlines=2]{cpp}
+struct SmallStruct {int a;};
+SmallStruct s = {1};
+
+void changeVal(SmallStruct p) {
+  p.a = 2;
+}
+changeVal(s);
+// s.a == 1
+
+void changeRef(SmallStruct &q) {
+  q.a = 2;
+}
+changeRef(s);
+// s.a == 2
+      \end{minted}
       \onslide<3>
-      \highlightCppCode{4,7}{code_smallStruct}
+      \begin{minted}[linenos,highlightlines={4,7}]{cpp}
+struct SmallStruct {int a;};
+SmallStruct s = {1};
+
+void changeVal(SmallStruct p) {
+  p.a = 2;
+}
+changeVal(s);
+// s.a == 1
+
+void changeRef(SmallStruct &q) {
+  q.a = 2;
+}
+changeRef(s);
+// s.a == 2
+      \end{minted}
       \onslide<4>
-      \highlightCppCode{5}{code_smallStruct}
+      \begin{minted}[linenos,highlightlines=5]{cpp}
+struct SmallStruct {int a;};
+SmallStruct s = {1};
+
+void changeVal(SmallStruct p) {
+  p.a = 2;
+}
+changeVal(s);
+// s.a == 1
+
+void changeRef(SmallStruct &q) {
+  q.a = 2;
+}
+changeRef(s);
+// s.a == 2
+      \end{minted}
       \onslide<5>
-      \highlightCppCode{8}{code_smallStruct}
+      \begin{minted}[linenos,highlightlines=8]{cpp}
+struct SmallStruct {int a;};
+SmallStruct s = {1};
+
+void changeVal(SmallStruct p) {
+  p.a = 2;
+}
+changeVal(s);
+// s.a == 1
+
+void changeRef(SmallStruct &q) {
+  q.a = 2;
+}
+changeRef(s);
+// s.a == 2
+      \end{minted}
       \onslide<6>
-      \highlightCppCode{10,13}{code_smallStruct}
+      \begin{minted}[linenos,highlightlines={10,13}]{cpp}
+struct SmallStruct {int a;};
+SmallStruct s = {1};
+
+void changeVal(SmallStruct p) {
+  p.a = 2;
+}
+changeVal(s);
+// s.a == 1
+
+void changeRef(SmallStruct &q) {
+  q.a = 2;
+}
+changeRef(s);
+// s.a == 2
+      \end{minted}
       \onslide<7>
-      \highlightCppCode{11}{code_smallStruct}
+      \begin{minted}[linenos,highlightlines=11]{cpp}
+struct SmallStruct {int a;};
+SmallStruct s = {1};
+
+void changeVal(SmallStruct p) {
+  p.a = 2;
+}
+changeVal(s);
+// s.a == 1
+
+void changeRef(SmallStruct &q) {
+  q.a = 2;
+}
+changeRef(s);
+// s.a == 2
+      \end{minted}
       \onslide<8>
-      \highlightCppCode{14}{code_smallStruct}
+      \begin{minted}[linenos,highlightlines=14]{cpp}
+struct SmallStruct {int a;};
+SmallStruct s = {1};
+
+void changeVal(SmallStruct p) {
+  p.a = 2;
+}
+changeVal(s);
+// s.a == 1
+
+void changeRef(SmallStruct &q) {
+  q.a = 2;
+}
+changeRef(s);
+// s.a == 2
+      \end{minted}
     \end{overprint}
     \columnbreak
     \null \vfill
