@@ -148,11 +148,13 @@ Here we have five code snippets that will benefit from using smart pointers.
 - `problem5` demonstrates the usage of `weak_ptr` can be used, but can be skipped if not enough time.
 
 ### std::optional (directory: [`optional`](optional))
+
 Use std::optional to signify disallowed values in a computation.
 1. Use std::optional as return value of the mysqrt function. Use `nullopt_t` for negative arguments. Note that `return {}` will create a `nullopt_t` automatically.
 2. Given that the return type changes, modify the square function accordingly to take into account cases where a `nullopt_t` is given as input. Note that `std::optional` can be directly used in an if statement as if it would be a boolean to check whether is value is present
 
 ### std::variant (directory: [`variant`](variant))
+
 Use the variant as an alternative to inheritance. The goal is to understand
 1. That the base class is unnecessary when variant is used
 2. That no dynamic allocations and polymorphism are necessary because the variant can directly be pushed into the vector
