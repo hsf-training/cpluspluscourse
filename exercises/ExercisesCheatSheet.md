@@ -137,14 +137,15 @@ The goal is to use STL algorithms. I would advise to start in this order :
 
 ### Smart pointers (directory: [`smartPointers`](smartPointers))
 
-Here we have four code snippets that will benefit from using smart pointers.
+Here we have five code snippets that will benefit from using smart pointers.
 **Essentials**: Work on part 1 and 2
 **Advanced**: Try all parts
 
 - `problem1` is a simple case of usage of `make_unique` with an observer pattern where the raw pointer should be used.
 - `problem2` is an example of a collection of pointers. Move semantic has to be used to transfer ownership of newly created objects to the container (alternatively, `emplace_back`).
 - `problem3` is an example of shared ownership where `std::shared_pointer` should be used.
-- `problem4` demonstrates the usage of `shared_ptr` as class members. It has a second part where a `weak_ptr` can be used, but can be skipped if not enough time.
+- `problem4` demonstrates the usage of `shared_ptr` as class members.
+- `problem5` demonstrates the usage of `weak_ptr` can be used, but can be skipped if not enough time.
 
 ### std::optional (directory: [`optional`](optional))
 Use std::optional to signify disallowed values in a computation.
