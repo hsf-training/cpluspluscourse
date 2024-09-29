@@ -68,6 +68,6 @@ int main() {
         std::cerr<< "Terminated with exception: " << e.what() << "\n" ;
     }
 
-    std::cout<<"Forgotten large objects: "<<LargeObject::count<<std::endl ;
+    std::cout<<"Leaked large objects: "<<LargeObject::count<<std::endl ;
 
 }
