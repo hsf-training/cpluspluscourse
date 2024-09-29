@@ -16,7 +16,7 @@
  *
  * Tasks
  * 1) Verify the mess by repeatedly running it using such a command like:
- *   `while true; do ./problem3 2>&1 ; done`
+ *   `while true; do ./problem3 ; done`
  *    You should notice that the program regularly leaks.
  * 2) Fix the ownership model using `std::shared_ptr` !
  *   - Convert the vectors to holding `std::shared_ptr`.
