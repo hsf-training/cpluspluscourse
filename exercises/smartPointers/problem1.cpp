@@ -29,7 +29,7 @@ struct LargeObject {
 
     // So to check for some potential memory leak,
     // we count the constructions and destructions
-    static std::size_t count ;
+    inline static std::size_t count = 0;
     LargeObject() { count++ ; }
     ~LargeObject() { count-- ; }
 
