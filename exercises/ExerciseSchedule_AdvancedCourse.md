@@ -46,6 +46,8 @@ Day 3
 
 ### Atomicity (directory: [`atomic`](atomic), [cheatSheet](ExercisesCheatSheet.md#atomicity-directory-atomic))
 
+### Condition variables (directory: [`condition_variable`](condition_variable), [cheatSheet](ExercisesCheatSheet.md#condition-variables-directory-condition_variable))
+
 ### Generic programming / templates (directory: [`templates`](templates), [cheatSheet](ExercisesCheatSheet.md#generic-programming--templates-directory-templates))
 As a prerequisite for variadic templates, and in case it was not covered in day 2 session
 
