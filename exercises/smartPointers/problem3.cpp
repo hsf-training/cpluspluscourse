@@ -38,13 +38,11 @@ struct LargeObject {
 
     // So to check for some potential memory leak,
     // we count the constructions and destructions
-    static std::size_t count ;
+    inline static std::size_t count = 0;
     LargeObject() { count++ ; }
     ~LargeObject() { count-- ; }
 
 } ;
-
-std::size_t LargeObject::count = 0 ;
 
 // This removes an element from a non-owning vector,
 // in the middle or in a random place. Such elements
@@ -131,6 +129,6 @@ void doStuff() {
 int main() {
 
     doStuff() ;
-    std::cout<<"Forgotten large objects: "<<LargeObject::count<<std::endl ;
+    std::cout<<"Leaked large objects: "<<LargeObject::count<<std::endl ;
 
 }
