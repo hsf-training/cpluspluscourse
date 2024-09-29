@@ -4,7 +4,7 @@
 In the code below, modify the function `mysqrt` below so that it returns
 an `std::optional<double>` rather than a double, and the program prints
 `nothing` rather than `nan` for the call with `-10`. It will also require
-to modify `square`.
+to update `square`.
 
 */
 
