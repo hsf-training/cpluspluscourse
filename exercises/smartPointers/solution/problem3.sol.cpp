@@ -12,20 +12,11 @@ struct LargeObject {
 
     // So to check for some potential memory leak,
     // we count the constructions and destructions
-    static std::size_t count ;
+    inline static std::size_t count = 0 ;
     LargeObject() { count++ ; }
     ~LargeObject() { count-- ; }
 
 } ;
-
-std::size_t LargeObject::count = 0 ;
-
-void removeMiddle(std::vector<std::shared_ptr<LargeObject>>& collection) {
-
-    auto middlePosition = collection.begin() + collection.size()/2;
-    collection.erase(middlePosition);
-
-}
 
 void removeRandom(std::vector<std::shared_ptr<LargeObject>>& collection, std::default_random_engine & engine) {
 
@@ -67,7 +58,7 @@ void doStuff() {
 
     // Random work with the objects
 
-    removeMiddle(objVector);
+    removeRandom(objVector,engine);
     removeRandom(objVectorCopy,engine);
     removeRandom(objVectorCopy,engine);
     // ...
@@ -81,6 +72,6 @@ void doStuff() {
 int main() {
 
    doStuff() ;
-   std::cout<<"Forgotten large objects: "<<LargeObject::count<<std::endl ;
+   std::cout<<"Leaked large objects: "<<LargeObject::count<<std::endl ;
 
 }
