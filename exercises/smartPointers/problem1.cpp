@@ -35,7 +35,6 @@ struct LargeObject {
 
 } ;
 
-
 // A function to do something with a large object.
 // Here we simulate that an error happens.
 
