@@ -1,15 +1,8 @@
 
 #include <iostream>
-#include <thread>
 #include <vector>
-
-/*
- * This program tries to increment an integer `nInc` times in `nThread` threads.
- * If the result comes out at `nInc*nThread`, it stays silent, but it will print
- * an error if a race condition is detected.
- * If you don't see it racing, try ./run ./racing, which keeps invoking the
- * executable until a race condition is detected.
- */
+#include <thread>
+#include <mutex>
 
 constexpr std::size_t nThread = 10;
 constexpr std::size_t nInc = 1000;
@@ -20,15 +13,17 @@ int main() {
 
   for (std::size_t j = 0; j < nRepeat; j++) {
     int a = 0;
+    std::mutex aMutex;
 
     // Increment the variable a 100 times:
-    auto increment = [&a](){
+    auto increment = [&a,&aMutex](){
       for (std::size_t i = 0; i < nInc; ++i) {
+        std::scoped_lock lock{aMutex};
         a++;
       }
     };
 
-    // Start up all threads
+    // Start up all threads:
     std::vector<std::thread> threads;
     for (std::size_t i = 0; i < nThread; ++i) threads.emplace_back(increment);
     for (auto & thread : threads) thread.join();
