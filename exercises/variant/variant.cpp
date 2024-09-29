@@ -1,6 +1,7 @@
 /*
 
-In the code below, replace inheritance with the use of a std::variant.
+In the code below, replace inheritance with the use of a `std::variant<Electron, Proton, Neutron>`.
+There is no more need for a base class, and no more need pointers.
 Two solutions are provided :
 1. with `std::get_if`,
 2. with `std::visit`.
