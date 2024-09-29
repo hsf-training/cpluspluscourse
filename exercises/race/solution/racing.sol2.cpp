@@ -1,15 +1,8 @@
 
 #include <iostream>
-#include <thread>
 #include <vector>
-
-/*
- * This program tries to increment an integer `nInc` times in `nThread` threads.
- * If the result comes out at `nInc*nThread`, it stays silent, but it will print
- * an error if a race condition is detected.
- * If you don't see it racing, try ./run ./racing, which keeps invoking the
- * executable until a race condition is detected.
- */
+#include <thread>
+#include <atomic>
 
 constexpr std::size_t nThread = 10;
 constexpr std::size_t nInc = 1000;
@@ -19,7 +12,7 @@ int main() {
   int nError = 0;
 
   for (std::size_t j = 0; j < nRepeat; j++) {
-    int a = 0;
+    std::atomic<int> a{0};
 
     // Increment the variable a 100 times:
     auto increment = [&a](){
