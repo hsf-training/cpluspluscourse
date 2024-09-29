@@ -35,7 +35,6 @@ struct LargeObject {
 
 } ;
 
-std::size_t LargeObject::count = 0 ;
 
 // A function to do something with a large object.
 // Here we simulate that an error happens.
