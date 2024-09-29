@@ -12,7 +12,7 @@
  *
  * Most of the time, ownership can be solved by having one owner (with `std::unique_ptr`) and
  * one or more observers (raw pointers or references). Sometimes, we need to truly share data,
- * though. Here is an example of a completely messed up ownership model.
+ * though. Here is an example of a completely messed up ownership model, which could be fixed using shared_ptr.
  *
  * Tasks
  * 1) Verify the mess by repeatedly running it using such a command like:
