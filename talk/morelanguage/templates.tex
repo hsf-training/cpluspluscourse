@@ -479,7 +479,7 @@
       std::array a{1, 2, 3}; // std::array<int, 3>
 
       std::mutex m;
-      std::lock_guard l(m); // std::lock_guard<std::mutex>
+      std::lock_guard l{m}; // std::lock_guard<std::mutex>
     \end{cppcode*}
   \end{block}
 \end{frame}
