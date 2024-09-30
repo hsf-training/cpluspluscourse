@@ -214,7 +214,7 @@
       \end{itemize}
       \item \textit{don't} use exceptions to provide alternative/skip return values
       \begin{itemize}
-        \item you can use \cppinline{std::optional} or \cppinline{std::variant}
+        \item you can use \cppinline{std::optional}, \cppinline{std::variant} or \cppinline{std::expected} (\cpp23)
         \item avoid using the global C-style \cppinline{errno}
       \end{itemize}
       \item never throw in destructors
