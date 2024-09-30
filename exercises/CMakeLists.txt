@@ -15,7 +15,6 @@ endif()
 # Include the exercises that (should) work on all platforms.
 add_subdirectory( hello )
 add_subdirectory( asan )
-add_subdirectory( atomic )
 add_subdirectory( basicTypes )
 add_subdirectory( callgrind )
 add_subdirectory( condition_variable )

@@ -344,19 +344,16 @@ Concurrency Exercises
 
 Typical race condition where a simple mutex and lock_guard "solves" the problem.
 
-The second step is to look at the execution time and find out that it's not really a solution. One could then try an atomic and see the difference, although I do not introduce them in the course
+The second step is to look at the execution time and find out that it's not really a solution.
 
-### Atomicity (directory: [`atomic`](atomic))
-
-Exactly the same race condition as above. Fix them using an `atomic<int>`.
-
-*Optional*: Compare run times for lock and atomic solution. Those are likely not very different, as many locks are implemented using atomics.
+Try then to use an `atomic<int>` to solve the issue and compare the execution time with the lock solution.
 
 ### Condition variables (directory: [`condition_variable`](condition_variable))
 
 Small example where 4 consumer threads are notified by a producer.
 1. The production phase is not protected by a lock.
 2. When the consumers are waking up, they don't release the lock that's tied to the condition variable, so they cannot wake up in parallel.
+
 
 Python Exercises
 ----------------
