@@ -21,7 +21,6 @@ jobs:
       matrix:
         EXERCISE:
           - NAME: "asan"
-          - NAME: "atomic"
           - NAME: "basicTypes"
           - NAME: "callgrind"
           - NAME: "concepts"
