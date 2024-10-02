@@ -159,8 +159,7 @@ int a = 1;
 
 \begin{frame}[fragile]
   \frametitlecpp[17]{Nested namespaces}
-  Easier way to declare nested namespaces
-  \begin{alertblock}{\cpp98}
+  \begin{alertblock}{\cpp98: Old way to declare nested namespaces}
     \begin{cppcode*}{}
       namespace A {
         namespace B {
@@ -171,11 +170,16 @@ int a = 1;
       }
     \end{cppcode*}
   \end{alertblock}
-  \begin{exampleblock}{\cpp17}
+  \begin{exampleblock}{\cpp17: Nested declaration}
     \begin{cppcode*}{}
       namespace A::B::C {
         //...
       }
+    \end{cppcode*}
+  \end{exampleblock}
+  \begin{exampleblock}{\cpp17: Namespace alias}
+    \begin{cppcode*}{}
+      namespace ABC = A::B::C;
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
