@@ -102,6 +102,7 @@
           return in; // equiv. to optional<Phone>{in};
         return {};   // or: return std::nullopt; (empty opt.)
       }
+      auto v = parse_phone(...);
       if (v) {                    // or: v.has_value()
         process_phone(v.value()); // or: *v (unchecked)
         v->call(); // calls Phone::call()   (unchecked)
