@@ -20,6 +20,12 @@ jobs:
       matrix:
         version: [ essentials, full ]
     steps:
+      # https://github.com/gpoore/minted/issues/401
+      - name: Reinstall minted
+        run: |
+          sudo apt-get install texlive-latex-extra python3-pygments
+          #tlmgr uninstall minted
+          #tlmgr install minted
       - name: Set up Git repository
         uses: actions/checkout@v4
       - name: Compile essentials
