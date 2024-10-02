@@ -64,7 +64,7 @@
       void bar() {...}
       int main() {
         std::jthread t1{foo};
-        std::jthread t2{bar}; t2.request_stop();
+        std::jthread t2{bar};
         // No join required
         return 0;
       }
