@@ -27,7 +27,7 @@
     <typename T,
      typename = std::enable_if_t<std::is_floating_point_v<T>>>
     bool equal( T e1, T e2 ) {
-      return std::abs(e1-e2)<std::numeric_limits<T>::epsilon();
+      return std::abs(e1-e2) < std::numeric_limits<T>::epsilon();
     }
     ... equal(10,5+5) ...
     \end{cppcode*}
@@ -62,7 +62,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     template<typename T>
     requires std::is_floating_point_v<T>
     bool equal( T e1, T e2 ) {
-      return std::abs(e1-e2)<std::numeric_limits<T>::epsilon();
+      return std::abs(e1-e2) < std::numeric_limits<T>::epsilon();
     }
     ... equal(10,5+5) ...
     \end{cppcode*}
@@ -119,7 +119,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
       template< typename T>
       concept MyFloatingPoint =
         std::is_floating_point_v<T> &&
-        std::numeric_limits<T>::epsilon()>0;
+        std::numeric_limits<T>::epsilon() > 0;
 
       template<typename T>
       requires MyFloatingPoint<T>
