@@ -22,12 +22,23 @@ void printName(FastToCopy argument) {
     std::cout << argument.name << '\n';
 }
 
+void slowPrintName(SlowToCopy argument) {
+    std::cout << argument.name << '\n';
+    argument.name = "New name";
+}
+
+void printName(const SlowToCopy & argument) {
+    std::cout << argument.name << '\n';
+}
+
 int main() {
     FastToCopy fast = {"Fast"};
     printName(fast);
 
     SlowToCopy slow = {"Slow"};
-    // print it here
-
+    printName(slow);
+    
+    std::cout << "copy:\n";
+    slowPrintName(slow);
     return 0;
 }
