@@ -7,48 +7,62 @@ bool isodd(unsigned int i) { return i % 2 == 1; }
 void part1() {
   unsigned int sum_odd = 0;
   unsigned int sum_eve = 0;
-  for (int i = 0; i < 9; ++i) {
-    unsigned int num = numbers[i];
-    if (isodd(num)) {
-      sum_odd += num;
-    } else {
-      sum_eve += num;
-    }
+  for (unsigned int num : numbers) {
+    (isodd(num) ? sum_odd : sum_eve) += num;
   }
-  std::cout << "Sums: odd = " << sum_odd << ", even = " << sum_eve << "\n";
+  std::cout << "Sums: odd =" << sum_odd << ", even =" << sum_eve << "\n";
 }
 
-void part2() {
+void part2while() {
   // print smallest n for which 1 + 2 + ... + n > 10000
   int sum = 0;
-  for (int i = 1; ; i++) {
+  int i = 0;
+  while (sum <= 10000) {
+    ++i;
     sum += i;
-    if (sum > 10000) {
-      std::cout << i << "\n";
-      break;
-    }
   }
+  std::cout << i << "\n";
 }
 
-enum class Language { English, French, German, Italian, Other };
+void part2do() {
+  // print smallest n for which 1 + 2 + ... + n > 10000
+  int sum = 0;
+  int i = 0;
+  do {
+    ++i;
+    sum += i;
+  } while (sum <= 10000);
+  std::cout << i << "\n";
+}
 
-void part3(Language l) {
-  if (l == Language::English) {
+enum class Language { English, French, German, Italian, Japanese, Other };
+
+void part3(Language i) {
+  switch (i) {
+  case Language::English:
     std::cout << "Hello\n";
-  } else if (l == Language::French) {
+    break;
+  case Language::French:
     std::cout << "Salut\n";
-  } else if (l == Language::German) {
+    break;
+  case Language::German:
     std::cout << "Hallo\n";
-  } else if (l == Language::Italian) {
+    break;
+  case Language::Italian:
     std::cout << "Ciao\n";
-  } else {
-    std::cout << "I don't speak your language\n";
+    break;
+  case Language::Japanese:
+    std::cout << "Konnichiwa\n";
+    break;
+  default:
+    std::cout << "Don't speak your language\n";
   }
 }
 
 int main() {
   part1();
-  part2();
-  part3(Language::English);
+  part2while();
+  part2do();
+  part3(Language::Japanese);
   return 0;
 }
