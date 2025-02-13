@@ -37,9 +37,11 @@ People should replay them and discover the tools by themselves.
 Day 2 - OO Exercises
 --------------------
 
-### Polymorphism (directory: [`polymorphism`](polymorphism), [CheatSheet](ExercisesCheatSheet.md#polymorphism-directory-polymorphism))
+### My first classes (directory: [`classes`](classes), [CheatSheet](ExercisesCheatSheet.md#classes-directory-classes))
 
 ### Operator overloading (directory: [`operators`](operators), [CheatSheet](ExercisesCheatSheet.md#operator-overloading-directory-operators))
+
+### Polymorphism (directory: [`polymorphism`](polymorphism), [CheatSheet](ExercisesCheatSheet.md#polymorphism-directory-polymorphism))
 
 ### Virtual inheritance (directory: [`virtual_inheritance`](virtual_inheritance), [CheatSheet](ExercisesCheatSheet.md#virtual-inheritance-directory-virtual_inheritance))
 

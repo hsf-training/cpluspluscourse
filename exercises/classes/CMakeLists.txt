@@ -4,11 +4,10 @@ project( operators LANGUAGES CXX )
 
 # Set up the compilation environment.
 include( "${CMAKE_CURRENT_SOURCE_DIR}/../common.cmake" )
-set( CMAKE_CXX_STANDARD 20 )
 
 # Create the user's executable.
-add_executable( operators "operators.cpp" )
+add_executable( classes "classes.cpp" )
 
 # Create the "solution executable".
-add_executable( operators_sol EXCLUDE_FROM_ALL "solution/operators_sol.cpp" )
-add_dependencies( solution operators_sol )
+add_executable( classes_sol EXCLUDE_FROM_ALL "solution/classes_sol.cpp" )
+add_dependencies( solution classes_sol )
