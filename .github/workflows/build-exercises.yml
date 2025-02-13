@@ -39,8 +39,9 @@ jobs:
           - NAME: "memcheck"
           - NAME: "modern_oo"
           - NAME: "move"
+          - NAME: "classes"
+           SKIP_DEFAULT: true
           - NAME: "operators"
-            SKIP_DEFAULT: true
           - NAME: "optional"
           - NAME: "polymorphism"
           - NAME: "python"
