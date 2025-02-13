@@ -28,6 +28,7 @@ jobs:
         with:
           root_file: C++Course.tex
           latexmk_shell_escape: true
+          latexmk_use_xelatex: true
           args: -pdf -interaction=nonstopmode -halt-on-error -usepretex=\def\makebasic{}
           working_directory: talk
           extra_system_packages: "py-pygments"
@@ -37,6 +38,7 @@ jobs:
         with:
           root_file: C++Course.tex
           latexmk_shell_escape: true
+          latexmk_use_xelatex: true
           args: -pdf -interaction=nonstopmode -halt-on-error
           working_directory: talk
           extra_system_packages: "py-pygments"
