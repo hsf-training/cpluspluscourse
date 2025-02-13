@@ -217,7 +217,7 @@
   \end{block}
   \begin{exampleblockGB}{Practically}{https://godbolt.org/z/bxzEsM3de}{\texttt{variant visitor}}
     \small
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       struct Visitor {
         auto operator()(int i)   {return "i:"+std::to_string(i);}
         auto operator()(float f) {return "f:"+std::to_string(f);}
@@ -242,7 +242,7 @@
   \end{block}
   \begin{exampleblockGB}{Practically}{https://godbolt.org/z/WcdnT1hra}{\texttt{variant $\lambda$ visitor}}
     \small
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       template<typename... Ts> // covered in expert part
       struct Overload : Ts ... { using Ts::operator()...; };
       template<typename... Ts>
@@ -412,7 +412,7 @@
   \end{block}
   \begin{exampleblock}{}
     \small
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       class C { ... }; // complex, cannot change
       template <>
       struct std::tuple_size<C> {
@@ -459,7 +459,7 @@
   \frametitlecpp[11]{Practical usage / timing some \cpp code}
   \begin{exampleblockGB}{How to measure the time spent in some code}{https://godbolt.org/z/PzKWer5eb}{\texttt{timing}}
     \small
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       #include <chrono>
 
       std::chrono::high_resolution_clock clock;

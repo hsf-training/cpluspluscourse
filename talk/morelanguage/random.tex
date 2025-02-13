@@ -85,7 +85,7 @@
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Distributions sharing a non-deterministic engine}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       std::random_device rd;
       std::default_random_engine engine{rd()};
       std::uniform_int_distribution<int> dist(2,7);//min,max

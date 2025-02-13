@@ -26,7 +26,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[14]{STL in practice}
   \begin{exampleblockGB}{STL example}{https://godbolt.org/z/n8ahEr5f6}{STL}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       #include <vector>
       #include <algorithm>
       #include <functional>     // `import std;` in C++23
@@ -127,7 +127,7 @@
     \begin{block}{}
         Conceptually a container of \cppinline{std::pair<Key const, Value>}
     \end{block}
-    \begin{cppcode*}{gobble=4}
+    \begin{cppcode*}{}
         #include <unordered_map>
         std::unordered_map<std::string, int> m;
         m["hello"] = 1;  // inserts new key, def. constr. value
@@ -154,7 +154,7 @@
             \item Can be customized for your types via template specialization
         \end{itemize}
     \end{block}
-    \begin{cppcode*}{gobble=4}
+    \begin{cppcode*}{}
         #include <functional>
         std::hash<std::string> h;
         std::cout << h("hello"); // 2762169579135187400

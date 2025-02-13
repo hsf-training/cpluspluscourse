@@ -32,7 +32,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[98]{My first class}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       struct MyFirstClass {
         int a;
         void squareA() {
@@ -68,7 +68,7 @@
   \begin{columns}[t]
     \begin{column}{.45\textwidth}
     \begin{block}{Header: MyClass.hpp}
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         #pragma once
         struct MyClass {
           int a;
@@ -77,7 +77,7 @@
       \end{cppcode*}
     \end{block}
     \begin{block}{Implementation: MyClass.cpp}
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         #include "MyClass.hpp"
         void MyClass::squareA() {
           a *= a;
@@ -87,7 +87,7 @@
     \end{column}
     \begin{column}{.45\textwidth}
     \begin{block}{User 1: main.cpp}
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         #include "MyClass.hpp"
         int main() {
           MyClass mc;
@@ -96,7 +96,7 @@
       \end{cppcode*}
     \end{block}
     \begin{block}{User 2: fun.cpp}
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         #include "MyClass.hpp"
         void f(MyClass& mc) {
           mc.squareA();

@@ -21,7 +21,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{fontsize=\small,gobble=2}
+    \begin{cppcode*}{fontsize=\small}
       try {
         process_data(f);
       } catch (const
@@ -30,7 +30,7 @@
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{fontsize=\small,firstnumber=7,gobble=2}
+    \begin{cppcode*}{fontsize=\small,firstnumber=7}
       void process_data(file &f) {
         ...
         if (i >= buffer.size())
@@ -172,7 +172,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       class C { ... };
       void f() {
         C c1;
@@ -185,7 +185,7 @@
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=2,firstnumber=11}
+    \begin{cppcode*}{firstnumber=11}
       int main() {
         try {
           C c4;
@@ -233,7 +233,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
+    \begin{cppcode*}{fontsize=\scriptsize}
       try {
         for (File const &f : files) {
           try {
@@ -248,7 +248,7 @@
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{fontsize=\scriptsize,gobble=2}
+    \begin{cppcode*}{fontsize=\scriptsize}
       void process_file(File const & file) {
         ...
         if (handle = open_file(file))
@@ -278,7 +278,7 @@
   \begin{multicols}{2}
     \begin{minipage}{5cm}
       \begin{alertblock}{Avoid}
-        \begin{cppcode*}{fontsize=\scriptsize,gobble=6,linenos=false}
+        \begin{cppcode*}{fontsize=\scriptsize,linenos=false}
           for (string const &num: nums) {
             try {
               int i = convert(num); // can
@@ -294,7 +294,7 @@
     \columnbreak
     \begin{minipage}{5cm}
       \begin{exampleblock}{Prefer}
-        \begin{cppcode*}{fontsize=\scriptsize,gobble=6,linenos=false}
+        \begin{cppcode*}{fontsize=\scriptsize,linenos=false}
           for (string const &num: nums) {
             optional<int> i = convert(num);
             if (i) {
@@ -314,7 +314,7 @@
   \begin{block}{\texttt{noexcept}}
     \begin{itemize}
       \item a function with the \cppinline{noexcept} specifier states that it guarantees to not throw an exception
-      \begin{cppcode*}{gobble=2,linenos=false}
+      \begin{cppcode*}{linenos=false}
         int f() noexcept;
       \end{cppcode*}
       \begin{itemize}
@@ -323,7 +323,7 @@
         \item allows the compiler to optimize around that knowledge
       \end{itemize}
       \item a function with \cppinline{noexcept(expression)} is only \cppinline{noexcept} when \cppinline{expression} evaluates to \cppinline{true} at compile-time
-      \begin{cppcode*}{gobble=2,linenos=false}
+      \begin{cppcode*}{linenos=false}
         int safe_if_8B() noexcept(sizeof(long)==8);
       \end{cppcode*}
     \end{itemize}
@@ -346,13 +346,13 @@
     \end{itemize}
   \end{block}
   \begin{block}{}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       constexpr bool callCannotThrow = noexcept(f());
       if constexpr (callCannotThrow) { ... }
     \end{cppcode*}
   \end{block}
   \begin{block}{}
-    \begin{cppcode*}{gobble=2,firstnumber=3}
+    \begin{cppcode*}{firstnumber=3}
       template <typename Function>
       void g(Function f) noexcept(noexcept(f())) {
         ...

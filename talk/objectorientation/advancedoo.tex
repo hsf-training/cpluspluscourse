@@ -48,7 +48,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       Polygon p;
 
       int f(Drawable & d) {...}
@@ -99,7 +99,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       Polygon p;
 
       int f(Drawable & d) {...}
@@ -132,7 +132,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       Polygon p;
       p.draw(); // ?
 
@@ -168,7 +168,7 @@
   \begin{overprint}
   \onslide<2>
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       Polygon p;
       p.draw(); // Polygon.draw
 
@@ -192,7 +192,7 @@
 
   \onslide<3>
     \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2,highlightlines=5}
+    \begin{cppcode*}{highlightlines=5}
       Polygon p;
       p.draw(); // Polygon.draw
 
@@ -317,7 +317,7 @@
   \end{block}
   \pause
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       // Error : abstract class
       Shape s;
 
@@ -415,7 +415,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       struct Drawable {
         virtual ~Drawable()
                       = default;
@@ -440,7 +440,7 @@
     \item unless you inherit them using \cppinline{using}
     \end{itemize}
   \end{block}
-  \begin{cppcode*}{gobble=0}
+  \begin{cppcode*}{}
     struct BaseClass {
       virtual int foo(std::string);
       virtual int foo(int);
@@ -488,7 +488,7 @@
     \end{tikzpicture}
     \columnbreak
     \vspace{2cm}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       class TextBox :
         public Rectangle, Text {
         // inherits from both

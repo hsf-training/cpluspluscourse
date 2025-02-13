@@ -115,7 +115,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \end{block}
     \begin{exampleblock}{A new keyword: \texttt{concept}}
       \small
-      \begin{cppcode*}{gobble=2}
+      \begin{cppcode*}{}
       template< typename T>
       concept MyFloatingPoint =
         std::is_floating_point_v<T> &&
@@ -138,7 +138,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \end{block}
     \begin{exampleblock}{}
       \small
-      \begin{cppcode*}{gobble=2}
+      \begin{cppcode*}{}
       template<MyFloatingPoint T>
       bool equal( T e1, T e2 ) {
         return std::abs(e1-e2)<std::numeric_limits<T>::epsilon();
@@ -151,7 +151,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
       \end{itemize}
     \end{block}
     \begin{exampleblock}{Example code}
-      \begin{cppcode*}{firstnumber=4,gobble=2}
+      \begin{cppcode*}{firstnumber=4}
       MyFloatingPoint auto f = 3.14f;
       MyFloatingPoint auto d = 3.14;
       MyFloatingPoint auto i = 3; // compile error
@@ -175,7 +175,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \end{block}
     \begin{exampleblock}{}
       \small
-      \begin{cppcode*}{gobble=2}
+      \begin{cppcode*}{}
       // no template <...> here!
       bool equal( MyFloatingPoint auto e1,
                   MyFloatingPoint auto e2 ) {
@@ -199,7 +199,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \end{block}
     \begin{exampleblock}{E.g.: the floating point concept}
       \small
-      \begin{cppcode*}{gobble=2}
+      \begin{cppcode*}{}
       #include <concepts>
       bool equal( std::floating_point auto e1,
                   std::floating_point auto e2 ) {
@@ -223,7 +223,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \end{block}
     \begin{exampleblock}{Using concepts with \texttt{if constexpr}}
       \small
-      \begin{cppcode*}{gobble=2}
+      \begin{cppcode*}{}
       template<typename T>
       bool equal( T e1, T e2 )
       {
@@ -250,7 +250,7 @@ using enable_if_t = typename std::enable_if::type [with bool _Cond = false; _Tp 
     \end{block}
     \begin{exampleblock}{Practically}
       \small
-      \begin{cppcode*}{gobble=2}
+      \begin{cppcode*}{}
       template<typename T>
       concept StreamableAndComparableNumber =
       requires( T v1, T v2, std::ostream os ) {

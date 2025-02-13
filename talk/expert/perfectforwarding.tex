@@ -180,7 +180,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[20]{Forwarding references}
   \begin{alertblock}{Careful!}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       template <typename T> struct S {
         S(T&& t) { ... }       // rvalue references
         void f(T&& t) { ... }  // NOT forwarding references
@@ -191,7 +191,7 @@
   \begin{overprint}
   \onslide<1>
   \begin{exampleblock}{Half-way correct version}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       template <typename T> struct S {
 
         template <typename U>
@@ -204,7 +204,7 @@
   \end{exampleblock}
   \onslide<2>
   \begin{exampleblock}{Correct version}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       template <typename T> struct S {
         template <typename U, std::enable_if_t<
           std::is_same_v<std::decay_t<U>, T>, int> = 0>

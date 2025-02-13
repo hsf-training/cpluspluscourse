@@ -5,14 +5,14 @@
   \begin{block}{The generator use case (one of several)}
     In python one can write
     {\scriptsize
-      \begin{pythoncode*}{gobble=2}
+      \begin{pythoncode*}{}
         for i in range(0, 10):
           print(i)
       \end{pythoncode*}
     }
     What about it in \cpp?
     {\scriptsize
-      \begin{cppcode*}{gobble=2, firstnumber=3}
+      \begin{cppcode*}{firstnumber=3}
         someType range(int first, int last) { ... }
         for (auto i : range(0, 10)) {
           std::cout << i << "\n";
@@ -35,7 +35,7 @@
   \frametitlecpp[20]{What \cpp20 allows}
   \begin{exampleblock}{Interesting part of the implementation (see \href{https://en.cppreference.com/w/cpp/coroutine/coroutine\_handle\#Example}{\color{blue!50!white}cppreference})}
     {\scriptsize
-      \begin{cppcode*}{gobble=2}
+      \begin{cppcode*}{}
         template<std::integral T>
         Generator<T> range(T first, const T last) {
           while (first < last) {
@@ -92,7 +92,7 @@
   \frametitlecpp[20]{Minimal code}
   \begin{block}{Definition of an empty coroutine}
     {\scriptsize
-      \begin{cppcode*}{gobble=2, firstnumber=3}
+      \begin{cppcode*}{firstnumber=3}
         #include <coroutine>
         struct Task {
           struct promise_type {
@@ -184,7 +184,7 @@
   \end{block}
   \begin{exampleblock}{Code}
     {\scriptsize
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         Task myCoroutine() {
           std::cout << "Step 1 of coroutine\n";
           co_await std::suspend_always{};
@@ -214,7 +214,7 @@
   \end{block}
   \begin{exampleblock}{Code}
     {\scriptsize
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         struct Task {
           struct promise_type {
             Task get_return_object() {
@@ -235,7 +235,7 @@
   \frametitlecpp[20]{Resuming a coroutine}
   \scriptsize
   \begin{exampleblockGB}{User code}{https://godbolt.org/z/qx46Pa4v3}{Coroutine resumption}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       Task myCoroutine() {
         std::cout << "Step 1 of coroutine\n";
         co_await std::suspend_always{};
@@ -254,7 +254,7 @@
     \end{cppcode*}
   \end{exampleblockGB}
   \begin{block}{}
-    \begin{minted}[gobble=4]{text}
+    \begin{minted}{text}
       Step 1 of coroutine
       In main, between Step 1 and 2
       Step 2 of coroutine
@@ -278,7 +278,7 @@
       \begin{itemize}
       \item which requires another piece of code in \cppinline{Task}, e.g.
         {\scriptsize
-          \begin{cppcode*}{gobble=8,linenos=false}
+          \begin{cppcode*}{linenos=false}
             ~Task() { if (h_) h_.destroy(); }
           \end{cppcode*}
         }
@@ -304,7 +304,7 @@
   \end{block}
   \begin{exampleblock}{Typical code}
     {\scriptsize
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         template<typename T> struct Task {
           struct promise_type {
             T value_;
@@ -325,7 +325,7 @@
   \frametitlecpp[20]{\texttt{co\_yield} - generator behavior}
   \begin{block}{Generator behavior - more boiler plate code}
     {\scriptsize
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         template<typename T>
         struct Task {
           struct iterator {
@@ -352,7 +352,7 @@
   \frametitlecpp[20]{\texttt{co\_yield} - final usage}
   \begin{exampleblockGB}{Finally, we can use the generator nicely}{https://godbolt.org/z/6bbrYrss5}{\texttt{co\_yield}}
     {\scriptsize
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         Task range(int first, int last) {
           while (first != last) {
             co_yield first++;
@@ -371,7 +371,7 @@
     \item we should pause in \cppinline{initial_suspend}
     \end{itemize}
      {\scriptsize
-      \begin{cppcode*}{gobble=4,firstnumber=10}
+      \begin{cppcode*}{firstnumber=10}
         struct Task {
           struct promise_type {
             ...
@@ -387,7 +387,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[20]{Laziness allows for infinite ranges}
   \begin{exampleblockGB}{Generators do not need to be finite}{https://godbolt.org/z/MP6qdGWYe}{Infinite generator}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       Task range(int first) {
         while (true) {
           co_yield first++;
@@ -404,7 +404,7 @@
   \frametitlecpp[20]{Real life example}
   \begin{exampleblockGB}{A Fibonacci generator, from \cpprefLink{https://en.cppreference.com/w/cpp/language/coroutines}}{https://godbolt.org/z/3Pev1M8se}{Fibonacci generator}
     \scriptsize
-     \begin{cppcode*}{gobble=2}
+     \begin{cppcode*}{}
        Task<long long int> fibonacci(unsigned n) {
          if (n==0) co_return;
          co_yield 0;
@@ -497,7 +497,7 @@
   \frametitlecpp[20]{\texttt{awaiter} example}
   \begin{exampleblockGB}{Switch to new thread, from \cpprefLink{https://en.cppreference.com/w/cpp/language/coroutines}}{https://godbolt.org/z/K7svE4P7s}{Thread switching}
     \scriptsize
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       auto switch_to_new_thread(std::jthread& out) {
         struct awaiter {
           std::jthread* th;
@@ -531,7 +531,7 @@
       \raggedright
       \begin{block}{Output}
         \scriptsize
-        \begin{minted}[gobble=9]{text}
+        \begin{minted}{text}
           Started on thread: 140144191063872
           New thread ID: 140144191059712
           Resumed on thread: 140144191059712

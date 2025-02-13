@@ -28,7 +28,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[20]{Writing modules}
   \begin{exampleblock}{ratio.cpp}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       export module math;
       import <string>;
       namespace utils { // ns. and module names orthogonal
@@ -39,7 +39,7 @@
     \end{cppcode*}
   \end{exampleblock}
   \begin{exampleblock}{main.cpp}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       import <iostream>;
       import math;
       int main() {
@@ -66,7 +66,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[20]{Writing modules}
   \begin{exampleblock}{What to export}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       export module math;
 
       export void f();           // function
@@ -89,7 +89,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[20]{Writing modules}
   \begin{alertblock}{What not to export}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       export module math;
 
       namespace {
@@ -110,14 +110,14 @@
 \begin{frame}[fragile]
   \frametitlecpp[20]{Visibility and reachability}
   \begin{exampleblock}{ratio.cpp}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       export module math;
       struct Ratio { float num, denom; };
       export Ratio golden() { ... } // golden is visible
     \end{cppcode*}
   \end{exampleblock}
   \begin{exampleblock}{main.cpp}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       import math;
       import <iostream>;
       int main() {
@@ -136,7 +136,7 @@
   \frametitlecpp[20]{Module structure}
   \begin{exampleblock}{}
     \small
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       module;                  // global module fragment (opt.)
       #include <cassert>       //   only preprocessor
       // ...                   //   statements allowed
@@ -160,7 +160,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[20]{Module structure}
   \begin{alertblock}{Pitfall}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       export module math;
       #include <header.h>
       import <string>;
@@ -174,7 +174,7 @@
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Put includes into global module fragment}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       module;
       #include <vector>
       export module math;
@@ -190,7 +190,7 @@
     Like with header files, we can split interface and implementation:
   \end{block}
   \begin{exampleblock}{Interface}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       export module math;
 
       export struct S { ... };
@@ -198,7 +198,7 @@
     \end{cppcode*}
   \end{exampleblock}
   \begin{exampleblock}{Implementation}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       module;
       #include <cassert>
       module math;
@@ -219,7 +219,7 @@
   \begin{columns}[t]
     \begin{column}{.45\textwidth}
       \begin{exampleblock}{Module one}
-        \begin{cppcode*}{gobble=6}
+        \begin{cppcode*}{}
           export module one;
 
           export struct S { ... };
@@ -228,7 +228,7 @@
     \end{column}
     \begin{column}{.45\textwidth}
       \begin{exampleblock}{Module two}
-        \begin{cppcode*}{gobble=6}
+        \begin{cppcode*}{}
           export module two;
           import <string>;
 
@@ -241,7 +241,7 @@
   \begin{columns}[t]
     \begin{column}{.45\textwidth}
       \begin{exampleblock}{Module three}
-        \begin{cppcode*}{gobble=6}
+        \begin{cppcode*}{}
           export module three;
           import one;
           export import two;
@@ -252,7 +252,7 @@
     \end{column}
     \begin{column}{.45\textwidth}
       \begin{exampleblock}{Module four}
-        \begin{cppcode*}{gobble=6}
+        \begin{cppcode*}{}
           export module four;
           import three;
           // b and f visible
@@ -273,7 +273,7 @@
   \begin{columns}[t]
     \begin{column}{.4\textwidth}
       \begin{exampleblock}{Primary module interface}
-        \begin{cppcode*}{gobble=6}
+        \begin{cppcode*}{}
           export module math;
           export import :structs;
 
@@ -283,7 +283,7 @@
     \end{column}
     \begin{column}{.5\textwidth}
       \begin{exampleblock}{Module interface partition}
-        \begin{cppcode*}{gobble=6}
+        \begin{cppcode*}{}
 
           export module math:structs;
 
@@ -293,7 +293,7 @@
     \end{column}
   \end{columns}
   \begin{exampleblock}{Implementation}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       module math;
       import <string>;
 
@@ -309,7 +309,7 @@
     We can split a module's \emph{implementation} into multiple files:
   \end{block}
   \begin{exampleblock}{Interface}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       export module math;
       import :foo; // no export
       import :bar; // no export
@@ -324,7 +324,7 @@
   \begin{columns}[t]
     \begin{column}{.45\textwidth}
       \begin{exampleblock}{Implementation unit foo}
-        \begin{cppcode*}{gobble=6}
+        \begin{cppcode*}{}
           module math:foo;
 
           S f() { ... }
@@ -333,7 +333,7 @@
     \end{column}
     \begin{column}{.45\textwidth}
       \begin{exampleblock}{Implementation unit bar}
-        \begin{cppcode*}{gobble=6}
+        \begin{cppcode*}{}
           module math:bar;
 
           std::string b() { ... }
@@ -355,7 +355,7 @@
       \end{itemize}
       \item Use \cppinline|import std.compat;| for the entire C and C++ standard library
       \item No macros are exported. For these, you still need to include the corresponding headers.
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         import std;        // everything C++
         #include <cassert> // for assert()
         #include <climits> // for e.g. CHAR_BIT
@@ -427,26 +427,26 @@
   \begin{columns}
     \begin{column}{.35\textwidth}
       \begin{block}{h.hpp}
-        \begin{cppcode*}{gobble=6,linenos=false}
+        \begin{cppcode*}{linenos=false}
           #include <vector>
           ...
         \end{cppcode*}
       \end{block}
       \begin{block}{a.cpp}
-        \begin{cppcode*}{gobble=6,linenos=false}
+        \begin{cppcode*}{linenos=false}
           #include "h.hpp"
           ...
         \end{cppcode*}
       \end{block}
       \begin{block}{b.cpp}
-        \begin{cppcode*}{gobble=6,linenos=false}
+        \begin{cppcode*}{linenos=false}
           #include <vector>
           #include "h.hpp"
           ...
         \end{cppcode*}
       \end{block}
       \begin{block}{c.cpp}
-        \begin{cppcode*}{gobble=6,linenos=false}
+        \begin{cppcode*}{linenos=false}
           #include <vector>
           ...
         \end{cppcode*}
@@ -498,27 +498,27 @@
     \begin{column}{.35\textwidth}
       \small
       \begin{block}{h.cpp}
-        \begin{cppcode*}{gobble=6,linenos=false}
+        \begin{cppcode*}{linenos=false}
           export module foo;
           import <vector>;
           ...
         \end{cppcode*}
       \end{block}
       \begin{block}{a.cpp}
-        \begin{cppcode*}{gobble=6,linenos=false}
+        \begin{cppcode*}{linenos=false}
           import foo;
           ...
         \end{cppcode*}
       \end{block}
       \begin{block}{b.cpp}
-        \begin{cppcode*}{gobble=6,linenos=false}
+        \begin{cppcode*}{linenos=false}
           import <vector>;
           import foo;
           ...
         \end{cppcode*}
       \end{block}
       \begin{block}{c.cpp}
-        \begin{cppcode*}{gobble=6,linenos=false}
+        \begin{cppcode*}{linenos=false}
           #include <vector>
           ...
         \end{cppcode*}

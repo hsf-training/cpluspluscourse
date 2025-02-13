@@ -96,7 +96,7 @@
     \end{itemize}
   \end{block}
   \begin{exampleblock}{}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       int a{0};
       std::thread t1([&]{ std::atomic_ref<int> r{a}; r++;});
       std::thread t2([&]{ std::atomic_ref{a}++; });
@@ -106,7 +106,7 @@
     \end{cppcode*}
   \end{exampleblock}
   \begin{alertblock}{Don't mix concurrent atomic and non-atomic access}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       std::thread t3([&]{ std::atomic_ref{a}++; });
       a += 2; // data race
       t3.join();

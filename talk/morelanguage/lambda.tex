@@ -35,7 +35,7 @@
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Usage example}
-    \begin{cppcode*}{firstnumber=4,gobble=2}
+    \begin{cppcode*}{firstnumber=4}
       int data[]{1,2,3,4,5};
       auto f = [](int i) {
         std::cout << i << " squared is " << i*i << '\n';
@@ -59,7 +59,7 @@
     \begin{itemize}
     \item Only way to specify return type for lambdas
     \item Allows to simplify inner type definition
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         class Equation {
           using ResultType = double;
           ResultType evaluate();
@@ -90,7 +90,7 @@
   \end{block}
   \pause
   \begin{alertblock}{Error}
-    \begin{minted}[gobble=6]{text}
+    \begin{minted}{text}
         error: 'increment' is not captured
           [](int x) { return x+increment; });
                                      ^
@@ -132,7 +132,7 @@
   \end{exampleblock}
   \pause
   \begin{alertblock}{Error}
-    \begin{minted}[gobble=4]{text}
+    \begin{minted}{text}
       error: assignment of read-only variable 'sum'
                [sum](int x) { sum += x; });
     \end{minted}
@@ -178,7 +178,7 @@
     \begin{columns}
       \scriptsize
       \begin{column}{.25\textwidth}
-        \begin{cppcode*}{gobble=6}
+        \begin{cppcode*}{}
           int sum = 0, off = 1;
           auto l =
           [&sum, off]
@@ -194,7 +194,7 @@
         \end{cppcode*}
       \end{column}
       \begin{column}{.45\textwidth}
-        \begin{cppcode*}{gobble=6, firstnumber=13}
+        \begin{cppcode*}{firstnumber=13}
           int sum = 0, off = 1;
           struct __lambda4 {
             int& sum; int off;
@@ -249,7 +249,7 @@
     Inside a (non-static) member function, we can capture \cppinline{this}.
   \end{block}
   \begin{block}{}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       [   this](...) { use(*this); };
       [      &](...) { use(*this); };
       [&, this](...) { use(*this); };
@@ -260,7 +260,7 @@
   \end{block}
   \pause
   \begin{block}{}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       [   *this](...) { use(*this); }; // C++17
       [&, *this](...) { use(*this); }; // C++17
       [=, *this](...) { use(*this); }; // C++17
@@ -275,11 +275,11 @@
   \begin{block}{Generic lambdas (aka.\ polymorphic lambdas)}
     \begin{itemize}
       \item The type of lambda parameters may be \cppinline{auto}.
-      \begin{cppcode*}{linenos=false,gobble=4}
+      \begin{cppcode*}{linenos=false}
         auto add = [](auto a, auto b) { return a + b; };
       \end{cppcode*}
       \item The generated \cppinline{operator()} becomes a template function:
-      \begin{cppcode*}{linenos=false,gobble=4}
+      \begin{cppcode*}{linenos=false}
         template <typename T, typename U>
         auto operator()(T a, U b) const { return a + b; }
       \end{cppcode*}
@@ -287,10 +287,10 @@
     \end{itemize}
   \end{block}
   \begin{block}{Explicit template parameters (\cpp20)}
-      \begin{cppcode*}{linenos=false,gobble=4}
-        auto add = []<typename T>(T a, T b)
-          { return a + b; };
-      \end{cppcode*}
+    \begin{cppcode*}{linenos=false}
+      auto add = []<typename T>(T a, T b)
+      { return a + b; };
+    \end{cppcode*}
     \begin{itemize}
       \item The types of \cppinline{a} and \cppinline{b} must be the same.
     \end{itemize}
@@ -331,7 +331,7 @@
   \end{block}
   \begin{exampleblockGB}{Example}{https://godbolt.org/z/GoE6xM8EG}{\texttt{lambda \cpp20}}
     \small
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       struct S {
         decltype([](int i) { std::cout << i; }) f;
       } s;

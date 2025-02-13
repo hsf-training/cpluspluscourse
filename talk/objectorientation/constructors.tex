@@ -11,7 +11,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       class C {
       public:
         C();
@@ -23,7 +23,7 @@
       };
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=2,firstnumber=10}
+    \begin{cppcode*}{firstnumber=10}
       // note: special notation for
       // initialization of members
       C::C() : a(0) {}
@@ -264,7 +264,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[11]{Calling constructors}
   \begin{block}{After object declaration, arguments within \{\}}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       struct A {
         int a;
         float b;
@@ -285,7 +285,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[98]{Calling constructors the old way}
   \begin{block}{Arguments are given within (), aka \cpp98 nightmare}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       struct A {
         int a;
         float b;

@@ -60,7 +60,7 @@
       \begin{column}{.35\textwidth}
         Don't write :
         \vspace{-1mm}
-        \begin{cppcode*}{gobble=6}
+        \begin{cppcode*}{}
           namespace MyNS {
             struct A {
               T func(...);
@@ -71,7 +71,7 @@
       \begin{column}{.35\textwidth}
         Prefer :
         \vspace{-1mm}
-        \begin{cppcode*}{gobble=6,firstnumber=6}
+        \begin{cppcode*}{firstnumber=6}
           namespace MyNS {
             struct A { ... };
             T func(const A&, ..);
@@ -99,14 +99,14 @@
     \begin{columns}[t]
       \begin{column}{.35\textwidth}
         Don't write :
-        \begin{cppcode*}{gobble=6}
+        \begin{cppcode*}{}
           N::A a,b;
           std::swap(a, b);
         \end{cppcode*}
       \end{column}
       \begin{column}{.35\textwidth}
         Prefer :
-        \begin{cppcode*}{gobble=6,firstnumber=3}
+        \begin{cppcode*}{firstnumber=3}
           N::A a,b;
           using std::swap;
           swap(a, b);
@@ -121,7 +121,7 @@
     \end{itemize}
     \begin{columns}
       \begin{column}{.7\textwidth}
-        \begin{cppcode*}{gobble = 6,firstnumber=6}
+        \begin{cppcode*}{firstnumber=6}
           namespace N {
             class A { ... };
             // optimized swap for A
@@ -146,7 +146,7 @@
   \end{block}
   \begin{exampleblock}{\texttt{operator<<} as hidden friend}
     \small
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       class Complex {
         float m_real, m_imag;
       public:
@@ -175,7 +175,7 @@
     \footnotesize
     \begin{overprint}
     \onslide<1>
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       std::ostream & operator<< // out-of-class definition
         (std::ostream & os, Complex const & c) { ... }
       struct Fraction {
@@ -188,7 +188,7 @@
     \end{cppcode*}
 
     \onslide<2>
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       std::ostream & operator<< // out-of-class definition
         (std::ostream & os, Complex const & c) { ... }
       struct Fraction {

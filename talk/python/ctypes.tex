@@ -28,7 +28,7 @@
     \end{cppcode*}
   \end{block}
   \begin{exampleblock}{calling the mandel library}
-    \begin{minted}[gobble=4]{python}
+    \begin{minted}{python}
       from ctypes import *
       libmandel = CDLL('libmandelc.so')
       v = libmandel.mandel(c_float(0.3), c_float(1.2))
