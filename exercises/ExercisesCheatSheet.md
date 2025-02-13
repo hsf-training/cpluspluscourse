@@ -45,6 +45,37 @@ The idea of this exercise is to play with all kinds of possible loops and contro
 Object-orientation Exercises
 ----------------------------
 
+### Classes (directory: [`classes`](classes))
+
+This exercise is about doing a basic class, not using any operator overloading. It also paves the way for object-functions, making a first algo-like class.
+
+You may discuss with the students:
+- pros and cons of making the constructor explicit or not,
+- pros and cons of having multiply() and equal() either as member functions,
+  friend free functions or external free functions.
+- optionally, thed difference between equality and equivalence.
+
+NOTE: I did not find a justified need to add operator=...
+
+### Operator overloading (directory: [`operators`](operators))
+
+Here we take the class from the previous exercise, and we try to make
+anything an operator that makes sense.
+
+Tips and tricks:
+- When the argument of CHECK() has a comma not between parentheses, for example
+  curly braces, add an additional global level of parenthesis, or CHECK() will
+  think it has several arguments.
+
+You may discuss with the students:
+- the chaining of operator<<
+- in a set of consistent operators (such as == and !=),
+  reusing versus performance.
+- object-functions.
+- for what concerns the related operators, such as * and *=,
+  the choice to be made consitent reuse or performant
+  specialization of each operator.
+
 ### Polymorphism (directory: [`polymorphism`](polymorphism))
 
 First create a Pentagon and an Hexagon and call computePerimeter. Can be used to break the ice.
@@ -77,22 +108,6 @@ See the output and check the ids printed, 2 different ones.
 Retry with virtual inheritance.
 See and solve the compilation issue about missing Drawable constructor. Understand that it's now called directly from TextBox constructor and call it explicitly from there with a new id.
 See the new id being printed twice.
-
-
-### Operator overloading (directory: [`operators`](operators))
-
-This exercise is about making `main` run successfully by completing the implementation of `Fraction`.
-Implement a constructor for `Fraction` and add two integer data members for numerator and denominator.
-Comment out everything in `main` except the first two LOCs.
-This should compile now and print nothing.
-
-Then uncomment the `std::cout` statements and implement `operator<<` for `Fraction`.
-Compile and run.
-
-Proceed this way through the entire exercise.
-There are multiple possibilities to implement some operators, e.g. as members, as hidden friends, or as free functions.
-Also when and where to normalize a fraction is up to the students.
-All solutions are fine, as long as the `main` function runs successfully.
 
 
 Modern C++ Exercises
