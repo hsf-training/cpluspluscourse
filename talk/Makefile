@@ -1,7 +1,7 @@
 all: C++Course.pdf
 
 LATEXMK=latexmk
-OPTIONS=-pdf -shell-escape -halt-on-error
+OPTIONS=-pdf -xelatex -shell-escape -halt-on-error
 
 essentials: all
 essentials: OPTIONS+=-usepretex='\def\makebasic{}'
