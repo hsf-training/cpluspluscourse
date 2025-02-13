@@ -27,7 +27,7 @@ public:
   friend auto operator<=>( Fraction const & lhs, Fraction const & rhs ) {
     return ((lhs.m_num*rhs.m_denom)<=>(rhs.m_num*lhs.m_denom));
   }
-  
+
   Fraction & operator*=(Fraction const & other) {
     m_num *= other.m_num;
     m_denom *= other.m_denom;
@@ -37,7 +37,7 @@ public:
   friend Fraction operator*( Fraction lhs, Fraction const & rhs ) {
     return lhs*=rhs;
   }
-  
+
   Fraction normalized() const {
     const int gcd = std::gcd(m_num, m_denom);
     return {m_num/gcd, m_denom/gcd};
@@ -62,15 +62,15 @@ public:
   void operator()(std::string const & what, bool passed) {
     std::cout << std::left << std::setw(m_width) << what << ": " << (passed ? "PASS" : "** FAIL **") << '\n';
   }
-  
-private: 
+
+private:
 
   unsigned int m_width;
 
 };
 
 #define CHECK(printer,what) printer(#what, what)
-    
+
 int main() {
 
   // create a fraction with values 3 (which is 3/1) and 1/3
@@ -78,7 +78,7 @@ int main() {
   const Fraction three{3};
   const Fraction third{1,3};
   std::cout<<three<<' '<<third<<'\n';
-  
+
   // equality
   std::cout<<std::endl;
   TestResultPrinter p1{36};

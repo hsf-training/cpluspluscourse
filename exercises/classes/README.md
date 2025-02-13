@@ -30,4 +30,3 @@ OPTIONAL STEP 4
 - Transform the private normalize() into a public const normalized() method
   which return the normalized fraction.
 - Add some tests to check normalized().
-

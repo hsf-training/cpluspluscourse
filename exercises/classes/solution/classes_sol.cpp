@@ -18,15 +18,15 @@ public:
   friend bool equal( Fraction const & lhs, Fraction const & rhs ) {
     return (lhs.m_num==rhs.m_num) && (lhs.m_denom==rhs.m_denom);
   }
-  
+
   friend bool equivalent( Fraction const & lhs, Fraction const & rhs ) {
     return (lhs.m_num*rhs.m_denom==rhs.m_num*lhs.m_denom);
   }
-  
+
   friend Fraction multiply( Fraction const & lhs, Fraction const & rhs ) {
     return {lhs.m_num*rhs.m_num, lhs.m_denom*rhs.m_denom};
   }
-  
+
   Fraction normalized() const {
     const int gcd = std::gcd(m_num, m_denom);
     return {m_num/gcd, m_denom/gcd};
@@ -46,8 +46,8 @@ public:
   void process(std::string const & what, bool passed) {
     std::cout << std::left << std::setw(m_width) << what << ": " << (passed ? "PASS" : "** FAIL **") << '\n';
   }
-  
-private: 
+
+private:
 
   unsigned int m_width;
 
@@ -62,7 +62,7 @@ int main() {
   const Fraction three{3};
   const Fraction third{1, 3};
   std::cout<<three.str()<<' '<<third.str()<<'\n';
-  
+
   // equality
   std::cout<<std::endl;
   TestResultPrinter p1{27};
