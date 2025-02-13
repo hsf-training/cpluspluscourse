@@ -73,7 +73,7 @@ You may discuss with the students:
   reusing versus performance.
 - object-functions.
 - for what concerns the related operators, such as * and *=,
-  the choice to be made consitent reuse or performant
+  the choice to be made consistent reuse or performant
   specialization of each operator.
 
 ### Polymorphism (directory: [`polymorphism`](polymorphism))

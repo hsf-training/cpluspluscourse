@@ -17,10 +17,10 @@ OPTIONAL STEP 3
 - Review operator*() so to reuse operator*=().
 - Ensure calls to operator*=() can be chained, the same as operator<<().
 
-## Take aways
+## Take away
 
 - Do not confuse equality and equivalence.
-- We can very often implement an arithemtic operator@ in terms of operator@=.
+- We can very often implement an arithmetic operator@ in terms of operator@=.
 - When implementing <=>, you get <, >, <=, >= for free.
 - Object-functions are very used with standard algorithms,
   yet tend to be often replaced by lambdas in modern C++.
