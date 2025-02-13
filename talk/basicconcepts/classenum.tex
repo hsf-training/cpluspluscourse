@@ -6,7 +6,7 @@
     \center ``members'' grouped together under one name
   \end{mdframed}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       struct Individual {
         unsigned char age;
         float weight;
@@ -21,7 +21,7 @@
       };
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=2,firstnumber=14}
+    \begin{cppcode*}{firstnumber=14}
       Individual *ptr = &student;
       ptr->age = 25;
       // same as: (*ptr).age = 25;
@@ -56,7 +56,7 @@
     \center ``members'' packed together at same memory location
   \end{mdframed}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       union Duration {
         int seconds;
         short hours;
@@ -104,7 +104,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       enum VehicleType {
 
         BIKE,  // 0
@@ -114,7 +114,7 @@
       VehicleType t = CAR;
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=2,firstnumber=8}
+    \begin{cppcode*}{firstnumber=8}
       enum VehicleType
         : int { // C++11
         BIKE = 3,
@@ -158,7 +158,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[98]{More sensible example}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       enum class ShapeType {
         Circle,
         Rectangle
@@ -171,7 +171,7 @@
     \end{cppcode*}
     \columnbreak
     \pause
-    \begin{cppcode*}{gobble=2,firstnumber=10}
+    \begin{cppcode*}{firstnumber=10}
       struct Shape {
         ShapeType type;
         union {
@@ -183,7 +183,7 @@
   \end{multicols}
   \pause
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2,firstnumber=17}
+    \begin{cppcode*}{firstnumber=17}
       Shape s;
       s.type =
         ShapeType::Circle;
@@ -191,7 +191,7 @@
 
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=2,firstnumber=20}
+    \begin{cppcode*}{firstnumber=20}
       Shape t;
       t.type =
         Shapetype::Rectangle;
@@ -205,14 +205,14 @@
   \frametitle{typedef and using \hfill \cpp98 / \cpp11}
   Used to create type aliases
   \begin{alertblock}{\cpp98}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       typedef std::uint64_t myint;
       myint count = 17;
       typedef float position[3];
     \end{cppcode*}
   \end{alertblock}
   \begin{exampleblock}{\cpp11}
-    \begin{cppcode*}{gobble=2,firstnumber=4}
+    \begin{cppcode*}{firstnumber=4}
       using myint = std::uint64_t;
       myint count = 17;
       using position = float[3];

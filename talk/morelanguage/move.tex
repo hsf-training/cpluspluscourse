@@ -47,7 +47,7 @@
   \begin{exampleblock}{Another potentially inefficient code}
     \begin{overprint}
       \onslide<1-2>
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         T consumeVector(std::vector<int> input) {
           // ... change elements, compute result
           return result;
@@ -57,7 +57,7 @@
         consumeVector(values); // being copied now
       \end{cppcode*}
       \onslide<3-4>
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         T consumeVector(std::vector<int> const & input) {
           std::vector tmp{input};
           // ... change elements, compute result
@@ -67,7 +67,7 @@
         consumeVector(values); // maybe copied internally?
       \end{cppcode*}
       \onslide<5->
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         T consumeVector(std::vector<int> & input) {
           // ... change elements, compute result
           return result;
@@ -223,7 +223,7 @@
   \frametitlecpp[11]{Move semantics: recommended implementation}
   \begin{exampleblock}{Practically}
     \small
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       class Movable {
         Movable();
         Movable(const Movable &other);
@@ -248,7 +248,7 @@
   \frametitlecpp[11]{Move semantics: alternative implementation}
   \begin{exampleblock}{Practically}
     \small
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       class Movable {
         Movable();
         Movable(const Movable &other);

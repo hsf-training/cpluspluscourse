@@ -24,7 +24,7 @@
   \frametitlecpp[98]{Type casting example}
   \small
   \begin{exampleblockGB}{Practically}{https://godbolt.org/z/16faqc64s}{\texttt{casting}}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       struct A{ virtual ~A()=default; } a;
       struct B : A {} b;
 
@@ -67,7 +67,7 @@
   \end{block}
   \begin{alertblock}{Casts to avoid}
     \scriptsize
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       void func(A const & a) {
         A& ra = a;                 // Error: not const
         A& ra = const_cast<A&>(a); // Compiles. Bad design!

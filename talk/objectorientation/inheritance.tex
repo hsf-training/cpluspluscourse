@@ -3,7 +3,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[98]{First inheritance}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       struct MyFirstClass {
         int a;
         void squareA() { a *= a; }
@@ -61,7 +61,7 @@
     \end{itemize}
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       class MyFirstClass {
       public:
         void setA(int x);
@@ -72,7 +72,7 @@
       };
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=2,firstnumber=9}
+    \begin{cppcode*}{firstnumber=9}
       MyFirstClass obj;
       obj.a = 5;   // error !
       obj.setA(5); // ok
@@ -92,7 +92,7 @@
     Gives access to classes inheriting from base class
   \end{block}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       class MyFirstClass {
       public:
         void setA(int a);
@@ -103,7 +103,7 @@
       };
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=2,firstnumber=13}
+    \begin{cppcode*}{firstnumber=13}
       class MySecondClass :
         public MyFirstClass {
       public:
@@ -164,7 +164,7 @@
       \draw[very thick,-Triangle] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
     \end{tikzpicture}
     \columnbreak
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       void funcSecond() {
         int a = priv;   // Error
         int b = prot;   // OK
@@ -206,7 +206,7 @@
       \draw[very thick,-Triangle] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
     \end{tikzpicture}
     \columnbreak
-    \begin{cppcode*}{gobble=2,highlightlines=14}
+    \begin{cppcode*}{highlightlines=14}
       void funcSecond() {
         int a = priv;   // Error
         int b = prot;   // OK
@@ -248,7 +248,7 @@
       \draw[very thick,-Triangle] (MyThirdClass)--(MySecondClass) node[midway,right] {public};
     \end{tikzpicture}
     \columnbreak
-    \begin{cppcode*}{gobble=2,highlightlines=8-9}
+    \begin{cppcode*}{highlightlines=8-9}
       void funcSecond() {
         int a = priv;   // Error
         int b = prot;   // OK

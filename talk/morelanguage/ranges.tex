@@ -32,7 +32,7 @@
   \end{block}
   \begin{exampleblockGB}{Example}{https://godbolt.org/z/d1vTv4TMa}{Views}
     { \small
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         auto const numbers = std::views::iota(0, 6);
         auto even = [](int i) { return 0 == i % 2; };
         auto square = [](int i) { return i * i; };
@@ -72,7 +72,7 @@
     \end{itemize}
   \end{block}
   \begin{exampleblockGB}{Example}{https://godbolt.org/z/bWe6W69oE}{Lazy view}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       // print first 20 prime numbers above 1000000
       for (int i: std::views::iota(1000000)
                   | std::views::filter(odd)

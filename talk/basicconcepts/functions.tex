@@ -3,7 +3,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[98]{Functions}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       // with return type
       int square(int a) {
         return a * a;
@@ -16,7 +16,7 @@
       }
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=2,firstnumber=11}
+    \begin{cppcode*}{firstnumber=11}
       // no return
       void log(char* msg) {
         std::cout << msg;
@@ -43,7 +43,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[98]{Function default arguments}
   \begin{multicols}{2}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       // must be the trailing
       // argument
       int add(int a,
@@ -55,7 +55,7 @@
 
     \end{cppcode*}
     \columnbreak
-    \begin{cppcode*}{gobble=2,firstnumber=11}
+    \begin{cppcode*}{firstnumber=11}
       // multiple default
       // arguments are possible
       int add(int a = 2,
@@ -361,7 +361,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
         \end{itemize}
     \end{block}
     \begin{exampleblock}{}
-        \begin{cppcode*}{gobble=6}
+        \begin{cppcode*}{}
             int sum(int b);             // 1
             int sum(int b, int c);      // 2, ok, overload
             // float sum(int b, int c); // disallowed
@@ -399,7 +399,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
       \end{itemize}
     \end{goodpractice}
     \begin{exampleblock}{Example: Good}
-      \begin{cppcode*}{gobble=2}
+      \begin{cppcode*}{}
         /// Count number of dilepton events in data.
         /// \param d Dataset to search.
         unsigned int countDileptons(Data &d) {
@@ -413,7 +413,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
   \begin{onlyenv}<2->
     \begin{alertblock}{Example: don't! Everything in one long function}
       \begin{multicols}{2}
-        \begin{cppcode*}{gobble=6}
+        \begin{cppcode*}{}
           unsigned int runJob() {
             // Step 1: data
             Data data;
@@ -430,7 +430,7 @@ void fWrite(T &value);     fWrite(a); // non-const ref
             for (....) {
         \end{cppcode*}
         \columnbreak
-        \begin{cppcode*}{gobble=6,firstnumber=last}
+        \begin{cppcode*}{firstnumber=last}
               if (...) {
                 data.erase(...);
               }

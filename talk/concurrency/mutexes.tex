@@ -126,7 +126,7 @@
     \end{itemize}
   \end{goodpractice}
   \begin{exampleblock}{}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       void function(...) {
         // uncritical work ...
         {
@@ -210,7 +210,7 @@
     \end{itemize}
   \end{block}
   \begin{exampleblock}{}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       Data data; std::shared_mutex mutex;
       auto reader = [&](){
         std::shared_lock lock{mutex};
@@ -236,7 +236,7 @@
     \end{itemize}
   \end{block}
   \begin{exampleblock}{}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       void worker(const int id, std::ostream & os);
       void func() {
         std::osyncstream synccout1{std::cout};

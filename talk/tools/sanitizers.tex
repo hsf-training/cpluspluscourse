@@ -39,12 +39,12 @@
     \begin{overprint}
       \onslide<1>
       \vfill
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         int i = *address;
       \end{cppcode*}
       \onslide<2->
       \vfill
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         if (IsPoisoned(address)) {
           ReportError(address, kAccessSize, kIsWrite);
         }
@@ -67,7 +67,7 @@
     \begin{multicols}{2}
       \begin{overprint}
         \onslide<1>
-        \begin{cppcode*}{gobble=4}
+        \begin{cppcode*}{}
           void foo() {
             char a[8];
             char b[8];

@@ -84,7 +84,7 @@
   \frametitlecpp[98]{RAII in practice}
   \begin{exampleblock}{An RAII File class}
     \small
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       class File {
       public:
         // constructor: acquire resource
@@ -337,7 +337,7 @@ of 'std::unique_ptr<Foo>'
   \frametitlecpp[11]{Quiz: \texttt{std::shared\_ptr} in use}
   \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org/z/vM35Y6qEW}{\texttt{shared\_ptr} quiz}
     \small
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       auto shared = std::make_shared<int>(100);
       auto print = [shared](){
         std::cout << "Use: " << shared.use_count() << " "
@@ -355,7 +355,7 @@ of 'std::unique_ptr<Foo>'
   \pause
   \begin{block}{}
     \small
-    \begin{minted}[autogobble=true]{bash}
+    \begin{minted}{bash}
       Use: 2 value: 100
       Use: 3 value: 101
       Use: 2 value: 101
@@ -385,7 +385,7 @@ print();
   \end{exampleblock}
   \begin{block}{}
     \small
-    \begin{minted}[autogobble=true]{bash}
+    \begin{minted}{bash}
       Use: 1 value: 100
       Use: 2 value: 101
       Use: 1 value: 101
@@ -399,7 +399,7 @@ print();
   \frametitlecpp[11]{Quiz: \texttt{shared\_ptr} and \texttt{weak\_ptr} in use}
   \begin{exampleblockGB}{What is the output of this code?}{https://godbolt.org}{\texttt{shared/weak\_ptr}}
     \small
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       auto shared = std::make_shared<int>(100);
       std::weak_ptr<int> weak{ shared };
       print(); // with print as before
@@ -415,7 +415,7 @@ print();
   \pause
   \begin{block}{}
     \small
-    \begin{minted}[autogobble=true]{bash}
+    \begin{minted}{bash}
       Use: 1 value: 100
       Use: 2 value: 101
       Use: 1 value: 101
@@ -457,7 +457,7 @@ print();
     \item compile and run the program. It doesn't generate any output.
     \item Run with valgrind if possible to check for leaks
       { \scriptsize
-      \begin{minted}[gobble=6]{shell-session}
+      \begin{minted}{shell-session}
         $ valgrind --leak-check=full --track-origins=yes ./smartPointers
       \end{minted}
       }

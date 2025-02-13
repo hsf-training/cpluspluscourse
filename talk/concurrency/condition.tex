@@ -81,7 +81,7 @@
   \end{overprint}
 
   \begin{alertblock}{Na\"ive waiting}
-    \begin{cppcode*}{gobble=2,highlightlines=3}
+    \begin{cppcode*}{highlightlines=3}
       auto processData = [&](){
         std::unique_lock<std::mutex> lock{mutex};
         cond.wait(lock, [&](){ return data.isReady(); });
@@ -101,7 +101,7 @@
   \end{block}
 
   \begin{exampleblock}{Correct waiting}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       auto processData = [&](){
         {
           std::unique_lock<std::mutex> lock{mutex};

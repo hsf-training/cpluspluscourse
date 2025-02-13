@@ -43,7 +43,7 @@
   \begin{lrbox}{\codepiece}
     \begin{minipage}{.35\linewidth}
       \small
-      \begin{cppcode*}{gobble=4}
+      \begin{cppcode*}{}
         template<typename T>
         T func(T a) {
           return a;
@@ -55,7 +55,7 @@
   \begin{lrbox}{\codepiecea}
     \begin{minipage}{.4\linewidth}
       \small
-      \begin{cppcode*}{gobble=4,linenos=false}
+      \begin{cppcode*}{linenos=false}
         int func(int a) {
           return a;
         }
@@ -66,7 +66,7 @@
   \begin{lrbox}{\codepieceb}
     \begin{minipage}{.4\linewidth}
       \small
-      \begin{cppcode*}{gobble=4,linenos=false}
+      \begin{cppcode*}{linenos=false}
         double func(double a) {
           return a;
         }
@@ -159,7 +159,7 @@
     \frametitlecpp[98]{Nested templates}
     \begin{exampleblockGB}{Nested templates}{https://godbolt.org/z/a9nPnK9jx}{Nested templates}
         \small
-        \begin{cppcode*}{gobble=8}
+        \begin{cppcode*}{}
             template<typename KeyType=int, typename ValueType=KeyType>
             struct Map {
               template<typename OtherValueType>
@@ -282,7 +282,7 @@
     \onslide<1>
     \begin{alertblock}{}
       \footnotesize
-      \begin{cppcode*}{gobble=2}
+      \begin{cppcode*}{}
         template <typename C>
         void f(typename C::value_type v) { ... }
         f(std::vector<int>{...}); // cannot deduce C
@@ -300,7 +300,7 @@
     \onslide<2>
     \begin{alertblock}{}
       \footnotesize
-      \begin{cppcode*}{gobble=2}
+      \begin{cppcode*}{}
         template <typename C, typename F>
         void reduce(const C& cont, const F& f = std::plus{});
         reduce(std::vector<int>{...}); // error: cannot deduce F
@@ -451,14 +451,14 @@
   \end{cppcode}
   \begin{overprint}[\columnwidth]
     \onslide<1>
-    \begin{cppcode*}{gobble=2,firstnumber=6}
+    \begin{cppcode*}{firstnumber=6}
 
 
 
       Pair p{42, "hello"}; // Pair<int, const char*>
     \end{cppcode*}
     \onslide<2>
-    \begin{cppcode*}{gobble=2,firstnumber=6}
+    \begin{cppcode*}{firstnumber=6}
       template<typename A>
       Pair(A, const char*) -> Pair<A, std::string>;
 
@@ -470,7 +470,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[17]{Class Template Argument Deduction (CTAD)}
   \begin{block}{Standard library examples}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       std::pair p{1.2, true}; // std::pair<double, bool>
       std::tuple t{1.2, true, 32};
                         // std::tuple<double, bool, int>

@@ -50,11 +50,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage{newunicodechar}
 \usepackage{minted}
-\newminted{tex}{linenos}
-\newminted{cpp}{gobble=4,linenos}
-\newminted{shell-session}{gobble=4}
-\newminted[makefile]{shell-session}{gobble=4}
-\newminted{python}{linenos=true,gobble=4}
+\newminted{tex}{linenos,gobble=4}
+\newminted{cpp}{autogobble,linenos}
+\newminted{shell-session}{autogobble}
+\newminted[makefile]{shell-session}{autogobble}
+\newminted{python}{linenos=true,autogobble}
 \newmintinline[cppinline]{cpp}{}
 
 \usepackage{fancyvrb}

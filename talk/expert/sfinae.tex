@@ -159,7 +159,7 @@
     \end{itemize}
   \end{block}
   \begin{block}{Implementation in header type\_traits}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       template <typename...>
       using void_t = void;
     \end{cppcode*}
@@ -284,7 +284,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[14]{Back to variadic class templates}
   \begin{block}{The tuple get function}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       template <size_t I, typename... Ts>
       std::enable_if_t<I == 0,
         typename tuple_element<0, tuple<Ts...>>::type&>
@@ -304,7 +304,7 @@
 \begin{frame}[fragile]
   \frametitlecpp[17]{with if constexpr and return type deduction}
   \begin{block}{The tuple get function}
-    \begin{cppcode*}{gobble=2}
+    \begin{cppcode*}{}
       template <size_t I, typename T, typename... Ts>
       auto& get(tuple<T, Ts...>& t) {
         if constexpr(I == 0)

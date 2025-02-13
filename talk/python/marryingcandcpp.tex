@@ -25,7 +25,7 @@
     \end{cppcode*}
   \end{exampleblock}
   \begin{block}{Binary symbols : file.o}
-    \begin{minted}[gobble=4]{shell}
+    \begin{minted}{shell}
       # nm file.o
       000000000000001a T square
       0000000000000000 T sum
@@ -44,7 +44,7 @@
     \end{cppcode*}
   \end{exampleblock}
   \begin{block}{Binary symbols : file.o}
-    \begin{minted}[gobble=4]{shell}
+    \begin{minted}{shell}
       # nm file.o
       0000000000000000 T _Z3sumff
       000000000000002a T _Z6squaref
@@ -57,7 +57,7 @@
   \frametitle{Forcing C mangling in \cpp}
   \begin{block}{extern ``C''}
     These functions will use C mangling :
-    \begin{cppcode*}{gobble=1}
+    \begin{cppcode*}{}
       extern "C" {
         float sum(float a, float b);
         int square(int a);
