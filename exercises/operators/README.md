@@ -7,7 +7,7 @@ STEP 1
 - Add operator!=(), reusing operator==(), and upgrade tests.
 - Replace compare() with operator<=>(), reusing <=> between doubles,
   and upgrade tests.
-- Replace multiply() with operator*(), and upgrade tests. 
+- Replace multiply() with operator*(), and upgrade tests.
 
 STEP 2
 - Replace TestResultPrinter::process() with operator()(), and upgrade CHECK().
@@ -24,4 +24,3 @@ OPTIONAL STEP 3
 - When implementing <=>, you get <, >, <=, >= for free.
 - Object-functions are very used with standard algorithms,
   yet tend to be often replaced by lambdas in modern C++.
-
