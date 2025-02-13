@@ -61,8 +61,7 @@ jobs:
             GENERATOR: -G "Unix Makefiles"
             env:
               CXX: g++-11
-          # We temporarily need to hardcode macos-12, because "-latest" resolves to 11
-          - OS: "macos-12"
+          - OS: "macos-latest"
             GENERATOR: -G "Xcode"
           - OS: "windows-latest"
             GENERATOR:
