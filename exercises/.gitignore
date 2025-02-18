@@ -1,0 +1,11 @@
+# generic files and directories
+build
+*.a
+*.o
+*.so
+
+# tools
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+callgrind.out.*

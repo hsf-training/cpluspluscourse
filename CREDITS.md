@@ -1,7 +1,7 @@
 Credits
 =======
 
-  - Adaptations for CERN sessions (2020, 2021)
+  - Adaptations for CERN sessions (2020, 2025)
     * [Sebastien Ponce](https://github.com/sponce) [CERN](http://cern.ch)/[LHCb](http://lhcb.cern.ch)
     * [David Chamont](https://gitlab.cern.ch/chamont) [IN2P3](https://informatique.in2p3.fr)
     * [Attila Krasznahorkay](https://gitlab.cern.ch/akraszna) [CERN](http://cern.ch)/[Atlas](https://atlas.cern/)
