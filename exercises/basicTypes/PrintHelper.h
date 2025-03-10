@@ -22,7 +22,7 @@ void printWithTypeInfo(std::string expression, auto const & t, bool useBitset = 
 
   std::cout << std::left << std::setw(30) << expression << " type=" << std::setw(20) << realname << "value=";
   if (useBitset) {
-    std::cout << std::bitset<16>(t) << "\n";
+    std::cout << "0b" << std::bitset<16>(t) << "\n";
   } else {
     std::cout << std::setprecision(25) << t << "\n";
   }
