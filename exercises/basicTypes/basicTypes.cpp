@@ -45,7 +45,7 @@ int main() {
   bool condition1 = false;
   bool condition2 = true;
   print( alwaysTrue && condition1 && condition2 );
-  print( alwaysTrue || condition1 && condition2 );  // Q: Why does operator precedence render this expression useless?
+  print( alwaysTrue || condition1 && condition2 );  // Q: Are this and the following expressions useful?
   print( alwaysTrue && condition1 || condition2 );
   print(condition1 != condition1);                  // Q: What is the difference between this and the following expression?
   print(condition2 = !condition2);
