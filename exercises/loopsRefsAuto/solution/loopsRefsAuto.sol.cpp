@@ -17,7 +17,8 @@ int main() {
    DontCopyMe collection[10];
 
    // Task 1:
-   // Write a for loop that initialises each struct's resultA and resultB with ascending integers.
+   // Write a for loop that initialises resultA and resultB for each element in the above array
+   // with sensible numbers.
    // Verify the output of the program before and after you do this.
 
    for  ( int i = 0 ; i<10 ; ++i ) {
