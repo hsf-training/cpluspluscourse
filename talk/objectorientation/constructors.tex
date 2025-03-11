@@ -106,6 +106,27 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[98]{Class Constructors and Destructors}
+  \begin{overprint}
+    \onslide<1>
+  \begin{cppcode}
+    class Vector {
+    public:
+      Vector(int n);
+      Vector(const Vector &other);
+      ~Vector();
+    private:
+      int len; int* data;
+    };
+    Vector::Vector(int n) : len(n) {
+      data = new int[n];
+    }
+
+
+
+
+    Vector::~Vector() { delete[] data; }
+  \end{cppcode}
+    \onslide<2>
   \begin{cppcode}
     class Vector {
     public:
@@ -124,6 +145,8 @@
     }
     Vector::~Vector() { delete[] data; }
   \end{cppcode}
+
+  \end{overprint}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -266,8 +289,8 @@
   \begin{block}{After object declaration, arguments within \{\}}
     \begin{cppcode*}{}
       struct A {
-        int a;
-        float b;
+        int i;
+        float f;
         A();
         A(int);
         A(int, int);
@@ -287,8 +310,8 @@
   \begin{block}{Arguments are given within (), aka \cpp98 nightmare}
     \begin{cppcode*}{}
       struct A {
-        int a;
-        float b;
+        int i;
+        float f;
         A();
         A(int);
         A(int, int);
