@@ -226,7 +226,7 @@
     \begin{cppcode}
       struct Delegate {
         int m_i;
-        Delegate(int i) : m_i(i) {
+        explicit Delegate(int i) : m_i(i) {
           ... complex initialization ...
         }
         Delegate() : Delegate(42) {}
@@ -247,7 +247,7 @@
   \begin{exampleblock}{Practically}
     \begin{cppcode}
       struct Base {
-        Base(int a);           // ctor 1
+        explicit Base(int a);  // ctor 1
       };
       struct Derived : Base {
         using Base::Base;
@@ -270,9 +270,9 @@
   \begin{exampleblock}{Practically}
     \begin{cppcode}
       struct Base {
-        int a{5}; // also possible: int a = 5;
-        Base() = default;
-        Base(int _a) : a(_a) {}
+        int a{5}; // or: int a = 5;
+                 Base() = default;
+        explicit Base(int _a) : a(_a) {}
       };
       struct Derived : Base {
         int b{6};
