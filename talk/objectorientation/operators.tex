@@ -7,8 +7,8 @@
       float m_real, m_imaginary;
       Complex(float real, float imaginary);
       Complex operator+(const Complex& other) {
-        return Complex(m_real + other.m_real,
-                       m_imaginary + other.m_imaginary);
+        return Complex{m_real + other.m_real,
+                       m_imaginary + other.m_imaginary};
       }
     };
 
@@ -57,7 +57,7 @@
       struct Complex {
         float m_real, m_imaginary;
         Complex operator+(float other) {
-          return Complex(m_real + other, m_imaginary);
+          return Complex{m_real + other, m_imaginary};
         }
       };
       Complex c1{2.f, 3.f};
@@ -67,7 +67,7 @@
     \pause
     \begin{cppcode*}{firstnumber=10}
       Complex operator+(float a, const Complex& obj) {
-        return Complex(a + obj.m_real, obj.m_imaginary);
+        return Complex{a + obj.m_real, obj.m_imaginary};
       }
     \end{cppcode*}
   \end{block}
@@ -102,7 +102,7 @@
       \item They gain access to all private/protected members
       \item Useful for operators such as \cppinline{a + b}
       \item Don't abuse friends to go around a wrongly designed interface
-      \item Avoid unexpected modifications of class state in a friend
+      \item Avoid unexpected modifications of class state in a friend!
     \end{itemize}
   \end{block}
   \begin{exampleblock}{\texttt{operator+} as a friend}
