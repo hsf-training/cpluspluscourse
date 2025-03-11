@@ -2,3 +2,7 @@
 package-lock.json
 package.json
 node_modules/**
+
+# Temporary latex files:
+talk/C++Course.*
+talk/_minted
