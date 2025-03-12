@@ -95,6 +95,28 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[98]{Chaining operators}
+  \begin{block}{In general, return a reference to the left value}
+    \begin{cppcode}
+      struct Complex {
+        float m_real, m_imaginary;
+        Complex& operator=( const Complex& other ) {
+          m_real = other.m_real;
+          m_imaginary = other.m_imaginary;
+          return *this;
+        }
+      };
+      Complex c1{2.f, 3.f};
+      Complex c2, c3;
+      // right to left associativity
+      c3 = c2 = c1;
+      // left to right associativity
+      std::cout << c1 << c2 << c3 << std::endl;
+    \end{cppcode}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[98]{Friend declarations}
   \begin{block}{Concept}
     \begin{itemize}
