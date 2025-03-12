@@ -181,7 +181,7 @@
       find_package(ZLIB REQUIRED) # for external libs
 
       add_executable(hello main.cpp util.h util.cpp)
-      target_compile_features(hello PUBLIC cxx_std_17)
+      set(CMAKE_CXX_STANDARD 20)
       target_link_libraries(hello PUBLIC ZLIB::ZLIB)
     \end{minted}
   \end{block}
