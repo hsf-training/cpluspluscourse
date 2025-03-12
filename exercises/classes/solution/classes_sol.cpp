@@ -53,6 +53,10 @@ private:
 
 };
 
+// This is using the cpp, the C preprocessor to expand a bit of code
+// (the what argument) to a pair containing a string representation
+// of it and the code itself. That way, print is given a string and a
+// value where the string is the code that lead to the value
 #define CHECK(printer,what) printer.process(#what, what)
 
 int main() {
