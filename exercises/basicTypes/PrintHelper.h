@@ -5,6 +5,12 @@
 #include <iomanip>
 #include <string>
 
+/*
+ * NOTE: You don't need to understand the print helpers here.
+ * Their purpose is to show each expression, the type it evaluates to, and the value it evaluates to.
+ * Please go back to the main file now. :-)
+ */
+
 #ifdef _MSC_VER
 std::string demangle(std::string_view input) { return std::string{input}; }
 #else
