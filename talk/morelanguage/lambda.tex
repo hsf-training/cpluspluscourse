@@ -170,6 +170,36 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[11]{Capture by value vs.\ by reference}
+  \begin{exampleblock}{See the difference between val and ref}
+    \begin{cppcode*}{}
+      int data[]{1,9,3,8,3,7,4,6,5};
+      int increment = 3;
+      auto val = [ inc](int x) { return x+inc; };
+      auto ref = [&inc](int x) { return x+inc; };
+
+      increment = 4;
+
+      for(int& i : data) i = val(i); // increments by 3
+      for(int& i : data) i = ref(i); // increments by 4
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[14]{Init capture}
+  \begin{exampleblock}{Capture with an initializer}
+    In \cpp14, can declare captures with initializers
+    \begin{cppcode*}{}
+      auto f = [inc = 1+2](int x) { return x+inc; };
+      auto g = [inc = getInc()](int x) { return x+inc; };
+      for(int& i : data) i = f(i); // increments by 3
+      for(int& i : data) i = g(i); // unknown increment
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[11]{Anatomy of a lambda}
   \begin{block}{Lambdas are pure syntactic sugar - \cppinsightLink{https://cppinsights.io/s/67800da8}}
     \begin{itemize}
