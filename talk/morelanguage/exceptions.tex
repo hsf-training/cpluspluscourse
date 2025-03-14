@@ -319,7 +319,7 @@
       \end{cppcode*}
       \begin{itemize}
         \item either no exceptions is thrown or they are handled internally
-        \item checked at compile time
+        \item if one is thrown, `std::terminate` is called
         \item allows the compiler to optimize around that knowledge
       \end{itemize}
       \item a function with \cppinline{noexcept(expression)} is only \cppinline{noexcept} when \cppinline{expression} evaluates to \cppinline{true} at compile-time
