@@ -133,6 +133,7 @@
         m["hello"] = 1;  // inserts new key, def. constr. value
         m["hello"] = 2;  // finds existing key
         auto [it, isNewKey] = m.insert({"hello", 0}); // no effect
+        //   ^ C++17: "Structured binding"
         int val = m["world"];    // inserts new key (val == 0)
         int val = m.at("monde"); // throws std::out_of_range
 
