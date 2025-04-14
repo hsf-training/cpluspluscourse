@@ -2,13 +2,12 @@
 #include <iostream>
 
 int main() {
-    // create a TextBox and call draw
-
-
-    // Fix the code to call both draws by using types
-
-
-    // try with virtual inheritance
+    
+    TextBox tb("my text", 10, 5);
+    Rectangle &r = tb;
+    r.draw();
+    Text &t = tb;
+    t.draw();
 
 
 }

@@ -5,6 +5,68 @@
 class Fraction {
  public:
   // TODO: constructors and operators
+  
+  // Створюємо дріб
+  Fraction(int num) : m_num(num), m_denom(1) {}
+
+  Fraction(unsigned int num, unsigned int denom)
+      : m_num(num), m_denom(denom) {
+    normalize();
+  }
+
+  // Оператор виводу
+  friend std::ostream& operator<<(std::ostream& os, const Fraction& f) {
+    os << f.m_num << '/' << f.m_denom;
+    return os;
+  }
+
+  //перевірка через оператори
+  friend bool operator==(const Fraction& a, const Fraction& b) {
+    return a.m_num == b.m_num && a.m_denom == b.m_denom;
+  }
+  
+  friend bool operator!=(const Fraction& a, const Fraction& b) {
+    return !(a == b);  // використовуємо вже реалізований ==
+  }
+  
+  //Оператори множення
+  Fraction& operator*=(const Fraction& other) {
+    m_num *= other.m_num;
+    m_denom *= other.m_denom;
+    normalize();
+    return *this;
+  }
+  
+  friend Fraction operator*(Fraction a, const Fraction& b) {
+    a *= b;  // використовуємо оператор *=
+    return a;
+  }
+
+  friend Fraction operator*(Fraction f, int x) {
+    return f * Fraction(x);
+  }
+  
+  friend Fraction operator*(int x, Fraction f) {
+    return f * x;  // симетрія
+  }
+
+  //Оператори порівняння
+  friend bool operator<(const Fraction& a, const Fraction& b) {
+    return a.m_num * b.m_denom < b.m_num * a.m_denom;
+  }
+
+  friend bool operator>(const Fraction& a, const Fraction& b) {
+    return b < a;
+  }
+  
+  friend bool operator<=(const Fraction& a, const Fraction& b) {
+    return !(b < a);
+  }
+  
+  friend bool operator>=(const Fraction& a, const Fraction& b) {
+    return !(a < b);
+  }
+  
 
  private:
   void normalize() {
