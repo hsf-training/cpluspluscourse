@@ -135,6 +135,66 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[11]{Move semantics: Value categories}
+  \begin{block}{rvalues}
+    \begin{itemize}
+      \item Either ``pure rvalue''
+      \begin{itemize}
+        \item result of a built-in operator
+        \item initalizer of an object
+      \end{itemize}
+      \item Or an expiring value (resources can be reused)
+      \item Cannot be used as left-hand operand of assignment operators
+      \item Cannot take its address
+      \item rvalues bind to \cppinline{func(T&&)}
+    \end{itemize}
+  \end{block}
+  \vspace{-6mm}
+  \begin{overprint}
+    \onslide<1>
+    \begin{exampleblock}{Examples for rvalues}
+      \begin{cppcode*}{}
+        T t = T{}; // T{} is pure rv
+        42;        // Pure rv
+        a + b;     // Pure rv
+        i++;       // Pure rv (post-increment)
+        T{}.m;     // m is expiring because T{} is pure rv
+        std::move(x); // Expiring, because returns T&&
+      \end{cppcode*}
+    \end{exampleblock}
+    \onslide<2>
+    \begin{alertblock}{These don't compile}
+      \begin{cppcode*}{}
+        a + b = 2; // Cannot assign to rvalues
+        &i++;      // Cannot take address of rvalues
+        T{}.m = 2; // Member of pure rvalue is expiring value
+        T& t = std::move(x); // Cannot bind reference to expiring value
+      \end{cppcode*}
+    \end{alertblock}
+  \end{overprint}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Move semantics: Value categories}
+  \begin{block}{lvalues}
+    \begin{itemize}
+      \item Expression whose evaluation determines identity of object or function
+      \item And which is not an expiring value
+      \item lvalues don't bind to \cppinline{func(T&&)}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{lvalue examples}
+    \begin{cppcode*}{}
+      int i;
+      int &j = i;
+      T t;
+      t.m = 5; // lvalue, because t is lvalue
+      ++i; // Pre-increment is lvalue
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[11]{Move semantics}
   \begin{block}{A few points}
     \begin{itemize}
@@ -214,7 +274,7 @@
       \item 1 swap less, separate copy assignment operator needed
       \item former content of \cppinline{*this} destroyed with caller argument
       \end{itemize}
-    \item swap, move constructor/assignment must be \cppinline{noexcept}
+    \item swap, move constructor/assignment must be \cppinline{noexcept}!
     \end{itemize}
   \end{block}
 \end{frame}
@@ -263,6 +323,32 @@
         }
         friend void swap(Movable &a, Movable &b) noexcept { ... }
       };
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile,t]
+  \frametitlecpp[11]{Move semantics: Don't forget noexcept!}
+  \begin{alertblock}{Vector pessimisation when move constructor can throw}
+    \begin{itemize}
+      \item When a vector reallocates, it must copy/move all elements
+        \begin{itemize}
+          \item An exception during move aborts the relocation of elements
+          \item Move might not be revertible, so vector falls back to copy
+          \item This can significantly slow down the resize operation
+        \end{itemize}
+      \item With \cppinline{noexcept}, the much faster move is used
+    \end{itemize}
+  \end{alertblock}
+  \begin{exampleblock}{Vector resize with copy/move}
+    \small
+    \begin{cppcode*}{}
+      struct Movable1 { Movable1(Movable1 &&other); };
+      struct Movable2 { Movable2(Movable2 &&other) noexcept; };
+      while (vector1.size() < 10000) {
+        vector1.push_back(Movable1{}); // Copies
+        vector2.push_back(Movable2{}); // Moves
+      }
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
