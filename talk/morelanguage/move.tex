@@ -108,14 +108,145 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[11]{Move semantics: value categories}
+  \begin{block}{Lvalue (left value / locator value)}
+    \begin{itemize}
+      \item An expression is an lvalue
+      \begin{itemize}
+        \item If its evaluation determines identity of object/function
+        \item If the object is not expiring (``xvalue'')
+      \end{itemize}
+      \item Lvalues have a persistent address in memory
+      \item Lvalues can be assigned to unless \cppinline{const}
+    \end{itemize}
+  \end{block}
+  \begin{exampleblock}{Lvalue examples}
+    \begin{cppcode*}{}
+      int i;
+      int & j = i;
+      T t;
+      t.m = 5; // lvalue, because t is lvalue
+      ++i;     // returns underlying object
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Move semantics: value categories}
+  \begin{block}{Rvalue}
+    \begin{itemize}
+      \item An expression is an rvalue when from these primary categories
+      \begin{itemize}
+        \item ``pure rvalue'': Result of built-in operator; initialiser of object
+        \item ``xvalue'': Expiring value, resources can ``moved''
+      \end{itemize}
+      \item Has no persistent address in memory
+      \begin{itemize}
+        \item Cannot use the addressof operator
+      \end{itemize}
+      \item Cannot be used as left-hand operand of built-in assignments
+
+    \end{itemize}
+  \end{block}
+  \vspace{-6mm}
+  \begin{overprint}
+    \onslide<1>
+    \begin{exampleblock}{Examples for rvalues}
+      \begin{cppcode*}{}
+        i = 42;    // 42 is pure rv
+        i = a + b; // a+b is pure rv
+        T t = T{}; // T{} is pure rv
+        i++;       // Pure rv (post-increment returns temp.)
+        T{}.m;     // m is expiring because T{} is pure rv
+        std::move(x); // Converts lvalue into xvalue
+      \end{cppcode*}
+    \end{exampleblock}
+    \onslide<2>
+    \begin{alertblock}{Things that don't compile with rvalues}
+      \begin{cppcode*}{}
+        a + b = 2; // Cannot assign to pure rv
+        &(a+b);    // Cannot take address of pure rv
+        &i++;      // Same, post-increment returns pure rv
+        T{}.m = 2; // cannot assign if m is built-in type
+      \end{cppcode*}
+    \end{alertblock}
+  \end{overprint}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Move semantics: Terminology}
+  \begin{block}{Source of confusion}
+    \begin{itemize}
+      \item The name ``rvalue'' originates from them \textit{mostly} being on right-hand side
+      \item But it denotes value categories of \emph{expressions}
+      \item Rvalues can be assigned to for non-builtin types
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Example: rvalue on left-hand side}
+    \begin{cppcode*}{}
+      struct T{
+        int m;
+        T& operator=(int i);
+      };
+      std::cout << (T{} = 5).m << "\n";
+    \end{cppcode*}
+  \end{exampleblock}
+
+  \begin{alertblock}{Not possible with built-in types}
+    \begin{cppcode*}{}
+      std::cout << (int{} = 5) << "\n"; // Error
+    \end{cppcode*}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlecpp[11]{Move semantics: rvalue references}
+  \begin{block}{New reference type: rvalue reference}
+    \begin{itemize}
+      \item Declared with \cppinline{T&&}
+      \item Does not bind to lvalues
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Binding rules}
+    \begin{columns}[onlytextwidth]
+      \begin{column}{0.45\textwidth}
+        Lvalues
+        \begin{cppcode*}{linenos=false}
+          T lv;
+          T &     ref = lv;//OK
+          T &&  rvref = lv;//Error
+          T const& cr = lv;//OK
+        \end{cppcode*}
+      \end{column}
+      \hfil
+      \begin{column}{0.5\textwidth}
+        Rvalues
+        \begin{cppcode*}{linenos=false}
+
+          T &     ref = T{};//Error
+          T &&  rvref = T{};//OK
+          T const& cr = T{};//OK
+        \end{cppcode*}
+      \end{column}
+    \end{columns}
+  \end{exampleblock}
+
+  \begin{exampleblock}{Overload resolution prefers rvalue reference}
+    \begin{cppcode*}{}
+      void f(T const &);
+      void f(T &&);      // Selected. Enables move
+      f(T{});
+    \end{cppcode*}
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[11]{Move semantics}
   \begin{block}{The idea}
     \begin{itemize}
-      \item a new type of reference: rvalue reference
-      \begin{itemize}
-      \item used for move semantic
-      \item denoted by \cppinline{&&}
-      \end{itemize}
+      \item use rvalue references to reuse resources
       \item 2 new special member functions in every class:
       \begin{description}
       \item[a move constructor] similar to copy constructor
@@ -135,66 +266,6 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Move semantics: Value categories}
-  \begin{block}{rvalues}
-    \begin{itemize}
-      \item Either ``pure rvalue''
-      \begin{itemize}
-        \item result of a built-in operator
-        \item initalizer of an object
-      \end{itemize}
-      \item Or an expiring value (resources can be reused)
-      \item Cannot be used as left-hand operand of assignment operators
-      \item Cannot take its address
-      \item rvalues bind to \cppinline{func(T&&)}
-    \end{itemize}
-  \end{block}
-  \vspace{-6mm}
-  \begin{overprint}
-    \onslide<1>
-    \begin{exampleblock}{Examples for rvalues}
-      \begin{cppcode*}{}
-        T t = T{}; // T{} is pure rv
-        42;        // Pure rv
-        a + b;     // Pure rv
-        i++;       // Pure rv (post-increment)
-        T{}.m;     // m is expiring because T{} is pure rv
-        std::move(x); // Expiring, because returns T&&
-      \end{cppcode*}
-    \end{exampleblock}
-    \onslide<2>
-    \begin{alertblock}{These don't compile}
-      \begin{cppcode*}{}
-        a + b = 2; // Cannot assign to rvalues
-        &i++;      // Cannot take address of rvalues
-        T{}.m = 2; // Member of pure rvalue is expiring value
-        T& t = std::move(x); // Cannot bind reference to expiring value
-      \end{cppcode*}
-    \end{alertblock}
-  \end{overprint}
-\end{frame}
-
-\begin{frame}[fragile]
-  \frametitlecpp[11]{Move semantics: Value categories}
-  \begin{block}{lvalues}
-    \begin{itemize}
-      \item Expression whose evaluation determines identity of object or function
-      \item And which is not an expiring value
-      \item lvalues don't bind to \cppinline{func(T&&)}
-    \end{itemize}
-  \end{block}
-  \begin{exampleblock}{lvalue examples}
-    \begin{cppcode*}{}
-      int i;
-      int &j = i;
-      T t;
-      t.m = 5; // lvalue, because t is lvalue
-      ++i; // Pre-increment is lvalue
-    \end{cppcode*}
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}[fragile]
   \frametitlecpp[11]{Move semantics}
   \begin{block}{A few points}
     \begin{itemize}
@@ -205,14 +276,14 @@
       \end{itemize}
     \item if no move semantic is implemented, copies will be performed
     \item the language and STL understand move semantic
-    \item the compiler moves whenever possible
+    \item the compiler uses copy elision or moves whenever possible
       \begin{itemize}
       \item e.g.\ when passing temporaries or returning from a function
       \end{itemize}
     \end{itemize}
   \end{block}
   \pause
-  \begin{exampleblock}{Practically}
+  \begin{exampleblock}{Practically (in \cpp11)}
     \begin{cppcode*}{}
       T f() { T r; return r; } // move r out of f
       T v = f(); // move returned (temporary) T into v
