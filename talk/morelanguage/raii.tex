@@ -370,7 +370,7 @@ of 'std::unique_ptr<Foo>'
     % escapeinside seems to break gobble, so need to un-indent manually
     \begin{cppcode*}{escapeinside=@@}
 auto shared = std::make_shared<int>(100);
-auto print = [@\textcolor{red}{&}@shared](){
+auto print = [@\textcolor{red}{\&}@shared](){
   std::cout << "Use: " << shared.use_count() << " "
             << "value: " << *shared << "\n";
 };

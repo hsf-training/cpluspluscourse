@@ -341,7 +341,7 @@ changeRef(s);
 struct T {...}; T a;
 void fVal(T value);        fVal(a);   // by value
 void fRef(const T &value); fRef(a);   // by reference
-void fPtr(const T *value); fPtr(|{\setlength{\fboxsep}{0pt}\color{gray}\colorbox{yellow}{\textsc{&}}}|a);  // by pointer
+void fPtr(const T *value); fPtr(&a);  // by pointer
 void fWrite(T &value);     fWrite(a); // non-const ref
     \end{cppcode*}
   \end{block}
