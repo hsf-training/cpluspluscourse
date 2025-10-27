@@ -12,9 +12,11 @@ Day 1
 
 ### Hello World (directory: [`hello`](hello), [CheatSheet](ExercisesCheatSheet.md#hello-world-directory-hello))
 
+### Constness (directory: [`constness`](constness), [cheatSheet](ExercisesCheatSheet.md#constness-directory-constness))
+
 ### Operator overloading (directory: [`operators`](operators), [cheatSheet](ExercisesCheatSheet.md#operator-overloading-directory-operators))
 
-### Move semantic (directory: [`move`](move), [cheatSheet](ExercisesCheatSheet.md#move-semantic-directory-move))
+### Move semantic (if discussed during the lecture, directory: [`move`](move), [cheatSheet](ExercisesCheatSheet.md#move-semantic-directory-move))
 
 ### Debugging (directory: [`debug`](debug), [cheatSheet](ExercisesCheatSheet.md#debugging-directory-debug))
 This was actually covered in the essential course, but it's always good to be fluent with gdb when writing C++ !
