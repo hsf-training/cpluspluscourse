@@ -40,7 +40,7 @@ jobs:
           - NAME: "modern_oo"
           - NAME: "move"
           - NAME: "classes"
-           SKIP_DEFAULT: true
+            SKIP_DEFAULT: true
           - NAME: "operators"
           - NAME: "optional"
           - NAME: "polymorphism"
