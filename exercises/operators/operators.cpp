@@ -62,7 +62,7 @@ private:
 // (the what argument) to a pair containing a string representation
 // of it and the code itself. That way, print is given a string and a
 // value where the string is the code that lead to the value
-#define CHECK(printer,what) printer.process(#what, what)
+#define CHECK(printer, ...) printer.process(#__VA_ARGS__, (__VA_ARGS__))
 
 int main() {
 
