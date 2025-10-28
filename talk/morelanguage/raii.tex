@@ -385,11 +385,11 @@ print();
   \end{exampleblock}
   \begin{block}{}
     \small
-    \begin{minted}{bash}
-      Use: 1 value: 100
-      Use: 2 value: 101
-      Use: 1 value: 101
-    \end{minted}
+    \begin{verbatim}
+Use: 1 value: 100
+Use: 2 value: 101
+Use: 1 value: 101
+    \end{verbatim}
   \end{block}
 \end{frame}
 
@@ -415,12 +415,12 @@ print();
   \pause
   \begin{block}{}
     \small
-    \begin{minted}{bash}
-      Use: 1 value: 100
-      Use: 2 value: 101
-      Use: 1 value: 101
-      Use: 1 (or more) value: ???
-    \end{minted}
+    \begin{verbatim}
+Use: 1 value: 100
+Use: 2 value: 101
+Use: 1 value: 101
+Use: 1 (or more) value: ???
+    \end{verbatim}
   \end{block}
 \end{frame}
 
@@ -458,7 +458,7 @@ print();
     \item Run with valgrind if possible to check for leaks
       { \scriptsize
       \begin{minted}{shell-session}
-        $ valgrind --leak-check=full --track-origins=yes ./smartPointers
+$ valgrind --leak-check=full --track-origins=yes ./smartPointers
       \end{minted}
       }
     \item In the \emph{essentials course}, go through {\ttfamily problem1()} and {\ttfamily problem2()} and fix the leaks using smart pointers.
