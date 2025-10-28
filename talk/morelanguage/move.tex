@@ -266,6 +266,27 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[11]{Remember our bad vector implementation?}
+  \begin{cppcode}
+    class Vector {
+    public:
+      Vector(int n);
+      Vector(Vector && other)
+      : len(other.len), data(other.data)
+      {
+        other.len = 0;
+        other.data = nulltpr; // Important! Double delete!
+      }
+      ~Vector();
+    private:
+      int len;
+      int* data;
+    };
+    Vector::~Vector() { delete[] data; }
+  \end{cppcode}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[11]{Move semantics}
   \begin{block}{A few points}
     \begin{itemize}
@@ -331,17 +352,17 @@
     \item move constructor
       \begin{itemize}
       \item consider delegating to default constructor
-      \item swap \cppinline{*this} with parameter (source)
+      \item swap \cppinline{*this} with argument (source)
       \end{itemize}
     \item move assignment as \cppinline{operator=(T source)}
       \begin{itemize}
-      \item parameter passed by value; caller can move or copy into it
-      \item swap parameter with \cppinline{*this}
-      \item end of scope: parameter destroys former content of \cppinline{*this}
+      \item argument passed by value; caller can move or copy into it
+      \item swap argument with \cppinline{*this}
+      \item end of scope: argument destroys former content of \cppinline{*this}
       \end{itemize}
     \item alternative: move assignment as \cppinline{operator=(T&& source)}
       \begin{itemize}
-      \item swap parameter with \cppinline{*this}
+      \item swap argument with \cppinline{*this}
       \item 1 swap less, separate copy assignment operator needed
       \item former content of \cppinline{*this} destroyed with caller argument
       \end{itemize}
