@@ -326,6 +326,36 @@
 \end{frame}
 
 \begin{frame}[fragile]
+  \frametitlecpp[11]{non-member begin and end for your own types}
+  \begin{block}{Any class can benefit from range based loop}
+    \begin{itemize}
+    \item simply by providing \mintinline{cpp}{begin} and \mintinline{cpp}{end} methods
+    \item ideally as hidden friends
+    \item returning an iterator type
+    \end{itemize}
+  \end{block}
+  \begin{exampleblockGB}{Practical code}{https://godbolt.org/z/9rrjaEdac}{\texttt{std::begin}}
+    \scriptsize
+    \begin{cppcode*}{}
+  struct MyIntRange {
+    std::vector<uint32_t> m_internal;
+    ...
+    friend auto begin( MyIntRange const& v ) {
+      return std::begin( v.m_internal );
+    }
+    friend auto end( MyIntRange const& v ) {
+      return std::end( v.m_internal );
+    }
+  };
+  MyIntRange r{2,10,3};
+  for ( auto a : r ) {
+    std::cout << a << " ";
+  }
+    \end{cppcode*}
+  \end{exampleblockGB}
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitlecpp[11]{\texttt{std::tuple} \cpprefLink{https://en.cppreference.com/w/cpp/utility/tuple}}
   \begin{exampleblock}{}
     \begin{cppcode*}{}
