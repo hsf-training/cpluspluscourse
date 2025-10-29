@@ -31,7 +31,7 @@
       \begin{itemize}
       \item no reallocation, push or pop
       \end{itemize}
-    \item Provides container like interface
+    \item Provides container-like interface
       \begin{itemize}
       \item iterators, \cppinline{size}, \cppinline{front}/\cppinline{back}, \cppinline{subspan}, ...
       \end{itemize}
@@ -56,7 +56,7 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[20]{\texttt{std::span<T>} - Usage}
-  \begin{exampleblockGB}{Some example}{https://godbolt.org/z/nP3jr388z}{\texttt{span}}
+  \begin{exampleblockGB}{Some examples}{https://godbolt.org/z/nP3jr388z}{\texttt{span}}
     \scriptsize
     \begin{cppcode*}{}
       void print(std::span<const int> c) {
@@ -79,7 +79,7 @@
 
       std::span<const int, 3> sa2 = a2;
       std::cout << sizeof(sv) << " " << sizeof(sa2) << "\n";  // 16 8
-      std::span<const int, 3> s2a2 = a; // compilation failure, invalid conversion
+      std::span<const int, 3> s2a2 = a; // compilation failure, invalid conv.
     \end{cppcode*}
   \end{exampleblockGB}
 \end{frame}
@@ -102,7 +102,7 @@
           return in; // equiv. to optional<Phone>{in};
         return {};   // or: return std::nullopt; (empty opt.)
       }
-      auto v = parse_phone(...);
+      std::optional<Phone> v = parse_phone(...);
       if (v) {                    // or: v.has_value()
         process_phone(v.value()); // or: *v (unchecked)
         v->call(); // calls Phone::call()   (unchecked)
@@ -433,9 +433,9 @@
     \begin{itemize}
     \item consists of a starting point (or epoch) and a tick rate
       \begin{itemize}
-      \item E.g. January 1, 1970 and every second
+      \item E.g.\ January 1, 1970 and every second
       \end{itemize}
-    \item C++ defines several clock type
+    \item C++ defines several clock types
       \begin{itemize}
       \item \href{https://en.cppreference.com/w/cpp/chrono/system_clock}{\color{blue!50!white} \cppinline{system_clock}} system time, aka wall clock time, or C time
       \item \href{https://en.cppreference.com/w/cpp/chrono/steady_clock}{\color{blue!50!white} \cppinline{steady_clock}} monotonic but unrelated to wall clock time
@@ -457,20 +457,19 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Practical usage / timing some \cpp code}
-  \begin{exampleblockGB}{How to measure the time spent in some code}{https://godbolt.org/z/PzKWer5eb}{\texttt{timing}}
+  \begin{exampleblockGB}{How to measure the time spent in some code}{https://godbolt.org/z/7E1ce86sK}{\texttt{timing}}
     \small
     \begin{cppcode*}{}
       #include <chrono>
 
+      using namespace std::chrono_literals; // for ms
       std::chrono::high_resolution_clock clock;
-      auto start = clock::now();
+      const auto start = clock::now();
       ... // code to be timed
       std::chrono::duration<float> ticks = clock.now() - start;
 
-      auto millis = std::chrono::duration_cast
-                    <std::chrono::milliseconds>(ticks);
       std::cout << "it took " << ticks.count() << " ticks"
-                << ", that is " << millis.count() << " ms\n";
+                << ", that is " << ticks/1ms << " ms\n";
     \end{cppcode*}
   \end{exampleblockGB}
   \pause

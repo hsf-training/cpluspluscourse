@@ -28,7 +28,7 @@
   \frametitlecpp[11]{The thread constructor}
   \begin{exampleblock}{Can take a function and its arguments}
     \begin{cppcode*}{}
-      void function(int j, double j) {...}
+      void function(int i, double j) {...}
       std::thread t1{function, 1, 2.0};
     \end{cppcode*}
   \end{exampleblock}
@@ -42,7 +42,7 @@
       };
       std::thread t2{AdderFunctor{2}, 5};
       int a;
-      std::thread t3{[](int i) { return i+2; }, a};
+      std::thread t3{[ ](int i) { return i+2; }, a};
       std::thread t4{[a]       { return a+2; }};
     \end{cppcode*}
   \end{exampleblock}

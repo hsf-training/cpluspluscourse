@@ -56,7 +56,7 @@
     \item[join/split] joins ranges or splits into subranges
     \item[reverse] reverses view order
     \item[elements] for tuple views, extract nth elements of each tuple
-    \item[keys/values] for pair like views, takes 1st/2nd element of each pair
+    \item[keys/values] for pair-like views, takes 1st/2nd element of each pair
     \end{description}
   \end{block}
   Remember you can combine them via (\cppinline{|})
@@ -67,17 +67,17 @@
   \begin{block}{Views are lazy}
     \begin{itemize}
     \item Computation is only triggered when iterating
-    \item And can be stopped by e.g. \cppinline{take}
+    \item And can be stopped by e.g.\ \cppinline{take} / \cppinline{take_while}
     \item Here, the minimal number of iterations is performed
     \end{itemize}
   \end{block}
   \begin{exampleblockGB}{Example}{https://godbolt.org/z/bWe6W69oE}{Lazy view}
     \begin{cppcode*}{}
       // print first 20 prime numbers above 1000000
-      for (int i: std::views::iota(1000000)
-                  | std::views::filter(odd)
-                  | std::views::filter(isPrime)
-                  | std::views::take(20)) {
+      for (int i : std::views::iota(1000000)
+                 | std::views::filter(odd)
+                 | std::views::filter(isPrime)
+                 | std::views::take(20)) {
         std::cout << i << " ";
       }
     \end{cppcode*}
