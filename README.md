@@ -102,7 +102,7 @@ Thanks go to these wonderful people ([emoji key](https://allcontributors.org/doc
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
+<!-- markdown-link-check-disable -->
 <table>
   <tr>
     <td align="center"><a href="http://includeio.stream/"><img src="https://avatars.githubusercontent.com/u/1433152?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Abhishek L</b></sub></a><br /><a href="#content-theanalyst" title="Content">🖋</a></td>
@@ -121,7 +121,6 @@ Thanks go to these wonderful people ([emoji key](https://allcontributors.org/doc
   </tr>
 </table>
 
-<!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->

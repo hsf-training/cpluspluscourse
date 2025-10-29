@@ -149,6 +149,7 @@ you can go for WSL and use Visual Studio Code.
 
 ### WSL
 
+<!-- markdown-link-check-disable-next-line -->
 Important: if you have [VirtualBox](https://www.virtualbox.org/) installed on Windows do not try to install WSL2,
 due to [this issue](https://github.com/MicrosoftDocs/WSL/issues/798).
 It will either not work or run very slow.
