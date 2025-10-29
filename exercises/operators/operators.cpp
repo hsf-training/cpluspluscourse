@@ -43,26 +43,26 @@ private:
 };
 
 class TestResultPrinter {
-
 public:
-
-  TestResultPrinter( unsigned int a_width ) : m_width(a_width) {}
-
-  void process(std::string const & what, bool passed) {
-    std::cout << std::left << std::setw(m_width) << what << ": " << (passed ? "PASS" : "** FAIL **") << '\n';
-  }
-
+    static TestResultPrinter& instance() {
+        static TestResultPrinter printer(64);
+        return printer;
+    }
+    
+    void process(std::string const & what, bool passed) {
+        std::cout << std::left << std::setw(m_width) << what << ": " 
+                  << (passed ? "PASS" : "** FAIL **") << '\n';
+    }
 private:
-
-  unsigned int m_width;
-
+    TestResultPrinter(unsigned int a_width) : m_width(a_width) {}
+    unsigned int m_width;
 };
 
 // This is using the cpp, the C preprocessor to expand a bit of code
 // (the what argument) to a pair containing a string representation
 // of it and the code itself. That way, print is given a string and a
 // value where the string is the code that lead to the value
-#define CHECK(printer, ...) printer.process(#__VA_ARGS__, (__VA_ARGS__))
+#define CHECK(...) TestResultPrinter::instance().process(#__VA_ARGS__, (__VA_ARGS__))
 
 int main() {
 
@@ -74,32 +74,29 @@ int main() {
 
   // equality
   std::cout<<std::endl;
-  TestResultPrinter p1{40};
-  CHECK(p1,equal(three,three));
-  CHECK(p1,equal(third,third));
-  CHECK(p1,equal(three,Fraction{3}));
-  CHECK(p1,equal(three,Fraction{3,1}));
-  CHECK(p1,equal(third,Fraction{1,3}));
-  CHECK(p1,equal(Fraction{3},three));
-  CHECK(p1,equal(Fraction{1,3},third));
-  CHECK(p1,!equal(third,Fraction{2,6}));
-  CHECK(p1,equal(third,Fraction{2,6}.normalized()));
+  CHECK(equal(three,three));
+  CHECK(equal(third,third));
+  CHECK(equal(three,Fraction{3}));
+  CHECK(equal(three,Fraction{3,1}));
+  CHECK(equal(third,Fraction{1,3}));
+  CHECK(equal(Fraction{3},three));
+  CHECK(equal(Fraction{1,3},third));
+  CHECK(!equal(third,Fraction{2,6}));
+  CHECK(equal(third,Fraction{2,6}.normalized()));
 
   // equivalence
   std::cout<<std::endl;
-  TestResultPrinter p2{32};
-  CHECK(p2,compare(third,Fraction{2,6})==0);
-  CHECK(p2,compare(third,Fraction{1,4})>0);
-  CHECK(p2,compare(third,Fraction{2,4})<0);
+  CHECK(compare(third,Fraction{2,6})==0);
+  CHECK(compare(third,Fraction{1,4})>0);
+  CHECK(compare(third,Fraction{2,4})<0);
 
   // multiply
   std::cout<<std::endl;
-  TestResultPrinter p3{48};
-  CHECK(p3,equal(multiply(third,2),Fraction{2,3}));
-  CHECK(p3,equal(multiply(2,third),Fraction{2,3}));
-  CHECK(p3,compare(multiply(three,third),Fraction{1,1})==0);
-  CHECK(p3,compare(multiply(3,third),Fraction{1,1})==0);
-  CHECK(p3,equal(multiply(3,third).normalized(),1));
+  CHECK(equal(multiply(third,2),Fraction{2,3}));
+  CHECK(equal(multiply(2,third),Fraction{2,3}));
+  CHECK(compare(multiply(three,third),Fraction{1,1})==0);
+  CHECK(compare(multiply(3,third),Fraction{1,1})==0);
+  CHECK(equal(multiply(3,third).normalized(),1));
 
   // end
   std::cout<<std::endl;
