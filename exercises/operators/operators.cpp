@@ -19,6 +19,10 @@ public:
     return (lhs.m_num==rhs.m_num) && (lhs.m_denom==rhs.m_denom);
   }
 
+  // This function compares two fractions, and returns
+  // -1 if lhs < rhs
+  //  0 if they denote the same value (equivalence)
+  //  1 if lhs > rhs
   friend int compare( Fraction const & lhs, Fraction const & rhs ) {
     int v1 = lhs.m_num * rhs.m_denom;
     int v2 = rhs.m_num * lhs.m_denom;
@@ -86,6 +90,7 @@ int main() {
 
   // equivalence & comparison
   std::cout<<std::endl;
+  CHECK(!equal(third,Fraction{2,6}));
   CHECK(compare(third,Fraction{2,6})==0);
   CHECK(compare(third,Fraction{1,4})>0);
   CHECK(compare(third,Fraction{2,4})<0);
@@ -97,6 +102,7 @@ int main() {
   CHECK(compare(multiply(three,third),Fraction{1,1})==0);
   CHECK(compare(multiply(3,third),Fraction{1,1})==0);
   CHECK(equal(multiply(3,third).normalized(),1));
+
 
   // end
   std::cout<<std::endl;

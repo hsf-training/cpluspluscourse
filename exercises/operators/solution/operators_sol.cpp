@@ -1,7 +1,6 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
-#include <compare>
 #include <numeric>
 
 class Fraction {
@@ -24,8 +23,16 @@ public:
     return !(lhs==rhs);
   }
 
-  friend auto operator<=>( Fraction const & lhs, Fraction const & rhs ) {
-    return ((lhs.m_num*rhs.m_denom)<=>(rhs.m_num*lhs.m_denom));
+  // This function compares two fractions, and returns
+  // -1 if lhs < rhs
+  //  0 if they denote the same value (equivalence)
+  //  1 if lhs > rhs
+  friend int compare( Fraction const & lhs, Fraction const & rhs ) {
+    int v1 = lhs.m_num * rhs.m_denom;
+    int v2 = rhs.m_num * lhs.m_denom;
+    if (v1 < v2) return -1;
+    else if (v1 > v2) return 1;
+    else return 0;
   }
 
   Fraction & operator*=(Fraction const & other) {
@@ -59,7 +66,7 @@ public:
 
   TestResultPrinter( unsigned int a_width ) : m_width(a_width) {}
 
-  void operator()(std::string const & what, bool passed) {
+  void process(std::string const & what, bool passed) {
     std::cout << std::left << std::setw(m_width) << what << ": " << (passed ? "PASS" : "** FAIL **") << '\n';
   }
 
@@ -73,7 +80,7 @@ private:
 // (the arguments in '...') to a pair containing a string representation
 // of it and the code itself. That way, print is given a string and a
 // value where the string is the code that lead to the value
-#define CHECK(...) TestResultPrinter{50}(#__VA_ARGS__, (__VA_ARGS__))
+#define CHECK(...) TestResultPrinter{50}.process(#__VA_ARGS__, (__VA_ARGS__))
 
 int main() {
 
@@ -97,37 +104,27 @@ int main() {
 
   // equivalence & comparison
   std::cout<<std::endl;
-  CHECK(std::is_eq(third<=>Fraction{2,6}));
-  CHECK(std::is_gt(third<=>Fraction{1,4}));
-  CHECK(std::is_lt(third<=>Fraction{2,4}));
-  CHECK(third>Fraction{1,4});
-  CHECK(third<Fraction{2,4});
-  CHECK(!(third<=Fraction{1,4}));
-  CHECK(!(third>=Fraction{2,4}));
-  CHECK(third>=Fraction{1,4});
-  CHECK(third<=Fraction{2,4});
-  CHECK(third>=Fraction{1,3});
-  CHECK(third<=Fraction{2,3});
-  CHECK(!(third<Fraction{1,4}));
-  CHECK(!(third>Fraction{2,4}));
-  CHECK(!(third<Fraction{1,3}));
-  CHECK(!(third>Fraction{2,3}));
+  CHECK(third!=Fraction{2,6});
+  CHECK(compare(third,Fraction{2,6})==0);
+  CHECK(compare(third,Fraction{1,4})>0);
+  CHECK(compare(third,Fraction{2,4})<0);
 
   // multiply
   std::cout<<std::endl;
   CHECK((third*2)==Fraction{2,3});
   CHECK((2*third)==Fraction{2,3});
-  CHECK(std::is_eq((three*third)<=>Fraction{1,1}));
-  CHECK(std::is_eq((3*third)<=>Fraction{1,1}));
+  CHECK(compare(three*third, Fraction{1,1}) == 0);
+  CHECK(compare(3*third, Fraction{1,1}) == 0);
   CHECK((3*third).normalized()==1);
 
   // multiply in place
   std::cout<<std::endl;
   Fraction one {third};
   ((one *= 2) *=  3) *= Fraction{1,2};
-  CHECK(std::is_eq(one<=>1));
+  CHECK(compare(one, 1)==0);
   CHECK(one.normalized()==1);
   CHECK(one!=1);
+
 
   // end
   std::cout<<std::endl;
