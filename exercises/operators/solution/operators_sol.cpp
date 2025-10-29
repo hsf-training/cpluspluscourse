@@ -59,9 +59,9 @@ public:
         static TestResultPrinter printer(64);
         return printer;
     }
-    
+
     void operator()(std::string const & what, bool passed) {
-        std::cout << std::left << std::setw(m_width) << what << ": " 
+        std::cout << std::left << std::setw(m_width) << what << ": "
                   << (passed ? "PASS" : "** FAIL **") << '\n';
     }
 private:
