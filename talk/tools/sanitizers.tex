@@ -31,7 +31,7 @@
     \begin{itemize}
       \item Compiler adds run-time checks ($\sim$2x slow down)
       \item \cppinline{IsPoisoned(address)} looks up state of address in asan's ``shadow memory''
-      \item Shadow memory: memory where 1 shadow byte tracks state of 8 application bytes (state = accessible, poisoned, \ldots)
+      \item Shadow memory: memory section to look up which addresses are accessible (state = accessible, poisoned, \ldots)
       \item Functions that deal with memory (\cppinline{new() / delete()} / strings / ...) update entries in shadow memory when called
     \end{itemize}
   \end{block}
