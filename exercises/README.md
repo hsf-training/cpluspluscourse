@@ -110,8 +110,7 @@ Each exercise is in a subdirectory with mainly 4 sets of files
 Examples of working environments
 ================================
 
-Using lxplus
-------------
+## Using lxplus
 
   - lxplus9 at CERN is perfectly suitable for the exercises
   - it has all the needed compilers/tools
@@ -125,15 +124,13 @@ make
 ./hello
 ```
 
-Using OS/X
-----------
+## Using OS/X
+
 - Install xcode and the command line tools
 - Compiling, running, debugging will work, but a few tools such as valgrind are not available
 
 
-
-Using Windows
--------------
+## Using Windows
 
 There are multiple options if you bring a Windows machine to the course:
 
@@ -141,7 +138,7 @@ There are multiple options if you bring a Windows machine to the course:
 2. Use an ssh client and connect to lxplus
 3. Use Visual Studio and the native Windows compiler (MSVC)
 
-We advise to use either [WSL](#wsl) or [lxplus](#lxplus), so a non-Windows experience.
+We advise to use either [WSL](#wsl) or [lxplus](#using-lxplus), so a non-Windows experience.
 This way, you can follow all exercises, especially the ones on tools, which are mostly Linux focused.
 Also, we can ensure that mentors can help you in case you get stuck.
 Using lxplus is probably the easiest, but if you have a really hard time using the terminal,
@@ -154,7 +151,7 @@ Important: if you have [VirtualBox](https://www.virtualbox.org/) installed on Wi
 due to [this issue](https://github.com/MicrosoftDocs/WSL/issues/798).
 It will either not work or run very slow.
 Instead, we recommend you use VirtualBox directly to set up a suitable virtualised Linux environment.
-Or use [lxplus](#lxplus).
+Or use [lxplus](#using-lxplus).
 
 The procedure is described in detail [here](https://docs.microsoft.com/en-us/windows/wsl/install).
 
