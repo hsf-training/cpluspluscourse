@@ -36,15 +36,19 @@ People should replay them and discover the tools by themselves.
 
 ### Generic programming / templates (directory: [`templates`](templates), [cheatSheet](ExercisesCheatSheet.md#generic-programming--templates-directory-templates))
 
-### (optional) Address sanitizer (directory: [`asan`](asan), [cheatSheet](ExercisesCheatSheet.md#address-sanitizer-directory-asan))
-
-### (optional) Undefined behaviour sanitizer (directory: [`ubsan`](ubsan)
-
 
 Day 3
 -----
 
 ### Race conditions (directory: [`race`](race), [cheatSheet](ExercisesCheatSheet.md#race-conditions-directory-race))
+
+### Spaceship operator <=> (directory: [`spaceship`](spaceship), [cheatSheet](ExercisesCheatSheet.md#spaceship-operator-directory-spaceship))
+
+### Static checker (directory: [`cppcheck`](cppcheck), [cheatSheet](ExercisesCheatSheet.md#cppcheck-directory-cppcheck))
+
+### Address sanitizer (directory: [`asan`](asan), [cheatSheet](ExercisesCheatSheet.md#address-sanitizer-directory-asan))
+
+### Undefined behaviour sanitizer (directory: [`ubsan`](ubsan)
 
 ### Condition variables (directory: [`condition_variable`](condition_variable), [cheatSheet](ExercisesCheatSheet.md#condition-variables-directory-condition_variable))
 
@@ -53,6 +57,5 @@ As a prerequisite for variadic templates, and in case it was not covered in day 
 
 ### Variadic templates (directory: [`variadic`](variadic), [cheatSheet](ExercisesCheatSheet.md#variadic-templates-directory-variadic))
 
-### Spaceship operator <=> (directory: [`spaceship`](spaceship), [cheatSheet](ExercisesCheatSheet.md#spaceship-operator-directory-spaceship))
 
 ### Concepts (directory: [`concepts`](concepts), [cheatSheet](ExercisesCheatSheet.md#concepts-directory-concepts))
