@@ -19,6 +19,10 @@ public:
     return (lhs.m_num==rhs.m_num) && (lhs.m_denom==rhs.m_denom);
   }
 
+  // This function compares two fractions, and returns
+  // -1 if lhs < rhs
+  //  0 if they denote the same value (equivalence)
+  //  1 if lhs > rhs
   friend int compare( Fraction const & lhs, Fraction const & rhs ) {
     int v1 = lhs.m_num * rhs.m_denom;
     int v2 = rhs.m_num * lhs.m_denom;
@@ -59,10 +63,10 @@ private:
 };
 
 // This is using the cpp, the C preprocessor to expand a bit of code
-// (the what argument) to a pair containing a string representation
+// (the arguments in '...') to a pair containing a string representation
 // of it and the code itself. That way, print is given a string and a
 // value where the string is the code that lead to the value
-#define CHECK(printer, ...) printer.process(#__VA_ARGS__, (__VA_ARGS__))
+#define CHECK(...) TestResultPrinter{50}.process(#__VA_ARGS__, (__VA_ARGS__))
 
 int main() {
 
@@ -74,32 +78,31 @@ int main() {
 
   // equality
   std::cout<<std::endl;
-  TestResultPrinter p1{40};
-  CHECK(p1,equal(three,three));
-  CHECK(p1,equal(third,third));
-  CHECK(p1,equal(three,Fraction{3}));
-  CHECK(p1,equal(three,Fraction{3,1}));
-  CHECK(p1,equal(third,Fraction{1,3}));
-  CHECK(p1,equal(Fraction{3},three));
-  CHECK(p1,equal(Fraction{1,3},third));
-  CHECK(p1,!equal(third,Fraction{2,6}));
-  CHECK(p1,equal(third,Fraction{2,6}.normalized()));
+  CHECK(equal(three,three));
+  CHECK(equal(third,third));
+  CHECK(equal(three,Fraction{3}));
+  CHECK(equal(three,Fraction{3,1}));
+  CHECK(equal(third,Fraction{1,3}));
+  CHECK(equal(Fraction{3},three));
+  CHECK(equal(Fraction{1,3},third));
+  CHECK(!equal(third,Fraction{2,6}));
+  CHECK(equal(third,Fraction{2,6}.normalized()));
 
-  // equivalence
+  // equivalence & comparison
   std::cout<<std::endl;
-  TestResultPrinter p2{32};
-  CHECK(p2,compare(third,Fraction{2,6})==0);
-  CHECK(p2,compare(third,Fraction{1,4})>0);
-  CHECK(p2,compare(third,Fraction{2,4})<0);
+  CHECK(!equal(third,Fraction{2,6}));
+  CHECK(compare(third,Fraction{2,6})==0);
+  CHECK(compare(third,Fraction{1,4})>0);
+  CHECK(compare(third,Fraction{2,4})<0);
 
   // multiply
   std::cout<<std::endl;
-  TestResultPrinter p3{48};
-  CHECK(p3,equal(multiply(third,2),Fraction{2,3}));
-  CHECK(p3,equal(multiply(2,third),Fraction{2,3}));
-  CHECK(p3,compare(multiply(three,third),Fraction{1,1})==0);
-  CHECK(p3,compare(multiply(3,third),Fraction{1,1})==0);
-  CHECK(p3,equal(multiply(3,third).normalized(),1));
+  CHECK(equal(multiply(third,2),Fraction{2,3}));
+  CHECK(equal(multiply(2,third),Fraction{2,3}));
+  CHECK(compare(multiply(three,third),Fraction{1,1})==0);
+  CHECK(compare(multiply(3,third),Fraction{1,1})==0);
+  CHECK(equal(multiply(3,third).normalized(),1));
+
 
   // end
   std::cout<<std::endl;

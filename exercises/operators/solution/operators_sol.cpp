@@ -1,7 +1,6 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
-#include <compare>
 #include <numeric>
 
 class Fraction {
@@ -24,8 +23,16 @@ public:
     return !(lhs==rhs);
   }
 
-  friend auto operator<=>( Fraction const & lhs, Fraction const & rhs ) {
-    return ((lhs.m_num*rhs.m_denom)<=>(rhs.m_num*lhs.m_denom));
+  // This function compares two fractions, and returns
+  // -1 if lhs < rhs
+  //  0 if they denote the same value (equivalence)
+  //  1 if lhs > rhs
+  friend int compare( Fraction const & lhs, Fraction const & rhs ) {
+    int v1 = lhs.m_num * rhs.m_denom;
+    int v2 = rhs.m_num * lhs.m_denom;
+    if (v1 < v2) return -1;
+    else if (v1 > v2) return 1;
+    else return 0;
   }
 
   Fraction & operator*=(Fraction const & other) {
@@ -59,7 +66,7 @@ public:
 
   TestResultPrinter( unsigned int a_width ) : m_width(a_width) {}
 
-  void operator()(std::string const & what, bool passed) {
+  void process(std::string const & what, bool passed) {
     std::cout << std::left << std::setw(m_width) << what << ": " << (passed ? "PASS" : "** FAIL **") << '\n';
   }
 
@@ -70,10 +77,10 @@ private:
 };
 
 // This is using the cpp, the C preprocessor to expand a bit of code
-// (the what argument) to a pair containing a string representation
+// (the arguments in '...') to a pair containing a string representation
 // of it and the code itself. That way, print is given a string and a
 // value where the string is the code that lead to the value
-#define CHECK(printer,what) printer(#what, what)
+#define CHECK(...) TestResultPrinter{50}.process(#__VA_ARGS__, (__VA_ARGS__))
 
 int main() {
 
@@ -85,53 +92,39 @@ int main() {
 
   // equality
   std::cout<<std::endl;
-  TestResultPrinter p1{36};
-  CHECK(p1,three==three);
-  CHECK(p1,third==third);
-  CHECK(p1,three==Fraction{3});
-  CHECK(p1,(three==Fraction{3,1}));
-  CHECK(p1,(third==Fraction{1,3}));
-  CHECK(p1,(Fraction{3}==three));
-  CHECK(p1,(Fraction{1,3}==third));
-  CHECK(p1,(third!=Fraction{2,6}));
-  CHECK(p1,third==(Fraction{2,6}.normalized()));
+  CHECK(three==three);
+  CHECK(third==third);
+  CHECK(three==Fraction{3});
+  CHECK(three==Fraction{3,1});
+  CHECK(third==Fraction{1,3});
+  CHECK(Fraction{3}==three);
+  CHECK(Fraction{1,3}==third);
+  CHECK(third!=Fraction{2,6});
+  CHECK(third==(Fraction{2,6}.normalized()));
 
   // equivalence & comparison
   std::cout<<std::endl;
-  TestResultPrinter p2{34};
-  CHECK(p2,std::is_eq(third<=>Fraction{2,6}));
-  CHECK(p2,std::is_gt(third<=>Fraction{1,4}));
-  CHECK(p2,std::is_lt(third<=>Fraction{2,4}));
-  CHECK(p2,(third>Fraction{1,4}));
-  CHECK(p2,(third<Fraction{2,4}));
-  CHECK(p2,!(third<=Fraction{1,4}));
-  CHECK(p2,!(third>=Fraction{2,4}));
-  CHECK(p2,(third>=Fraction{1,4}));
-  CHECK(p2,(third<=Fraction{2,4}));
-  CHECK(p2,(third>=Fraction{1,3}));
-  CHECK(p2,(third<=Fraction{2,3}));
-  CHECK(p2,!(third<Fraction{1,4}));
-  CHECK(p2,!(third>Fraction{2,4}));
-  CHECK(p2,!(third<Fraction{1,3}));
-  CHECK(p2,!(third>Fraction{2,3}));
+  CHECK(third!=Fraction{2,6});
+  CHECK(compare(third,Fraction{2,6})==0);
+  CHECK(compare(third,Fraction{1,4})>0);
+  CHECK(compare(third,Fraction{2,4})<0);
 
   // multiply
   std::cout<<std::endl;
-  TestResultPrinter p3{42};
-  CHECK(p3,((third*2)==Fraction{2,3}));
-  CHECK(p3,((2*third)==Fraction{2,3}));
-  CHECK(p3,std::is_eq((three*third)<=>Fraction{1,1}));
-  CHECK(p3,std::is_eq((3*third)<=>Fraction{1,1}));
-  CHECK(p3,((3*third).normalized()==1));
+  CHECK((third*2)==Fraction{2,3});
+  CHECK((2*third)==Fraction{2,3});
+  CHECK(compare(three*third, Fraction{1,1}) == 0);
+  CHECK(compare(3*third, Fraction{1,1}) == 0);
+  CHECK((3*third).normalized()==1);
 
   // multiply in place
   std::cout<<std::endl;
-  TestResultPrinter p4{20};
   Fraction one {third};
   ((one *= 2) *=  3) *= Fraction{1,2};
-  CHECK(p4,std::is_eq(one<=>1));
-  CHECK(p4,one.normalized()==1);
-  CHECK(p4,one!=1);
+  CHECK(compare(one, 1)==0);
+  CHECK(one.normalized()==1);
+  CHECK(one!=1);
+
 
   // end
   std::cout<<std::endl;
