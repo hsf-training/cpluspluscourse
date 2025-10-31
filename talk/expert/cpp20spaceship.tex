@@ -74,7 +74,10 @@
   \end{block}
   \begin{exampleblock}{3 types of ordering}
     \begin{description}[partial]
-    \item[strong] exactly one test among \cppinline{<0}, \cppinline{==0}, and \cppinline{>0} will return \cppinline{true}
+    \item[strong] exactly one test among \cppinline{<0}, \cppinline{==0}, and \cppinline{>0} will return \cppinline{true};
+          \begin{itemize}
+            \item equivalent values are indistinguishable, i.e.\ all members that take part in the comparison are equal
+          \end{itemize}
     \item[weak] like strong but two \emph{equivalent} values may differ
       \begin{itemize}
       \item they are however \emph{equivalent} for ranking
