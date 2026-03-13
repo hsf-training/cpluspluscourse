@@ -174,11 +174,11 @@
   \begin{exampleblock}{See the difference between val and ref}
     \begin{cppcode*}{}
       int data[]{1,9,3,8,3,7,4,6,5};
-      int increment = 3;
+      int inc = 3;
       auto val = [ inc](int x) { return x+inc; };
       auto ref = [&inc](int x) { return x+inc; };
 
-      increment = 4;
+      inc = 4;
 
       for(int& i : data) i = val(i); // increments by 3
       for(int& i : data) i = ref(i); // increments by 4
