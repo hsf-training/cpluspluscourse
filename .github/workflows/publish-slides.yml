@@ -13,7 +13,7 @@ jobs:
       matrix:
         version: [ essentials, full ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Compile Essentials document
         if: matrix.version == 'essentials'
         uses: xu-cheng/latex-action@v3
