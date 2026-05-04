@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v6
       - name: Compile Essentials document
         if: matrix.version == 'essentials'
-        uses: xu-cheng/latex-action@v3
+        uses: xu-cheng/latex-action@v4
         with:
           root_file: C++Course.tex
           latexmk_use_xelatex: true
@@ -25,7 +25,7 @@ jobs:
           extra_system_packages: "py-pygments"
       - name: Compile Full document
         if: matrix.version == 'full'
-        uses: xu-cheng/latex-action@v3
+        uses: xu-cheng/latex-action@v4
         with:
           root_file: C++Course.tex
           latexmk_use_xelatex: true
