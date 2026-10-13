@@ -16,9 +16,10 @@
   \begin{exampleblock}{Example}
     \begin{cppcode}
       #include <random>
-      std::random_device rd;
-      std::default_random_engine engine{rd()};
+
+      std::default_random_engine engine;
       std::normal_distribution dist(5.0, 1.5); // µ, σ
+
       double r = dist(engine);
     \end{cppcode}
   \end{exampleblock}
@@ -59,9 +60,9 @@
   \begin{block}{\texttt{std::random\_device}}
     \begin{itemize}
       \item Provides \emph{non-deterministic} random numbers
-      \item Uses hardware provided entropy, if available
-      \item May become slow when called too often,\\e.g.\ when hardware entropy pool is exhausted
-      \item Use only to seed engine, if \emph{non-deterministic} numbers needed
+      \item Uses hardware-provided entropy, if available
+      \item May become slow when called too often
+      \item Can be used to start with random seed
     \end{itemize}
   \end{block}
   \begin{exampleblock}{Non-deterministic engine seeding}
@@ -86,14 +87,14 @@
   \end{block}
   \begin{exampleblock}{Distributions sharing a non-deterministic engine}
     \begin{cppcode*}{}
-      std::random_device rd;
-      std::default_random_engine engine{rd()};
+      std::ranlux48 eng{std::random_device{}()};
+
       std::uniform_int_distribution<int> dist(2,7);//min,max
-      const int size = dist(engine); // gen. random number
+      const int size = dist(eng); // gen. random number
       std::vector<int> v(size);
       std::normal_distribution<double> norm(5.0, 1.5); //µ,σ
       std::generate(begin(v), end(v),
-                    [&]{ return norm(engine); });
+                    [&]{ return norm(eng); });
     \end{cppcode*}
   \end{exampleblock}
 \end{frame}
