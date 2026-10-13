@@ -254,32 +254,55 @@
 
 \begin{frame}[fragile]
   \frametitlecpp[11]{Functors / function objects}
-  \begin{block}{Example}
-    \begin{cppcode*}{}
-      struct Incrementer {
-        int m_inc;
-        Incrementer(int inc) : m_inc(inc) {}
+  \begin{block}{Customise STL algorithms with functors}
+    \begin{itemize}
+      \item Many algorithms accept functors
+      \item Customise them by changing the functors
+    \end{itemize}
+  \end{block}
+  \vspace{-1.5em}
+  \begin{overprint}
+    \onslide<1>
+    \begin{block}{Example: sorting in reverse}
+      \begin{cppcode*}{}
+        #include <algorithm>
+        std::vector<int> numbers{1, 4, 2, 3};
 
-        int operator()(int value) const {
-          return value + m_inc;
-        }
-      };
-      std::vector<int> v{1, 2, 3};
-      const auto inc = 42;
-      std::transform(v.begin(), v.end(), v.begin(),
-                     Incrementer{inc});
+        // by default, uses "less" to compare elements
+        std::sort(numbers.begin(), numbers.end()); // 1 2 3 4
+
+        // change order by using a functor
+        std::sort(numbers.begin(), numbers.end(),
+                  std::greater{}); // 4 3 2 1
       \end{cppcode*}
     \end{block}
+
+    \onslide<2>
+    \begin{block}{Example: a custom functor}
+      \begin{cppcode*}{}
+        std::vector<int> v{1, 2, 3};
+        struct Incrementer {
+          int m_inc;
+          Incrementer(int inc) : m_inc(inc) {}
+          int operator()(int value) const {
+            return value + m_inc;
+          }
+        };
+
+        std::transform(v.begin(), v.end(), v.begin(),
+                       Incrementer{42});
+      \end{cppcode*}
+    \end{block}
+  \end{overprint}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitlecpp[11]{Prefer lambdas over functors}
+  \frametitlecpp[14]{Prefer lambdas over functors}
   \begin{exampleblock}{With lambdas}
     \begin{cppcode*}{}
       std::vector<int> v{1, 2, 3};
-      const auto inc = 42;
-      std::transform(begin(v), end(v), begin(v),
-                     [inc](int value) {
+      std::transform(v.begin(), v.end(), v.begin(),
+                     [inc = 42](int value) {
                        return value + inc;
                      });
     \end{cppcode*}
@@ -287,8 +310,9 @@
   \pause
   \begin{goodpractice}[STL and lambdas]{Use STL algorithms with lambdas}
     \begin{itemize}
-      \item Prefer lambdas over functors when using the STL
-      \item Avoid binders like \cppinline{std::bind2nd}, \cppinline{std::ptr_fun}, etc.
+      \item Use the standard functors where useful
+      \item Prefer lambdas over custom functors
+      \item No more need for binders like \cppinline{std::bind2nd}, \cppinline{std::ptr_fun}, etc.
     \end{itemize}
   \end{goodpractice}
 \end{frame}
