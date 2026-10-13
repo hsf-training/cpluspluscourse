@@ -5,7 +5,7 @@
   \begin{block}{The range concept}
     \begin{itemize}
     \item A range is a sequence of items that you can iterate over
-    \item It must provide iterators to its beginning and end, obtainable via \cppinline{std::range::begin} and \cppinline{std::range::end}
+    \item It must provide iterators to its beginning and end, obtainable via \cppinline{std::ranges::begin} and \cppinline{std::ranges::end}
     \item Range concepts are located in \cppinline{std::ranges} namespace
     \item All STL containers are ranges
     \end{itemize}
@@ -24,7 +24,7 @@
   \begin{block}{The view concept}
     \begin{itemize}
     \item A \cppinline{view} is a non-owning object built from a range or another view after applying some range adaptor(s)
-    \item The time complexity to copy, move, assign is constant
+    \item Views are cheap to copy, move, and assign
     \item Range adaptors can be applied/chained with \cppinline{|} and are lazy
     \item They live in the \cppinline{std::views} namespace
     \item They introduce easy functional programming to the STL
