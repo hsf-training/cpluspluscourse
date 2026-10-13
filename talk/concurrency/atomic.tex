@@ -98,8 +98,8 @@
   \begin{exampleblock}{}
     \begin{cppcode*}{}
       int a{0};
-      std::thread t1([&]{ std::atomic_ref<int> r{a}; r++;});
-      std::thread t2([&]{ std::atomic_ref{a}++; });
+      std::jthread t1([&]{ std::atomic_ref<int> r{a}; r++;});
+      std::jthread t2([&]{ std::atomic_ref{a}++; });
       t1.join(); t2.join();
       a += 2; // non-atomic (fine, threads joined before)
       assert( a == 4 ); // Guaranteed to succeed
@@ -107,9 +107,8 @@
   \end{exampleblock}
   \begin{alertblock}{Don't mix concurrent atomic and non-atomic access}
     \begin{cppcode*}{}
-      std::thread t3([&]{ std::atomic_ref{a}++; });
+      std::jthread t3([&]{ std::atomic_ref{a}++; });
       a += 2; // data race
-      t3.join();
     \end{cppcode*}
   \end{alertblock}
 \end{frame}
