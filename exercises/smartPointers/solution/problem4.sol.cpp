@@ -17,7 +17,7 @@ class Owner {
   public:
 
     Owner() : _largeObject( new LargeObject() ) {}
-    LargeObject * getLargeObject() const { return _largeObject.get() ; }
+    std::shared_ptr<LargeObject> getLargeObject() const { return _largeObject ; }
 
   private:
 
