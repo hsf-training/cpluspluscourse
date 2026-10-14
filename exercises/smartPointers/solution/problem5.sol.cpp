@@ -32,7 +32,7 @@ class Observer {
     void setValue( double v ) {
         std::shared_ptr<LargeObject> wptr = _largeObject.lock();
         if (wptr) { wptr->data[0] = v ; }
-        else { wptr->data[0] = 0. ; }
+        else { std::cout << "setValue: ERROR! The pointed object has already expired\n"; }
     }
 
     double getValue() const {
