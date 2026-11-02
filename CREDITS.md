@@ -3,7 +3,7 @@ Credits
 
   - Adaptations for CERN sessions (2020, 2025)
     * [Sebastien Ponce](https://github.com/sponce) [CERN](http://cern.ch)/[LHCb](http://lhcb.cern.ch)
-    * [David Chamont](https://gitlab.cern.ch/chamont) [IN2P3](https://informatique.in2p3.fr)
+    * [David Chamont](https://gitlab.cern.ch/chamont) [IN2P3](https://www.in2p3.cnrs.fr)
     * [Attila Krasznahorkay](https://gitlab.cern.ch/akraszna) [CERN](http://cern.ch)/[Atlas](https://atlas.cern/)
     * [Ben Couturier](https://gitlab.cern.ch/bcouturi) [CERN](http://cern.ch)/[LHCb](http://lhcb.cern.ch)
     * [Stephan Hageboeck](https://github.com/hageboeck) [CERN](http://cern.ch)/[Atlas](https://atlas.cern/)
