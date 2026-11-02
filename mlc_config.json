@@ -11,6 +11,9 @@
     },
     {
       "pattern": "https://github.com/hsf-training/cpluspluscourse/raw/download/.*"
+    },
+    {
+      "pattern": "https://en.cppreference.com/.*"
     }
   ]
 }
