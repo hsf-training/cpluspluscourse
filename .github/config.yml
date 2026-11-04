@@ -1,37 +1,25 @@
-# === IMPORTANT: CENTRALLY MAINTAINED FILE ===
-# This file was automatically added via the scripts at the maintenance repository.
-# Please do not change it. Rather, update the blueprint in the maintenance repository and propagate
-# the changes from there.
-# IF YOU REALLY WANT TO MAKE REPOSITORY SPECIFIC CHANGES TO THIS FILE, PLEASE REMOVE THIS NOTICE!
-# Tag @klieret for any questions.
-# ======
-
 # Configuration for welcome - https://github.com/behaviorbot/welcome
-
-# Configuration for new-issue-welcome - https://github.com/behaviorbot/new-issue-welcome
 
 # Comment to be posted to on first time issues
 newIssueWelcomeComment: >
-  Thanks for opening your first issue here! If you have any questions, feel free
-  to mention one of the conveners, previous contributors, or attend our weekly meeting (see
-  https://hepsoftwarefoundation.org/workinggroups/training.html).
-  Also, sometimes issues go unnoticed, so don't hesitate to @mention some of
-  us, if we do not come back to you within a few days.
-
-# Configuration for new-pr-welcome - https://github.com/behaviorbot/new-pr-welcome
+  Thanks for opening your first issue here 💖! If you have any questions, feel free to mention
+  one of the previous contributors or the training conveners (`@hsf-training/training-conveners`).
+  Sometimes issues go unnoticed, so don't hesitate to ping us if we do not come back to you
+  within a few days. More about us: https://hepsoftwarefoundation.org/activities/training.html
 
 # Comment to be posted to on PRs from first time contributors in your repository
 newPRWelcomeComment: >
-  Thanks for opening your first pull request here! If you have any questions, feel free
-  to mention one of the conveners, previous contributors, or attend our weekly meeting (see
-  https://hepsoftwarefoundation.org/workinggroups/training.html).
-  Also, sometimes PRs go unnoticed, so don't hesitate to @mention some of
-  us, if we do not come back to you within a few days.
-
-# Configuration for first-pr-merge - https://github.com/behaviorbot/first-pr-merge
+  Thanks for opening your first pull request here 🚀! If you have any questions, feel free to
+  mention one of the previous contributors or the training conveners (`@hsf-training/training-conveners`).
+  Sometimes PRs go unnoticed, so don't hesitate to ping us if we do not come back to you
+  within a few days. More about us: https://hepsoftwarefoundation.org/activities/training.html
 
 # Comment to be posted to on pull requests merged by a first time user
 firstPRMergeComment: >
-  Congrats on merging your first pull request! We at HSF are proud of you!
+  Congrats on merging your first pull request 🎉! We greatly appreciate it.
 
-# It is recommended to include as many gifs and emojis as possible!
+  You might be eligible to be added to the [HSF Training Community](https://hepsoftwarefoundation.org/training/community_by_year)
+  page (see the instructions on the page for how to create a profile). If you already have created
+  a profile previously, make sure you're also added to the current year.
+  If this repository features a list of contributors at the bottom of the readme, you might also
+  be eligible to add yourself there.

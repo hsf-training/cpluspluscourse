@@ -1,0 +1,8 @@
+# Links excluded from the link check (.github/workflows/check-links.yml).
+# Compiled PDFs on the download branch (carried over from mlc_config.json).
+^https://github\.com/hsf-training/cpluspluscourse/raw/download/
+# cppreference returns 403 to GitHub Actions runners, but works in a browser
+# (carried over from mlc_config.json).
+^https://en\.cppreference\.com/
+# Contributor homepage in the all-contributors table: the domain no longer exists.
+^http://includeio\.stream/
